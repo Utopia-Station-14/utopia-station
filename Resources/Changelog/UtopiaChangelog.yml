@@ -1,6 +1,6 @@
 Entries:
-- author: KashRas2
-  changes:
-  - {message: Added separate fork changelog, type: Add}
-  id: 1
-  time: '2026-01-05T18:56:19Z'
+  - author: KashRas2
+    changes:
+      - {message: Added separate fork changelog, type: Add}
+    id: 1
+    time: '2026-01-05T18:56:19Z'
