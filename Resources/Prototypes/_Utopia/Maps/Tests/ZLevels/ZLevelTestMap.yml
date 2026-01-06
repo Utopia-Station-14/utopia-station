@@ -9,7 +9,7 @@
   minPlayers: 1
   stations:
     Boxstation:
-      stationProto: ZLevelTestMap
+      stationProto: StandardNanotrasenStation
       components:
         - type: StationNameSetup
           mapNameTemplate: '{0} ZZZ {1}'
