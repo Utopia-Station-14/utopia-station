@@ -14,6 +14,7 @@ using Content.Shared.Verbs;
 using Content.Shared.Wires;
 using Robust.Shared.Containers;
 using Robust.Shared.Utility;
+using Content.Shared._Utopia.PowerCells;
 
 namespace Content.Shared._Utopia.ModSuits;
 

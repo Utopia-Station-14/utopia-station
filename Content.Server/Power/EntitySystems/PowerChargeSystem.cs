@@ -4,6 +4,7 @@ using Content.Server.Power.Components;
 using Content.Shared.Database;
 using Content.Shared.Power;
 using Content.Shared.UserInterface;
+using Content.Shared._Utopia.PowerCells;
 using Robust.Server.GameObjects;
 using Robust.Shared.Player;
 

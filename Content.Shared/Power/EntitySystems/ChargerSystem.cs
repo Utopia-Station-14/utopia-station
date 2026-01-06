@@ -8,6 +8,7 @@ using Content.Shared.Storage.Components;
 using Content.Shared.Whitelist;
 using Robust.Shared.Containers;
 using Robust.Shared.Timing;
+using Content.Shared.Inventory;
 
 namespace Content.Shared.Power.EntitySystems;
 
@@ -20,6 +21,7 @@ public sealed class ChargerSystem : EntitySystem
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly InventorySystem _inventorySystem = default!;
 
     public override void Initialize()
     {
@@ -251,4 +253,35 @@ public sealed class ChargerSystem : EntitySystem
 
         return CellChargerStatus.Charging;
     }
+
+    // Utopia-tweak
+    public bool SearchForBattery(EntityUid uid, [NotNullWhen(true)] out EntityUid? batteryUid, [NotNullWhen(true)] out BatteryComponent? component)
+    {
+        // try get a battery directly on the inserted entity
+        if (TryComp(uid, out component))
+        {
+            batteryUid = uid;
+            return true;
+        }
+
+        // try get battery by checking for a power cell slot on the inserted entity
+        if (_powerCell.TryGetBatteryFromSlot(uid, out batteryUid, out component))
+            return true;
+
+        if (TryComp<InventoryComponent>(uid, out var inventory))
+        {
+            var relayEv = new FindInventoryBatteryEvent();
+            _inventorySystem.RelayEvent((uid, inventory), ref relayEv);
+
+            if (relayEv.FoundBattery != null && TryComp<BatteryComponent>(relayEv.FoundBattery, out var battery))
+            {
+                batteryUid = relayEv.FoundBattery;
+                component = battery;
+                return true;
+            }
+        }
+
+        return false;
+    }
+    // Utopia-tweak
 }
