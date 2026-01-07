@@ -796,6 +796,8 @@ namespace Content.Client.Lobby.UI
 
             RefreshLanguages(); // Utopia-Tweak : Language
 
+            RefreshLanguages(); // Utopia-Tweak : Language
+
             RefreshAntags();
             RefreshJobs();
             RefreshLoadouts();

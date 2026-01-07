@@ -21,7 +21,6 @@ using Robust.Shared.Serialization.Markdown;
 using Robust.Shared.Utility;
 using YamlDotNet.RepresentationModel;
 using Content.Shared.Utopia.Language;
-using Content.Shared.Utopia.SpeechBarks;
 
 namespace Content.Shared.Humanoid;
 
@@ -461,6 +460,7 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
         }
 
         EnsureDefaultMarkings(uid, humanoid);
+        SetLanguages(uid, profile.Languages.ToList()); // Utopia-Tweak : Language
 
         SetLanguages(uid, profile.Languages.ToList()); // Utopia-Tweak : Language
         SetBarkData(uid, profile.Bark, humanoid); // Utopia-Tweak : Barks
@@ -568,18 +568,6 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
         _language.UpdateUi(uid);
     }
     // Utopia-Tweak : Language
-
-    // Utopia-Tweak : Barks
-    public void SetBarkData(EntityUid uid, BarkData data, HumanoidAppearanceComponent humanoid)
-    {
-        if (!TryComp<SpeechBarksComponent>(uid, out var comp))
-            return;
-
-        comp.Data = data;
-        comp.Data.Sound = _proto.Index(comp.Data.Proto).Sound;
-        humanoid.Bark = data;
-    }
-    // Utopia-Tweak : Barks
 
     public string GetAgeRepresentation(string species, int age)
     {

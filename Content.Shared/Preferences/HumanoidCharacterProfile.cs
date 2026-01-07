@@ -16,7 +16,6 @@ using Robust.Shared.Random;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 using Content.Shared.Utopia.Language;
-using Content.Shared.Utopia.SpeechBarks;
 
 namespace Content.Shared.Preferences
 {
@@ -124,11 +123,6 @@ namespace Content.Shared.Preferences
         public IReadOnlySet<ProtoId<LanguagePrototype>> Languages => _languages;
         // Utopia-Tweak : Language
 
-        // Utopia-Tweak : Barks
-        [DataField]
-        public BarkData Bark = new();
-        // Utopia-Tweak : Barks
-
         /// <summary>
         /// If we're unable to get one of our preferred jobs do we spawn as a fallback job or do we stay in lobby.
         /// </summary>
@@ -150,8 +144,7 @@ namespace Content.Shared.Preferences
             HashSet<ProtoId<AntagPrototype>> antagPreferences,
             HashSet<ProtoId<TraitPrototype>> traitPreferences,
             Dictionary<string, RoleLoadout> loadouts,
-            HashSet<ProtoId<LanguagePrototype>> languages, // Utopia-Tweak : Language
-            BarkData bark) // Utopia-Tweak : Barks
+            HashSet<ProtoId<LanguagePrototype>> languages) // Utopia-Tweak : Language
         {
             Name = name;
             FlavorText = flavortext;
@@ -167,8 +160,6 @@ namespace Content.Shared.Preferences
             _traitPreferences = traitPreferences;
             _loadouts = loadouts;
             _languages = languages; // Utopia-Tweak : Language
-            Bark = bark; // Utopia-Tweak : Barks
-
 
             var hasHighPrority = false;
             foreach (var (key, value) in _jobPriorities)
@@ -200,8 +191,7 @@ namespace Content.Shared.Preferences
                 new HashSet<ProtoId<AntagPrototype>>(other.AntagPreferences),
                 new HashSet<ProtoId<TraitPrototype>>(other.TraitPreferences),
                 new Dictionary<string, RoleLoadout>(other.Loadouts),
-                other._languages, // Utopia-Tweak : Language
-                other.Bark) // Utopia-Tweak : Barks
+                other._languages) // Utopia-Tweak : Language
         {
         }
 
@@ -532,7 +522,6 @@ namespace Content.Shared.Preferences
             if (!Loadouts.SequenceEqual(other.Loadouts)) return false;
             if (FlavorText != other.FlavorText) return false;
             if (!_languages.SequenceEqual(other._languages)) return false; // Utopia-Tweak : Language
-            if (!Bark.MemberwiseEquals(other.Bark)) return false; // Utopia-Tweak : Language
             return Appearance.MemberwiseEquals(other.Appearance);
         }
 
