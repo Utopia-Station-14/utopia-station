@@ -89,7 +89,7 @@
     # Utopia-Tweak : Language
     - type: LanguageSpeaker
       languages:
-        GalacticCommon: Undestand
+        GalacticCommon: Understand
     # Utopia-Tweak : Language
 
 - type: entity
