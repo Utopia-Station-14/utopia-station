@@ -4,3 +4,8 @@ Entries:
       - {message: Added separate fork changelog, type: Add}
     id: 1
     time: '2026-01-05T18:56:19Z'
+  - author: M1and1B
+    changes:
+      - {message: Включен космический ветер, type: Tweak}
+    time: '2026-01-07T00:27:20Z'
+    id: 2
