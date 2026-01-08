@@ -372,11 +372,11 @@ namespace Content.Server.Database
                 .Property(p => p.Type)
                 .HasDefaultValue(HwidType.Legacy);
 
-            // ADT Languages start
+            // Utopia-Tweak : Language
             modelBuilder.Entity<Language>()
                 .HasIndex(p => new { HumanoidProfileId = p.ProfileId, p.LanguageName })
                 .IsUnique();
-            // ADT Languages end
+            // Utopia-Tweak : Language
         }
 
         public virtual IQueryable<AdminLog> SearchLogs(IQueryable<AdminLog> query, string searchText)
@@ -423,7 +423,13 @@ namespace Content.Server.Database
         public List<Job> Jobs { get; } = new();
         public List<Antag> Antags { get; } = new();
         public List<Trait> Traits { get; } = new();
-        public List<Language> Languages { get; } = new(); // ADT Languages
+        public List<Language> Languages { get; } = new(); // Utopia-Tweak : Languages
+        // Utopia-Tweak : Barks
+        public string BarkProto { get; set; } = null!;
+        public float BarkPitch { get; set; } = 1f;
+        public float LowBarkVar { get; set; } = 0.1f;
+        public float HighBarkVar { get; set; } = 0.5f;
+        // Utopia-Tweak : Barks
         public List<ProfileRoleLoadout> Loadouts { get; } = new();
 
         [Column("pref_unavailable")] public DbPreferenceUnavailableMode PreferenceUnavailable { get; set; }

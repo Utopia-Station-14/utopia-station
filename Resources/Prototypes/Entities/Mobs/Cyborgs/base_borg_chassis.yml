@@ -252,6 +252,11 @@
     languages:
       GalacticCommon: Speak
   # Utopia-Tweak : Language
+  # Utopia-Tweak : Barks
+  - type: SpeechBarks
+    data:
+      proto: Synth3
+  # Utopia-Tweak : Barks
 
 - type: entity
   abstract: true
