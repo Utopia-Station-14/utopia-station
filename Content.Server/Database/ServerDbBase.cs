@@ -18,6 +18,7 @@ using Content.Shared.Preferences.Loadouts;
 using Content.Shared.Roles;
 using Content.Shared.Traits;
 using Content.Shared.Utopia.Language;
+using Content.Shared.Utopia.SpeechBarks;
 using Microsoft.EntityFrameworkCore;
 using Robust.Shared.Enums;
 using Robust.Shared.Network;
@@ -285,7 +286,8 @@ namespace Content.Server.Database
                 antags.ToHashSet(),
                 traits.ToHashSet(),
                 loadouts,
-                languages.ToHashSet() // Utopia-Tweak : Language
+                languages.ToHashSet(), // Utopia-Tweak : Language
+                new BarkData(profile.BarkProto, profile.BarkPitch, profile.LowBarkVar, profile.HighBarkVar) // Utopia-Tweak : Barks
             );
         }
 

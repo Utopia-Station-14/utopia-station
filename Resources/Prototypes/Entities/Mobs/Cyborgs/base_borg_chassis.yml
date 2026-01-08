@@ -252,6 +252,10 @@
     languages:
       GalacticCommon: Speak
   # Utopia-Tweak : Language
+  # Utopia-Tweak : Barks
+  - type: SpeechBarks
+    sound: /Audio/_Utopia/Voice/Vocal-Barks/bloop.ogg
+  # Utopia-Tweak : Barks
 
 - type: entity
   abstract: true

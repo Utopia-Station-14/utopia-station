@@ -2,6 +2,7 @@ using Content.Shared.DisplacementMap;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Inventory;
+using Content.Shared.Utopia.SpeechBarks;
 using Robust.Shared.Enums;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -106,6 +107,14 @@ public sealed partial class HumanoidAppearanceComponent : Component
     /// </summary>
     [DataField]
     public Dictionary<HumanoidVisualLayers, DisplacementData> MarkingsDisplacement = new();
+
+    // Utopia-Tweak : Barks
+    /// <summary>
+    /// Current voice. Used for correct cloning.
+    /// </summary>
+    [DataField("bark")]
+    public BarkData Bark = new();
+    // Utopia-Tweak : Barks
 }
 
 [DataDefinition]

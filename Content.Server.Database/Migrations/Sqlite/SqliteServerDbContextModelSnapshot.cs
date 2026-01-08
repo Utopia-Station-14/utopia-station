@@ -807,6 +807,17 @@ namespace Content.Server.Database.Migrations.Sqlite
                         .HasColumnType("INTEGER")
                         .HasColumnName("age");
 
+                    // Utopia-Tweak : Barks
+                    b.Property<float>("BarkPitch")
+                        .HasColumnType("REAL")
+                        .HasColumnName("bark_pitch");
+
+                    b.Property<string>("BarkProto")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("bark_proto");
+                    // Utopia-Tweak : Barks
+
                     b.Property<string>("CharacterName")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -850,6 +861,16 @@ namespace Content.Server.Database.Migrations.Sqlite
                     b.Property<byte[]>("Markings")
                         .HasColumnType("jsonb")
                         .HasColumnName("markings");
+
+                    // Utopia-Tweak : Barks
+                    b.Property<float>("HighBarkVar")
+                        .HasColumnType("REAL")
+                        .HasColumnName("high_bark_var");
+
+                    b.Property<float>("LowBarkVar")
+                        .HasColumnType("REAL")
+                        .HasColumnName("low_bark_var");
+                    // Utopia-Tweak : Barks
 
                     b.Property<int>("PreferenceId")
                         .HasColumnType("INTEGER")

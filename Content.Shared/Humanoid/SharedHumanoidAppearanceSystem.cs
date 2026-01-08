@@ -21,6 +21,7 @@ using Robust.Shared.Serialization.Markdown;
 using Robust.Shared.Utility;
 using YamlDotNet.RepresentationModel;
 using Content.Shared.Utopia.Language;
+using Content.Shared.Utopia.SpeechBarks;
 
 namespace Content.Shared.Humanoid;
 
@@ -45,6 +46,7 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
     [Dependency] private readonly SharedLanguageSystem _language = default!; // Utopia-Tweak : Language
 
     public static readonly ProtoId<SpeciesPrototype> DefaultSpecies = "Human";
+    public const string DefaultBark = "Human1"; // Utopia-Tweak : Barks
 
     public override void Initialize()
     {
@@ -160,6 +162,11 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
 
         SetSex(target, sourceHumanoid.Sex, false, targetHumanoid);
         SetGender((target, targetHumanoid), sourceHumanoid.Gender);
+
+        // Utopia-Tweak : Barks
+        if (HasComp<SpeechBarksComponent>(source))
+            SetBarkData(target, sourceHumanoid.Bark, targetHumanoid);
+        // Utopia-Tweak : Barks
 
         Dirty(target, targetHumanoid);
     }
@@ -454,7 +461,9 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
         }
 
         EnsureDefaultMarkings(uid, humanoid);
+
         SetLanguages(uid, profile.Languages.ToList()); // Utopia-Tweak : Language
+        SetBarkData(uid, profile.Bark, humanoid); // Utopia-Tweak : Barks
 
         humanoid.Gender = profile.Gender;
         if (TryComp<GrammarComponent>(uid, out var grammar))
@@ -559,6 +568,18 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
         _language.UpdateUi(uid);
     }
     // Utopia-Tweak : Language
+
+    // Utopia-Tweak : Barks
+    public void SetBarkData(EntityUid uid, BarkData data, HumanoidAppearanceComponent humanoid)
+    {
+        if (!TryComp<SpeechBarksComponent>(uid, out var comp))
+            return;
+
+        comp.Data = data;
+        comp.Data.Sound = _proto.Index(comp.Data.Proto).Sound;
+        humanoid.Bark = data;
+    }
+    // Utopia-Tweak : Barks
 
     public string GetAgeRepresentation(string species, int age)
     {

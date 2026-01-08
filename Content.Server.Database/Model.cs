@@ -423,7 +423,13 @@ namespace Content.Server.Database
         public List<Job> Jobs { get; } = new();
         public List<Antag> Antags { get; } = new();
         public List<Trait> Traits { get; } = new();
-        public List<Language> Languages { get; } = new(); // ADT Languages
+        public List<Language> Languages { get; } = new(); // Utopia-Tweak : Languages
+        // Utopia-Tweak : Barks
+        public string BarkProto { get; set; } = null!;
+        public float BarkPitch { get; set; } = 1f;
+        public float LowBarkVar { get; set; } = 0.1f;
+        public float HighBarkVar { get; set; } = 0.5f;
+        // Utopia-Tweak : Barks
         public List<ProfileRoleLoadout> Loadouts { get; } = new();
 
         [Column("pref_unavailable")] public DbPreferenceUnavailableMode PreferenceUnavailable { get; set; }
