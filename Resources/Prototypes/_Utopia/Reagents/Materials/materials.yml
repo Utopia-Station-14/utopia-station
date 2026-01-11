@@ -1,0 +1,16 @@
+- type: material
+  id: Copper
+  stackEntity: UtopiaSheetCopper1
+  name: materials-copper
+  icon: { sprite: Objects/Materials/ingots.rsi, state: copper }
+  color: "#dd7d00"
+  price: 0.075
+
+- type: material
+  id: Lead
+  stackEntity: UtopiaSheetLead1
+  name: materials-lead
+  unit: materials-unit-bar
+  icon: { sprite: _Utopia/Objects/Materials/Sheets/metal.rsi, state: lead }
+  color: "#08287a"
+  price: 0
