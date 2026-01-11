@@ -1,0 +1,19 @@
+- type: cargoProduct
+  id: MaterialCopper
+  icon:
+    sprite: Objects/Materials/ingots.rsi
+    state: copper_3
+  product: CrateMaterialCopper
+  cost: 6000
+  category: Materials
+  group: market
+
+- type: cargoProduct
+  id: MaterialLead
+  icon:
+    sprite: _Utopia/Objects/Materials/Sheets/metal.rsi
+    state: lead_3
+  product: CrateMaterialLead
+  cost: 4500
+  category: Materials
+  group: market

@@ -1,0 +1,29 @@
+- type: latheRecipe
+  id: SheetCopper
+  result: UtopiaSheetCopper1
+  completetime: 0
+  miningPoints: 2
+  materials:
+    RawCopper: 100
+
+- type: latheRecipe
+  id: SheetCopper30
+  result: UtopiaSheetCopper
+  completetime: 2
+  materials:
+    RawCopper: 3000
+
+- type: latheRecipe
+  id: SheetLead
+  result: UtopiaSheetLead1
+  completetime: 0
+  miningPoints: 4
+  materials:
+    RawLead: 100
+
+- type: latheRecipe
+  id: SheetLead30
+  result: UtopiaSheetLead
+  completetime: 2
+  materials:
+    RawLead: 3000

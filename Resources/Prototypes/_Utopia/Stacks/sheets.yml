@@ -1,0 +1,13 @@
+- type: stack
+  id: Copper
+  name: copper
+  icon: { sprite: /Textures/Objects/Materials/ingots.rsi, state: copper }
+  spawn: UtopiaSheetCopper1
+  maxCount: 30
+
+- type: stack
+  id: Lead
+  name: lead
+  icon: { sprite: /Textures/_Utopia/Objects/Materials/Sheets/metal.rsi, state: lead }
+  spawn: UtopiaSheetLead1
+  maxCount: 30

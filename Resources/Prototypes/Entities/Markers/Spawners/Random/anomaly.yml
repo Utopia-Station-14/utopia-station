@@ -1,4 +1,4 @@
-﻿- type: entity
+- type: entity
   id: RandomAnomalySpawner
   name: random anomaly spawner
   parent: MarkerBase
@@ -47,6 +47,8 @@
     - AnomalyRockQuartz
     - AnomalyRockUranium
     - AnomalyRockBananium
+    - ADTAnomalyRockCopper #Utopia-tweak
+    - ADTAnomalyRockLead #Utopia-tweak
     chance: 1
     offset: 0.15
 

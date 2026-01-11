@@ -1,0 +1,21 @@
+- type: entity
+  id: CrateMaterialCopper
+  parent: CrateGenericSteel
+  name: copper sheet crate
+  description: 90 sheets of copper, packed with care.
+  components:
+  - type: StorageFill
+    contents:
+      - id: UtopiaSheetCopper
+        amount: 3
+
+- type: entity
+  id: CrateMaterialLead
+  parent: CrateGenericSteel
+  name: lead sheet crate
+  description: 90 sheets of lead, packed with care.
+  components:
+  - type: StorageFill
+    contents:
+      - id: UtopiaSheetLead
+        amount: 3

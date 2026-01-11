@@ -1,0 +1,47 @@
+- type: entity
+  id: UtopiaMobSpawnCopperCrab
+  parent: MobSpawnCrabQuartz
+  name: mobspawner copper crab
+  categories: [ HideSpawnMenu, Spawner ]
+  components:
+  - type: Sprite
+    sprite: /Textures/_Utopia/Effects/mobspawn.rsi
+    state: crab_copper
+  - type: SpawnOnDespawn
+    prototype: UtopiaMobCopperCrab
+
+- type: entity
+  id: MobSpawnCopperCrabFriendly
+  parent: MobSpawnCrabQuartz
+  name: mobspawner copper crab
+  categories: [ HideSpawnMenu, Spawner ]
+  components:
+  - type: Sprite
+    sprite: /Textures/_Utopia/Effects/mobspawn.rsi
+    state: crab_copper
+  - type: SpawnOnDespawn
+    prototype: UtopiaMobCopperCrabFriendly
+
+- type: entity
+  id: UtopiaMobSpawnLeadCrab
+  parent: MobSpawnCrabQuartz
+  name: mobspawner lead crab
+  categories: [ HideSpawnMenu, Spawner ]
+  components:
+  - type: Sprite
+    sprite: /Textures/_Utopia/Effects/mobspawn.rsi
+    state: crab_lead
+  - type: SpawnOnDespawn
+    prototype: UtopiaMobLeadCrab
+
+- type: entity
+  id: MobSpawnLeadCrabFriendly
+  parent: MobSpawnCrabQuartz
+  name: mobspawner lead crab
+  categories: [ HideSpawnMenu, Spawner ]
+  components:
+  - type: Sprite
+    sprite: /Textures/_Utopia/Effects/mobspawn.rsi
+    state: crab_lead
+  - type: SpawnOnDespawn
+    prototype: UtopiaMobLeadCrabFriendly
