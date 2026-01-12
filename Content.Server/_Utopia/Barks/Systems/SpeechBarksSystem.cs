@@ -1,25 +1,20 @@
 using Robust.Shared.Prototypes;
 using Content.Shared.Utopia.SpeechBarks;
-using Content.Server.Chat.Systems;
 using Content.Shared.Chat;
 using Robust.Shared.Configuration;
 using Content.Shared.Utopia.CCVar;
 using Content.Server.Mind;
 using Robust.Shared.Player;
-using Robust.Shared.Audio;
-using Robust.Shared.Audio.Systems;
 
 namespace Content.Server.Utopia.SpeechBarks;
 
-public sealed class SpeechBarksSystem : SharedSpeechBarksSystem
+public sealed class SpeechBarksSystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly MindSystem _mind = default!;
     [Dependency] private readonly ISharedPlayerManager _player = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
     private bool _isEnabled = false;
 
     public override void Initialize()

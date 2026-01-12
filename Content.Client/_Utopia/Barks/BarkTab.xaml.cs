@@ -23,7 +23,7 @@ public sealed partial class BarkTab : Control
     private Dictionary<string, List<BarkPrototype>> _barksByCategory = new();
 
     private string? _selectedCategory = null;
-    private string _currentBarkId = "";
+    private string _currentBarkId = default!;
     private float _currentPitch = 1f;
     private float _currentMinVar = 0.1f;
     private float _currentMaxVar = 0.5f;
@@ -127,7 +127,9 @@ public sealed partial class BarkTab : Control
         foreach (var button in buttons)
         {
             if (category == null && button.Text == _loc.GetString($"bark-category-all"))
+            {
                 button.Pressed = true;
+            }
             else
             {
                 var buttonCategory = category != null && _loc.TryGetString($"bark-category-{category}", out var loc) ? loc : category;
