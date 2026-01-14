@@ -101,7 +101,6 @@
     - type: AtmosUnsafeUnanchor
     - type: PipeRestrictOverlap
     - type: TurbineOutlet
-    - type: DeviceLinkSource
 
 - type: entity
   id: TurbineInlet
