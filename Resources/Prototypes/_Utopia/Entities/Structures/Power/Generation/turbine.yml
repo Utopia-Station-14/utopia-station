@@ -1,0 +1,138 @@
+- type: entity
+  id: TurbineRotor
+  name: thermo-electric generator
+  description: A high efficiency generator that uses energy transfer between hot and cold gases to produce electricity.
+  parent: BaseMachinePowered
+  placement:
+    mode: SnapgridCenter
+  components:
+    - type: Transform
+      noRot: false
+    - type: Sprite
+      layers:
+        - sprite: _Utopia/Structures/Power/turbine.rsi 
+          state: rotor
+    - type: Anchorable
+    - type: Pullable
+    - type: NodeContainer
+      examinable: true
+      nodes:
+        output:
+          !type:CableDeviceNode
+          nodeGroupID: HVPower
+        turbine:
+          !type:TurbineNodeRotor
+          nodeGroupID: Turbine
+    - type: PowerMonitoringDevice
+      group: Generator
+      loadNode: output
+      sprite: Structures/Power/Generation/teg.rsi
+      state: static
+    - type: Rotatable
+    - type: AtmosDevice
+    - type: TurbineRotor
+    - type: DeviceNetwork
+      deviceNetId: AtmosDevices
+      receiveFrequencyId: AtmosMonitor
+      transmitFrequencyId: AtmosMonitor
+      prefix: device-address-prefix-teg
+      sendBroadcastAttemptEvent: true
+      examinableAddress: true
+    - type: WiredNetworkConnection
+    - type: PowerSupplier
+      supplyRampRate: 100000000
+      supplyRampTolerance: 10000000000
+    - type: Appearance
+    - type: ApcPowerReceiver
+      powerLoad: 1000
+    - type: LitOnPowered
+    - type: PointLight
+      enabled: false
+      castShadows: false
+      radius: 1.5
+      color: "#FFAA00"
+    - type: AmbientSound
+      volume: -4
+      range: 6
+      enabled: false
+      sound:
+        path: /Audio/Ambience/Objects/vending_machine_hum.ogg
+    - type: GuideHelp
+      guides:
+      - Power
+
+- type: entity
+  id: TurbineExhaust
+  name: circulator
+  description: Passes gas through the thermo-electric generator to exchange heat. Has an inlet and outlet port.
+  parent: BaseMachine
+  placement:
+    mode: SnapgridCenter
+  components:
+    - type: Transform
+      noRot: false
+    - type: Sprite
+      layers:
+        - sprite: _Utopia/Structures/Power/turbine.rsi 
+          state: outlet
+    - type: Appearance
+    - type: PointLight
+      enabled: false
+      castShadows: false
+      radius: 1.5
+      color: "#CC00FF"
+    - type: Tag
+      tags:
+        - Unstackable
+    - type: Rotatable
+    - type: Anchorable
+    - type: Pullable
+    - type: GuideHelp
+      guides:
+      - Power
+    - type: NodeContainer
+      nodes:
+        turbine:
+          !type:TurbineNodeOutlet
+          nodeGroupID: Turbine
+    - type: AtmosUnsafeUnanchor
+    - type: PipeRestrictOverlap
+    - type: TurbineOutlet
+
+- type: entity
+  id: TurbineInlet
+  name: circulator
+  description: Passes gas through the thermo-electric generator to exchange heat. Has an inlet and outlet port.
+  parent: BaseMachine
+  placement:
+    mode: SnapgridCenter
+  components:
+    - type: Transform
+      noRot: false
+    - type: Sprite
+      layers:
+        - sprite: _Utopia/Structures/Power/turbine.rsi 
+          state: inlet
+    - type: Appearance
+    - type: PointLight
+      enabled: false
+      castShadows: false
+      radius: 1.5
+      color: "#CC00FF"
+    - type: Tag
+      tags:
+        - Unstackable
+    - type: Rotatable
+    - type: Anchorable
+    - type: Pullable
+    - type: GuideHelp
+      guides:
+      - Power
+    - type: NodeContainer
+      nodes:
+        turbine:
+          !type:TurbineNodeInlet
+          nodeGroupID: Turbine
+    - type: AtmosUnsafeUnanchor
+    - type: PipeRestrictOverlap
+    - type: TurbineInlet

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "https://github.com/tgstation/tgstation/commit/d1b842356ec4fd773a1e7092197e7f094cc4d36d",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+	{
+		"name": "rotor",
+		"directions": 4
+	},
+	{
+		"name": "inlet",
+		"directions": 4
+	},
+	{
+		"name": "outlet",
+		"directions": 4		
+	}
+  ]
+}

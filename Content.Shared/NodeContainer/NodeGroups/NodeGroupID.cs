@@ -17,4 +17,11 @@ public enum NodeGroupID : byte
     /// <seealso cref="Content.Server.Power.Generation.Teg.TegNodeGroup"/>
     Teg,
     ExCable,
+
+    /// <summary>
+    ///  Group used by Turbine
+    /// </summary>
+    /// <seealso cref="Content.Server._Utopia.Power.Generation.Turbine.TurbineSystem"/>
+    /// <seealso cref="Content.Server._Utopia.Power.Generation.Turbine.TurbineNodeGroup"/>
+    Turbine
 }
