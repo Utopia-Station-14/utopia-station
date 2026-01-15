@@ -16,12 +16,6 @@
         - type: StationJobs
           availableJobs:
             Captain: [ -1, -1 ]
-        - type: ZLinkedGrid
-          linkGroupId: "TestZGroup"
-          isAnchor: true
-          tileOffset:
-            x: 0
-            y: 0
 
 - type: gameMap
   id: ZLevelMapTestBelow
@@ -37,12 +31,6 @@
         - type: StationJobs
           availableJobs:
             Captain: [ -1, -1 ]
-        - type: ZLinkedGrid
-          linkGroupId: "TestZGroup"
-          isAnchor: false
-          tileOffset:
-            x: 0
-            y: 0
 
 - type: gameMap
   id: ZLevelMapTestAbove
@@ -58,9 +46,3 @@
         - type: StationJobs
           availableJobs:
             Captain: [ -1, -1 ]
-        - type: ZLinkedGrid
-          linkGroupId: "TestZGroup"
-          isAnchor: false
-          tileOffset:
-            x: 0
-            y: 0
