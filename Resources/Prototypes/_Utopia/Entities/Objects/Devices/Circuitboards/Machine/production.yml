@@ -1,0 +1,16 @@
+- type: entity
+  id: UtopiaUniversalPipeDispenserCircuitboard
+  parent: BaseMachineCircuitboard
+  name: universal pipe dispenser board
+  description: A machine circuit board for a universal pipe dispenser. Exists in a single copy.
+  components:
+    - type: Sprite
+      state: engineering
+    - type: MachineBoard
+      prototype: UtopiaUniversalPipeDispenser
+      stackRequirements:
+        Manipulator: 4
+      tagRequirements:
+        GlassBeaker:
+          amount: 2
+          defaultPrototype: Beaker

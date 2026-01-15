@@ -70,6 +70,12 @@
           Quantity: 9
         - ReagentId: Carbon
           Quantity: 1
+  # Utopia-Add: URT start
+  - tags:
+    - UtopiaSteelSheet
+    - Sheet
+    - Metal
+  # Utopia-Add: URT end
 
 - type: entity
   parent: SheetSteel
