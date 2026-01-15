@@ -1,0 +1,131 @@
+# Disposal
+
+- type: latheRecipe
+  id: DisposalPipe
+  result: UtopiaDisposalPipe
+  completetime: 2
+  applyMaterialDiscount: false
+  materials:
+    Steel: 50
+
+- type: latheRecipe
+  id: DisposalTagger
+  result: UtopiaDisposalTagger
+  completetime: 2
+  applyMaterialDiscount: false
+  materials:
+    Steel: 50
+
+- type: latheRecipe
+  id: DisposalTrunk
+  result: UtopiaDisposalTrunk
+  completetime: 2
+  applyMaterialDiscount: false
+  materials:
+    Steel: 50
+
+- type: latheRecipe
+  id: DisposalRouter
+  result: UtopiaDisposalRouter
+  completetime: 2
+  applyMaterialDiscount: false
+  materials:
+    Steel: 50
+
+- type: latheRecipe
+  id: DisposalRouterFlipped
+  result: UtopiaDisposalRouterFlipped
+  completetime: 2
+  applyMaterialDiscount: false
+  materials:
+    Steel: 50
+
+- type: latheRecipe
+  id: DisposalJunction
+  result: UtopiaDisposalJunction
+  completetime: 2
+  applyMaterialDiscount: false
+  materials:
+    Steel: 50
+
+- type: latheRecipe
+  id: DisposalJunctionFlipped
+  result: UtopiaDisposalJunctionFlipped
+  completetime: 2
+  applyMaterialDiscount: false
+  materials:
+    Steel: 50
+
+- type: latheRecipe
+  id: DisposalYJunction
+  result: UtopiaDisposalYJunction
+  completetime: 2
+  applyMaterialDiscount: false
+  materials:
+    Steel: 50
+
+- type: latheRecipe
+  id: DisposalBend
+  result: UtopiaDisposalBend
+  completetime: 2
+  applyMaterialDiscount: false
+  materials:
+    Steel: 50
+
+- type: latheRecipe
+  id: DisposalSignalRouter
+  result: UtopiaDisposalSignalRouter
+  completetime: 2
+  applyMaterialDiscount: false
+  materials:
+    Steel: 50
+
+- type: latheRecipe
+  id: DisposalSignalRouterFlipped
+  result: UtopiaDisposalSignalRouterFlipped
+  completetime: 2
+  applyMaterialDiscount: false
+  materials:
+    Steel: 50
+
+# Atmos
+
+- type: latheRecipe
+  id: GasPipeHalf
+  result: UtopiaGasPipeHalf
+  completetime: 1
+  applyMaterialDiscount: false
+  materials:
+    Steel: 25
+
+- type: latheRecipe
+  id: GasPipeStraight
+  result: UtopiaGasPipeStraight
+  completetime: 1
+  applyMaterialDiscount: false
+  materials:
+    Steel: 25
+
+- type: latheRecipe
+  id: GasPipeBend
+  result: UtopiaGasPipeBend
+  completetime: 1
+  applyMaterialDiscount: false
+  materials:
+    Steel: 25
+
+- type: latheRecipe
+  id: GasPipeTJunction
+  result: UtopiaGasPipeTJunction
+  completetime: 1
+  applyMaterialDiscount: false
+  materials:
+    Steel: 25
+
+- type: latheRecipe
+  id: GasPipeFourway
+  result: UtopiaGasPipeFourway
+  completetime: 1
+  applyMaterialDiscount: false
+  materials:
+    Steel: 25
