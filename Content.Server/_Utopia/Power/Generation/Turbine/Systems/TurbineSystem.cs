@@ -20,6 +20,7 @@ public sealed class TurbineSystem : EntitySystem
 
     [Dependency] private readonly TransformSystem _transformSystem = default!;
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
+    [Dependency] private readonly UserInterfaceSystem _ui = default!;
 
     private EntityQuery<NodeContainerComponent> _nodeContainerQuery;
 
@@ -40,6 +41,12 @@ public sealed class TurbineSystem : EntitySystem
 
             if (rotor.IsActive)
                 ProcessTurbine(uid, rotor);
+        }
+
+        // Обновляем состояние всех консолей на сервере
+        foreach (var console in EntityQuery<TurbineConsoleComponent>())
+        {
+            UpdateConsoleState(console);
         }
     }
 
@@ -109,9 +116,7 @@ public sealed class TurbineSystem : EntitySystem
         return taken;
     }
 
-    private (GasMixture gas, float energy, float rpm) ProcessRotor(
-        GasMixture gas,
-        TurbineRotorComponent rotor)
+    private (GasMixture gas, float energy, float rpm) ProcessRotor(GasMixture gas, TurbineRotorComponent rotor)
     {
         var pressure = gas.Pressure;
         var temperature = gas.Temperature;
@@ -131,19 +136,13 @@ public sealed class TurbineSystem : EntitySystem
         if (heatCapacity > 0f)
         {
             var tempDrop = energy / heatCapacity;
-            gas.Temperature = MathF.Max(
-                Atmospherics.TCMB,
-                gas.Temperature - tempDrop
-            );
+            gas.Temperature = MathF.Max(Atmospherics.TCMB, gas.Temperature - tempDrop);
         }
 
         return (gas, energy, rpm);
     }
 
-    private void DumpGas(
-        EntityUid outletUid,
-        TurbineOutletComponent comp,
-        GasMixture gas)
+    private void DumpGas(EntityUid outletUid, TurbineOutletComponent comp, GasMixture gas)
     {
         if (gas.TotalMoles <= 0f)
             return;
@@ -165,19 +164,54 @@ public sealed class TurbineSystem : EntitySystem
         _atmos.InvalidateTile(gridUid, targetPos);
     }
 
-    private void ProcessDamage(
-        TurbineRotorComponent rotor,
-        float rpm,
-        float temperature)
+    private void ProcessDamage(TurbineRotorComponent rotor, float rpm, float temperature)
     {
-        float damage = 0f;
-
+        var damage = 0f;
         if (temperature > rotor.MaxTemperature)
             damage += temperature - rotor.MaxTemperature;
-
         if (rpm > rotor.MaxRPM)
             damage += rpm - rotor.MaxRPM;
 
         rotor.Integrity -= damage;
+    }
+
+    /// <summary>
+    /// Обновляем состояние консолей напрямую в UI
+    /// </summary>
+    private void UpdateConsoleState(TurbineConsoleComponent comp)
+    {
+        var turbines = new List<TurbineConsoleEntry>();
+
+        // Собираем данные о всех турбинах
+        foreach (var rotor in EntityQuery<TurbineRotorComponent>())
+        {
+            var status = TurbineStatusType.Nominal;
+            if (rotor.Integrity <= 0)
+                status = TurbineStatusType.Critical;
+            else if (rotor.CurrentRPM > rotor.MaxRPM * 0.9f)
+                status = TurbineStatusType.Warning;
+
+            var netEntity = GetNetEntity(rotor.Owner);
+            turbines.Add(new TurbineConsoleEntry(netEntity, $"Turbine {rotor.Owner}", status));
+        }
+
+        TurbineFocusData? focusData = null;
+        if (comp.FocusTurbine != null)
+        {
+            var entity = GetEntity(comp.FocusTurbine.Value);
+            if (TryComp<TurbineRotorComponent>(entity, out var focusedRotor))
+            {
+                focusData = new TurbineFocusData(
+                    comp.FocusTurbine.Value,
+                    focusedRotor.CurrentRPM,
+                    focusedRotor.MaxRPM,
+                    focusedRotor.MaxTemperature,
+                    focusedRotor.Integrity
+                );
+            }
+        }
+
+        comp.Turbines = turbines.ToArray();
+        comp.FocusData = focusData;
     }
 }

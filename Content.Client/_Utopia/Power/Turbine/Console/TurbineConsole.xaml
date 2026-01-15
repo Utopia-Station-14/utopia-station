@@ -1,0 +1,53 @@
+<ui:FancyWindow
+    xmlns="https://spacestation14.io"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="clr-namespace:Content.Client.UserInterface.Controls"
+    x:Class="Content.Client.Power.Turbines.TurbineConsoleWindow"
+    Title="Turbine Console"
+    SetSize="640 420"
+    MinSize="640 420">
+
+    <BoxContainer Orientation="Horizontal" Margin="8">
+
+        <BoxContainer Orientation="Vertical" MinWidth="200">
+            <Label Text="Turbines"/>
+            <ScrollContainer VerticalExpand="True">
+                <ItemList Name="TurbineList"/>
+            </ScrollContainer>
+        </BoxContainer>
+
+        <Control MinWidth="8"/>
+
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+
+            <Label Name="FocusName" Text="No turbine selected"/>
+
+            <BoxContainer Orientation="Horizontal">
+                <Label Text="Current RPM:" HorizontalExpand="True"/>
+                <Label Name="CurrentRpmLabel"/>
+            </BoxContainer>
+
+            <BoxContainer Orientation="Horizontal">
+                <Label Text="Max RPM:" HorizontalExpand="True"/>
+                <Label Name="MaxRpmLabel"/>
+            </BoxContainer>
+
+            <BoxContainer Orientation="Horizontal">
+                <Label Text="Max Temperature:" HorizontalExpand="True"/>
+                <Label Name="MaxTempLabel"/>
+            </BoxContainer>
+
+            <BoxContainer Orientation="Vertical" Margin="0 12 0 0">
+                <Label Text="Integrity"/>
+                <PanelContainer Name="IntegrityBorder">
+                    <ProgressBar Name="IntegrityBar" MinValue="0" MaxValue="100">
+                        <Label Name="IntegrityLabel"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 4 0"/>
+                    </ProgressBar>
+                </PanelContainer>
+            </BoxContainer>
+
+        </BoxContainer>
+    </BoxContainer>
+</ui:FancyWindow>
