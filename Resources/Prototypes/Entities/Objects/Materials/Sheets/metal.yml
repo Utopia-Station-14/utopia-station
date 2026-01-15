@@ -71,8 +71,9 @@
         - ReagentId: Carbon
           Quantity: 1
   # Utopia-Add: URT start
-  - tags:
-    - UtopiaSteelSheet
+  - type: Tag
+    tags:
+    - ADTSteelSheet
     - Sheet
     - Metal
   # Utopia-Add: URT end
