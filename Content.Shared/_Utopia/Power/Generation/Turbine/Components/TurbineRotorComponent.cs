@@ -18,17 +18,15 @@ namespace Content.Shared.Power.Turbines.Components
         [DataField] 
         public float Efficiency = 0.7f;
 
-        /// <summary>
-        /// Минимальное давление, после которого ротор начинает вырабатывать электроенергию.
-        /// </summary>
-        [DataField] 
-        public float MinPressure = 500f;
-
         [DataField] 
         public float CurrentPressure;
         
         [DataField] 
         public float MaxPressure = 16101f;
+
+        [DataField] 
+        public float MinPressure = 20f;
+
         /// <summary>
         /// Модификатор оборотов в минуту. Чем меньше значение - тем больше оборотов в минуту будет делать турбина.
         /// </summary>
@@ -64,7 +62,6 @@ namespace Content.Shared.Power.Turbines.Components
 
         [DataField] 
         public float Energy;
-
         [DataField] 
         public float TemperatureDamage;
         [DataField] 
@@ -83,5 +80,6 @@ namespace Content.Shared.Power.Turbines.Components
         Heat,
         EMP,
         BIGSHOT
+
     }
 }
