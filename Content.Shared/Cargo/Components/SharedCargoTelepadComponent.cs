@@ -1,3 +1,4 @@
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.DeviceLinking;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
@@ -41,4 +42,24 @@ public sealed partial class CargoTelepadComponent : Component
 
     [DataField("receiverPort", customTypeSerializer: typeof(PrototypeIdSerializer<SinkPortPrototype>)), ViewVariables(VVAccess.ReadWrite)]
     public string ReceiverPort = "OrderReceiver";
+
+    // Utopia-Tweak : Machine Parts
+    /// <summary>
+    /// The base amount of time it takes to teleport from the telepad
+    /// </summary>
+    [DataField]
+    public float BaseDelay = 5f;
+
+    /// <summary>
+    /// The machine part that affects <see cref="Delay"/>
+    /// </summary>
+    [DataField]
+    public ProtoId<MachinePartPrototype> MachinePartTeleportDelay = "Capacitor";
+
+    /// <summary>
+    /// A multiplier applied to <see cref="Delay"/> for each level of <see cref="MachinePartTeleportDelay"/>
+    /// </summary>
+    [DataField]
+    public float PartTierTeleportDelay = 0.8f;
+    // Utopia-Tweak : Machine Parts
 }

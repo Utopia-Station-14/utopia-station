@@ -6,7 +6,9 @@
   components:
     - type: MachineBoard
       prototype: Holopad
+      requirements: # Utopia-Tweak : Machine Parts
+        Capacitor: 4 # Utopia-Tweak : Machine Parts
       stackRequirements:
-        Manipulator: 4
+        # Manipulator: 4 # Utopia-Tweak : Machine Parts
         Cable: 4
         Glass: 2

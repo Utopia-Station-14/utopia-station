@@ -133,6 +133,11 @@
     - ServiceStatic
     - PowerCellsStatic
     - ElectronicsStatic
+    # Utopia-Tweak : Machine Parts
+    dynamicPacks:
+    - AdvancedMachineParts
+    - SuperMachineParts
+    # Utopia-Tweak : Machine Parts
   - type: EmagLatheRecipes
     emagStaticPacks:
     - SecurityAmmoStatic

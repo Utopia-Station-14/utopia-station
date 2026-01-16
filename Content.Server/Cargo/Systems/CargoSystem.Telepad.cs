@@ -5,6 +5,7 @@ using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.Cargo;
 using Content.Shared.Cargo.Components;
+using Content.Shared.Construction.Components;
 using Content.Shared.DeviceLinking;
 using Content.Shared.Power;
 using Content.Shared.Station.Components;
@@ -24,6 +25,11 @@ public sealed partial class CargoSystem
         // Shouldn't need re-anchored event
         SubscribeLocalEvent<CargoTelepadComponent, AnchorStateChangedEvent>(OnTelepadAnchorChange);
         SubscribeLocalEvent<FulfillCargoOrderEvent>(OnTelepadFulfillCargoOrder);
+
+        // Utopia-Tweak : Machine Parts
+        SubscribeLocalEvent<CargoTelepadComponent, RefreshPartsEvent>(OnRefreshParts);
+        SubscribeLocalEvent<CargoTelepadComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+        // Utopia-Tweak : Machine Parts
     }
 
     private void OnTelepadFulfillCargoOrder(ref FulfillCargoOrderEvent args)
@@ -179,4 +185,17 @@ public sealed partial class CargoSystem
     {
         SetEnabled(uid, component);
     }
+
+    // Utopia-Tweak : Machine Parts
+    private void OnRefreshParts(EntityUid uid, CargoTelepadComponent component, ref RefreshPartsEvent args)
+    {
+        var tier = args.PartTiers[component.MachinePartTeleportDelay] - 1;
+        component.Delay = component.BaseDelay * MathF.Pow(component.PartTierTeleportDelay, tier);
+    }
+
+    private void OnUpgradeExamine(EntityUid uid, CargoTelepadComponent component, ref UpgradeExamineEvent args)
+    {
+        args.AddPercentageUpgrade("cargo-telepad-delay-upgrade", component.Delay / component.BaseDelay);
+    }
+    // Utopia-Tweak : Machine Parts
 }

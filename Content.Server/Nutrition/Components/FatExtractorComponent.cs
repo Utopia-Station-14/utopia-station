@@ -1,4 +1,5 @@
 ﻿using Content.Server.Nutrition.EntitySystems;
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.Nutrition.Components;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
@@ -71,4 +72,24 @@ public sealed partial class FatExtractorComponent : Component
     /// </summary>
     [DataField("minHungerThreshold")]
     public HungerThreshold MinHungerThreshold = HungerThreshold.Okay;
+
+    // Utopia-Tweak : Machine Parts
+    /// <summary>
+    /// The base rate of extraction
+    /// </summary>
+    [DataField]
+    public int BaseNutritionPerSecond = 10;
+
+    /// <summary>
+    /// Which machine part affects the nutrition rate
+    /// </summary>
+    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+    public string MachinePartNutritionRate = "Laser";
+
+    /// <summary>
+    /// The increase in rate per each tier above 1.
+    /// </summary>
+    [DataField]
+    public float PartTierRateMultiplier = 10;
+    // Utopia-Tweak : Machine Parts
 }

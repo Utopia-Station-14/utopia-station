@@ -12,8 +12,11 @@
     state: security
   - type: MachineBoard
     prototype: ShuttleGunSvalinnMachineGun
+    requirements: # Utopia-Tweak : Machine Parts
+      MatterBin: 2 # Utopia-Tweak : Machine Parts
+      Manipulator: 4 # Utopia-Tweak : Machine Parts
     stackRequirements:
-      Manipulator: 6
+      # Manipulator: 6 # Utopia-Tweak : Machine Parts
       Steel: 5
       CableHV: 5
 
@@ -29,8 +32,11 @@
     state: security
   - type: MachineBoard
     prototype: ShuttleGunPerforator
+    requirements: # Utopia-Tweak : Machine Parts
+      MatterBin: 4 # Utopia-Tweak : Machine Parts
+      Manipulator: 6 # Utopia-Tweak : Machine Parts
     stackRequirements:
-      Manipulator: 10
+      # Manipulator: 10 # Utopia-Tweak : Machine Parts
       Steel: 10
       CableHV: 5
 
@@ -46,8 +52,11 @@
     state: security
   - type: MachineBoard
     prototype: ShuttleGunFriendship
+    requirements: # Utopia-Tweak : Machine Parts
+      MatterBin: 3 # Utopia-Tweak : Machine Parts
+      Manipulator: 2 # Utopia-Tweak : Machine Parts
     stackRequirements:
-      Manipulator: 5
+      # Manipulator: 5 # Utopia-Tweak : Machine Parts
       Steel: 7
       CableHV: 5
 
@@ -63,8 +72,11 @@
     state: security
   - type: MachineBoard
     prototype: ShuttleGunDuster
+    requirements: # Utopia-Tweak : Machine Parts
+      MatterBin: 6 # Utopia-Tweak : Machine Parts
+      Manipulator: 4 # Utopia-Tweak : Machine Parts
     stackRequirements:
-      Manipulator: 10
+      # Manipulator: 10 # Utopia-Tweak : Machine Parts
       Steel: 10
       CableHV: 5
       Uranium: 2
@@ -81,7 +93,10 @@
     state: security
   - type: MachineBoard
     prototype: ShuttleGunKinetic
+    requirements: # Utopia-Tweak : Machine Parts
+      MatterBin: 2 # Utopia-Tweak : Machine Parts
+      Manipulator: 3 # Utopia-Tweak : Machine Parts
     stackRequirements:
-      Manipulator: 5
+      # Manipulator: 5 # Utopia-Tweak : Machine Parts
       Steel: 5
       CableHV: 2

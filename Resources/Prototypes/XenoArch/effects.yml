@@ -127,6 +127,10 @@
       weight: 4.0
     - id: XenoArtifactEffectCreationGasCarbonDioxide
       weight: 4.0
+    # Utopia-Tweak : Machine Parts
+    - id: UtopiaXenoArtifactT4Spawn
+      weight: 10.0
+    # Utopia-Tweak : Machine Parts
 
 - type: entityTable
   id: XenoArtifactEffectsHandheldOnlyTable

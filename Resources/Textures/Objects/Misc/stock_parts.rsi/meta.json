@@ -5,7 +5,7 @@
     "y": 32
   },
   "license": "CC-BY-SA-3.0",
-  "copyright": "Taken from https://github.com/tgstation/tgstation at 0d9c9a8233dfc3fc55edc538955a761a6328bee0, micro_mani by EmoGarbage404 (github)",
+  "copyright": "Taken from https://github.com/tgstation/tgstation at commit 71a1fee2f13730adee5302d34bfa0f0262314d63",
   "states": [
     {
       "name": "adv_capacitor"
@@ -53,10 +53,13 @@
       "name": "bluespace_matter_bin",
       "delays": [
         [
-          0.3,
-          0.1,
-          0.1,
-          0.1
+           0.3,
+           0.1,
+           0.1,
+           0.1,
+           0.1,
+           0.1,
+           0.3
         ]
       ]
     },
@@ -120,7 +123,10 @@
           0.3,
           0.1,
           0.1,
-          0.1
+          0.1,
+          0.1,
+          0.1,
+          0.3
         ]
       ]
     },
@@ -128,8 +134,13 @@
       "name": "quadultra_micro_laser",
       "delays": [
         [
+          0.3,
           0.1,
-          0.1
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.3
         ]
       ]
     },
@@ -190,7 +201,16 @@
       "name": "super_matter_bin"
     },
     {
-      "name": "super_scan_module"
+      "name": "super_scan_module",
+      "delays": [
+        [
+           0.1,
+           0.1,
+           0.1,
+           0.1,
+           0.1
+        ]
+      ]
     },
     {
       "name": "treatment_disk"
@@ -199,11 +219,14 @@
       "name": "triphasic_scan_module",
       "delays": [
         [
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1
+           0.1,
+           0.1,
+           0.1,
+           0.1,
+           0.1,
+           0.1,
+           0.1,
+           0.1
         ]
       ]
     },

@@ -18,7 +18,7 @@ public sealed class MachineConstruction : InteractionTest
         ClientAssertPrototype(Unfinished, Target);
         await Interact(Wrench, Cable);
         AssertPrototype(MachineFrame);
-        await Interact(ProtolatheBoard, Manipulator1, Manipulator1, Manipulator1, Manipulator1, Beaker, Beaker, Screw);
+        await Interact(ProtolatheBoard, Bin1, Bin1, Manipulator1, Manipulator1, Beaker, Beaker, Screw); // Utopia-Tweak : Machine Parts
         AssertPrototype(Protolathe);
     }
 
@@ -36,7 +36,8 @@ public sealed class MachineConstruction : InteractionTest
             (Steel, 5),
             (Cable, 1),
             (Beaker, 2),
-            (Manipulator1, 4),
+            (Manipulator1, 2), // Utopia-Tweak : Machine Parts
+            (Bin1, 2), // Utopia-Tweak : Machine Parts
             (ProtolatheBoard, 1));
     }
 
@@ -54,5 +55,36 @@ public sealed class MachineConstruction : InteractionTest
         await Interact(Manipulator1, Manipulator1, Manipulator1, Manipulator1, Glass, Screw);
         AssertPrototype("Autolathe");
     }
+
+    // Utopia-Tweak : Machine Parts
+    [Test]
+    public async Task UpgradeLathe()
+    {
+        // Partially deconstruct a protolathe.
+        await SpawnTarget(Protolathe);
+        var serverTarget = SEntMan.GetEntity(Target!.Value);
+
+        // Initially has all quality-1 parts.
+        foreach (var part in SConstruction.GetAllParts(serverTarget))
+        {
+            Assert.That(part.Part.Tier, Is.EqualTo(1));
+        }
+
+        // Partially deconstruct lathe
+        await Interact(Screw, Pry, Pry);
+        AssertPrototype(MachineFrame);
+
+        // Reconstruct with better parts.
+        await Interact(ProtolatheBoard, Bin4, Bin4, Manipulator4, Manipulator4, Beaker, Beaker);
+        await Interact(Screw);
+        AssertPrototype(Protolathe);
+
+        // Query now returns higher quality parts.
+        foreach (var part in SConstruction.GetAllParts(SEntMan.GetEntity(Target!.Value)))
+        {
+            Assert.That(part.Part.Tier, Is.EqualTo(4));
+        }
+    }
+    // Utopia-Tweak : Machine Parts
 }
 

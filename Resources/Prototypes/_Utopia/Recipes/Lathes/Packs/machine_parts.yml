@@ -1,0 +1,18 @@
+- type: latheRecipePack
+  id: AdvancedMachineParts
+  recipes:
+  - RPED
+  - AdvancedCapacitorStockPart
+  - AdvancedMatterBinStockPart
+  - NanoManipulatorStockPart
+  - AdvancedScanningModuleStockPart
+  - HighPowerMicroLaserStockPart
+
+- type: latheRecipePack
+  id: SuperMachineParts
+  recipes:
+  - SuperCapacitorStockPart
+  - SuperMatterBinStockPart
+  - PicoManipulatorStockPart
+  - PhasicScanningModuleStockPart
+  - UltraHighPowerMicroLaserStockPart

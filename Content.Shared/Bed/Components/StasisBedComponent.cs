@@ -1,5 +1,7 @@
 using Content.Shared.Buckle.Components;
 using Robust.Shared.GameStates;
+using Content.Shared.Construction.Prototypes; // Frontier
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype; // Frontier
 
 namespace Content.Shared.Bed.Components;
 
@@ -15,4 +17,13 @@ public sealed partial class StasisBedComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public float Multiplier = 10f;
+
+    // Utopia-Tweak : Machine Parts
+    [DataField]
+    public float BaseMultiplier = 10f;
+
+
+    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+    public string MachinePartMetabolismModifier = "Capacitor";
+    // Utopia-Tweak : Machine Parts
 }

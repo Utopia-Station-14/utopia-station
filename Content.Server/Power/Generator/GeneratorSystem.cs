@@ -5,6 +5,7 @@ using Content.Server.Materials;
 using Content.Server.Popups;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
+using Content.Server.Utopia.Power.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Popups;
@@ -26,8 +27,11 @@ public sealed class GeneratorSystem : SharedGeneratorSystem
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly PuddleSystem _puddle = default!;
 
+    private EntityQuery<UpgradePowerSupplierComponent> _upgradeQuery; // Utopia-Tweak : Machine Part
+
     public override void Initialize()
     {
+        _upgradeQuery = GetEntityQuery<UpgradePowerSupplierComponent>(); // Utopia-Tweak : Machine Part
 
         UpdatesBefore.Add(typeof(PowerNetSystem));
 
@@ -226,7 +230,9 @@ public sealed class GeneratorSystem : SharedGeneratorSystem
 
             supplier.Enabled = true;
 
-            supplier.MaxSupply = gen.TargetPower;
+            var upgradeMultiplier = _upgradeQuery.CompOrNull(uid)?.ActualScalar ?? 1f; // Utopia-Tweak : Machine Part
+
+            supplier.MaxSupply = gen.TargetPower * upgradeMultiplier; // Utopia-Tweak : Machine Part
 
             var eff = 1 / CalcFuelEfficiency(gen.TargetPower, gen.OptimalPower, gen);
             var consumption = gen.OptimalBurnRate * frameTime * eff;

@@ -1,4 +1,5 @@
 using Content.Server.Botany.Components;
+using Content.Shared.Construction.Components;
 using Content.Server.Popups;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.Interaction;
@@ -18,6 +19,11 @@ public sealed class SeedExtractorSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<SeedExtractorComponent, InteractUsingEvent>(OnInteractUsing);
+
+        // Utopia-Tweak : Machine Parts
+        SubscribeLocalEvent<SeedExtractorComponent, RefreshPartsEvent>(OnRefreshParts);
+        SubscribeLocalEvent<SeedExtractorComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+        // Utopia-Tweak : Machine Parts
     }
 
     private void OnInteractUsing(EntityUid uid, SeedExtractorComponent seedExtractor, InteractUsingEvent args)
@@ -40,7 +46,7 @@ public sealed class SeedExtractorSystem : EntitySystem
         QueueDel(args.Used);
         args.Handled = true;
 
-        var amount = _random.Next(seedExtractor.BaseMinSeeds, seedExtractor.BaseMaxSeeds + 1);
+        var amount = (int)_random.NextFloat(seedExtractor.BaseMinSeeds, seedExtractor.BaseMaxSeeds + 1) * seedExtractor.SeedAmountMultiplier; // Utopia-Tweak : Machine Parts
         var coords = Transform(uid).Coordinates;
 
         var packetSeed = seed;
@@ -52,4 +58,17 @@ public sealed class SeedExtractorSystem : EntitySystem
             _botanySystem.SpawnSeedPacket(packetSeed, coords, args.User);
         }
     }
+
+    // Utopia-Tweak : Machine Parts
+    private void OnRefreshParts(EntityUid uid, SeedExtractorComponent seedExtractor, RefreshPartsEvent args)
+    {
+        var manipulatorQuality = args.PartTiers[seedExtractor.MachinePartSeedAmount];
+        seedExtractor.SeedAmountMultiplier = MathF.Pow(seedExtractor.PartTierSeedAmountMultiplier, manipulatorQuality - 1);
+    }
+
+    private void OnUpgradeExamine(EntityUid uid, SeedExtractorComponent seedExtractor, UpgradeExamineEvent args)
+    {
+        args.AddPercentageUpgrade("seed-extractor-component-upgrade-seed-amount", seedExtractor.SeedAmountMultiplier);
+    }
+    // Utopia-Tweak : Machine Parts
 }

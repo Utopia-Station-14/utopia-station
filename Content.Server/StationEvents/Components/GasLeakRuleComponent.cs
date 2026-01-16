@@ -14,6 +14,11 @@ public sealed partial class GasLeakRuleComponent : Component
         Gas.Tritium,
         Gas.Frezon,
         Gas.WaterVapor, // the fog
+        // Utopia-Tweak : Gases
+        Gas.BZ,
+        Gas.Hydrogen,
+        Gas.Halon
+        // Utopia-Tweak : Gases
     };
 
     /// <summary>

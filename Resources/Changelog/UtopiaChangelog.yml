@@ -9,3 +9,36 @@ Entries:
       - {message: Включен космический ветер, type: Tweak}
     time: '2026-01-07T00:27:20Z'
     id: 2
+  - author: KashRas2
+    changes:
+      - {message: Были добавлены языки., type: Add}
+    time: '2026-01-07T16:15:24Z'
+    id: 3
+  - author: KashRas2
+    changes:
+      - {message: Перенесены барки, type: Add}
+    time: '2026-01-08T14:42:21Z'
+    id: 4
+  - author: Sipay
+    changes:
+      - {message: 'Добавлен свинец и медь, их руда, а также сами астероидные камни,
+          откуда их можно добыть.', type: Add}
+      - {message: Изменены многие рецепты в связи с добавлением новых материалов.,
+        type: Tweak}
+    time: '2026-01-11T16:58:08Z'
+    id: 5
+  - author: KashRas2 & mrlegendary
+    changes:
+      - {message: Была изменена значительная часть полов., type: Tweak}
+    time: '2026-01-11T18:08:25Z'
+    id: 6
+  - author: KashRas2
+    changes:
+      - {message: Были возвращены компоненты и РПЗД, type: Add}
+    time: '2026-01-16T19:37:18Z'
+    id: 7
+  - author: KashRas2
+    changes:
+      - {message: Было добавлено 11 новых газов прямиком с ТГ., type: Add}
+    time: '2026-01-16T19:40:36Z'
+    id: 8

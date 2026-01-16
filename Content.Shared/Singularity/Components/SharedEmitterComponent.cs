@@ -1,8 +1,10 @@
 ﻿using System.Threading;
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.DeviceLinking;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Shared.Singularity.Components;
 
@@ -96,6 +98,41 @@ public sealed partial class EmitterComponent : Component
     /// </summary>
     [DataField]
     public Dictionary<ProtoId<SinkPortPrototype>, EntProtoId> SetTypePorts = new();
+
+    // Utopia-Tweak : Machine Part
+    /// <summary>
+    /// The base amount of time between each shot during a burst.
+    /// </summary>
+    [DataField]
+    public TimeSpan BaseFireInterval = TimeSpan.FromSeconds(2);
+
+    /// <summary>
+    /// The base minimum delay between shot bursts.
+    /// Used for machine part rating calculations.
+    /// </summary>
+    [DataField]
+    public TimeSpan BaseFireBurstDelayMin = TimeSpan.FromSeconds(4);
+
+    /// <summary>
+    /// The base maximum delay between shot bursts.
+    /// Used for machine part rating calculations.
+    /// </summary>
+    [DataField]
+    public TimeSpan BaseFireBurstDelayMax = TimeSpan.FromSeconds(10);
+
+    /// <summary>
+    /// The multiplier for the base delay between shot bursts as well as
+    /// the fire interval
+    /// </summary>
+    [DataField]
+    public float FireRateMultiplier = 0.8f;
+
+    /// <summary>
+    /// The machine part that affects burst delay.
+    /// </summary>
+    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+    public string MachinePartFireRate = "Laser";
+    // Utopia-Tweak : Machine Parts
 }
 
 [NetSerializable, Serializable]
