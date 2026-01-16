@@ -465,9 +465,6 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
         SetLanguages(uid, profile.Languages.ToList()); // Utopia-Tweak : Language
         SetBarkData(uid, profile.Bark, humanoid); // Utopia-Tweak : Barks
 
-        SetLanguages(uid, profile.Languages.ToList()); // Utopia-Tweak : Language
-        SetBarkData(uid, profile.Bark, humanoid); // Utopia-Tweak : Barks
-
         humanoid.Gender = profile.Gender;
         if (TryComp<GrammarComponent>(uid, out var grammar))
         {
