@@ -8,6 +8,7 @@ using Content.Shared.Atmos;
 using Content.Shared.Atmos.Piping;
 using Content.Shared.Atmos.Piping.Components;
 using Content.Shared.Audio;
+using Content.Shared.Construction.Components;
 using Content.Shared.Examine;
 using JetBrains.Annotations;
 using Robust.Server.GameObjects;
@@ -29,6 +30,10 @@ namespace Content.Server.Atmos.Piping.Binary.EntitySystems
             SubscribeLocalEvent<GasRecyclerComponent, AtmosDeviceUpdateEvent>(OnUpdate);
             SubscribeLocalEvent<GasRecyclerComponent, AtmosDeviceDisabledEvent>(OnDisabled);
             SubscribeLocalEvent<GasRecyclerComponent, ExaminedEvent>(OnExamined);
+            // Utopia-Tweak : Machine Parts
+            SubscribeLocalEvent<GasRecyclerComponent, RefreshPartsEvent>(OnRefreshParts);
+            SubscribeLocalEvent<GasRecyclerComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+            // Utopia-Tweak : Machine Parts
         }
 
         private void OnEnabled(EntityUid uid, GasRecyclerComponent comp, ref AtmosDeviceEnabledEvent args)
@@ -117,5 +122,22 @@ namespace Content.Server.Atmos.Piping.Binary.EntitySystems
 
             _appearance.SetData(uid, PumpVisuals.Enabled, comp.Reacting);
         }
+
+        // Utopia-Tweak : Machine Parts
+        private void OnRefreshParts(EntityUid uid, GasRecyclerComponent component, RefreshPartsEvent args)
+        {
+            var tierTemp = args.PartTiers[component.MachinePartMinTemp];
+            var tierPressure = args.PartTiers[component.MachinePartMinPressure];
+
+            component.MinTemp = component.BaseMinTemp * MathF.Pow(component.PartTierMinTempMultiplier, tierTemp - 1);
+            component.MinPressure = component.BaseMinPressure * MathF.Pow(component.PartTierMinPressureMultiplier, tierPressure - 1);
+        }
+
+        private void OnUpgradeExamine(EntityUid uid, GasRecyclerComponent component, UpgradeExamineEvent args)
+        {
+            args.AddPercentageUpgrade("gas-recycler-upgrade-min-temp", component.MinTemp / component.BaseMinTemp);
+            args.AddPercentageUpgrade("gas-recycler-upgrade-min-pressure", component.MinPressure / component.BaseMinPressure);
+        }
+        // Utopia-Tweak : Machine Parts
     }
 }

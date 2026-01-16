@@ -1,3 +1,4 @@
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.Stacks;
 using Content.Shared.Tag;
 using Robust.Shared.GameStates;
@@ -8,6 +9,14 @@ namespace Content.Shared.Construction.Components;
 [RegisterComponent, NetworkedComponent]
 public sealed partial class MachineBoardComponent : Component
 {
+    // Utopia-Tweak : Machine Parts
+    /// <summary>
+    /// Entities needed to construct this machine, discriminated by component.
+    /// </summary>
+    [DataField]
+    public Dictionary<ProtoId<MachinePartPrototype>, int> Requirements = new();
+    // Utopia-Tweak : Machine Parts
+
     /// <summary>
     /// The stacks needed to construct this machine
     /// </summary>

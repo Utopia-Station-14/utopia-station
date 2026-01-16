@@ -107,6 +107,11 @@ namespace Content.Server.Medical.BiomassReclaimer
             SubscribeLocalEvent<BiomassReclaimerComponent, PowerChangedEvent>(OnPowerChanged);
             SubscribeLocalEvent<BiomassReclaimerComponent, SuicideByEnvironmentEvent>(OnSuicideByEnvironment);
             SubscribeLocalEvent<BiomassReclaimerComponent, ReclaimerDoAfterEvent>(OnDoAfter);
+
+            // Utopia-Tweak : Machine Parts
+            SubscribeLocalEvent<BiomassReclaimerComponent, RefreshPartsEvent>(OnRefreshParts);
+            SubscribeLocalEvent<BiomassReclaimerComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+            // Utopia-Tweak : Machine Parts
         }
 
         private void OnSuicideByEnvironment(Entity<BiomassReclaimerComponent> ent, ref SuicideByEnvironmentEvent args)
@@ -263,5 +268,25 @@ namespace Content.Server.Medical.BiomassReclaimer
 
             return true;
         }
+
+        // Utopia-Tweak : Machine Parts
+        private void OnRefreshParts(EntityUid uid, BiomassReclaimerComponent component, RefreshPartsEvent args)
+        {
+            var laserTier = args.PartTiers[component.MachinePartProcessingSpeed];
+            var manipTier = args.PartTiers[component.MachinePartYieldAmount];
+
+            component.ProcessingTimePerUnitMass =
+                component.BaseProcessingTimePerUnitMass / MathF.Pow(component.PartTierSpeedMultiplier, laserTier - 1);
+
+            component.YieldPerUnitMass =
+                component.BaseYieldPerUnitMass * MathF.Pow(component.PartTierYieldAmountMultiplier, manipTier - 1);
+        }
+
+        private void OnUpgradeExamine(EntityUid uid, BiomassReclaimerComponent component, UpgradeExamineEvent args)
+        {
+            args.AddPercentageUpgrade("biomass-reclaimer-component-upgrade-speed", component.BaseProcessingTimePerUnitMass / component.ProcessingTimePerUnitMass);
+            args.AddPercentageUpgrade("biomass-reclaimer-component-upgrade-biomass-yield", component.YieldPerUnitMass / component.BaseYieldPerUnitMass);
+        }
+        // Utopia-Tweak : Machine Parts
     }
 }

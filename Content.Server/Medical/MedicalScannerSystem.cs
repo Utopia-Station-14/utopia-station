@@ -1,5 +1,6 @@
 using Content.Server.Cloning;
 using Content.Server.Medical.Components;
+using Content.Shared.Construction.Components;
 using Content.Shared.Destructible;
 using Content.Shared.ActionBlocker;
 using Content.Shared.DragDrop;
@@ -45,6 +46,11 @@ namespace Content.Server.Medical
             SubscribeLocalEvent<MedicalScannerComponent, PortDisconnectedEvent>(OnPortDisconnected);
             SubscribeLocalEvent<MedicalScannerComponent, AnchorStateChangedEvent>(OnAnchorChanged);
             SubscribeLocalEvent<MedicalScannerComponent, CanDropTargetEvent>(OnCanDragDropOn);
+
+            // Utopia-Tweak : Machine Parts
+            SubscribeLocalEvent<MedicalScannerComponent, RefreshPartsEvent>(OnRefreshParts);
+            SubscribeLocalEvent<MedicalScannerComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+            // Utopia-Tweak : Machine Parts
         }
 
         private void OnCanDragDropOn(EntityUid uid, MedicalScannerComponent component, ref CanDropTargetEvent args)
@@ -246,5 +252,19 @@ namespace Content.Server.Medical
             _climbSystem.ForciblySetClimbing(contained, uid);
             UpdateAppearance(uid, scannerComponent);
         }
+
+        // Utopia-Tweak : Machine Parts
+        private void OnRefreshParts(EntityUid uid, MedicalScannerComponent component, RefreshPartsEvent args)
+        {
+            var tierFail = args.PartTiers[component.MachinePartCloningFailChance];
+
+            component.CloningFailChanceMultiplier = MathF.Pow(component.PartTierFailMultiplier, tierFail - 1);
+        }
+
+        private void OnUpgradeExamine(EntityUid uid, MedicalScannerComponent component, UpgradeExamineEvent args)
+        {
+            args.AddPercentageUpgrade("medical-scanner-upgrade-cloning", component.CloningFailChanceMultiplier);
+        }
+        // Utopia-Tweak : Machine Parts
     }
 }

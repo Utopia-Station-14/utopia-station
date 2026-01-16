@@ -49,7 +49,7 @@ public sealed class RadioSystem : EntitySystem
     {
         if (args.Channel != null && component.Channels.Contains(args.Channel.ID))
         {
-            SendRadioMessage(uid, args.Message, args.Channel, uid, args.Language); // Utopia-Tweak : Language
+            SendRadioMessage(uid, args.Message, args.Channel, uid);
             args.Channel = null; // prevent duplicate messages from other listeners.
         }
     }
@@ -70,9 +70,9 @@ public sealed class RadioSystem : EntitySystem
     /// <summary>
     /// Send radio message to all active radio listeners
     /// </summary>
-    public void SendRadioMessage(EntityUid messageSource, string message, ProtoId<RadioChannelPrototype> channel, EntityUid radioSource, LanguagePrototype? language = null, bool escapeMarkup = true)
+    public void SendRadioMessage(EntityUid messageSource, string message, ProtoId<RadioChannelPrototype> channel, EntityUid radioSource, bool escapeMarkup = true, LanguagePrototype? language = null) // Utopia-Tweak : Language
     {
-        SendRadioMessage(messageSource, message, _prototype.Index(channel), radioSource, escapeMarkup: escapeMarkup, language: language); // Utopia-Tweak : Language
+        SendRadioMessage(messageSource, message, _prototype.Index(channel), radioSource, escapeMarkup: escapeMarkup);
     }
 
     /// <summary>
@@ -117,8 +117,8 @@ public sealed class RadioSystem : EntitySystem
             languageEncodedContent = $"[color={gen.Color.Value.ToHex()}]{FormattedMessage.EscapeText(languageEncodedContent)}[/color]";
         }
 
-        List<string> verbStrings = speech.SpeechVerbStrings;
-        bool verbsReplaced = false;
+        var verbStrings = speech.SpeechVerbStrings;
+        var verbsReplaced = false;
         foreach (var str in ILanguageType.SpeechSuffixes)
         {
             if (message.EndsWith(Loc.GetString(str)) && gen.SuffixSpeechVerbs.TryGetValue(str, out var strings) && strings.Count > 0)
@@ -219,7 +219,7 @@ public sealed class RadioSystem : EntitySystem
         else
             _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Radio message from {ToPrettyString(messageSource):user} on {channel.LocalizedName}: {message}");
 
-        _replay.RecordServerMessage(encodedChatMsg); // Utopia-Tweak : Language
+        _replay.RecordServerMessage(chat);
         _messages.Remove(message);
     }
 

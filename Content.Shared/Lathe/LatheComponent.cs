@@ -82,6 +82,46 @@ namespace Content.Shared.Lathe
         /// </summary>
         [DataField, ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
         public float MaterialUseMultiplier = 1;
+
+        // Utopia-Tweak : Machine Parts
+        /// <summary>
+        /// A modifier that changes how long it takes to print a recipe
+        /// </summary>
+        [DataField, ViewVariables(VVAccess.ReadOnly), AutoNetworkedField]
+        public float FinalTimeMultiplier = 1;
+
+        /// <summary>
+        /// A modifier that changes how much of a material is needed to print a recipe
+        /// </summary>
+        [DataField, ViewVariables(VVAccess.ReadOnly), AutoNetworkedField]
+        public float FinalMaterialUseMultiplier = 1;
+
+        public const float DefaultPartRatingMaterialUseMultiplier = 0.85f;
+
+        /// <summary>
+        /// The machine part that reduces how long it takes to print a recipe.
+        /// </summary>
+        [DataField]
+        public ProtoId<MachinePartPrototype> MachinePartPrintSpeed = "Manipulator";
+
+        /// <summary>
+        /// The value that is used to calculate the modified <see cref="TimeMultiplier"/>
+        /// </summary>
+        [DataField]
+        public float PartRatingPrintTimeMultiplier = 0.5f;
+
+        /// <summary>
+        /// The machine part that reduces how much material it takes to print a recipe.
+        /// </summary>
+        [DataField]
+        public ProtoId<MachinePartPrototype> MachinePartMaterialUse = "MatterBin";
+
+        /// <summary>
+        /// The value that is used to calculate the modifier <see cref="MaterialUseMultiplier"/>
+        /// </summary>
+        [DataField]
+        public float PartRatingMaterialUseMultiplier = DefaultPartRatingMaterialUseMultiplier;
+        // Utopia-Tweak : Machine Parts
         #endregion
     }
 

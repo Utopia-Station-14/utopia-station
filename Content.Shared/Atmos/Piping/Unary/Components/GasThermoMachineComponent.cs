@@ -1,6 +1,8 @@
 using Content.Shared.Atmos;
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.Guidebook;
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Shared.Atmos.Piping.Unary.Components
 {
@@ -76,5 +78,49 @@ namespace Content.Shared.Atmos.Piping.Unary.Components
         /// </summary>
         [DataField]
         public bool Atmospheric;
+
+        // Utopia-Tweak : Machine Parts
+
+        [DataField]
+        public float BaseHeatCapacity = 5000;
+
+        /// <summary>
+        ///     Minimum temperature the device can reach with a 0 total laser quality. Usually the quality will be at
+        ///     least 1.
+        /// </summary>
+        [DataField]
+        public float BaseMinTemperature = 96.625f; // Selected so that tier-1 parts can reach 73.15k
+
+        /// <summary>
+        ///     Maximum temperature the device can reach with a 0 total laser quality. Usually the quality will be at
+        ///     least 1.
+        /// </summary>
+        [DataField]
+        public float BaseMaxTemperature = Atmospherics.T20C;
+
+        /// <summary>
+        ///     Decrease in minimum temperature, per unit machine part quality.
+        /// </summary>
+        [DataField]
+        public float MinTemperatureDelta = 23.475f; // selected so that tier-4 parts can reach TCMB
+
+        /// <summary>
+        ///     Change in maximum temperature, per unit machine part quality.
+        /// </summary>
+        [DataField]
+        public float MaxTemperatureDelta = 300;
+
+        /// <summary>
+        ///     The machine part that affects the heat capacity.
+        /// </summary>
+        [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+        public string MachinePartHeatCapacity = "MatterBin";
+
+        /// <summary>
+        ///     The machine part that affects the temperature range.
+        /// </summary>
+        [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+        public string MachinePartTemperature = "Laser";
+        // Utopia-Tweak : Machine Parts
     }
 }

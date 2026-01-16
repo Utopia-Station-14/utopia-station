@@ -3,6 +3,7 @@ using Content.Server.Audio;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Shuttles.Components;
 using Content.Shared.Damage.Systems;
+using Content.Shared.Construction.Components;
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
 using Content.Shared.Maps;
@@ -54,6 +55,11 @@ public sealed class ThrusterSystem : EntitySystem
         SubscribeLocalEvent<ThrusterComponent, ExaminedEvent>(OnThrusterExamine);
 
         SubscribeLocalEvent<ShuttleComponent, TileChangedEvent>(OnShuttleTileChange);
+
+        // Utopia-Tweak : Machine Parts
+        SubscribeLocalEvent<ThrusterComponent, RefreshPartsEvent>(OnRefreshParts);
+        SubscribeLocalEvent<ThrusterComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+        // Utopia-Tweak : Machine Parts
     }
 
     private void OnThrusterExamine(EntityUid uid, ThrusterComponent component, ExaminedEvent args)
@@ -212,10 +218,12 @@ public sealed class ThrusterSystem : EntitySystem
         if (component.Type == ThrusterType.Linear)
         {
             oldShuttleComponent.LinearThrust[oldDirection] -= component.Thrust;
+            oldShuttleComponent.BaseLinearThrust[oldDirection] -= component.BaseThrust; // Utopia-Tweak : Machine Parts
             DebugTools.Assert(oldShuttleComponent.LinearThrusters[oldDirection].Contains(uid));
             oldShuttleComponent.LinearThrusters[oldDirection].Remove(uid);
 
             shuttleComponent.LinearThrust[direction] += component.Thrust;
+            shuttleComponent.BaseLinearThrust[direction] += component.BaseThrust; // Utopia-Tweak : Machine Parts
             DebugTools.Assert(!shuttleComponent.LinearThrusters[direction].Contains(uid));
             shuttleComponent.LinearThrusters[direction].Add(uid);
         }
@@ -592,6 +600,39 @@ public sealed class ThrusterSystem : EntitySystem
     }
 
     #endregion
+
+    // Utopia-Tweak : Machine Parts
+    private void OnRefreshParts(EntityUid uid, ThrusterComponent component, RefreshPartsEvent args)
+    {
+        if (component.IsOn)
+            DisableThruster(uid, component);
+
+        var thrustTier = args.PartTiers[component.MachinePartThrust];
+
+        if (component.ThrustPerPartLevel.Length <= 0)
+            component.Thrust = component.BaseThrust;
+        else if (thrustTier <= 1)
+            component.Thrust = component.ThrustPerPartLevel[0];
+        else if (thrustTier > component.ThrustPerPartLevel.Length)
+            component.Thrust = component.ThrustPerPartLevel[^1];
+        else
+        {
+            var idx = (int)thrustTier - 1;
+            component.Thrust = component.ThrustPerPartLevel[idx];
+
+            if (idx < component.ThrustPerPartLevel.Length - 1)
+                component.Thrust += (thrustTier - 1 - idx) * (component.ThrustPerPartLevel[idx + 1] - component.ThrustPerPartLevel[idx]);
+        }
+
+        if (component.Enabled && CanEnable(uid, component))
+            EnableThruster(uid, component);
+    }
+
+    private void OnUpgradeExamine(EntityUid uid, ThrusterComponent component, UpgradeExamineEvent args)
+    {
+        args.AddPercentageUpgrade("thruster-comp-upgrade-thrust", component.Thrust / component.BaseThrust);
+    }
+    // Utopia-Tweak : Machine Parts
 
     private int GetFlagIndex(DirectionFlag flag)
     {

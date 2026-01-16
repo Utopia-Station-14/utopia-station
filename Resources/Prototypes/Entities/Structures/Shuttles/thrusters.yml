@@ -278,6 +278,11 @@
     damageModifierSet: Electronic
   - type: StaticPrice
     price: 2000
+  # Utopia-Tweak : Machine Part
+  - type: UpgradePowerDraw
+    powerDrawMultiplier: 0.75
+    scaling: Exponential
+  # Utopia-Tweak : Machine Part
 
 - type: entity
   id: GyroscopeUnanchored

@@ -11,6 +11,7 @@ using Content.Shared.Atmos.Piping.Unary.Components;
 using JetBrains.Annotations;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.Atmos.Piping.Unary.Systems;
+using Content.Shared.Construction.Components;
 using Content.Shared.DeviceNetwork;
 using Content.Shared.DeviceNetwork.Events;
 using Content.Shared.Examine;
@@ -34,6 +35,11 @@ namespace Content.Server.Atmos.Piping.Unary.EntitySystems
 
             // Device network
             SubscribeLocalEvent<GasThermoMachineComponent, DeviceNetworkPacketEvent>(OnPacketRecv);
+
+            // Utopia-Tweak : Machine Parts
+            SubscribeLocalEvent<GasThermoMachineComponent, RefreshPartsEvent>(OnGasThermoRefreshParts);
+            SubscribeLocalEvent<GasThermoMachineComponent, UpgradeExamineEvent>(OnGasThermoUpgradeExamine);
+            // Utopia-Tweak : Machine Parts
         }
 
         private void OnThermoMachineUpdated(EntityUid uid, GasThermoMachineComponent thermoMachine, ref AtmosDeviceUpdateEvent args)
@@ -138,5 +144,43 @@ namespace Content.Server.Atmos.Piping.Unary.EntitySystems
                     return;
             }
         }
+
+        // Utopia-Tweak : Machine Parts
+        private void OnGasThermoRefreshParts(EntityUid uid, GasThermoMachineComponent thermoMachine, RefreshPartsEvent args)
+        {
+            var heatCapacityPartTier = args.PartTiers[thermoMachine.MachinePartHeatCapacity];
+            thermoMachine.HeatCapacity = thermoMachine.BaseHeatCapacity * MathF.Pow(heatCapacityPartTier, 2);
+
+            var temperatureRangePartRating = args.PartTiers[thermoMachine.MachinePartTemperature];
+            if (IsHeater(thermoMachine))
+            {
+                // 593.15K with stock parts.
+                thermoMachine.MaxTemperature = thermoMachine.BaseMaxTemperature + thermoMachine.MaxTemperatureDelta * temperatureRangePartRating;
+                thermoMachine.MinTemperature = Atmospherics.T20C;
+            }
+            else
+            {
+                // 73.15K with stock parts.
+                thermoMachine.MinTemperature = MathF.Max(
+                    thermoMachine.BaseMinTemperature - thermoMachine.MinTemperatureDelta * temperatureRangePartRating, Atmospherics.TCMB);
+                thermoMachine.MaxTemperature = Atmospherics.T20C;
+            }
+
+            DirtyUI(uid, thermoMachine);
+        }
+
+        private void OnGasThermoUpgradeExamine(EntityUid uid, GasThermoMachineComponent thermoMachine, UpgradeExamineEvent args)
+        {
+            if (IsHeater(thermoMachine))
+            {
+                args.AddPercentageUpgrade("gas-thermo-component-upgrade-heating", thermoMachine.MaxTemperature / (thermoMachine.BaseMaxTemperature + thermoMachine.MaxTemperatureDelta));
+            }
+            else
+            {
+                args.AddPercentageUpgrade("gas-thermo-component-upgrade-cooling", thermoMachine.MinTemperature / (thermoMachine.BaseMinTemperature - thermoMachine.MinTemperatureDelta));
+            }
+            args.AddPercentageUpgrade("gas-thermo-component-upgrade-heat-capacity", thermoMachine.HeatCapacity / thermoMachine.BaseHeatCapacity);
+        }
+        // Utopia-Tweak : Machine Parts
     }
 }
