@@ -8,5 +8,5 @@
       state: engineering
     - type: MachineBoard
       prototype: UtopiaUniversalPipeDispenser
-      stackRequirements:
+      requirements: 
         Manipulator: 4
