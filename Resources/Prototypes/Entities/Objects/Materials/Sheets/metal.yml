@@ -76,6 +76,7 @@
     - UtopiaSteelSheet
     - Sheet
     - Metal
+    - ConstructionMaterial
   # Utopia-Add: URT end
 
 - type: entity
