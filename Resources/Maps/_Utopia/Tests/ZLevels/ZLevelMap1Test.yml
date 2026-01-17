@@ -20,7 +20,6 @@ entities:
   entities:
   - uid: 2
     components:
-    - type: GridMotionObserver
     - type: MetaData
     - type: Transform
       parent: 3
@@ -56,7 +55,6 @@ entities:
     - type: ImplicitRoof
   - uid: 3
     components:
-    - type: GridMotionObserver
     - type: MetaData
       name: "Empty Debug Map"
     - type: Transform

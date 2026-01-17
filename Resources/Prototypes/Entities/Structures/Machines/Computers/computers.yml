@@ -120,9 +120,6 @@
   description: Used to pilot a shuttle.
   abstract: true
   components:
-  - type: GridMotionProxy
-    syncGroup: ZTestGroup
-    isMaster: true
   - type: ShuttleConsole
   - type: ActivatableUI
     key: enum.ShuttleConsoleUiKey.Key
