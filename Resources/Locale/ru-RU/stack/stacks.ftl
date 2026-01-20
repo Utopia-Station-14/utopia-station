@@ -57,7 +57,7 @@ stack-plasma-glass =
         [1] лист
         [few] листа
        *[other] листов
-    } плазменного стекла
+    } форонового стекла
 stack-uranium =
     { $amount ->
         [1] лист
@@ -81,7 +81,7 @@ stack-reinforced-plasma-glass =
         [1] лист
         [few] листа
        *[other] листов
-    } плазменного бронестекла
+    } форонового бронестекла
 stack-reinforced-uranium-glass =
     { $amount ->
         [1] лист
