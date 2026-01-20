@@ -1,79 +1,117 @@
-using Content.Shared._Utopia.ZLevels.Components;
-using Content.Server.Chat.Managers;
+using System.Collections.Generic;
+using System.Numerics;
+using Content.Server._Utopia.GridSync;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Map;
 using Robust.Shared.Maths;
 using Robust.Shared.Physics.Components;
-using System.Numerics;
+using Robust.Shared.Physics.Systems;
+using Robust.Shared.Timing;
+using Robust.Shared.Utility;
 
-namespace Content.Server._Utopia.GridMotion.Systems;
-
-public sealed class GridMotionDataSystem : EntitySystem
+namespace Content.Server._Utopia.GridSync
 {
-    [Dependency] private readonly IChatManager _chatManager = default!;
-
-    public override void Update(float frameTime)
+    public sealed class GridSyncSystem : EntitySystem
     {
-        var query = EntityQueryEnumerator<GridMotionMonitoringComponent, TransformComponent>();
+        [Dependency] private readonly SharedPhysicsSystem _physics = default!;
+        [Dependency] private readonly SharedTransformSystem _transform = default!;
+        [Dependency] private readonly IGameTiming _timing = default!;
 
-        while (query.MoveNext(out var uid, out var motion, out var xform))
+        private readonly Dictionary<(MapId, string), List<EntityUid>> _groups = new();
+
+        public override void Update(float frameTime)
         {
-            var gridUid = xform.GridUid ?? uid;
-            var gridXform = Transform(gridUid);
+            _groups.Clear();
 
-            if (!TryComp<PhysicsComponent>(gridUid, out var physics))
-                continue;
+            var query = EntityQueryEnumerator<
+                GridSyncGroupComponent,
+                PhysicsComponent,
+                TransformComponent>();
 
-            // Синхронизация данных с грида
-            motion.CurrentAngle = gridXform.LocalRotation;
-            motion.Speed = physics.LinearVelocity.Length();
-            motion.Direction = physics.LinearVelocity == Vector2.Zero
-                ? Vector2.Zero
-                : physics.LinearVelocity.Normalized();
-            motion.AngularSpeed = physics.AngularVelocity;
+            while (query.MoveNext(out var uid, out var group, out var physics, out var xform))
+            {
+                if (group == null || physics == null || xform == null)
+                    continue;
 
-            SendAdminAlert(uid, gridUid, motion);
+                if (xform.GridUid == null)
+                    continue;
+
+                var key = (xform.MapID, group.GroupId);
+
+                if (!_groups.TryGetValue(key, out var list))
+                {
+                    list = new List<EntityUid>();
+                    _groups[key] = list;
+                }
+
+                list.Add(uid);
+            }
+
+            foreach (var ((mapId, groupId), grids) in _groups)
+            {
+                if (grids.Count < 2)
+                    continue;
+
+                Logger.Debug($"[GridSync] Group '{groupId}' Map {mapId} Count {grids.Count}");
+                ProcessGroup(grids, frameTime);
+            }
         }
-    }
 
-    /// <summary>
-    /// Устанавливает параметры движения грида через сущность
-    /// </summary>
-    public void SetGridMotion(
-        EntityUid uid,
-        Vector2 direction,
-        float speed,
-        float angularSpeed)
-    {
-        if (!TryComp(uid, out GridMotionMonitoringComponent? motion))
-            return;
+        private void ProcessGroup(List<EntityUid> grids, float frameTime)
+        {
+            float totalWeight = 0f;
+            Vector2 velocitySum = Vector2.Zero;
+            float angularSum = 0f;
+            var rotations = new List<Angle>();
 
-        var xform = Transform(uid);
-        var gridUid = xform.GridUid ?? uid;
+            foreach (var uid in grids)
+            {
+                if (!TryComp(uid, out PhysicsComponent? physics) ||
+                    !TryComp(uid, out GridSyncGroupComponent? sync) ||
+                    !TryComp(uid, out TransformComponent? xform))
+                    continue;
 
-        motion.Direction = direction == Vector2.Zero
-            ? Vector2.Zero
-            : direction.Normalized();
+                totalWeight += sync.Weight;
+                velocitySum += physics.LinearVelocity * sync.Weight;
+                angularSum += physics.AngularVelocity * sync.Weight;
+                rotations.Add(xform.LocalRotation);
+            }
 
-        motion.Speed = speed;
-        motion.AngularSpeed = angularSpeed;
+            if (totalWeight <= 0f)
+                return;
 
-        Dirty(uid, motion);
+            var targetVelocity = velocitySum / totalWeight;
+            var targetAngular = angularSum / totalWeight;
+            var targetRotation = AngleAveraging.Average(rotations.ToArray());
 
-        SendAdminAlert(uid, gridUid, motion);
-    }
+            foreach (var uid in grids)
+            {
+                if (!TryComp(uid, out PhysicsComponent? physics) ||
+                    !TryComp(uid, out GridSyncGroupComponent? sync) ||
+                    !TryComp(uid, out TransformComponent? xform))
+                    continue;
 
-    private void SendAdminAlert(
-        EntityUid uid,
-        EntityUid gridUid,
-        GridMotionMonitoringComponent motion)
-    {
-        _chatManager.SendAdminAlert(
-            $"{EntityManager.ToPrettyString(uid):uid} updated grid motion on " +
-            $"{EntityManager.ToPrettyString(gridUid):target}\n" +
-            $"• Direction: ({motion.Direction.X:0.00}, {motion.Direction.Y:0.00})\n" +
-            $"• Speed: {motion.Speed:0.00}\n" +
-            $"• AngularSpeed: {motion.AngularSpeed:0.00}\n" +
-            $"• Angle: {motion.CurrentAngle.Degrees:0.00}°"
-        );
+                var lerp = sync.LerpStrength * frameTime;
+
+                var newVel = Vector2.Lerp(
+                    physics.LinearVelocity,
+                    targetVelocity,
+                    lerp);
+
+                var newAng = MathHelper.Lerp(
+                    physics.AngularVelocity,
+                    targetAngular,
+                    lerp);
+
+                var newRot = Angle.Lerp(
+                    xform.LocalRotation,
+                    targetRotation,
+                    lerp);
+
+                _physics.SetLinearVelocity(uid, newVel, body: physics);
+                _physics.SetAngularVelocity(uid, newAng, body: physics);
+                _transform.SetLocalRotation(uid, newRot, xform);
+            }
+        }
     }
 }

@@ -1,27 +1,18 @@
 using Robust.Shared.GameObjects;
-using Robust.Shared.Maths;
 using Robust.Shared.Serialization.Manager.Attributes;
-using Robust.Shared.ViewVariables;
-using System.Numerics;
 
-namespace Content.Shared._Utopia.ZLevels.Components;
-
-[RegisterComponent]
-public sealed partial class GridMotionMonitoringComponent : Component
+namespace Content.Server._Utopia.GridSync
 {
-    [DataField]
-    [ViewVariables(VVAccess.ReadWrite)]
-    public Vector2 Direction = Vector2.Zero;
+    [RegisterComponent]
+    public sealed partial class GridSyncGroupComponent : Component
+    {
+        [DataField(required: true)]
+        public string GroupId = default!;
 
-    [DataField]
-    [ViewVariables(VVAccess.ReadWrite)]
-    public float Speed;
+        [DataField]
+        public float Weight = 1f;
 
-    [DataField]
-    [ViewVariables(VVAccess.ReadWrite)]
-    public float AngularSpeed;
-
-    [DataField]
-    [ViewVariables(VVAccess.ReadWrite)]
-    public Angle CurrentAngle = Angle.Zero;
+        [DataField]
+        public float LerpStrength = 5f;
+    }
 }
