@@ -69,7 +69,7 @@ construction-graph-tag-mop-basic = швабра
 # toys
 construction-graph-tag-rubber-ducky = резиновая уточка
 construction-graph-tag-ghost = плюшевый призрак
-construction-graph-tag-ectoplasm = эктоплазма
+construction-graph-tag-ectoplasm = эктофорон
 construction-graph-tag-lizard-plushie = плюшевый унатх
 # carpet
 construction-graph-tag-black-carpet = чёрный ковёр

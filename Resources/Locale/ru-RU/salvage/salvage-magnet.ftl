@@ -14,7 +14,7 @@ salvage-magnet-resources =
         [OreGold] Золото
         [OreDiamond] Алмазы
         [OreSilver] Серебро
-        [OrePlasma] Плазма
+        [OrePlasma] форон
         [OreUranium] Уран
         [OreArtifactFragment] Фрагменты артефактов
         [OreBananium] Бананиум

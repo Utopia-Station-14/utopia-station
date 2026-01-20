@@ -247,7 +247,7 @@ stack-plasma =
         [1] лист
         [few] листа
        *[other] листов
-    } плазмы
+    } форона
 stack-biomass = биомасса
 stack-pyrotton = пирохлопок
 stack-sharkminnow-tooth =
