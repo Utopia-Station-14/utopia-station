@@ -13,7 +13,7 @@
       sprite: Structures/Storage/canister.rsi
       noRot: true
       layers:
-        - state: air #Utopia-tweak
+        - state: air # Utopia-Tweak : Gases
         - state: paper
           visible: false
           map: [ "enum.PaperLabelVisuals.Layer" ]
@@ -140,7 +140,7 @@
   components:
     - type: Sprite
       layers:
-        - state: base #Utopia-tweak
+        - state: base # Utopia-Tweak : Gases
     - type: GasCanister
       gasMixture:
         volume: 1500
@@ -179,7 +179,7 @@
   components:
   - type: Sprite
     layers:
-      - state: air #Utopia-tweak
+      - state: air # Utopia-Tweak : Gases
   - type: GasCanister
     gasMixture:
       volume: 1500
@@ -219,7 +219,7 @@
   components:
   - type: Sprite
     layers:
-      - state: oxygen #Utopia-tweak
+      - state: oxygen # Utopia-Tweak : Gases
   - type: GasCanister
     gasMixture:
       volume: 1500
@@ -273,7 +273,7 @@
   components:
     - type: Sprite
       layers:
-        - state: nitrogen #Utopia-tweak
+        - state: nitrogen # Utopia-Tweak : Gases
     - type: GasCanister
       gasMixture:
         volume: 1500
@@ -327,7 +327,7 @@
   components:
     - type: Sprite
       layers:
-        - state: carbon_dioxide #Utopia-tweak
+        - state: carbon_dioxide # Utopia-Tweak : Gases
     - type: GasCanister
       gasMixture:
         volume: 1500
@@ -383,7 +383,7 @@
   components:
     - type: Sprite
       layers:
-        - state: phoron #Utopia-tweak
+        - state: phoron # Utopia-Tweak : Gases
     - type: GasCanister
       gasMixture:
         volume: 1500
@@ -424,7 +424,7 @@
   components:
     - type: Sprite
       layers:
-        - state: tritium #Utopia-tweak
+        - state: tritium # Utopia-Tweak : Gases
     - type: GasCanister
       gasMixture:
         volume: 1500
@@ -504,7 +504,7 @@
   components:
     - type: Sprite
       layers:
-        - state: miasma #Utopia-tweak
+        - state: miasma # Utopia-Tweak : Gases
     - type: GasCanister
       gasMixture:
         volume: 1500
@@ -545,7 +545,7 @@
   components:
     - type: Sprite
       layers:
-        - state: nitrous_oxide #Utopia-tweak
+        - state: nitrous_oxide # Utopia-Tweak : Gases
     - type: GasCanister
       gasMixture:
         volume: 1500
@@ -586,7 +586,7 @@
   components:
   - type: Sprite
     layers:
-    - state: freon #Utopia-tweak
+    - state: freon # Utopia-Tweak : Gases
   - type: GasCanister
     gasMixture:
       volume: 1500
@@ -655,7 +655,7 @@
     - type: InteractionOutline
     - type: Sprite
       sprite: Structures/Storage/canister.rsi
-      state: air-1 #Utopia-tweak
+      state: air-1 # Utopia-Tweak : Gases
     - type: Physics
       bodyType: Dynamic
     - type: Fixtures
@@ -681,7 +681,7 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Sprite
-      state: base-1 #Utopia-tweak
+      state: base-1 # Utopia-Tweak : Gases
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -689,7 +689,7 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    state: air-1 #Utopia-tweak
+    state: air-1 # Utopia-Tweak : Gases
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -697,7 +697,7 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    state: oxygen-1 #Utopia-tweak
+    state: oxygen-1 # Utopia-Tweak : Gases
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -705,7 +705,7 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Sprite
-      state: nitrogen-1 #Utopia-tweak
+      state: nitrogen-1 # Utopia-Tweak : Gases
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -713,7 +713,7 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Sprite
-      state: carbon_dioxide-1 #Utopia-tweak
+      state: carbon_dioxide-1 # Utopia-Tweak : Gases
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -721,7 +721,7 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Sprite
-      state: phoron-1 #Utopia-tweak
+      state: phoron-1 # Utopia-Tweak : Gases
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -729,7 +729,7 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Sprite
-      state: tritium-1 #Utopia-tweak
+      state: tritium-1 # Utopia-Tweak : Gases
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -746,14 +746,14 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Sprite
-      state: miasma-1 #Utopia-tweak
+      state: miasma-1 # Utopia-Tweak : Gases
 - type: entity
   parent: GasCanisterBrokenBase
   id: NitrousOxideCanisterBroken
   categories: [ HideSpawnMenu ]
   components:
     - type: Sprite
-      state: nitrous_oxide-1 #Utopia-tweak
+      state: nitrous_oxide-1 # Utopia-Tweak : Gases
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -761,4 +761,4 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    state: freon-1 #Utopia-tweak
+    state: freon-1 # Utopia-Tweak : Gases
