@@ -2,7 +2,7 @@
   id: AtmosphericsAir
   icon:
     sprite: Structures/Storage/canister.rsi
-    state: air
+    state: air # Utopia-Tweak : Gases
   product: AirCanister
   cost: 600
   category: cargoproduct-category-name-atmospherics
@@ -12,7 +12,7 @@
   id: AtmosphericsOxygen
   icon:
     sprite: Structures/Storage/canister.rsi
-    state: oxygen
+    state: oxygen # Utopia-Tweak : Gases
   product: OxygenCanister
   cost: 600
   category: cargoproduct-category-name-atmospherics
@@ -22,7 +22,7 @@
   id: AtmosphericsLiquidOxygen
   icon:
     sprite: Structures/Storage/canister.rsi
-    state: oxygen
+    state: oxygen # Utopia-Tweak : Gases
   product: LiquidOxygenCanister
   cost: 1000
   category: cargoproduct-category-name-atmospherics
@@ -32,7 +32,7 @@
   id: AtmosphericsNitrogen
   icon:
     sprite: Structures/Storage/canister.rsi
-    state: nitrogen
+    state: nitrogen # Utopia-Tweak : Gases
   product: NitrogenCanister
   cost: 500
   category: cargoproduct-category-name-atmospherics
@@ -42,7 +42,7 @@
   id: AtmosphericsLiquidNitrogen
   icon:
     sprite: Structures/Storage/canister.rsi
-    state: nitrogen
+    state: nitrogen # Utopia-Tweak : Gases
   product: LiquidNitrogenCanister
   cost: 1000
   category: cargoproduct-category-name-atmospherics
@@ -52,7 +52,7 @@
   id: AtmosphericsCarbonDioxide
   icon:
     sprite: Structures/Storage/canister.rsi
-    state: carbon_dioxide
+    state: carbon_dioxide # Utopia-Tweak : Gases
   product: CarbonDioxideCanister
   cost: 670 # even though it's poisonous, it comes locked and only damages you slowly even with high amounts (tested)
   category: cargoproduct-category-name-atmospherics
@@ -62,7 +62,7 @@
   id: AtmosphericsLiquidCarbonDioxide
   icon:
     sprite: Structures/Storage/canister.rsi
-    state: carbon_dioxide
+    state: carbon_dioxide # Utopia-Tweak : Gases
   product: LiquidCarbonDioxideCanister
   cost: 1800 # much less deadly than the plasma can (this has been tested) even though this is cold+poison
   category: cargoproduct-category-name-atmospherics
@@ -72,7 +72,7 @@
   id: AtmosphericsStorage
   icon:
     sprite: Structures/Storage/canister.rsi
-    state: base
+    state: base # Utopia-Tweak : Gases
   product: StorageCanister
   cost: 210 # No gases in it so it's cheaper
   category: cargoproduct-category-name-atmospherics
@@ -92,7 +92,7 @@
   id: AtmosphericsPlasma
   icon:
     sprite: Structures/Storage/canister.rsi
-    state: phoron
+    state: phoron # Utopia-Tweak : Gases
   product: PlasmaCanister
   cost: 4200 # for reference, bagel's 3x1 roundstart plasma chamber contains ~16kmol for free, this is $4.2k for 2769 mol
   category: cargoproduct-category-name-atmospherics

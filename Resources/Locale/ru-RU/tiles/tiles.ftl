@@ -146,5 +146,5 @@ tiles-xenoborg-floor = ксеноборг-плитка
 tiles-dark-squiggly = тёмная волнистая стальная плитка
 tiles-white-marble = белая мраморная плитка
 tiles-dark-marble = чёрная мраморная плитка
-tiles-plasma-marble = плазменная мраморная плитка
+tiles-plasma-marble = фороновая мраморная плитка
 tiles-uranium-marble = урановая мраморная плитка
