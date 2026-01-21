@@ -1,25 +1,13 @@
 {
-    "version": 1,
+    "version": 2,
     "license": "CC-BY-SA-3.0",
     "copyright": "Frezon canister modified from tgstation, the rest are taken from tgstation at commit https://github.com/tgstation/tgstation/commit/f8581a636acfc1517611a680b7711a74fc7ef335. Paper Sprites by Vermidia.",
-    "copyright": "Taken from TauCetiClassic at commit https://github.com/TauCetiStation/TauCetiClassic/tree/13b5c47145804dd24507b75f250de5e87d34e194",
+    "copyright": "Taken from TauCetiClassic at commit https://github.com/TauCetiStation/TauCetiClassic/tree/13b5c47145804dd24507b75f250de5e87d34e194. New recolors by M1and1B",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
-        {
-            "name": "black"
-        },
-        {
-            "name": "black-1"
-        },
-        {
-            "name": "blue"
-        },
-        {
-            "name": "blue-1"
-        },
         {
             "name": "can-connector"
         },
@@ -54,58 +42,58 @@
             "name": "can-open"
         },
         {
-            "name": "grey"
+            "name": "air"
         },
         {
-            "name": "grey-1"
+            "name": "air-1"
         },
         {
-            "name": "orange"
+            "name": "phoron"
         },
         {
-            "name": "orange-1"
+            "name": "phoron-1"
         },
         {
-            "name": "red"
+            "name": "nitrogen"
         },
         {
-            "name": "red-1"
+            "name": "nitrogen-1"
         },
         {
-            "name": "redws"
+            "name": "nitrous_oxide"
         },
         {
-            "name": "redws-1"
+            "name": "nitrous_oxide-1"
         },
         {
-            "name": "yellow"
+            "name": "zauker"
         },
         {
-            "name": "yellow-1"
+            "name": "zauker-1"
         },
         {
-            "name": "green"
+            "name": "tritium"
         },
         {
-            "name": "green-1"
+            "name": "tritium-1"
         },
         {
-            "name": "greenys"
+            "name": "miasma"
         },
         {
-            "name": "greenys-1"
+            "name": "miasma-1"
         },
         {
-            "name": "darkblue"
+            "name": "pluoxium"
         },
         {
-            "name": "darkblue-1"
+            "name": "pluoxium-1"
         },
         {
-            "name": "frezon"
+            "name": "freon"
         },
         {
-            "name": "frezon-1"
+            "name": "freon-1"
         },
         {
             "name": "water_vapor"
@@ -130,6 +118,78 @@
         },
         {
             "name": "paper"
+        },
+        {
+            "name": "oxygen"
+        },
+        {
+            "name": "oxygen-1"
+        },
+        {
+            "name": "anti-noblium"
+        },
+        {
+            "name": "anti-noblium-1"
+        },
+        {
+            "name": "hyper-noblium"
+        },
+        {
+            "name": "hyper-noblium-1"
+        },
+        {
+            "name": "BZ"
+        },
+        {
+            "name": "BZ-1"
+        },
+        {
+            "name": "proto-nitrate"
+        },
+        {
+            "name": "proto-nitrate-1"
+        },
+        {
+            "name": "halon"
+        },
+        {
+            "name": "halon-1"
+        },
+        {
+            "name": "base"
+        },
+        {
+            "name": "base-1"
+        },
+        {
+            "name": "healium"
+        },
+        {
+            "name": "healium-1"
+        },
+        {
+            "name": "helium"
+        },
+        {
+            "name": "helium-1"
+        },
+        {
+            "name": "carbon_dioxide"
+        },
+        {
+            "name": "carbon_dioxide-1"
+        },
+        {
+            "name": "nitrium"
+        },
+        {
+            "name": "nitrium-1"
+        },
+        {
+            "name": "hydrogen"
+        },
+        {
+            "name": "hydrogen-1"
         }
     ]
 }

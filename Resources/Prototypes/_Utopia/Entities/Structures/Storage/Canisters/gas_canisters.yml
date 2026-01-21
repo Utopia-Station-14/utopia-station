@@ -3,9 +3,9 @@
   id: UtopiaBZCanister
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     layers:
-    - state: purple
+    - state: BZ
   - type: GasCanister
     gasMixture:
       volume: 1000
@@ -53,7 +53,7 @@
   components:
   - type: Sprite
     layers:
-    - state: darkblue
+    - state: pluoxium
   - type: GasCanister
     gasMixture:
       volume: 1000
@@ -101,9 +101,9 @@
   id: UtopiaHydrogenCanister
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     layers:
-    - state: h2
+    - state: hydrogen
   - type: GasCanister
     gasMixture:
       volume: 1000
@@ -152,9 +152,9 @@
   id: UtopiaNitriumCanister
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     layers:
-    - state: brown
+    - state: nitrium
   - type: GasCanister
     gasMixture:
       volume: 1000
@@ -204,7 +204,7 @@
   id: UtopiaHealiumCanister
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     layers:
     - state: healium
   - type: GasCanister
@@ -263,9 +263,9 @@
   id: UtopiaHyperNobliumCanister
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     layers:
-    - state: nob
+    - state: hyper-noblium
   - type: GasCanister
     gasMixture:
       volume: 1000
@@ -322,9 +322,9 @@
   id: UtopiaProtoNitrateCanister
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     layers:
-    - state: proto_nitrate
+    - state: proto-nitrate
   - type: GasCanister
     gasMixture:
       volume: 1000
@@ -381,7 +381,7 @@
   id: UtopiaZaukerCanister
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     layers:
     - state: zauker
   - type: GasCanister
@@ -440,7 +440,7 @@
   id: UtopiaHalonCanister
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     layers:
     - state: halon
   - type: GasCanister
@@ -499,7 +499,7 @@
   id: UtopiaHeliumCanister
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     layers:
     - state: helium
   - type: GasCanister
@@ -558,9 +558,9 @@
   id: UtopiaAntiNobliumCanister
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     layers:
-    - state: antinob
+    - state: anti-noblium
   - type: GasCanister
     gasMixture:
       volume: 1000
@@ -620,8 +620,8 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
-    state: purple-1
+    sprite: Structures/Storage/canister.rsi
+    state: BZ-1
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -629,7 +629,7 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    state: darkblue-1
+    state: pluoxium-1
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -637,8 +637,8 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
-    state: h2-1
+    sprite: Structures/Storage/canister.rsi
+    state: hydrogen-1
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -646,8 +646,8 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
-    state: brown-1
+    sprite: Structures/Storage/canister.rsi
+    state: nitrium-1
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -655,7 +655,7 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     state: healium-1
 
 - type: entity
@@ -664,8 +664,8 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
-    state: nob-1
+    sprite: Structures/Storage/canister.rsi
+    state: hyper-noblium-1
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -673,8 +673,8 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
-    state: proto_nitrate-1
+    sprite: Structures/Storage/canister.rsi
+    state: proto-nitrate-1
 
 - type: entity
   parent: GasCanisterBrokenBase
@@ -682,7 +682,7 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     state: zauker-1
 
 - type: entity
@@ -691,7 +691,7 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     state: halon-1
 
 - type: entity
@@ -700,7 +700,7 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
+    sprite: Structures/Storage/canister.rsi
     state: helium-1
 
 - type: entity
@@ -709,5 +709,5 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Utopia/Structures/Storage/canister.rsi
-    state: antinob-1
+    sprite: Structures/Storage/canister.rsi
+    state: anti-noblium-1
