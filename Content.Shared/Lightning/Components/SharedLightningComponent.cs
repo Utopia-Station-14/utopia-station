@@ -56,14 +56,8 @@ public abstract partial class SharedLightningComponent : Component
     public int CollisionMask = (int) (CollisionGroup.MobMask | CollisionGroup.MachineMask);
 
     // Utopia-tweak start
-    [DataField]
-    public int ArchCount = 0;
 
     [DataField]
     public float Energy {get; set;}
-
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField]
-    public float CurrentRange {get; set;}
     // Utopia-tweak end
 }

@@ -74,7 +74,6 @@ public sealed class LightningSystem : SharedLightningSystem
     {
         if (TryComp<LightningComponent>(user, out var comp))
         {
-            comp.CurrentRange = range;
             comp.Energy = energy;
         }
 
