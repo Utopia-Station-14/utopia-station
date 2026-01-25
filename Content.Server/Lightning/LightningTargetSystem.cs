@@ -3,7 +3,7 @@ using Content.Server.Lightning;
 using Content.Server.Lightning.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
-using Content.Shared.FixedPoint; // Utopia-tweak
+using Content.Shared.FixedPoint; // Utopia-tweak : Lightning-Update
 using Robust.Server.GameObjects;
 
 namespace Content.Server.Tesla.EntitySystems;
@@ -26,12 +26,12 @@ public sealed class LightningTargetSystem : EntitySystem
     private void OnHitByLightning(Entity<LightningTargetComponent> uid, ref HitByLightningEvent args)
     {
         DamageSpecifier damage = new();
-        // Utopia-tweak start
+        // Utopia-tweak : Lightning-Update
         var energy = args.Energy;
         var damageModificator = FixedPoint2.New(MathF.Max(1f, energy / 17000f));
         var damageAmmount = uid.Comp.DamageFromLightning * damageModificator;
-        // Utopia-tweak end
-        damage.DamageDict.Add("Structural", damageAmmount);  // Utopia-tweak
+        damage.DamageDict.Add("Structural", damageAmmount);
+        // Utopia-tweak : Lightning-Update
         _damageable.ChangeDamage(uid.Owner, damage, true);
 
         if (uid.Comp.LightningExplode)

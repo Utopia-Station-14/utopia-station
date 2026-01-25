@@ -47,7 +47,7 @@ public sealed class LightningSystem : SharedLightningSystem
     /// <param name="target">Where the lightning fires to</param>
     /// <param name="lightningPrototype">The prototype for the lightning to be created</param>
     /// <param name="triggerLightningEvents">if the lightnings being fired should trigger lightning events.</param>
-    public void ShootLightning(EntityUid user, EntityUid target, float Energy = 25000, string lightningPrototype = "Lightning", bool triggerLightningEvents = true) // Utopia-tweak: add Energy
+    public void ShootLightning(EntityUid user, EntityUid target, float Energy = 25000, string lightningPrototype = "Lightning", bool triggerLightningEvents = true) // Utopia-tweak : Lightning-Update
     {
         var spriteState = LightningRandomizer();
         _beam.TryCreateBeam(user, target, lightningPrototype, spriteState);
@@ -70,7 +70,7 @@ public sealed class LightningSystem : SharedLightningSystem
     /// <param name="lightningPrototype">The prototype for the lightning to be created</param>
     /// <param name="arcDepth">how many times to recursively fire lightning bolts from the target points of the first shot.</param>
     /// <param name="triggerLightningEvents">if the lightnings being fired should trigger lightning events.</param>
-    public void ShootRandomLightnings(EntityUid user, float range, int boltCount, float energy = 25000, string lightningPrototype = "Lightning", int arcDepth = 2, bool triggerLightningEvents = true) // ограничиваем arcDepth=1 для теста
+    public void ShootRandomLightnings(EntityUid user, float range, int boltCount, float energy = 25000, string lightningPrototype = "Lightning", int arcDepth = 2, bool triggerLightningEvents = true) // Utopia-tweak : Lightning-Update
     {
         if (TryComp<LightningComponent>(user, out var comp))
         {
@@ -93,13 +93,15 @@ public sealed class LightningSystem : SharedLightningSystem
             if (!_random.Prob(curTarget.Comp.HitProbability)) //Chance to ignore target
                 continue;
 
+            // Utopia-tweak : Lightning-Update
             ShootLightning(user, targets[count].Owner, energy, lightningPrototype, triggerLightningEvents);
-            if (arcDepth > 0) // Utopia-tweak: i dunno why this shit work now, but i'm okay with that.
+            if (arcDepth > 0)
             {
-                energy *= 0.5f; // Utopia-tweak
-                range -= 0.3f;  // Utopia-tweak
+                energy *= 0.5f;
+                range -= 0.3f;
                 ShootRandomLightnings(targets[count].Owner, range, 1, energy, lightningPrototype, arcDepth - targets[count].Comp.LightningResistance, triggerLightningEvents);
             }
+            // Utopia-tweak : Lightning-Update
             shootedCount++;
         }
     }
@@ -111,4 +113,4 @@ public sealed class LightningSystem : SharedLightningSystem
 /// <param name="Source">The entity that created the lightning</param>
 /// <param name="Target">The entity that was struck by lightning.</param>
 [ByRefEvent]
-public readonly record struct HitByLightningEvent(EntityUid Source, EntityUid Target, float Energy); // Utopia-tweak: add Energy
+public readonly record struct HitByLightningEvent(EntityUid Source, EntityUid Target, float Energy); // Utopia-tweak : Lightning-Update

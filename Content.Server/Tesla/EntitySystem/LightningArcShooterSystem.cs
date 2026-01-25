@@ -44,13 +44,13 @@ public sealed class LightningArcShooterSystem : EntitySystem
     private void ArcShoot(EntityUid uid, LightningArcShooterComponent component)
     {
         var arcs = _random.Next(1, component.MaxLightningArc);
-        // Utopia-tweak start
+        // Utopia-tweak : Lightning-Update
         _lightning.ShootRandomLightnings(
             user: uid,
             range: component.ShootRange,
             boltCount: arcs,
             lightningPrototype: component.LightningPrototype,
             arcDepth: component.ArcDepth);
-        // Utopia-tweak end
+        // Utopia-tweak : Lightning-Update
     }
 }
