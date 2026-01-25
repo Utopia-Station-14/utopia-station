@@ -1,15 +1,14 @@
 using Content.Server._Utopia.Atmos.Components;
-using Content.Shared.Damage;
-using Content.Shared.Damage.Systems;
-using Content.Shared.Buckle.Components;
-using Content.Shared.FixedPoint;
 using Content.Server.Atmos;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Atmos.Piping.Components;
 using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.Nodes;
-using Content.Server.NodeContainer.EntitySystems;
 using Content.Shared.Atmos;
+using Content.Shared.Buckle.Components;
+using Content.Shared.Damage;
+using Content.Shared.Damage.Systems;
+using Content.Shared.FixedPoint;
 using Robust.Shared.GameObjects;
 
 namespace Content.Server._Utopia.Atmos.EntitySystems;
@@ -19,6 +18,7 @@ public sealed class HeatExchangingPipeSystem : EntitySystem
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
     [Dependency] private readonly NodeContainerSystem _nodes = default!;
     [Dependency] private readonly DamageableSystem _damage = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
 
     public override void Initialize()
     {
@@ -35,6 +35,14 @@ public sealed class HeatExchangingPipeSystem : EntitySystem
         if (!_nodes.TryGetNode(uid, comp.NodeName, out PipeNode? pipe))
             return;
 
+        // Если на тайле радиатора стоит сущность - скип.
+        if (args.Grid is {} grid
+            && _transform.TryGetGridTilePosition(uid, out var tile)
+            && _atmos.IsTileAirBlockedCached(grid, tile))
+        {
+            return;
+        }
+
         // Здесь всё начинается. Ну или заканчивается, если газа в трубе нету. 
         var air = pipe.Air;
         if (air.TotalMoles <= 0f)
@@ -46,10 +54,12 @@ public sealed class HeatExchangingPipeSystem : EntitySystem
         if (env == null || env.TotalMoles <= 0f)
         {
             HeatExchangeInVacuum(air, comp, args.dt);
+            HandleBuckledMobs(uid, air.Temperature, args.dt, comp);
             return;
         }
 
         HeatExchange(air, env, comp, args.dt);
+        HandleBuckledMobs(uid, air.Temperature, args.dt, comp);
     }
 
     /// <summary>
@@ -67,7 +77,8 @@ public sealed class HeatExchangingPipeSystem : EntitySystem
         float Cpipe = _atmos.GetHeatCapacity(air, true);
         float Cenv  = _atmos.GetHeatCapacity(env, true);
 
-        if (Cpipe < Atmospherics.MinimumHeatCapacity || Cenv < Atmospherics.MinimumHeatCapacity)
+        if (Cpipe < Atmospherics.MinimumHeatCapacity ||
+            Cenv  < Atmospherics.MinimumHeatCapacity)
             return;
 
         // TdivQ - коэффициент перевода энергии в изменение температуры
@@ -85,7 +96,7 @@ public sealed class HeatExchangingPipeSystem : EntitySystem
 
         // И завершаем всё передачей тепла.
         _atmos.AddHeat(air, -dE);
-        _atmos.AddHeat(env, dE);
+        _atmos.AddHeat(env,  dE);
     }
 
     /// <summary>
@@ -106,7 +117,7 @@ public sealed class HeatExchangingPipeSystem : EntitySystem
         float dT2 = dT * MathF.Exp(-k * dt);
 
         // Завершаем всё передачей тепла в вакуум.
-        float dE = (dT - dT2) * Cpipe;
+        float dE = (dT - dT2) / (1f / Cpipe);
         _atmos.AddHeat(air, -dE);
     }
 
