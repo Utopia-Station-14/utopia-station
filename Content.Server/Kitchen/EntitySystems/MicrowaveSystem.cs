@@ -527,7 +527,7 @@ namespace Content.Server.Kitchen.EntitySystems
             }
 
             if (_random.Prob(ent.Comp2.LightningChance))
-                _lightning.ShootRandomLightnings(ent, 1.0f, 2, lightningPrototype:MalfunctionSpark, triggerLightningEvents: false); // Utopia-tweak : Lightning-Update
+                _lightning.ShootRandomLightnings(ent, 1.0f, 2, lightningPrototype:MalfunctionSpark, triggerLightningEvents: false); // Utopia-Tweak : Lightning-Update
         }
 
         /// <summary>

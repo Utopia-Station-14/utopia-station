@@ -8,7 +8,7 @@ namespace Content.Server.Tesla.Components;
 [RegisterComponent, Access(typeof(TeslaCoilSystem))]
 public sealed partial class TeslaCoilComponent : Component
 {
-    // Utopia-tweak : Lightning-Update
+    // Utopia-Tweak : Lightning-Update
     /// <summary>
     /// How much power will the coil generate from a lightning strike
     /// </summary>
@@ -21,5 +21,5 @@ public sealed partial class TeslaCoilComponent : Component
     /// </summary>
     [DataField]
     public int ChargingMultiplier = 1;
-    // Utopia-tweak : Lightning-Update
+    // Utopia-Tweak : Lightning-Update
 }
