@@ -54,7 +54,7 @@ public sealed class LightningSystem : SharedLightningSystem
 
         if (triggerLightningEvents) // we don't want certain prototypes to trigger lightning level events
         {
-            var ev = new HitByLightningEvent(user, target, Energy);
+            var ev = new HitByLightningEvent(user, target, Energy); // Utopia-Tweak : Lightning-Update
             RaiseLocalEvent(target, ref ev);
         }
     }
@@ -66,16 +66,18 @@ public sealed class LightningSystem : SharedLightningSystem
     /// <param name="user">Where the lightning fires from</param>
     /// <param name="range">Targets selection radius</param>
     /// <param name="boltCount">Number of lightning bolts</param>
-    /// <param name="energy"> how much energy does lightning carry. </param>
+    /// <param name="energy"> how much energy does lightning carry. </param> // Utopia-Tweak : Lightning-Update
     /// <param name="lightningPrototype">The prototype for the lightning to be created</param>
     /// <param name="arcDepth">how many times to recursively fire lightning bolts from the target points of the first shot.</param>
     /// <param name="triggerLightningEvents">if the lightnings being fired should trigger lightning events.</param>
     public void ShootRandomLightnings(EntityUid user, float range, int boltCount, float energy = 25000, string lightningPrototype = "Lightning", int arcDepth = 2, bool triggerLightningEvents = true) // Utopia-Tweak : Lightning-Update
     {
+        // Utopia-Tweak : Lightning-Update
         if (TryComp<LightningComponent>(user, out var comp))
         {
             comp.Energy = energy;
         }
+        // Utopia-Tweak : Lightning-Update
 
         var targets = _lookup.GetEntitiesInRange<LightningTargetComponent>(_transform.GetMapCoordinates(user), range).ToList();
         _random.Shuffle(targets);
