@@ -11,7 +11,11 @@ public sealed partial class TeslaCoilComponent : Component
     /// <summary>
     /// How much power will the coil generate from a lightning strike
     /// </summary>
-    // To Do: Different lightning bolts have different powers and generate different amounts of energy
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
-    public float ChargeFromLightning = 50000f;
+    // // To Do: Different lightning bolts have different powers and generate different amounts of energy
+    // [DataField, ViewVariables(VVAccess.ReadWrite)]
+    // public float ChargeFromLightning = 50000f;
+
+    // Utopia-tweak start
+    [DataField]
+    public int ChargingMultiplier = 1;
 }
