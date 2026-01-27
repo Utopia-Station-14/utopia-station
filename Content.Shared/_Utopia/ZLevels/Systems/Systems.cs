@@ -1,105 +1,52 @@
 using Content.Shared._Utopia.ZLevels.Components;
 using Content.Shared._Utopia.ZLevels.Events;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
-using Robust.Shared.Maths;
-using Robust.Shared.Map;
+using System.Numerics;
 
 namespace Content.Server._Utopia.ZLevels.Systems;
 
-public sealed class GridMotionAutoSyncSystem : EntitySystem
+public sealed class GridMotionPhysicsSyncSystem : EntitySystem
 {
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
 
-    private readonly Dictionary<MapId, EntityUid> _masters = new();
+    private const string GlobalGroupId = "ZZZ";
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<GridMotionLinkComponent, ComponentStartup>(OnStartup);
-        SubscribeLocalEvent<GridMotionLinkComponent, GridMotionSyncEvent>(OnMotionSync);
+        SubscribeLocalEvent<GridMotionLinkComponent, GridMotionRelayEvent>(OnRelayMotion);
     }
 
-    private void OnStartup(EntityUid uid, GridMotionLinkComponent comp, ComponentStartup args)
+    public void InitializeGrid(EntityUid gridUid)
     {
-        if (!TryComp(uid, out TransformComponent? xform))
-            return;
-
-        var mapId = xform.MapID;
-
-        if (comp.IsMaster)
-        {
-            _masters[mapId] = uid;
-            return;
-        }
-
-        if (_masters.TryGetValue(mapId, out var master))
-        {
-            comp.MasterGrid = master;
-        }
+        var link = EnsureComp<GridMotionLinkComponent>(gridUid);
+        link.GroupId = GlobalGroupId;
     }
 
-    public override void Update(float frameTime)
+    private void OnRelayMotion(EntityUid uid, GridMotionLinkComponent link, GridMotionRelayEvent ev)
     {
-        var query = EntityQueryEnumerator<
-            GridMotionLinkComponent,
-            PhysicsComponent,
-            TransformComponent>();
+        var query = EntityQueryEnumerator<GridMotionLinkComponent, PhysicsComponent>();
 
-        while (query.MoveNext(out var uid, out var link, out var phys, out var xform))
+        while (query.MoveNext(out var targetUid, out var targetLink, out var phys))
         {
-            if (!link.IsMaster)
+            if (targetLink.GroupId != link.GroupId)
                 continue;
 
-            if (!phys.Awake)
+            if (targetUid == ev.SourceGrid)
                 continue;
 
-            var ev = new GridMotionSyncEvent
-            {
-                LinearVelocity = phys.LinearVelocity,
-                AngularVelocity = phys.AngularVelocity,
-                Rotation = xform.WorldRotation
-            };
-
-            var slaves = EntityQueryEnumerator<GridMotionLinkComponent, TransformComponent>();
-            while (slaves.MoveNext(out var slaveUid, out var slaveLink, out var slaveXform))
-            {
-                if (slaveLink.IsMaster)
-                    continue;
-
-                if (slaveXform.MapID != xform.MapID)
-                    continue;
-
-                if (slaveLink.MasterGrid == null)
-                    slaveLink.MasterGrid = uid;
-
-                if (slaveLink.MasterGrid != uid)
-                    continue;
-
-                RaiseLocalEvent(slaveUid, ev);
-            }
+            _physics.SetLinearVelocity(targetUid, ev.LinearVelocity, body: phys);
+            _physics.SetAngularVelocity(targetUid, ev.AngularVelocity, body: phys);
         }
     }
 
-    private void OnMotionSync(
-        EntityUid uid,
-        GridMotionLinkComponent comp,
-        GridMotionSyncEvent ev)
+    public void RelayMovement(EntityUid sourceGrid, Vector2 linear, float angular)
     {
-        if (comp.IsMaster)
-            return;
-
-        if (!TryComp(uid, out PhysicsComponent? phys))
-            return;
-
-        if (!TryComp(uid, out TransformComponent? xform))
-            return;
-
-        _physics.SetLinearVelocity(uid, ev.LinearVelocity);
-        _physics.SetAngularVelocity(uid, ev.AngularVelocity);
-
-        xform.WorldRotation = ev.Rotation;
+        var ev = new GridMotionRelayEvent(sourceGrid, linear, angular);
+        RaiseLocalEvent(sourceGrid, ev, broadcast: true);
     }
 }
