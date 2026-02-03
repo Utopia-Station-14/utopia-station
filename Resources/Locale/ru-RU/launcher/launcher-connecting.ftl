@@ -1,6 +1,6 @@
 ### Connecting dialog when you start up the game
 
-connecting-title = Utopia Station 14
+connecting-title = Utopia Station
 connecting-exit = Выйти
 connecting-retry = Повторить
 connecting-reconnect = Переподключиться
