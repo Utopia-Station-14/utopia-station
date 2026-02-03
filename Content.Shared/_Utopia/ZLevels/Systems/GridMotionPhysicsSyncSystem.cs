@@ -68,12 +68,15 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
         base.Update(frameTime);
 
         var query = EntityQueryEnumerator<GridMotionLinkComponent, PhysicsComponent>();
+        List<string> groupsMoved = new();
+
         while (query.MoveNext(out var uid, out var comp, out var phys))
         {
-            if (!comp.IsSource)
+            if (groupsMoved.Contains(comp.GroupId))
                 continue;
 
             RelayMotion(uid, comp);
+            groupsMoved.Add(comp.GroupId);
         }
     }
 

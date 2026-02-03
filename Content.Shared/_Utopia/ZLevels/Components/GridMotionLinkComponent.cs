@@ -7,7 +7,4 @@ public sealed partial class GridMotionLinkComponent : Component
 {
     [DataField, AutoNetworkedField]
     public string GroupId = string.Empty;
-
-    [ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
-    public bool IsSource = false;
 }
