@@ -1,1 +1,1 @@
-changelog-tab-title-UtopiaChangelog = Обновления Utopia Station
+changelog-tab-title-UtopiaChangelog = Обновления Utopia

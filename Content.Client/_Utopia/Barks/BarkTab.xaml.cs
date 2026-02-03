@@ -195,7 +195,8 @@ public sealed partial class BarkTab : Control
 
         _filteredBarks = barks.ToList();
 
-        ResultsLabel.Text = $"Найдено: {_filteredBarks.Count}";
+        ResultsLabel.Text = Loc.GetString($"bark-filter-founded",
+            ("filtered", _filteredBarks.Count));
 
         BuildBarkButtons();
     }
