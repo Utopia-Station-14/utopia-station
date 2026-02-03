@@ -1,6 +1,12 @@
-# Copper and Lead ore
+# TODO: Сделать комменты как у визов.
 - type: Tag
   id: UtopiaCopperOre
+
+- type: Tag
+  id: UtopiaHeatExchanger
+
+- type: Tag
+  id: UtopiaHeatExchangerConnection
 
 - type: Tag
   id: UtopiaLeadOre

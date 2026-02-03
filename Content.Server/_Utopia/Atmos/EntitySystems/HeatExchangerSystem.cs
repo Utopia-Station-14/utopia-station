@@ -10,6 +10,7 @@ using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.Nodes; 
 using Content.Server.NodeContainer.EntitySystems; 
 using Content.Shared.Atmos; 
+using Content.Shared.Atmos.Components; 
 using Robust.Shared.GameObjects;
 
 namespace Content.Server._Utopia.Atmos.EntitySystems;

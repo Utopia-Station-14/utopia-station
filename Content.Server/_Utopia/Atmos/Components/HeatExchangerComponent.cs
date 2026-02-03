@@ -15,27 +15,27 @@ public sealed partial class HeatExchangingPipeComponent : Component
     /// Минимальная разница температур для теплообмена (K)
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("minimumTemperatureDifference")]
+    [DataField]
     public float MinimumTemperatureDifference = 20f;
 
     /// <summary>
     /// Коэффициент теплопередачи
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("thermalConductivity")]
+    [DataField]
     public float ThermalConductivity = 8000f;
 
     /// <summary>
     /// Температура начала нанесения урона мобам
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("burnStart")]
+    [DataField]
     public float BurnStart = 1000f;
 
     /// <summary>
     /// Коэффициент теплового излучения.
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("radiationCoefficient")]
+    [DataField]
     public float RadiationCoefficient { get; set; } = 140f;
 }
