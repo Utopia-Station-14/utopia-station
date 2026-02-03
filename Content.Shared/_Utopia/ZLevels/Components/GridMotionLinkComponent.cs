@@ -1,13 +1,13 @@
-using Robust.Shared.GameObjects;
+using Robust.Shared.GameStates;
 
 namespace Content.Shared._Utopia.ZLevels.Components;
 
-[RegisterComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class GridMotionLinkComponent : Component
 {
-    [ViewVariables(VVAccess.ReadWrite)]
+    [DataField, AutoNetworkedField]
     public string GroupId = string.Empty;
 
-    [ViewVariables(VVAccess.ReadWrite)]
+    [ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
     public bool IsSource = false;
 }
