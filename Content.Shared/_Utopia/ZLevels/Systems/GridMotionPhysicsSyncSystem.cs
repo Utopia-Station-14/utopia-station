@@ -1,6 +1,11 @@
 using Content.Shared._Utopia.ZLevels.Components;
+using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
+using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Numerics;
 
 namespace Content.Shared._Utopia.ZLevels.Systems;
@@ -9,6 +14,7 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
 {
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
+    [Dependency] private readonly SharedMapSystem _map = default!;
 
     private const string GlobalGroupId = "ZZZ";
 
@@ -16,7 +22,46 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
     {
         base.Initialize();
 
+        SubscribeLocalEvent<GridMotionLinkComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<GridMotionLinkComponent, GridFixtureChangeEvent>(OnGridFixtureChange);
+
         UpdatesAfter.Add(typeof(SharedPhysicsSystem));
+    }
+
+    private void OnMapInit(Entity<GridMotionLinkComponent> ent, ref MapInitEvent args)
+    {
+        var grids = GetGridsOfGroup(ent.Comp.GroupId).Where(x => x.Owner != ent.Owner).ToList();
+
+        if (grids.Count <= 0)
+            ent.Comp.Root = ent.Owner;
+        else
+            ent.Comp.Root = grids[0].Comp1.Root;
+
+        UpdateOffset(ent);
+    }
+
+    private void OnGridFixtureChange(Entity<GridMotionLinkComponent> ent, ref GridFixtureChangeEvent args)
+    {
+        UpdateOffset(ent);
+    }
+
+    private void UpdateOffset(Entity<GridMotionLinkComponent> ent)
+    {
+        if (ent.Comp.Root == ent.Owner)
+        {
+            ent.Comp.Offset = Vector2.Zero;
+            return;
+        }
+
+        var rootRot = _transformSystem.GetWorldRotation(ent.Comp.Root);
+
+        var rootPos = _transformSystem.GetWorldPosition(ent.Comp.Root);
+        var entPos = _transformSystem.GetWorldPosition(ent.Owner);
+
+        var q = new Quaternion2D(rootRot);
+        ent.Comp.Offset = Quaternion2D.InvRotateVector(q, entPos - rootPos);
+        _transformSystem.SetWorldRotation(ent.Owner, rootRot);
+        Dirty(ent);
     }
 
     public void InitializeGrid(EntityUid gridUid)
@@ -25,41 +70,98 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
         link.GroupId = GlobalGroupId;
     }
 
-    private void RelayMotion(EntityUid uid, GridMotionLinkComponent comp)
+    private void RelayMotion(Vector2 linear, float angular,
+                             EntityUid biggest,
+                             List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>> matches)
     {
-        var query = EntityQueryEnumerator<GridMotionLinkComponent, PhysicsComponent>();
-
-        // Collect matching bodies to avoid mutating while enumerating.
-        var matches = new List<(EntityUid uid, GridMotionLinkComponent link, PhysicsComponent body)>();
-        Vector2 linear = Vector2.Zero;
-        float angular = 0f;
-
-        while (query.MoveNext(out var targetUid, out var link, out var phys))
+        foreach (var (targetUid, link, grid, phys) in matches)
         {
-            if (link.GroupId != comp.GroupId)
-                continue;
+            _physics.SetLinearVelocity(targetUid, linear, body: phys);
 
-            matches.Add((targetUid, link, phys));
-            linear += phys.LinearVelocity;
-            angular += phys.AngularVelocity;
+            _physics.SetAngularVelocity(targetUid, angular);
+
+            if (biggest != targetUid)
+                SetOffsetPos(biggest, (targetUid, link));
         }
+    }
+
+    private void SetOffsetPos(EntityUid biggest, Entity<GridMotionLinkComponent> ent)
+    {
+        var rootRot = _transformSystem.GetWorldRotation(biggest);
+        var rootPos = _transformSystem.GetWorldPosition(biggest);
+
+        var q = new Quaternion2D(rootRot);
+        var newPos = rootPos + Quaternion2D.RotateVector(q, ent.Comp.Offset);
+
+        _transformSystem.SetWorldPosition(ent.Owner, newPos);
+        _transformSystem.SetWorldRotation(ent.Owner, rootRot);
+        _physics.WakeBody(ent.Owner);
+    }
+
+    private bool TryGetMotionData(EntityUid uid,
+                                 [NotNullWhen(true)] out Vector2? linearSpeed,
+                                 [NotNullWhen(true)] out float? angularSpeed,
+                                 [NotNullWhen(true)] out EntityUid? biggestGrid,
+                                  out List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>> matches,
+                                  GridMotionLinkComponent? comp = null)
+    {
+        linearSpeed = null;
+        angularSpeed = null;
+        biggestGrid = null;
+        matches = new();
+
+        if (!Resolve(uid, ref comp))
+            return false;
+
+        matches = GetGridsOfGroup(comp.GroupId);
+
+        linearSpeed = Vector2.Zero;
+        angularSpeed = 0f;
 
         if (matches.Count == 0)
-            return;
+            return false;
 
-        linear /= matches.Count;
-        angular /= matches.Count;
+        linearSpeed /= matches.Count;
+        angularSpeed /= matches.Count;
 
-        if (linear == Vector2.Zero && angular == 0f)
-            return;
-
-        foreach (var (targetUid, link, phys) in matches)
+        var biggest = new KeyValuePair<int, EntityUid>(0, EntityUid.Invalid);
+        foreach (var (targetUid, link, grid, phys) in matches)
         {
             if (link.GroupId != comp.GroupId)
                 continue;
 
-            _physics.SetLinearVelocity(targetUid, linear, body: phys);
-            _physics.SetAngularVelocity(targetUid, angular, body: phys);
+            var tilesCount = _map.GetAllTiles(targetUid, grid, true).Count();
+
+            if (biggest.Key < tilesCount)
+                biggest = new(tilesCount, targetUid);
+        }
+
+        biggestGrid = biggest.Value;
+        return true;
+    }
+
+    private List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>> GetGridsOfGroup(string groupId)
+    {
+        var matches = new List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>>();
+
+        var query = EntityQueryEnumerator<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>();
+        while (query.MoveNext(out var targetUid, out var link, out var grid, out var phys))
+        {
+            if (link.GroupId != groupId)
+                continue;
+
+            matches.Add((targetUid, link, grid, phys));
+        }
+
+        return matches;
+    }
+
+    private void DirtyGroup(string groupId)
+    {
+        var grids = GetGridsOfGroup(groupId);
+        foreach (var item in grids)
+        {
+            Dirty(item.Owner, item.Comp1);
         }
     }
 
@@ -75,7 +177,10 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
             if (groupsMoved.Contains(comp.GroupId))
                 continue;
 
-            RelayMotion(uid, comp);
+            if (!TryGetMotionData(uid, out var linear, out var angular, out var biggest, out var group, comp))
+                continue;
+
+            RelayMotion(linear.Value, angular.Value, biggest.Value, group);
             groupsMoved.Add(comp.GroupId);
         }
     }

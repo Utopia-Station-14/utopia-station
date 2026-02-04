@@ -1,3 +1,4 @@
+using System.Numerics;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared._Utopia.ZLevels.Components;
@@ -7,4 +8,10 @@ public sealed partial class GridMotionLinkComponent : Component
 {
     [DataField, AutoNetworkedField]
     public string GroupId = string.Empty;
+
+    [DataField, AutoNetworkedField]
+    public Vector2 Offset = Vector2.Zero;
+
+    [ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
+    public EntityUid Root;
 }
