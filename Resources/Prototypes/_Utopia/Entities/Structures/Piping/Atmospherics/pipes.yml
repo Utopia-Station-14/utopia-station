@@ -1,0 +1,89 @@
+- type: entity
+  parent: GasPipeBase
+  name: up
+  id: UtopiaGasZPipeUp
+  suffix: Half
+  placement:
+    mode: AlignAtmosPipeLayers
+  components:
+  - type: NodeContainer
+    nodes:
+      pipe:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: South
+      up:
+        !type:ZPipeNode
+        nodeGroupID: Pipe
+        zDirection: Up
+  - type: Sprite
+    layers:
+    - state: pipeHalf
+      map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: AtmosPipeLayers
+    alternativePrototypes:
+      Primary: GasPipeHalf
+      Secondary: GasPipeHalfAlt1
+      Tertiary: GasPipeHalfAlt2
+  - type: Construction
+    graph: GasPipe
+    node: half
+  - type: Item
+    size: Small
+    storedSprite:
+      sprite: Structures/Piping/Atmospherics/pipe.rsi
+      state: storageHalf
+  - type: GuideHelp
+    guides:
+    - Pipes
+    - PipeNetworks
+  - type: ZPipe
+  - type: ZLevelTransmitter
+    useGrid: true
+    allowUp: true
+    allowDown: true
+
+- type: entity
+  parent: GasPipeBase
+  name: down
+  id: UtopiaGasZPipeDown
+  suffix: Half
+  placement:
+    mode: AlignAtmosPipeLayers
+  components:
+  - type: NodeContainer
+    nodes:
+      pipe:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: South
+      down:
+        !type:ZPipeNode
+        nodeGroupID: Pipe
+        zDirection: Down
+  - type: Sprite
+    layers:
+    - state: pipeHalf
+      map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: AtmosPipeLayers
+    alternativePrototypes:
+      Primary: GasPipeHalf
+      Secondary: GasPipeHalfAlt1
+      Tertiary: GasPipeHalfAlt2
+  - type: Construction
+    graph: GasPipe
+    node: half
+  - type: Item
+    size: Small
+    storedSprite:
+      sprite: Structures/Piping/Atmospherics/pipe.rsi
+      state: storageHalf
+  - type: GuideHelp
+    guides:
+    - Pipes
+    - PipeNetworks
+  - type: ZPipe
+  - type: ZLevelTransmitter
+    useGrid: true
+    allowUp: true
+    allowDown: true
