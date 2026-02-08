@@ -30,13 +30,6 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
 
     private void OnMapInit(Entity<GridMotionLinkComponent> ent, ref MapInitEvent args)
     {
-        var grids = GetGridsOfGroup(ent.Comp.GroupId).Where(x => x.Owner != ent.Owner).ToList();
-
-        if (grids.Count <= 0)
-            ent.Comp.Root = ent.Owner;
-        else
-            ent.Comp.Root = grids[0].Comp1.Root;
-
         UpdateOffset(ent);
     }
 
@@ -45,22 +38,24 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
         UpdateOffset(ent);
     }
 
-    private void UpdateOffset(Entity<GridMotionLinkComponent> ent)
+    public void UpdateOffset(Entity<GridMotionLinkComponent> ent)
     {
+        ent.Comp.Root = GetBiggestGridOfGroup(ent.Comp.GroupId);
+
         if (ent.Comp.Root == ent.Owner)
-        {
             ent.Comp.Offset = Vector2.Zero;
-            return;
+        else
+        {
+            var rootRot = _transformSystem.GetWorldRotation(ent.Comp.Root);
+            var rootPos = _transformSystem.GetWorldPosition(ent.Comp.Root);
+            var entPos = _transformSystem.GetWorldPosition(ent.Owner);
+
+            var q = new Quaternion2D(rootRot);
+            ent.Comp.Offset = Quaternion2D.InvRotateVector(q, entPos - rootPos);
+
+            _transformSystem.SetWorldRotation(ent.Owner, rootRot);
         }
 
-        var rootRot = _transformSystem.GetWorldRotation(ent.Comp.Root);
-
-        var rootPos = _transformSystem.GetWorldPosition(ent.Comp.Root);
-        var entPos = _transformSystem.GetWorldPosition(ent.Owner);
-
-        var q = new Quaternion2D(rootRot);
-        ent.Comp.Offset = Quaternion2D.InvRotateVector(q, entPos - rootPos);
-        _transformSystem.SetWorldRotation(ent.Owner, rootRot);
         Dirty(ent);
     }
 
@@ -205,5 +200,21 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
             _transformSystem.SetWorldPosition(uid, targetPos);
             _physics.SetLinearVelocity(uid, Vector2.Zero);
         }
+    }
+
+    private EntityUid GetBiggestGridOfGroup(string group)
+    {
+        var ents = EntityManager.AllEntities<GridMotionLinkComponent>().Where(x => x.Comp.GroupId == group);
+
+        var biggest = new KeyValuePair<int, EntityUid>(0, EntityUid.Invalid);
+        foreach (var ent in ents)
+        {
+            var tilesCount = _map.GetAllTiles(ent.Owner, Comp<MapGridComponent>(ent.Owner), true).Count();
+
+            if (biggest.Key < tilesCount)
+                biggest = new(tilesCount, ent.Owner);
+        }
+
+        return biggest.Value;
     }
 }
