@@ -179,6 +179,18 @@ namespace Content.Server.NodeContainer.Nodes
                     _alwaysReachable.Remove(pipe);
             }
 
+            // Ноды из того же контейнера (та же сущность) — одна группа, газ течёт между ними (Z-трубы, мультипорты и т.д.)
+            if (nodeQuery.TryGetComponent(Owner, out var container))
+            {
+                foreach (var node in container.Nodes.Values)
+                {
+                    if (node == this)
+                        continue;
+                    if (node is PipeNode sibling && sibling.NodeGroupID == NodeGroupID)
+                        yield return sibling;
+                }
+            }
+
             if (!xform.Anchored || grid == null)
                 yield break;
 
