@@ -37,9 +37,9 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         UpdateAboveLink(uid, transmitter, context);
         UpdateBelowLink(uid, transmitter, context);
 
-        if (HasComp<Pipes.Components.ZPipeComponent>(uid))
+        if (HasComp<ZPipeComponent>(uid))
         {
-            var zPipeSystem = EntityManager.System<Pipes.Systems.ZPipeSystem>();
+            var zPipeSystem = EntityManager.System<ZPipeSystem>();
             zPipeSystem.TryLink(uid);
         }
     }
