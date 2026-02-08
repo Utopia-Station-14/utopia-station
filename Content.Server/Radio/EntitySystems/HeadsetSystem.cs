@@ -1,3 +1,5 @@
+using Content.Server._Utopia.Language;
+
 using Content.Shared.Chat;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Radio;
@@ -12,6 +14,7 @@ public sealed class HeadsetSystem : SharedHeadsetSystem
 {
     [Dependency] private readonly INetManager _netMan = default!;
     [Dependency] private readonly RadioSystem _radio = default!;
+    [Dependency] private readonly LanguageSystem _language = default!; // Utopia-Tweak : Language
 
     public override void Initialize()
     {
@@ -110,6 +113,13 @@ public sealed class HeadsetSystem : SharedHeadsetSystem
         }
 
         if (TryComp(parent, out ActorComponent? actor))
-            _netMan.ServerSendMessage(args.ChatMsg, actor.PlayerSession.Channel);
+        {
+            // Utopia-Tweak : Language
+            if (_language.CanUnderstand(Transform(uid).ParentUid, args.Language))
+                _netMan.ServerSendMessage(args.ChatMsg, actor.PlayerSession.Channel);
+            else
+                _netMan.ServerSendMessage(args.UnknownLanguageChatMsg, actor.PlayerSession.Channel);
+            // Utopia-Tweak : Language
+        }
     }
 }

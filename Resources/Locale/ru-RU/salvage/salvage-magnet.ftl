@@ -14,10 +14,12 @@ salvage-magnet-resources =
         [OreGold] Золото
         [OreDiamond] Алмазы
         [OreSilver] Серебро
-        [OrePlasma] Плазма
+        [OrePlasma] Форон
         [OreUranium] Уран
         [OreArtifactFragment] Фрагменты артефактов
         [OreBananium] Бананиум
+        [UtopiaOreCopper] Медь
+        [UtopiaOreLead] Свинец
        *[other] { $resource }
     }
 salvage-magnet-resources-count =

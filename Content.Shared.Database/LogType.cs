@@ -478,4 +478,11 @@ public enum LogType
     /// Events relating to midi playback.
     /// </summary>
     Instrument = 103,
+
+    // Utopia-Tweak : Grab
+    /// <summary>
+    /// A player grabbed another player
+    /// </summary>
+    Grab = 104
+    // Utopia-Tweak : Grab
 }

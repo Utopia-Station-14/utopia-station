@@ -2,6 +2,7 @@ using Content.Server.Power.EntitySystems;
 using Content.Server.Stack;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Components;
+using Content.Shared.Construction.Components;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Destructible;
 using Content.Shared.FixedPoint;
@@ -59,6 +60,11 @@ namespace Content.Server.Kitchen.EntitySystems
             SubscribeLocalEvent<ReagentGrinderComponent, ReagentGrinderStartMessage>(OnStartMessage);
             SubscribeLocalEvent<ReagentGrinderComponent, ReagentGrinderEjectChamberAllMessage>(OnEjectChamberAllMessage);
             SubscribeLocalEvent<ReagentGrinderComponent, ReagentGrinderEjectChamberContentMessage>(OnEjectChamberContentMessage);
+
+            // Utopia-Tweak : Machine Parts
+            SubscribeLocalEvent<ReagentGrinderComponent, RefreshPartsEvent>(OnRefreshParts);
+            SubscribeLocalEvent<ReagentGrinderComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+            // Utopia-Tweak : Machine Parts
         }
 
         private void OnToggleAutoModeMessage(Entity<ReagentGrinderComponent> entity, ref ReagentGrinderToggleAutoModeMessage message)
@@ -312,5 +318,22 @@ namespace Content.Server.Kitchen.EntitySystems
         {
             _audioSystem.PlayPvs(reagentGrinder.Comp.ClickSound, reagentGrinder.Owner, AudioParams.Default.WithVolume(-2f));
         }
+
+        // Utopia-Tweak : Machine Parts
+        private void OnRefreshParts(Entity<ReagentGrinderComponent> entity, ref RefreshPartsEvent args)
+        {
+            var tierWorkTime = args.PartTiers[entity.Comp.MachinePartWorkTime];
+            var tierStorage = args.PartTiers[entity.Comp.MachinePartStorageMax];
+
+            entity.Comp.WorkTimeMultiplier = MathF.Pow(entity.Comp.PartTierWorkTimerMulitplier, tierWorkTime - 1);
+            entity.Comp.StorageMaxEntities = entity.Comp.BaseStorageMaxEntities + (int)(entity.Comp.StoragePerPartTier * (tierStorage - 1));
+        }
+
+        private void OnUpgradeExamine(Entity<ReagentGrinderComponent> entity, ref UpgradeExamineEvent args)
+        {
+            args.AddPercentageUpgrade("reagent-grinder-component-upgrade-work-time", entity.Comp.WorkTimeMultiplier);
+            args.AddNumberUpgrade("reagent-grinder-component-upgrade-storage", entity.Comp.StorageMaxEntities - entity.Comp.BaseStorageMaxEntities);
+        }
+        // Utopia-Tweak : Machine Parts
     }
 }

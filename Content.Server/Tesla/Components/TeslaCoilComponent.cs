@@ -8,10 +8,11 @@ namespace Content.Server.Tesla.Components;
 [RegisterComponent, Access(typeof(TeslaCoilSystem))]
 public sealed partial class TeslaCoilComponent : Component
 {
+    // Utopia-Tweak : Lightning-Update
     /// <summary>
-    /// How much power will the coil generate from a lightning strike
+    /// Maybe later idk.
     /// </summary>
-    // To Do: Different lightning bolts have different powers and generate different amounts of energy
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
-    public float ChargeFromLightning = 50000f;
+    [DataField]
+    public int ChargingMultiplier = 1;
+    // Utopia-Tweak : Lightning-Update
 }

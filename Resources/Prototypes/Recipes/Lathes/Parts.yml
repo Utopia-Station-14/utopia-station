@@ -8,6 +8,7 @@
   materials:
     Steel: 300
     Plastic: 200
+    Copper: 200 # Utopia-Tweak : Ores
 
 # Stackable part with no function
 - type: latheRecipe
@@ -18,6 +19,7 @@
   materials:
     Steel: 50
     Plastic: 50
+    Copper: 50 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseStockPartRecipe

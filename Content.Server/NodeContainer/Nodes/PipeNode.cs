@@ -3,8 +3,11 @@ using Content.Server.NodeContainer.NodeGroups;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Shared.NodeContainer;
+using Content.Shared.Tag; // Utopia-Tweak : HeatExchangerUpdt
+using Robust.Shared.GameObjects; // Utopia-Tweak : HeatExchangerUpdt
 using Robust.Shared.Map.Components;
 using Robust.Shared.Utility;
+using Robust.Shared.Prototypes; // Utopia-Tweak : HeatExchangerUpdt
 
 namespace Content.Server.NodeContainer.Nodes
 {
@@ -145,7 +148,6 @@ namespace Content.Server.NodeContainer.Nodes
                 return;
 
             // update valid pipe directions
-
             if (!RotationsEnabled)
             {
                 CurrentPipeDirection = OriginalPipeDirection;
@@ -168,16 +170,13 @@ namespace Content.Server.NodeContainer.Nodes
                 foreach (var pipe in _alwaysReachable)
                 {
                     if (pipe.Deleting)
-                    {
                         remQ.Add(pipe);
-                    }
+
                     yield return pipe;
                 }
 
                 foreach (var pipe in remQ)
-                {
                     _alwaysReachable.Remove(pipe);
-                }
             }
 
             if (!xform.Anchored || grid == null)
@@ -193,9 +192,7 @@ namespace Content.Server.NodeContainer.Nodes
                     continue;
 
                 foreach (var pipe in LinkableNodesInDirection(pos, pipeDir, grid, nodeQuery))
-                {
                     yield return pipe;
-                }
             }
         }
 
@@ -207,12 +204,21 @@ namespace Content.Server.NodeContainer.Nodes
         {
             foreach (var pipe in PipesInDirection(pos, pipeDir, grid, nodeQuery))
             {
-                if (pipe.NodeGroupID == NodeGroupID
-                    && pipe.CurrentPipeLayer == CurrentPipeLayer
-                    && pipe.CurrentPipeDirection.HasDirection(pipeDir.GetOpposite()))
-                {
-                    yield return pipe;
-                }
+                // Utopia-Tweak : HeatExchangerUpdt
+                if (pipe.NodeGroupID != NodeGroupID)
+                    continue;
+
+                if (pipe.CurrentPipeLayer != CurrentPipeLayer)
+                    continue;
+
+                if (!pipe.CurrentPipeDirection.HasDirection(pipeDir.GetOpposite()))
+                    continue;
+
+                if (!HeatExchangeCompatible(pipe, pipeDir))
+                    continue;
+
+                yield return pipe;
+                // Utopia-Tweak : HeatExchangerUpdt
             }
         }
 
@@ -236,5 +242,44 @@ namespace Content.Server.NodeContainer.Nodes
                 }
             }
         }
+
+        private static readonly ProtoId<TagPrototype> HeatExchangerTag = "UtopiaHeatExchanger"; // Utopia-Tweak : HeatExchangerUpdt
+
+        // Utopia-Tweak : HeatExchangerUpdt
+        private static readonly ProtoId<TagPrototype> HeatExchangerConnectionTag = "UtopiaHeatExchangerConnection"; // Utopia-Tweak : HeatExchangerUpdt
+
+        // Utopia-Tweak : HeatExchangerUpdt
+        private bool HeatExchangeCompatible(
+            PipeNode other,
+            PipeDirection connectionDir)
+        {
+            var entMan = IoCManager.Resolve<IEntityManager>();
+            var tag = entMan.System<TagSystem>();
+
+            var heatExchanger = tag.HasTag(Owner, HeatExchangerTag);
+            var otherHeatExchanger = tag.HasTag(other.Owner, HeatExchangerTag);
+
+            var connector = tag.HasTag(Owner, HeatExchangerConnectionTag);
+            var otherConnector = tag.HasTag(other.Owner, HeatExchangerConnectionTag);
+
+            if (!connector && !otherConnector && heatExchanger != otherHeatExchanger)
+                return false;
+
+            if (connector)
+            {
+                return connectionDir switch
+                {
+                    PipeDirection.North => otherHeatExchanger,
+                    PipeDirection.South => !otherHeatExchanger,
+                    _ => false
+                };
+            }
+
+            if (otherConnector)
+                return true;
+
+            return true;
+        }
+        // Utopia-Tweak : HeatExchangerUpdt
     }
 }

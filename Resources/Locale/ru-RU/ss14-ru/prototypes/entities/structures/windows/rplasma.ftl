@@ -1,6 +1,6 @@
-ent-ReinforcedPlasmaWindow = плазменное бронеокно
+ent-ReinforcedPlasmaWindow = фороновое бронеокно
     .desc = { ent-BaseDeltaPressureReinforcedPlasma.desc }
-ent-PlasmaReinforcedWindowDirectional = направленное плазменное бронеокно
+ent-PlasmaReinforcedWindowDirectional = направленное фороновое бронеокно
     .desc = Смотри, не заляпай.
 ent-ReinforcedPlasmaWindowDiagonal = { ent-ReinforcedPlasmaWindow }
     .suffix = Диагональ

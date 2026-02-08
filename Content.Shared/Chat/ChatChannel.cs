@@ -85,6 +85,10 @@ namespace Content.Shared.Chat
         /// </summary>
         Unspecified = 1 << 14,
 
+        // Utopia-Tweak : Language
+        CollectiveMind = 1 << 15,
+        // Utopia-Tweak : Language
+
         /// <summary>
         ///     Channels considered to be IC.
         /// </summary>

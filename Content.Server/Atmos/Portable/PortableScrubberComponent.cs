@@ -1,5 +1,7 @@
 using Content.Shared.Atmos;
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.Guidebook;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Server.Atmos.Portable
 {
@@ -29,7 +31,20 @@ namespace Content.Server.Atmos.Portable
             Gas.WaterVapor,
             Gas.Ammonia,
             Gas.NitrousOxide,
-            Gas.Frezon
+            Gas.Frezon,
+            // Utopia-Tweak : Gases
+            Gas.BZ,
+            Gas.Pluoxium,
+            Gas.Hydrogen,
+            Gas.Nitrium,
+            Gas.Healium,
+            Gas.HyperNoblium,
+            Gas.ProtoNitrate,
+            Gas.Zauker,
+            Gas.Halon,
+            Gas.Helium,
+            Gas.AntiNoblium
+            // Utopia-Tweak : Gases
         };
 
         [ViewVariables(VVAccess.ReadWrite)]
@@ -53,5 +68,47 @@ namespace Content.Server.Atmos.Portable
         public float Volume => Air.Volume;
 
         #endregion
+
+        // Utopia-Tweak : Machine Parts
+
+        /// <summary>
+        /// The base speed at which gas is scrubbed from the environment.
+        /// </summary>
+        [DataField]
+        public float BaseTransferRate = 800;
+
+        /// <summary>
+        /// The machine part which modifies the speed of <see cref="TransferRate"/>
+        /// </summary>
+        [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+        public string MachinePartTransferRate = "Manipulator";
+
+        /// <summary>
+        /// How much the <see cref="MachinePartTransferRate"/> will modify the rate.
+        /// The value will be multiplied by this amount for each increasing part tier.
+        /// </summary>
+        [DataField]
+        public float PartTierTransferRateModifier = 1.4f;
+
+        /// <summary>
+        /// The base amount of maximum internal pressure
+        /// </summary>
+        [DataField]
+        public float BaseMaxPressure = 2500;
+
+        /// <summary>
+        /// The machine part that modifies the maximum internal pressure
+        /// </summary>
+        [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+        public string MachinePartMaxPressure = "MatterBin";
+
+        /// <summary>
+        /// How much the <see cref="MachinePartMaxPressure"/> will affect the pressure.
+        /// The value will be multiplied by this amount for each increasing part tier.
+        /// </summary>
+        [DataField]
+        public float PartTierMaxPressureModifier = 1.5f;
+
+        // Utopia-Tweak : Machine Parts
     }
 }

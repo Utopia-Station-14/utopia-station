@@ -160,15 +160,56 @@ async def fetch_pr_data(session: aiohttp.ClientSession, repo, pr_number):
 def update_changelog(file_path, new_entries):
     existing_data = load_yaml(file_path)
     existing_entries = existing_data.get("Entries", [])
+    existing_signatures = set()
+
+    for entry in existing_entries:
+        author = entry.get("author", "")
+        changes = entry.get("changes", [])
+        changes_str = str(sorted([(c.get("type", ""), c.get("message", "")) for c in changes]))
+        signature = (author, changes_str)
+        existing_signatures.add(signature)
+
+    filtered_entries = []
+
+    for new_entry in new_entries:
+        author = new_entry.get("author", "")
+        changes = new_entry.get("changes", [])
+        changes_str = str(sorted([(c.get("type", ""), c.get("message", "")) for c in changes]))
+        signature = (author, changes_str)
+
+        if signature in existing_signatures:
+            logging.info(f"Duplicate entry found for author '{author}'. Skipping.")
+            continue
+
+        duplicate_in_new = False
+        for other_entry in filtered_entries:
+            other_author = other_entry.get("author", "")
+            other_changes = other_entry.get("changes", [])
+            other_changes_str = str(sorted([(c.get("type", ""), c.get("message", "")) for c in other_changes]))
+
+            if author == other_author and changes_str == other_changes_str:
+                logging.info(f"Duplicate found within new entries for author '{author}'. Skipping.")
+                duplicate_in_new = True
+                break
+
+        if not duplicate_in_new:
+            filtered_entries.append(new_entry)
+            existing_signatures.add(signature)
+
+    if not filtered_entries:
+        logging.info("No new entries to add (all were duplicates).")
+        return
 
     next_id = max((entry.get("id", 0) for entry in existing_entries), default=0) + 1
 
-    for entry in new_entries:
+    for entry in filtered_entries:
         entry["id"] = next_id
         next_id += 1
 
-    save_yaml({"Entries": strip_newlines(existing_entries + new_entries)}, file_path)
-    logging.info(f"Updated changelog saved to {file_path}")
+    all_entries = existing_entries + filtered_entries
+
+    save_yaml({"Entries": strip_newlines(all_entries)}, file_path)
+    logging.info(f"Added {len(filtered_entries)} new entries to changelog at {file_path}")
 
 async def main():
     if len(sys.argv) < 2:

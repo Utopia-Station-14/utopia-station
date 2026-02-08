@@ -1,0 +1,11 @@
+gas-bz-abbreviation = BZ
+gas-pluoxium-abbreviation = PlOx
+gas-hydrogen-abbreviation = H₂
+gas-nitrium-abbreviation = Nt
+gas-healium-abbreviation = Hlm
+gas-hypernoblium-abbreviation = HyNo
+gas-protonitrate-abbreviation = PrN
+gas-zauker-abbreviation = Zk
+gas-halon-abbreviation = Hn
+gas-helium-abbreviation = He
+gas-antinoblium-abbreviation = AnNo

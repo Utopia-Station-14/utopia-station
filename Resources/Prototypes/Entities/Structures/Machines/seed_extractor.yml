@@ -35,3 +35,8 @@
   - type: SeedExtractor
   - type: Machine
     board: SeedExtractorMachineCircuitboard
+  # Utopia-Tweak : Machine Part
+  - type: UpgradePowerDraw
+    powerDrawMultiplier: 0.75
+    scaling: Exponential
+  # Utopia-Tweak : Machine Part

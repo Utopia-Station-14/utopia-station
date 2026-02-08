@@ -9,6 +9,7 @@ using Content.Client.Players.PlayTimeTracking;
 using Content.Client.Stylesheets;
 using Content.Client.Sprite;
 using Content.Client.UserInterface.Systems.Guidebook;
+using Content.Shared._Utopia.CCVar;
 using Content.Shared.CCVar;
 using Content.Shared.Clothing;
 using Content.Shared.GameTicking;
@@ -184,6 +185,14 @@ namespace Content.Client.Lobby.UI
 
             TabContainer.SetTabTitle(0, Loc.GetString("humanoid-profile-editor-appearance-tab"));
 
+            // Utopia-Tweak : Language
+            #region Languages
+
+            RefreshLanguages();
+
+            #endregion Languages
+            // Utopia-Tweak : Language
+
             #region Sex
 
             SexButton.OnItemSelected += args =>
@@ -353,6 +362,18 @@ namespace Content.Client.Lobby.UI
 
             #endregion Hair
 
+            // Utopia-Tweak : Barks
+            #region Voice
+
+            if (configurationManager.GetCVar(UCCVars.BarksEnabled))
+            {
+                BarksContainer.Visible = true;
+                InitializeBarks();
+            }
+
+            #endregion
+            // Utopia-Tweak : Barks
+
             #region SpawnPriority
 
             foreach (var value in Enum.GetValues<SpawnPriorityPreference>())
@@ -386,7 +407,7 @@ namespace Content.Client.Lobby.UI
 
             #region Jobs
 
-            TabContainer.SetTabTitle(1, Loc.GetString("humanoid-profile-editor-jobs-tab"));
+            TabContainer.SetTabTitle(2, Loc.GetString("humanoid-profile-editor-jobs-tab")); // Utopia-Tweak : Language
 
             PreferenceUnavailableButton.AddItem(
                 Loc.GetString("humanoid-profile-editor-preference-unavailable-stay-in-lobby-button"),
@@ -410,13 +431,13 @@ namespace Content.Client.Lobby.UI
 
             #endregion Jobs
 
-            TabContainer.SetTabTitle(2, Loc.GetString("humanoid-profile-editor-antags-tab"));
+            TabContainer.SetTabTitle(3, Loc.GetString("humanoid-profile-editor-antags-tab")); // Utopia-Tweak : Language
 
             RefreshTraits();
 
             #region Markings
 
-            TabContainer.SetTabTitle(4, Loc.GetString("humanoid-profile-editor-markings-tab"));
+            TabContainer.SetTabTitle(5, Loc.GetString("humanoid-profile-editor-markings-tab")); // Utopia-Tweak : Language
 
             Markings.OnMarkingAdded += OnMarkingChange;
             Markings.OnMarkingRemoved += OnMarkingChange;
@@ -494,7 +515,7 @@ namespace Content.Client.Lobby.UI
             TraitsList.RemoveAllChildren();
 
             var traits = _prototypeManager.EnumeratePrototypes<TraitPrototype>().OrderBy(t => Loc.GetString(t.Name)).ToList();
-            TabContainer.SetTabTitle(3, Loc.GetString("humanoid-profile-editor-traits-tab"));
+            TabContainer.SetTabTitle(4, Loc.GetString("humanoid-profile-editor-traits-tab")); // Utopia-Tweak : Language
 
             if (traits.Count < 1)
             {
@@ -771,6 +792,9 @@ namespace Content.Client.Lobby.UI
             UpdateHairPickers();
             UpdateCMarkingsHair();
             UpdateCMarkingsFacialHair();
+            UpdateBarkVoicesControls(); // Utopia-Tweak : Barks
+
+            RefreshLanguages(); // Utopia-Tweak : Language
 
             RefreshAntags();
             RefreshJobs();
@@ -1186,6 +1210,36 @@ namespace Content.Client.Lobby.UI
             Profile = Profile?.WithGender(newGender);
             ReloadPreview();
         }
+
+        // Utopia-Tweak : Barks
+        private void SetBarkProto(string prototype)
+        {
+            Profile = Profile?.WithBarkProto(prototype);
+            ReloadPreview();
+            SetDirty();
+        }
+
+        private void SetBarkPitch(float pitch)
+        {
+            Profile = Profile?.WithBarkPitch(Math.Clamp(pitch, _cfgManager.GetCVar(UCCVars.BarksMinPitch), _cfgManager.GetCVar(UCCVars.BarksMaxPitch)));
+            ReloadPreview();
+            SetDirty();
+        }
+
+        private void SetBarkMinVariation(float variation)
+        {
+            Profile = Profile?.WithBarkMinVariation(Math.Clamp(variation, _cfgManager.GetCVar(UCCVars.BarksMinDelay), Profile.Bark.MaxVar));
+            ReloadPreview();
+            SetDirty();
+        }
+
+        private void SetBarkMaxVariation(float variation)
+        {
+            Profile = Profile?.WithBarkMaxVariation(Math.Clamp(variation, Profile.Bark.MinVar, _cfgManager.GetCVar(UCCVars.BarksMaxDelay)));
+            ReloadPreview();
+            SetDirty();
+        }
+        // Utopia-Tweak : Barks
 
         private void SetSpecies(string newSpecies)
         {

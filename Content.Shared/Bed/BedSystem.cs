@@ -11,6 +11,7 @@ using Content.Shared.Power;
 using Content.Shared.Power.EntitySystems;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Construction.Components;
 
 namespace Content.Shared.Bed;
 
@@ -41,6 +42,8 @@ public sealed class BedSystem : EntitySystem
         SubscribeLocalEvent<StasisBedComponent, GotEmaggedEvent>(OnStasisEmagged);
         SubscribeLocalEvent<StasisBedComponent, PowerChangedEvent>(OnPowerChanged);
         SubscribeLocalEvent<StasisBedBuckledComponent, GetMetabolicMultiplierEvent>(OnStasisGetMetabolicMultiplier);
+        SubscribeLocalEvent<StasisBedComponent, RefreshPartsEvent>(OnRefreshParts); // Frontier
+        SubscribeLocalEvent<StasisBedComponent, UpgradeExamineEvent>(OnUpgradeExamine); // Frontier
 
         _sleepingQuery = GetEntityQuery<SleepingComponent>();
     }
@@ -162,4 +165,19 @@ public sealed class BedSystem : EntitySystem
             }
         }
     }
+
+    // Utopia-Tweak : Machine Parts
+    private void OnRefreshParts(EntityUid uid, StasisBedComponent component, RefreshPartsEvent args)
+    {
+        var metabolismTiers = args.PartTiers[component.MachinePartMetabolismModifier];
+        component.Multiplier = component.BaseMultiplier * metabolismTiers;
+        if (_emag.CheckFlag(uid, EmagType.Interaction))
+            component.Multiplier = 1f / component.Multiplier;
+    }
+
+    private void OnUpgradeExamine(EntityUid uid, StasisBedComponent component, UpgradeExamineEvent args)
+    {
+        args.AddPercentageUpgrade("stasis-bed-component-upgrade-stasis", component.Multiplier / component.BaseMultiplier);
+    }
+    // Utopia-Tweak : Machine Parts
 }

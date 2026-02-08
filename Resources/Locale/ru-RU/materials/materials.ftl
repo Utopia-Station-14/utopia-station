@@ -1,8 +1,8 @@
 # Glass
 materials-glass = стекло
 materials-reinforced-glass = бронестекло
-materials-plasma-glass = плазменное стекло
-materials-reinforced-plasma-glass = плазменное бронестекло
+materials-plasma-glass = фороновое стекло
+materials-reinforced-plasma-glass = фороновое бронестекло
 materials-uranium-glass = урановое стекло
 materials-reinforced-uranium-glass = урановое бронестекло
 # Metals
@@ -15,7 +15,7 @@ materials-biomass = биомасса
 materials-cardboard = картон
 materials-cloth = ткань
 materials-durathread = дюраткань
-materials-plasma = плазма
+materials-plasma = форон
 materials-plastic = пластик
 materials-wood = дерево
 materials-paper = бумага
@@ -33,7 +33,7 @@ materials-raw-iron = руда железа
 materials-raw-quartz = руда кварца
 materials-raw-gold = руда золота
 materials-raw-silver = руда серебра
-materials-raw-plasma = руда плазмы
+materials-raw-plasma = руда форона
 materials-raw-uranium = руда урана
 materials-raw-bananium = руда бананиума
 materials-raw-salt = каменная соль

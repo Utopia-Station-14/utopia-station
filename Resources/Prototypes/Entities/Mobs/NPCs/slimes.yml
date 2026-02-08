@@ -112,6 +112,11 @@
     speechSounds: Slime
   - type: TypingIndicator
     proto: slime
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: basic slime

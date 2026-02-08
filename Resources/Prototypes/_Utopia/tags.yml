@@ -1,0 +1,20 @@
+# TODO: Сделать комменты как у визов.
+- type: Tag
+  id: UtopiaCopperOre
+
+- type: Tag
+  id: UtopiaHeatExchanger
+
+- type: Tag
+  id: UtopiaHeatExchangerConnection
+
+- type: Tag
+  id: UtopiaLeadOre
+
+# URT
+- type: Tag
+  id: UtopiaSteelSheet
+
+# Grab
+- type: Tag
+  id: IgnoreChokeSpeechBlocking

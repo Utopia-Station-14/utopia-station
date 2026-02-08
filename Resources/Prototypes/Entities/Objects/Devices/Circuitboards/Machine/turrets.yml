@@ -18,11 +18,15 @@
       ProximitySensor:
         amount: 1
         defaultPrototype: ProximitySensor
-    componentRequirements:
-      PowerCell:
-        amount: 1
-        defaultPrototype: PowerCellMedium
-        examineName: construction-insert-info-examine-name-power-cell
+    # Utopia-Tweak : Machine Parts
+    # componentRequirements:
+    #   PowerCell:
+    #     amount: 1
+    #     defaultPrototype: PowerCellMedium
+    #     examineName: construction-insert-info-examine-name-power-cell
+    requirements:
+      PowerCell: 1
+    # Utopia-Tweak : Machine Parts
 
 - type: entity
   parent: WeaponEnergyTurretStationMachineCircuitboardBase
@@ -45,7 +49,7 @@
     state: security
   - type: MachineBoard
     prototype: WeaponEnergyTurretSecurity
-    
+
 - type: entity
   parent: WeaponEnergyTurretStationMachineCircuitboardBase
   id: WeaponEnergyTurretCommandMachineCircuitboard

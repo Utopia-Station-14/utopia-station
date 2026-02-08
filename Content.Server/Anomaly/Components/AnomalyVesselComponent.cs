@@ -1,6 +1,8 @@
 ﻿using Content.Shared.Anomaly;
+using Content.Shared.Construction.Prototypes;
 using Robust.Shared.Audio;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Server.Anomaly.Components;
 
@@ -50,4 +52,19 @@ public sealed partial class AnomalyVesselComponent : Component
     /// </summary>
     [DataField("beepSound")]
     public SoundSpecifier BeepSound = new SoundPathSpecifier("/Audio/Machines/vessel_warning.ogg");
+
+    // Utopia-Tweak : Machine Parts
+    /// <summary>
+    /// The machine part that affects the point multiplier of the vessel
+    /// </summary>
+    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+    public string MachinePartPointModifier = "ScanningModule";
+
+    /// <summary>
+    /// A value used to scale the point multiplier
+    /// with the corresponding part Tier.
+    /// </summary>
+    [DataField]
+    public float PartTierPointModifier = 1.25f;
+    // Utopia-Tweak : Machine Parts
 }

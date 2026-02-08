@@ -1,5 +1,5 @@
-<div class="header" align="center">  
-<img alt="Space Station 14" width="880" height="300" src="https://raw.githubusercontent.com/space-wizards/asset-dump/de329a7898bb716b9d5ba9a0cd07f38e61f1ed05/github-logo.svg">  
+<div class="header" align="center">
+<img alt="Space Station 14" width="880" height="300" src="https://raw.githubusercontent.com/space-wizards/asset-dump/de329a7898bb716b9d5ba9a0cd07f38e61f1ed05/github-logo.svg">
 </div>
 
 # Station Utopia 14
@@ -10,7 +10,7 @@ Space Station 14 это ремейк SS13, который работает на 
 
 ## Ссылки
 
-<div class="header">  
+<div class="header">
 
 WIP
 
@@ -25,7 +25,7 @@ WIP
 WIP
 
 > [!NOTE]
-> Обратите внимание, что данный проект не приветствует изменения, созданные на базе технологий ИИ. 
+> Обратите внимание, что данный проект не приветствует изменения, созданные на базе технологий ИИ.
 > Однако, мы готовы сделать исключение в 3 случаях.
 > - 90% изменений были подготовлены человеком. Уточните в PR о том, что было сделано с помощью ИИ.
 > - ИИ подготовил внутриигровую документацию.
@@ -35,14 +35,14 @@ WIP
 
 1. Сделайте клон данного репозитория:
 ```shell
-git clone https://github.com/KashRas2/station-utopia.git
+git clone https://github.com/Utopia-Station-14/utopia-station.git
 ```
 2. Перейдите в директорию проекта и запустите ```RUN_THIS.py``` для инициализации подмодулей и скачивания движка:
 ```shell
 cd station-utopia
 python RUN_THIS.py
 ```
-3. Скомпилируйте проект:  
+3. Скомпилируйте проект:
 
 ```shell
 dotnet build

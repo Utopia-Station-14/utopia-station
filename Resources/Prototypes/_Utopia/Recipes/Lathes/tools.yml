@@ -1,0 +1,9 @@
+- type: latheRecipe
+  parent: BaseToolRecipe
+  id: RPED
+  result: RPED
+  completetime: 10
+  materials:
+    Steel: 650
+    Plastic: 150
+    Copper: 50
