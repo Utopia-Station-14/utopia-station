@@ -1,0 +1,93 @@
+- type: entity
+  parent: GasPipeBase
+  id: UtopiaGasZPipeStraightUp
+  name: UP
+  suffix: Straight
+  placement:
+    mode: AlignAtmosPipeLayers
+  components:
+  - type: NodeContainer
+    nodes:
+      pipe:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+  - type: Sprite
+    layers:
+    - state: pipeStraight
+      map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: AtmosPipeLayers
+    alternativePrototypes:
+      Primary: GasPipeStraight
+      Secondary: GasPipeStraightAlt1
+      Tertiary: GasPipeStraightAlt2
+  - type: Construction
+    graph: GasPipe
+    node: straight
+  - type: Item
+    storedSprite:
+      sprite: Structures/Piping/Atmospherics/pipe.rsi
+      state: storageStraight
+    shape:
+    - 0,0,0,2
+  - type: MeleeWeapon
+    attackRate: 1
+    damage:
+      types:
+        Blunt: 8
+    soundHit:
+      collection: MetalThud # this NEEDS to changed to the metal pipe falling sound effect on april first every year
+  - type: GuideHelp
+    guides:
+    - Pipes
+    - PipeNetworks
+  - type: ZPipe
+  - type: ZLevelTransmitter
+  - type: ZLevelEntityLink
+
+- type: entity
+  parent: GasPipeBase
+  id: UtopiaGasZPipeStraightDown
+  name: DOWN
+  suffix: Straight
+  placement:
+    mode: AlignAtmosPipeLayers
+  components:
+  - type: NodeContainer
+    nodes:
+      pipe:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+  - type: Sprite
+    layers:
+    - state: pipeStraight
+      map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: AtmosPipeLayers
+    alternativePrototypes:
+      Primary: GasPipeStraight
+      Secondary: GasPipeStraightAlt1
+      Tertiary: GasPipeStraightAlt2
+  - type: Construction
+    graph: GasPipe
+    node: straight
+  - type: Item
+    storedSprite:
+      sprite: Structures/Piping/Atmospherics/pipe.rsi
+      state: storageStraight
+    shape:
+    - 0,0,0,2
+  - type: MeleeWeapon
+    attackRate: 1
+    damage:
+      types:
+        Blunt: 8
+    soundHit:
+      collection: MetalThud # this NEEDS to changed to the metal pipe falling sound effect on april first every year
+  - type: GuideHelp
+    guides:
+    - Pipes
+    - PipeNetworks
+  - type: ZPipe
+  - type: ZLevelTransmitter
+  - type: ZLevelEntityLink
