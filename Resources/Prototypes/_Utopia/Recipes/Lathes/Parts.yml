@@ -1,0 +1,100 @@
+# Base prototypes
+
+- type: latheRecipe
+  abstract: true
+  id: BaseAdvancedPartRecipe
+  parent: BasePartRecipe
+  completetime: 2.5
+  materials:
+    Steel: 80
+    Plastic: 80
+    Copper: 80
+    Plasma: 75
+
+- type: latheRecipe
+  abstract: true
+  id: BaseSuperPartRecipe
+  parent: BaseAdvancedPartRecipe
+  completetime: 3
+  materials:
+    Steel: 150
+    Plastic: 150
+    Plasma: 75
+    Gold: 75
+    Copper: 75
+
+# Recipes
+
+# Rating 1
+
+- type: latheRecipe
+  parent: BaseStockPartRecipe
+  id: CapacitorStockPart
+  result: CapacitorStockPart
+
+- type: latheRecipe
+  parent: BaseStockPartRecipe
+  id: MatterBinStockPart
+  result: MatterBinStockPart
+
+- type: latheRecipe
+  parent: BaseStockPartRecipe
+  id: ScanningModuleStockPart
+  result: ScanningModuleStockPart
+
+- type: latheRecipe
+  parent: BaseStockPartRecipe
+  id: MicroLaserStockPart
+  result: MicroLaserStockPart
+
+# Rating 2
+- type: latheRecipe
+  parent: BaseAdvancedPartRecipe
+  id: AdvancedCapacitorStockPart
+  result: AdvancedCapacitorStockPart
+
+- type: latheRecipe
+  parent: BaseAdvancedPartRecipe
+  id: AdvancedMatterBinStockPart
+  result: AdvancedMatterBinStockPart
+
+- type: latheRecipe
+  parent: BaseAdvancedPartRecipe
+  id: NanoManipulatorStockPart
+  result: NanoManipulatorStockPart
+
+- type: latheRecipe
+  parent: BaseAdvancedPartRecipe
+  id: AdvancedScanningModuleStockPart
+  result: AdvancedScanningModuleStockPart
+
+- type: latheRecipe
+  parent: BaseAdvancedPartRecipe
+  id: HighPowerMicroLaserStockPart
+  result: HighPowerMicroLaserStockPart
+
+# Rating 3
+- type: latheRecipe
+  parent: BaseSuperPartRecipe
+  id: SuperCapacitorStockPart
+  result: SuperCapacitorStockPart
+
+- type: latheRecipe
+  parent: BaseSuperPartRecipe
+  id: SuperMatterBinStockPart
+  result: SuperMatterBinStockPart
+
+- type: latheRecipe
+  parent: BaseSuperPartRecipe
+  id: PicoManipulatorStockPart
+  result: PicoManipulatorStockPart
+
+- type: latheRecipe
+  parent: BaseSuperPartRecipe
+  id: PhasicScanningModuleStockPart
+  result: PhasicScanningModuleStockPart
+
+- type: latheRecipe
+  parent: BaseSuperPartRecipe
+  id: UltraHighPowerMicroLaserStockPart
+  result: UltraHighPowerMicroLaserStockPart

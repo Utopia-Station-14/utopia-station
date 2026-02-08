@@ -66,3 +66,8 @@
         enum.PowerDeviceVisualLayers.Powered:
           True: { visible: true }
           False: { visible: false }
+  # Utopia-Tweak : Machine Part
+  - type: UpgradePowerDraw
+    powerDrawMultiplier: 0.80
+    scaling: Exponential
+  # Utopia-Tweak : Machine Part

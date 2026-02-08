@@ -91,6 +91,14 @@
                                     <Control HorizontalExpand="True"/>
                                     <OptionButton Name="SpawnPriorityButton" HorizontalAlignment="Right" />
                                 </BoxContainer>
+                                <!-- Utopia-Tweak : Barks -->
+                                <BoxContainer HorizontalExpand="True" Visible="False" Name="BarksContainer">
+                                    <Label Text="{Loc 'humanoid-profile-editor-bark-label'}" />
+                                    <Control HorizontalExpand="True"/>
+                                    <Button Name="BarkProtoButton" HorizontalAlignment="Right" MinWidth="150" />
+									<Button Name="BarkPlayButton" Text="{Loc 'humanoid-profile-editor-voice-play'}" MaxWidth="80" />
+                                </BoxContainer>
+                                <!-- Utopia-Tweak : Barks -->
                             </BoxContainer>
                             <!-- Skin -->
                             <BoxContainer Margin="10" HorizontalExpand="True" Orientation="Vertical">
@@ -111,6 +119,19 @@
                         </BoxContainer>
                     </ScrollContainer>
                 </BoxContainer>
+                <!-- Utopia-Tweak : Language -->
+                <BoxContainer Orientation="Vertical">
+                    <PanelContainer StyleClasses="BackgroundDark">
+                        <BoxContainer Name="LangsInfoContainer" Orientation="Vertical">
+                            <Button Name="SetDefaultLanguagesButton" Text="{Loc 'humanoid-profile-editor-default-langs'}" Margin="5"/>
+                            <Label Name="LanguagesCountLabel" Text="Lelelelele" Margin="5" HorizontalAlignment="Center"/>
+                        </BoxContainer>
+                    </PanelContainer>
+                    <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+                        <BoxContainer Name="LanguagesList" Orientation="Vertical" />
+                    </ScrollContainer>
+                </BoxContainer>
+                <!-- Utopia-Tweak : Language -->
                 <BoxContainer Orientation="Vertical">
                     <!-- Jobs -->
                     <OptionButton Name="PreferenceUnavailableButton" />

@@ -27,6 +27,11 @@
         density: 15
         layer:
         - GhostImpassable
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Speak
+  # Utopia-Tweak : Language
 
 # shared parent between aghosts, replay spectators and normal observers
 - type: entity

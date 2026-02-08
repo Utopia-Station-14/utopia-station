@@ -1,3 +1,4 @@
+using Content.Shared._Utopia.Language;
 using Content.Shared.Chat;
 using Content.Shared.Speech;
 using Robust.Shared.Audio;
@@ -173,7 +174,7 @@ public readonly record struct TelephoneMessageSentEvent(string Message, MsgChatM
 /// Raised when a chat message is received by a telephone from another
 /// </summary>
 [ByRefEvent]
-public readonly record struct TelephoneMessageReceivedEvent(string Message, MsgChatMessage ChatMsg, EntityUid MessageSource, Entity<TelephoneComponent> TelephoneSource);
+public readonly record struct TelephoneMessageReceivedEvent(string Message, MsgChatMessage ChatMsg, EntityUid MessageSource, Entity<TelephoneComponent> TelephoneSource, LanguagePrototype? Language = null); // Utopia-Tweak : Language
 
 #endregion
 

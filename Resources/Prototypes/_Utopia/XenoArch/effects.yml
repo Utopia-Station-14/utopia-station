@@ -1,0 +1,33 @@
+- type: entity
+  id: UtopiaXenoArtifactT4Spawn
+  parent: BaseXenoArtifactEffect
+  description: Create T4 components
+  components:
+  - type: XAEApplyComponents
+    applyIfAlreadyHave: true
+    refreshOnReactivate: true
+    components:
+    - type: EntityTableSpawner
+      deleteSpawnerAfterSpawn: false
+      table: !type:AllSelector
+        children:
+        - id: QuadraticCapacitorStockPart
+          rolls: !type:ConstantNumberSelector
+            value: 3
+          prob: 0.2
+        - id: FemtoManipulatorStockPart
+          rolls: !type:ConstantNumberSelector
+            value: 3
+          prob: 0.2
+        - id: BluespaceMatterBinStockPart
+          rolls: !type:ConstantNumberSelector
+            value: 3
+          prob: 0.2
+        - id: TriphasicScanningModuleStockPart
+          rolls: !type:ConstantNumberSelector
+            value: 3
+          prob: 0.2
+        - id: QuadUltraMicroLaserStockPart
+          rolls: !type:ConstantNumberSelector
+            value: 3
+          prob: 0.2

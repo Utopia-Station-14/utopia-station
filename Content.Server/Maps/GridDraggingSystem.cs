@@ -5,6 +5,7 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
 using Content.Shared._Utopia.ZLevels.Systems;
+using Content.Server._Utopia.ZLevels.Systems;
 
 namespace Content.Server.Maps;
 
@@ -14,7 +15,7 @@ public sealed class GridDraggingSystem : SharedGridDraggingSystem
     [Dependency] private readonly IConGroupController _admin = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
-    [Dependency] private readonly GridMotionPhysicsSyncSystem _gridMotion = default!;   // Utopia tweak
+    [Dependency] private readonly GridMotionLinkSystem _gridMotion = default!;   // Utopia tweak
 
     private readonly HashSet<ICommonSession> _draggers = new();
 

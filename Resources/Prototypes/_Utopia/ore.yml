@@ -1,0 +1,11 @@
+- type: ore
+  id: UtopiaOreCopper
+  oreEntity: UtopiaCopperOre1
+  minOreYield: 1
+  maxOreYield: 2
+
+- type: ore
+  id: UtopiaOreLead
+  oreEntity: UtopiaLeadOre1
+  minOreYield: 1
+  maxOreYield: 2

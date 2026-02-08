@@ -12,6 +12,12 @@
   - Igniter
   - ModularReceiver
   - MicroManipulatorStockPart
+  # Utopia-Tweak : Machine Parts
+  - CapacitorStockPart
+  - MatterBinStockPart
+  - ScanningModuleStockPart
+  - MicroLaserStockPart
+  # Utopia-Tweak : Machine Parts
   - ConveyorBeltAssembly
 
 - type: latheRecipePack

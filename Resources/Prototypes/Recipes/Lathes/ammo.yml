@@ -30,21 +30,21 @@
   id: MagazineRifleEmpty
   result: MagazineRifleEmpty
   materials:
-    Steel: 25
+    Lead: 25 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazineRifle
   result: MagazineRifle
   materials:
-    Steel: 475
+    Lead: 475 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazineRifleIncendiary
   result: MagazineRifleIncendiary
   materials:
-    Steel: 25
+    Lead: 25 # Utopia-Tweak : Ores
     Plastic: 450
 
 - type: latheRecipe
@@ -52,14 +52,14 @@
   id: MagazineRiflePractice
   result: MagazineRiflePractice
   materials:
-    Steel: 175
+    Lead: 175 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazineRifleUranium
   result: MagazineRifleUranium
   materials:
-    Steel: 25
+    Lead: 25 # Utopia-Tweak : Ores
     Plastic: 300
     Uranium: 300
 
@@ -68,7 +68,8 @@
   id: MagazineBoxRifle
   result: MagazineBoxRifle
   materials:
-    Steel: 750
+    Steel: 25 # Utopia-Tweak : Ores
+    Lead: 750 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
@@ -76,13 +77,15 @@
   result: MagazineBoxRifleIncendiary
   materials:
     Plastic: 750
+    Steel: 25 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: MagazineBoxRiflePractice
   result: MagazineBoxRiflePractice
   materials:
-    Steel: 250
+    Steel: 25 # Utopia-Tweak : Ores
+    Lead: 250 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
@@ -91,6 +94,7 @@
   materials:
     Plastic: 500
     Uranium: 500
+    Steel: 25 # Utopia-Tweak : Ores
 
 # .25 Caseless
 - type: latheRecipe
@@ -113,38 +117,43 @@
   id: MagazineLightRifle
   result: MagazineLightRifle
   materials:
-    Steel: 565
+    Steel: 200 # Utopia-Tweak : Ores
+    Lead: 300 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazineLightRifleIncendiary
   result: MagazineLightRifleIncendiary
   materials:
-    Steel: 25
+    Steel: 200 # Utopia-Tweak : Ores
     Plastic: 540
+    Lead: 200 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazineLightRiflePractice
   result: MagazineLightRiflePractice
   materials:
-    Steel: 205
+    Steel: 200 # Utopia-Tweak : Ores
+    Lead: 250 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazineLightRifleUranium
   result: MagazineLightRifleUranium
   materials:
-    Steel: 25
+    Steel: 200 # Utopia-Tweak : Ores
     Plastic: 360
     Uranium: 360
+    Lead: 150 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: MagazineBoxLightRifle
   result: MagazineBoxLightRifle
   materials:
-    Steel: 900
+    Steel: 500 # Utopia-Tweak : Ores
+    Lead: 550 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
@@ -152,13 +161,16 @@
   result: MagazineBoxLightRifleIncendiary
   materials:
     Plastic: 900
+    Steel: 500 # Utopia-Tweak : Ores
+    Lead: 550 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: MagazineBoxLightRiflePractice
   result: MagazineBoxLightRiflePractice
   materials:
-    Steel: 300
+    Steel: 500 # Utopia-Tweak : Ores
+    Lead: 300 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
@@ -181,7 +193,8 @@
   id: MagazinePistol
   result: MagazinePistol
   materials:
-    Steel: 145
+    Steel: 25 # Utopia-Tweak : Ores
+    Lead: 145 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
@@ -190,13 +203,15 @@
   materials:
     Steel: 25
     Plastic: 120
+    Lead: 25 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazinePistolPractice
   result: MagazinePistolPractice
   materials:
-    Steel: 85
+    Steel: 25 # Utopia-Tweak : Ores
+    Lead: 85 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
@@ -206,6 +221,7 @@
     Steel: 25
     Plastic: 65
     Uranium: 120
+    Lead: 25 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseEmptyAmmoRecipe
@@ -219,15 +235,17 @@
   id: MagazinePistolSubMachineGun
   result: MagazinePistolSubMachineGun
   materials:
-    Steel: 300
+    Steel: 30 # Utopia-Tweak : Ores
+    Lead: 300 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazinePistolSubMachineGunIncendiary
   result: MagazinePistolSubMachineGunIncendiary
   materials:
-    Steel: 25
+    Steel: 30 # Utopia-Tweak : Ores
     Plastic: 275
+    Lead: 25 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
@@ -235,15 +253,17 @@
   result: MagazinePistolSubMachineGunPractice
   materials:
     Steel: 150
+    Lead: 100 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazinePistolSubMachineGunUranium
   result: MagazinePistolSubMachineGunUranium
   materials:
-    Steel: 25
+    Steel: 30 # Utopia-Tweak : Ores
     Plastic: 250
     Uranium: 250
+    Lead: 25 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseEmptyAmmoRecipe
@@ -257,14 +277,16 @@
   id: MagazinePistolSubMachineGunTopMounted
   result: MagazinePistolSubMachineGunTopMounted
   materials:
-    Steel: 300
+    Steel: 30 # Utopia-Tweak : Ores
+    Lead: 300 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: MagazineBoxPistol
   result: MagazineBoxPistol
   materials:
-    Steel: 600
+    Steel: 300 # Utopia-Tweak : Ores
+    Lead: 600 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
@@ -272,13 +294,15 @@
   result: MagazineBoxPistolIncendiary
   materials:
     Plastic: 600
+    Steel: 30 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: MagazineBoxPistolPractice
   result: MagazineBoxPistolPractice
   materials:
-    Steel: 300
+    Steel: 30 # Utopia-Tweak : Ores
+    Lead: 300 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
@@ -287,6 +311,7 @@
   materials:
     Plastic: 300
     Uranium: 600
+    Steel: 300 # Utopia-Tweak : Ores
 
 # .45 Magnum
 - type: latheRecipe
@@ -301,7 +326,8 @@
   id: SpeedLoaderMagnum
   result: SpeedLoaderMagnum
   materials:
-    Steel: 190
+    Steel: 50 # Utopia-Tweak : Ores
+    Lead: 190 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
@@ -310,13 +336,15 @@
   materials:
     Steel: 50
     Plastic: 150
+    Lead: 50 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: SpeedLoaderMagnumPractice
   result: SpeedLoaderMagnumPractice
   materials:
-    Steel: 90
+    Steel: 50 # Utopia-Tweak : Ores
+    Lead: 50 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
@@ -326,13 +354,15 @@
     Steel: 50
     Plastic: 150
     Uranium: 110
+    Lead: 50 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: MagazineBoxMagnum
   result: MagazineBoxMagnum
   materials:
-    Steel: 240
+    Steel: 200 # Utopia-Tweak : Ores
+    Lead: 240 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
@@ -340,13 +370,15 @@
   result: MagazineBoxMagnumIncendiary
   materials:
     Plastic: 240
+    Steel: 200 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: MagazineBoxMagnumPractice
   result: MagazineBoxMagnumPractice
   materials:
-    Steel: 60
+    Steel: 200 # Utopia-Tweak : Ores
+    Lead: 60 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
@@ -355,6 +387,7 @@
   materials:
     Plastic: 240
     Uranium: 180
+    Steel: 200 # Utopia-Tweak : Ores
 
 # .50 Shell
 - type: latheRecipe
@@ -369,77 +402,94 @@
   id: MagazineShotgun
   result: MagazineShotgun
   materials:
-    Steel: 240
+    Steel: 50 # Utopia-Tweak : Ores
+    Copper: 100 # Utopia-Tweak : Ores
+    Lead: 240 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazineShotgunIncendiary
   result: MagazineShotgunIncendiary
   materials:
-    Steel: 100
+    Steel: 50 # Utopia-Tweak : Ores
     Plastic: 190
+    Lead: 100 # Utopia-Tweak : Ores
+    Copper: 100 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazineShotgunBeanbag
   result: MagazineShotgunBeanbag
   materials:
-    Steel: 150
+    Steel: 50 # Utopia-Tweak : Ores
     Plastic: 140
+    Copper: 150 # Utopia-Tweak : Ores
+    Lead: 150 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: MagazineShotgunSlug
   result: MagazineShotgunSlug
   materials:
-    Steel: 190
+    Steel: 50 # Utopia-Tweak : Ores
     Plastic: 100
+    Lead: 190 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: BoxLethalshot
   result: BoxLethalshot
   materials:
-    Steel: 320
+    Steel: 200 # Utopia-Tweak : Ores
+    Lead: 320 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: BoxShotgunIncendiary
   result: BoxShotgunIncendiary
   materials:
-    Steel: 80
+    Steel: 200 # Utopia-Tweak : Ores
     Plastic: 320
+    Copper: 80 # Utopia-Tweak : Ores
+    Lead: 80 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: BoxShotgunPractice
   result: BoxShotgunPractice
   materials:
-    Steel: 80
+    Steel: 200 # Utopia-Tweak : Ores
+    Lead: 80 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: BoxShotgunUranium
   result: BoxShotgunUranium
   materials:
+    Steel: 200 # Utopia-Tweak : Ores
     Plastic: 320
     Uranium: 240
+    Lead: 80 # Utopia-Tweak : Ores
+    Copper: 100 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: BoxBeanbag
   result: BoxBeanbag
   materials:
-    Steel: 160
+    Steel: 200 # Utopia-Tweak : Ores
     Plastic: 240
+    Lead: 160 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: BoxShotgunSlug
   result: BoxShotgunSlug
   materials:
-    Steel: 240
+    Steel: 200 # Utopia-Tweak : Ores
     Plastic: 160
+    Lead: 240 # Utopia-Tweak : Ores
+    Copper: 100 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
@@ -447,18 +497,22 @@
   result: BoxShellTranquilizer
   materials:
     Plastic: 240
-    Steel: 160
+    Steel: 200 # Utopia-Tweak : Ores
     Glass: 80
     Plasma: 160
     Silver: 80
+    Lead: 160 # Utopia-Tweak : Ores
+    Copper: 60 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   parent: BaseAmmoBoxRecipe
   id: BoxShotgunFlare
   result: BoxShotgunFlare
   materials:
-    Steel: 80
+    Steel: 200 # Utopia-Tweak : Ores
     Plastic: 80
+    Lead: 80 # Utopia-Tweak : Ores
+    Copper: 60 # Utopia-Tweak : Ores
 
 # .60 anti-materiel
 - type: latheRecipe
@@ -489,6 +543,7 @@
     Steel: 150
     Plastic: 100
     Glass: 20
+    Copper: 20 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   id: GrenadeBlast
@@ -497,9 +552,10 @@
   - Ammo
   completetime: 3
   materials:
-    Steel: 450
+    Steel: 300 # Utopia-Tweak : Ores
     Plastic: 300
     Gold: 150
+    Lead: 450 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   id: GrenadeFlash
@@ -511,3 +567,4 @@
     Steel: 150
     Plastic: 100
     Glass: 20
+    Lead: 150 # Utopia-Tweak : Ores

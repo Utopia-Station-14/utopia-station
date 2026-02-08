@@ -4,6 +4,7 @@ using Content.Server.Nutrition.Components;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Storage.Components;
+using Content.Shared.Construction.Components;
 using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Nutrition.Components;
@@ -33,6 +34,11 @@ public sealed class FatExtractorSystem : EntitySystem
         SubscribeLocalEvent<FatExtractorComponent, StorageAfterCloseEvent>(OnClosed);
         SubscribeLocalEvent<FatExtractorComponent, StorageAfterOpenEvent>(OnOpen);
         SubscribeLocalEvent<FatExtractorComponent, PowerChangedEvent>(OnPowerChanged);
+
+        // Utopia-Tweak : Machine Parts
+        SubscribeLocalEvent<FatExtractorComponent, RefreshPartsEvent>(OnRefreshParts);
+        SubscribeLocalEvent<FatExtractorComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+        // Utopia-Tweak : Machine Parts
     }
 
     private void OnGotEmagged(EntityUid uid, FatExtractorComponent component, ref GotEmaggedEvent args)
@@ -149,4 +155,17 @@ public sealed class FatExtractorSystem : EntitySystem
             }
         }
     }
+
+    // Utopia-Tweak : Machine Parts
+    private void OnRefreshParts(EntityUid uid, FatExtractorComponent component, RefreshPartsEvent args)
+    {
+        var tier = args.PartTiers[component.MachinePartNutritionRate] - 1;
+        component.NutritionPerSecond = component.BaseNutritionPerSecond + (int)(component.PartTierRateMultiplier * tier);
+    }
+
+    private void OnUpgradeExamine(EntityUid uid, FatExtractorComponent component, UpgradeExamineEvent args)
+    {
+        args.AddPercentageUpgrade("fat-extractor-component-rate", (float)component.NutritionPerSecond / component.BaseNutritionPerSecond);
+    }
+    // Utopia-Tweak : Machine Parts
 }

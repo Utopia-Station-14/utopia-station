@@ -8,7 +8,13 @@
     CableApcStack: 2
     FlashlightLantern: 2
     PowerCellSmallPrinted: 3
-    MicroManipulatorStockPart: 12
+    # Utopia-Tweak : Machine Parts
+    MicroManipulatorStockPart: 3
+    CapacitorStockPart: 3
+    MatterBinStockPart: 3
+    ScanningModuleStockPart: 3
+    MicroLaserStockPart: 3
+    # Utopia-Tweak : Machine Parts
   contrabandInventory:
     ProximitySensor: 1
     LeftArmBorg: 1

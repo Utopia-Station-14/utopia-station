@@ -1,6 +1,8 @@
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using Content.Shared._Utopia.Language;
+using Content.Shared._Utopia.SpeechBarks;
 using Content.Shared.CCVar;
 using Content.Shared.Decals;
 using Content.Shared.Examine;
@@ -41,8 +43,10 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
     [Dependency] private readonly MarkingManager _markingManager = default!;
     [Dependency] private readonly GrammarSystem _grammarSystem = default!;
     [Dependency] private readonly IdentitySystem _identity = default!;
+    [Dependency] private readonly SharedLanguageSystem _language = default!; // Utopia-Tweak : Language
 
     public static readonly ProtoId<SpeciesPrototype> DefaultSpecies = "Human";
+    public const string DefaultBark = "Human1"; // Utopia-Tweak : Barks
 
     public override void Initialize()
     {
@@ -158,6 +162,11 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
 
         SetSex(target, sourceHumanoid.Sex, false, targetHumanoid);
         SetGender((target, targetHumanoid), sourceHumanoid.Gender);
+
+        // Utopia-Tweak : Barks
+        if (HasComp<SpeechBarksComponent>(source))
+            SetBarkData(target, sourceHumanoid.Bark, targetHumanoid);
+        // Utopia-Tweak : Barks
 
         Dirty(target, targetHumanoid);
     }
@@ -453,6 +462,9 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
 
         EnsureDefaultMarkings(uid, humanoid);
 
+        SetLanguages(uid, profile.Languages.ToList()); // Utopia-Tweak : Language
+        SetBarkData(uid, profile.Bark, humanoid); // Utopia-Tweak : Barks
+
         humanoid.Gender = profile.Gender;
         if (TryComp<GrammarComponent>(uid, out var grammar))
         {
@@ -544,6 +556,30 @@ public abstract class SharedHumanoidAppearanceSystem : EntitySystem
         Log.Error("Tried to get representation of unknown species: {speciesId}");
         return Loc.GetString("humanoid-appearance-component-unknown-species");
     }
+
+    // Utopia-Tweak : Language
+    public void SetLanguages(EntityUid uid, List<ProtoId<LanguagePrototype>> languages)
+    {
+        var languageSpeaker = EnsureComp<LanguageSpeakerComponent>(uid);
+        languageSpeaker.Languages.Clear();
+
+        languages.ForEach(x => languageSpeaker.Languages.Add(x.ToString(), LanguageKnowledge.Speak));
+        _language.SelectDefaultLanguage(uid);
+        _language.UpdateUi(uid);
+    }
+    // Utopia-Tweak : Language
+
+    // Utopia-Tweak : Barks
+    public void SetBarkData(EntityUid uid, BarkData data, HumanoidAppearanceComponent humanoid)
+    {
+        if (!TryComp<SpeechBarksComponent>(uid, out var comp))
+            return;
+
+        comp.Data = data;
+        comp.Data.Sound = _proto.Index(comp.Data.Proto).Sound;
+        humanoid.Bark = data;
+    }
+    // Utopia-Tweak : Barks
 
     public string GetAgeRepresentation(string species, int age)
     {

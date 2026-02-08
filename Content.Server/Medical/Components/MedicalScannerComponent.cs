@@ -15,5 +15,13 @@ namespace Content.Server.Medical.Components
 
         [DataField, ViewVariables(VVAccess.ReadWrite)]
         public float CloningFailChanceMultiplier = 1f;
+
+        // Utopia-Tweak : Machine Parts
+        [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+        public string MachinePartCloningFailChance = "Capacitor";
+
+        [DataField]
+        public float PartTierFailMultiplier = 0.75f;
+        // Utopia-Tweak : Machine Parts
     }
 }

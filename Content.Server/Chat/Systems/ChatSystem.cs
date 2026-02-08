@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Content.Server._Utopia.Language;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server.Chat.Managers;
@@ -8,6 +9,7 @@ using Content.Server.GameTicking;
 using Content.Server.Speech.EntitySystems;
 using Content.Server.Speech.Prototypes;
 using Content.Server.Station.Systems;
+using Content.Shared._Utopia.Language;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
@@ -58,6 +60,7 @@ public sealed partial class ChatSystem : SharedChatSystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly ReplacementAccentSystem _wordreplacement = default!;
     [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
+    [Dependency] private readonly LanguageSystem _language = default!; // Utopia-Tweak : Language
 
     private bool _loocEnabled = true;
     private bool _deadLoocEnabled;
@@ -130,9 +133,10 @@ public sealed partial class ChatSystem : SharedChatSystem
         ICommonSession? player = null,
         string? nameOverride = null,
         bool checkRadioPrefix = true,
-        bool ignoreActionBlocker = false)
+        bool ignoreActionBlocker = false,
+        LanguagePrototype? language = null) // Utopia-Tweak : Language
     {
-        TrySendInGameICMessage(source, message, desiredType, hideChat ? ChatTransmitRange.HideChat : ChatTransmitRange.Normal, hideLog, shell, player, nameOverride, checkRadioPrefix, ignoreActionBlocker);
+        TrySendInGameICMessage(source, message, desiredType, hideChat ? ChatTransmitRange.HideChat : ChatTransmitRange.Normal, hideLog, shell, player, nameOverride, checkRadioPrefix, ignoreActionBlocker, language); // Utopia-Tweak : Language
     }
 
     /// <inheritdoc />
@@ -146,8 +150,8 @@ public sealed partial class ChatSystem : SharedChatSystem
         ICommonSession? player = null,
         string? nameOverride = null,
         bool checkRadioPrefix = true,
-        bool ignoreActionBlocker = false
-        )
+        bool ignoreActionBlocker = false,
+        LanguagePrototype? language = null) // Utopia-Tweak : Language
     {
         if (HasComp<GhostComponent>(source))
         {
@@ -196,7 +200,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         bool shouldCapitalizeTheWordI = (!CultureInfo.CurrentCulture.IsNeutralCulture && CultureInfo.CurrentCulture.Parent.Name == "en")
             || (CultureInfo.CurrentCulture.IsNeutralCulture && CultureInfo.CurrentCulture.Name == "en");
 
-        message = SanitizeInGameICMessage(source, message, out var emoteStr, shouldCapitalize, shouldPunctuate, shouldCapitalizeTheWordI);
+        string sanitizedMessage = SanitizeInGameICMessageLanguages(source, message, out var emoteStr, shouldCapitalize, shouldPunctuate, shouldCapitalizeTheWordI); // Utopia-Tweak : Language
 
         // Was there an emote in the message? If so, send it.
         if (player != null && emoteStr != message && emoteStr != null)
@@ -211,7 +215,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         // This message may have a radio prefix, and should then be whispered to the resolved radio channel
         if (checkRadioPrefix)
         {
-            if (TryProcessRadioMessage(source, message, out var modMessage, out var channel))
+            if (TryProcessRadioMessage(source, sanitizedMessage, out var modMessage, out var channel)) // Utopia-Tweak : Language
             {
                 SendEntityWhisper(source, modMessage, range, channel, nameOverride, hideLog, ignoreActionBlocker);
                 return;
@@ -222,13 +226,13 @@ public sealed partial class ChatSystem : SharedChatSystem
         switch (desiredType)
         {
             case InGameICChatType.Speak:
-                SendEntitySpeak(source, message, range, nameOverride, hideLog, ignoreActionBlocker);
+                SendEntitySpeak(source, message, range, nameOverride, hideLog, ignoreActionBlocker, language); // Utopia-Tweak : Language
                 break;
             case InGameICChatType.Whisper:
-                SendEntityWhisper(source, message, range, null, nameOverride, hideLog, ignoreActionBlocker);
+                SendEntityWhisper(source, message, range, null, nameOverride, hideLog, ignoreActionBlocker, language); // Utopia-Tweak : Language
                 break;
             case InGameICChatType.Emote:
-                SendEntityEmote(source, message, range, nameOverride, hideLog: hideLog, ignoreActionBlocker: ignoreActionBlocker);
+                SendEntityEmote(source, sanitizedMessage, range, nameOverride, hideLog: hideLog, ignoreActionBlocker: ignoreActionBlocker); // Utopia-Tweak : Language
                 break;
         }
     }
@@ -374,18 +378,35 @@ public sealed partial class ChatSystem : SharedChatSystem
         ChatTransmitRange range,
         string? nameOverride,
         bool hideLog = false,
-        bool ignoreActionBlocker = false
+        bool ignoreActionBlocker = false,
+        LanguagePrototype? language = null // Utopia-Tweak : Language
         )
     {
-        if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
-            return;
+        // Utopia-Tweak : Language
+        // if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
+        //     return;
+        // Utopia-Tweak : Language
 
-        var message = TransformSpeech(source, originalMessage);
+        var message = originalMessage; // Utopia-Tweak : Language
 
         if (message.Length == 0)
             return;
 
         var speech = GetSpeechVerb(source, message);
+
+        // Utopia-Tweak : Language
+        if (language == null)
+            language = _language.GetCurrentLanguage(source);
+
+        if (!ignoreActionBlocker)
+        {
+            foreach (var item in language.Conditions.Where(x => !x.RaiseOnListener))
+            {
+                if (!item.Condition(source, null, EntityManager))
+                    return;
+            }
+        }
+        // Utopia-Tweak : Language
 
         // get the entity's apparent name (if no override provided).
         string name;
@@ -405,17 +426,24 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         name = FormattedMessage.EscapeText(name);
 
-        var wrappedMessage = Loc.GetString(speech.Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message",
-            ("entityName", name),
-            ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
-            ("fontType", speech.FontId),
-            ("fontSize", speech.FontSize),
-            ("message", FormattedMessage.EscapeText(message)));
+        // Utopia-Tweak : Language
+        bool shouldPunctuate = _configurationManager.GetCVar(CCVars.ChatPunctuation);
+        // Capitalizing the word I only happens in English, so we check language here
+        bool shouldCapitalizeTheWordI = (!CultureInfo.CurrentCulture.IsNeutralCulture && CultureInfo.CurrentCulture.Parent.Name == "en")
+            || (CultureInfo.CurrentCulture.IsNeutralCulture && CultureInfo.CurrentCulture.Name == "en");
 
-        SendInVoiceRange(ChatChannel.Local, message, wrappedMessage, source, range);
+        var sanitizedMessage = SanitizeInGameICMessage(source, FormattedMessage.EscapeText(message), out _);
+        language.LanguageType.Speak(source, sanitizedMessage, name, speech, range, EntityManager, out var success, out var resultMessage);
+        if (!success)
+            return;
 
-        var ev = new EntitySpokeEvent(source, message, null, null);
-        RaiseLocalEvent(source, ev, true);
+        if (language.LanguageType.RaiseEvent)
+        {
+            var ev = new EntitySpokeEvent(source, resultMessage, language, null, null);
+            RaiseLocalEvent(source, ev, true);
+        }
+        // Utopia-Tweak : Language
+
 
         // To avoid logging any messages sent by entities that are not players, like vendors, cloning, etc.
         // Also doesn't log if hideLog is true.
@@ -447,17 +475,34 @@ public sealed partial class ChatSystem : SharedChatSystem
         RadioChannelPrototype? channel,
         string? nameOverride,
         bool hideLog = false,
-        bool ignoreActionBlocker = false
+        bool ignoreActionBlocker = false,
+        LanguagePrototype? language = null // Utopia-Tweak : Language
         )
     {
-        if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
-            return;
+        // Utopia-Tweak : Language
+        // if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
+        //     return;
+        // Utopia-Tweak : Language
 
         var message = TransformSpeech(source, FormattedMessage.RemoveMarkupOrThrow(originalMessage));
         if (message.Length == 0)
             return;
 
         var obfuscatedMessage = ObfuscateMessageReadability(message, 0.2f);
+
+        // Utopia-Tweak : Language
+        if (language == null)
+            language = _language.GetCurrentLanguage(source);
+
+        if (!ignoreActionBlocker)
+        {
+            foreach (var item in language.Conditions.Where(x => !x.RaiseOnListener))
+            {
+                if (!item.Condition(source, null, EntityManager))
+                    return;
+            }
+        }
+        // Utopia-Tweak : Language
 
         // get the entity's name by visual identity (if no override provided).
         string nameIdentity = FormattedMessage.EscapeText(nameOverride ?? Identity.Name(source, EntityManager));
@@ -473,43 +518,26 @@ public sealed partial class ChatSystem : SharedChatSystem
             RaiseLocalEvent(source, nameEv);
             name = nameEv.VoiceName;
         }
+
+        // Utopia-Tweak : Language
+        bool shouldPunctuate = _configurationManager.GetCVar(CCVars.ChatPunctuation);
+        bool shouldCapitalizeTheWordI = (!CultureInfo.CurrentCulture.IsNeutralCulture && CultureInfo.CurrentCulture.Parent.Name == "en")
+            || (CultureInfo.CurrentCulture.IsNeutralCulture && CultureInfo.CurrentCulture.Name == "en");
+
         name = FormattedMessage.EscapeText(name);
+        var sanitizedMessage = SanitizeInGameICMessage(source, FormattedMessage.EscapeText(message), out _);
+        language.LanguageType.Whisper(source, sanitizedMessage, name, nameIdentity, range, EntityManager, out var success, out var resultMessage, out var resultObfMessage);
+        if (!success)
+            return;
 
-        var wrappedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message",
-            ("entityName", name), ("message", FormattedMessage.EscapeText(message)));
-
-        var wrappedobfuscatedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message",
-            ("entityName", nameIdentity), ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
-
-        var wrappedUnknownMessage = Loc.GetString("chat-manager-entity-whisper-unknown-wrap-message",
-            ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
-
-
-        foreach (var (session, data) in GetRecipients(source, WhisperMuffledRange))
+        if (language.LanguageType.RaiseEvent)
         {
-            EntityUid listener;
-
-            if (session.AttachedEntity is not { Valid: true } playerEntity)
-                continue;
-            listener = session.AttachedEntity.Value;
-
-            if (MessageRangeCheck(session, data, range) != MessageRangeCheckResult.Full)
-                continue; // Won't get logged to chat, and ghosts are too far away to see the pop-up, so we just won't send it to them.
-
-            if (data.Range <= WhisperClearRange || data.Observer)
-                _chatManager.ChatMessageToOne(ChatChannel.Whisper, message, wrappedMessage, source, false, session.Channel);
-            //If listener is too far, they only hear fragments of the message
-            else if (_examineSystem.InRangeUnOccluded(source, listener, WhisperMuffledRange))
-                _chatManager.ChatMessageToOne(ChatChannel.Whisper, obfuscatedMessage, wrappedobfuscatedMessage, source, false, session.Channel);
-            //If listener is too far and has no line of sight, they can't identify the whisperer's identity
-            else
-                _chatManager.ChatMessageToOne(ChatChannel.Whisper, obfuscatedMessage, wrappedUnknownMessage, source, false, session.Channel);
+            var ev = new EntitySpokeEvent(source, resultMessage, language, channel, resultObfMessage, true);
+            RaiseLocalEvent(source, ev, true);
         }
+        // Utopia-Tweak : Language
 
-        _replay.RecordServerMessage(new ChatMessage(ChatChannel.Whisper, message, wrappedMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
-
-        var ev = new EntitySpokeEvent(source, message, channel, obfuscatedMessage);
-        RaiseLocalEvent(source, ev, true);
+        _replay.RecordServerMessage(new ChatMessage(ChatChannel.Whisper, message, resultObfMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range))); // Utopia-Tweak : Language
         if (!hideLog)
             if (originalMessage == message)
             {
@@ -557,7 +585,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             !TryEmoteChatInput(source, action))
             return;
 
-        SendInVoiceRange(ChatChannel.Emotes, action, wrappedMessage, source, range, author);
+        SendInVoiceRange(ChatChannel.Emotes, action, wrappedMessage, wrappedMessage, source, range, author, ignoreLanguage: true); // Utopia-Tweak : Language
         if (!hideLog)
             if (name != Name(source))
                 _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Emote from {source} as {name}: {action}");
@@ -584,7 +612,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             ("entityName", name),
             ("message", FormattedMessage.EscapeText(message)));
 
-        SendInVoiceRange(ChatChannel.LOOC, message, wrappedMessage, source, hideChat ? ChatTransmitRange.HideChat : ChatTransmitRange.Normal, player.UserId);
+        SendInVoiceRange(ChatChannel.LOOC, message, wrappedMessage, wrappedMessage, source, hideChat ? ChatTransmitRange.HideChat : ChatTransmitRange.Normal, player.UserId, ignoreLanguage: true); // Utopia-Tweak : Language
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"LOOC from {source}: {message}");
     }
 
@@ -616,7 +644,7 @@ public sealed partial class ChatSystem : SharedChatSystem
 
     #region Utility
 
-    private enum MessageRangeCheckResult
+    public enum MessageRangeCheckResult // Utopia-Tweak : Language
     {
         Disallowed,
         HideChat,
@@ -635,7 +663,7 @@ public sealed partial class ChatSystem : SharedChatSystem
     ///     Checks if a target as returned from GetRecipients should receive the message.
     ///     Keep in mind data.Range is -1 for out of range observers.
     /// </summary>
-    private MessageRangeCheckResult MessageRangeCheck(ICommonSession session, ICChatRecipientData data, ChatTransmitRange range)
+    public MessageRangeCheckResult MessageRangeCheck(ICommonSession session, ICChatRecipientData data, ChatTransmitRange range) // Utopia-Tweak : Language
     {
         var initialResult = MessageRangeCheckResult.Full;
         switch (range)
@@ -665,16 +693,50 @@ public sealed partial class ChatSystem : SharedChatSystem
     /// <summary>
     ///     Sends a chat message to the given players in range of the source entity.
     /// </summary>
-    private void SendInVoiceRange(ChatChannel channel, string message, string wrappedMessage, EntityUid source, ChatTransmitRange range, NetUserId? author = null)
+    public void SendInVoiceRange(ChatChannel channel, string message, string wrappedMessage, string wrappedLanguageMessage, EntityUid source, ChatTransmitRange range, NetUserId? author = null, ProtoId<LanguagePrototype>? language = null, bool ignoreLanguage = false) // Utopia-Tweak : Language
     {
+        // Utopia-Tweak : Language
+        var lang = language != null ? _prototypeManager.Index(language.Value) : _language.GetCurrentLanguage(source);
+
         foreach (var (session, data) in GetRecipients(source, VoiceRange))
         {
+            EntityUid listener;
+            if (session.AttachedEntity is not { Valid: true } playerEntity)
+                continue;
+
+            listener = session.AttachedEntity.Value;
+
+            var condition = true;
+            foreach (var item in lang.Conditions.Where(x => x.RaiseOnListener))
+            {
+                if (!item.Condition(listener, source, EntityManager))
+                    condition = false;
+            }
+
+            if (!condition && !ignoreLanguage)
+                continue;
+
             var entRange = MessageRangeCheck(session, data, range);
             if (entRange == MessageRangeCheckResult.Disallowed)
                 continue;
+
             var entHideChat = entRange == MessageRangeCheckResult.HideChat;
-            _chatManager.ChatMessageToOne(channel, message, wrappedMessage, source, entHideChat, session.Channel, author: author);
+            if (ignoreLanguage)
+            {
+                _chatManager.ChatMessageToOne(channel, message, wrappedMessage, source, entHideChat, session.Channel, author: author);
+                continue;
+            }
+
+            if (!_language.CanUnderstand(listener, lang))
+            {
+                _chatManager.ChatMessageToOne(channel, message, wrappedLanguageMessage, source, entHideChat, session.Channel, author: author);
+            }
+            else
+            {
+                _chatManager.ChatMessageToOne(channel, message, wrappedMessage, source, entHideChat, session.Channel, author: author);
+            }
         }
+        // Utopia-Tweak : Language
 
         _replay.RecordServerMessage(new ChatMessage(channel, message, wrappedMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
     }
@@ -706,7 +768,7 @@ public sealed partial class ChatSystem : SharedChatSystem
     }
 
     // ReSharper disable once InconsistentNaming
-    private string SanitizeInGameICMessage(EntityUid source, string message, out string? emoteStr, bool capitalize = true, bool punctuate = false, bool capitalizeTheWordI = true)
+    public string SanitizeInGameICMessage(EntityUid source, string message, out string? emoteStr, bool capitalize = true, bool punctuate = false, bool capitalizeTheWordI = true)
     {
         var newMessage = SanitizeMessageReplaceWords(message.Trim());
 
@@ -724,6 +786,23 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         return prefix + newMessage;
     }
+
+    // Utopia-Tweak : Language
+    public string SanitizeInGameICMessageLanguages(EntityUid source, string message, out string? emoteStr, bool capitalize = true, bool punctuate = false, bool capitalizeTheWordI = true)
+    {
+        var newMessage = message;
+        GetRadioKeycodePrefix(source, newMessage, out newMessage, out var prefix);
+        // Sanitize it first as it might change the word order
+        _sanitizer.TrySanitizeEmoteShorthands(newMessage, source, out newMessage, out emoteStr);
+        if (capitalize)
+            newMessage = SanitizeMessageCapital(newMessage);
+        if (capitalizeTheWordI)
+            newMessage = SanitizeMessageCapitalizeTheWordI(newMessage, "i");
+        if (punctuate)
+            newMessage = SanitizeMessagePeriod(newMessage);
+        return prefix + newMessage;
+    }
+    // Utopia-Tweak : Language
 
     private string SanitizeInGameOOCMessage(string message)
     {
@@ -787,7 +866,7 @@ public sealed partial class ChatSystem : SharedChatSystem
     /// <summary>
     ///     Returns list of players and ranges for all players withing some range. Also returns observers with a range of -1.
     /// </summary>
-    private Dictionary<ICommonSession, ICChatRecipientData> GetRecipients(EntityUid source, float voiceGetRange)
+    public Dictionary<ICommonSession, ICChatRecipientData> GetRecipients(EntityUid source, float voiceGetRange) // Utopia-Tweak : Language
     {
         // TODO proper speech occlusion
 
@@ -826,11 +905,11 @@ public sealed partial class ChatSystem : SharedChatSystem
         return recipients;
     }
 
-    public readonly record struct ICChatRecipientData(float Range, bool Observer, bool? HideChatOverride = null)
+    public readonly record struct ICChatRecipientData(float Range, bool Observer, bool? HideChatOverride = null, bool Muffled = false) // Utopia-Tweak : Language
     {
     }
 
-    private string ObfuscateMessageReadability(string message, float chance)
+    public string ObfuscateMessageReadability(string message, float chance) // Utopia-Tweak : Language
     {
         var modifiedMessage = new StringBuilder(message);
 

@@ -160,6 +160,7 @@
     - id: RCDAmmo
     - id: RubberStampCE
     - id: MetalFoamGrenade
+    - id: UtopiaUniversalPipeDispenserCircuitboard # Utopia-Add: URT
 
 # Hardsuit table, used for suit storage as well
 - type: entityTable

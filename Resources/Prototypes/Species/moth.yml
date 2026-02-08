@@ -11,6 +11,10 @@
   maleFirstNames: NamesMothFirstMale
   femaleFirstNames: NamesMothFirstFemale
   lastNames: NamesMothLast
+  # Utopia-Tweak : Language
+  defaultLanguages:
+  - GalacticCommon
+  # Utopia-Tweak : Language
 
 - type: speciesBaseSprites
   id: MobMothSprites

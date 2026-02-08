@@ -31,6 +31,6 @@ ent-NitrogenTankFilled = баллон азота
 ent-NitrousOxideTankFilled = баллон оксида азота
     .suffix = Заполненный
     .desc = { ent-NitrousOxideTank.desc }
-ent-PlasmaTankFilled = баллон плазмы
+ent-PlasmaTankFilled = баллон форона
     .suffix = Заполненный
     .desc = { ent-PlasmaTank.desc }

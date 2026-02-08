@@ -24,7 +24,10 @@ public sealed class TeslaCoilSystem : EntitySystem
     {
         if (TryComp<BatteryComponent>(coil, out var batteryComponent))
         {
-            _battery.ChangeCharge((coil, batteryComponent), coil.Comp.ChargeFromLightning);
+            // Utopia-Tweak : Lightning-Update
+            var chargPower = coil.Comp.ChargingMultiplier * args.Energy;
+            _battery.ChangeCharge((coil, batteryComponent), chargPower);
+            // Utopia-Tweak : Lightning-Update
         }
     }
 }

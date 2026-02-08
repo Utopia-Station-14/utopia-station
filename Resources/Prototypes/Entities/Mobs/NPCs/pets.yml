@@ -50,6 +50,11 @@
     - VimPilot
   - type: StealTarget
     stealGroup: AnimalIan
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Old Ian
@@ -176,6 +181,11 @@
     - VimPilot
   - type: StealTarget
     stealGroup: AnimalNamedCat
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Exception
@@ -196,6 +206,11 @@
     - VimPilot
   - type: StealTarget
     stealGroup: AnimalNamedCat
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Floppa
@@ -223,6 +238,11 @@
     - VimPilot
   - type: StealTarget
     stealGroup: AnimalNamedCat
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Bandito
@@ -238,6 +258,11 @@
     tags:
     - CannotSuicide
     - VimPilot
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Bingus
@@ -295,6 +320,11 @@
     - VimPilot
   - type: StealTarget
     stealGroup: AnimalNamedCat
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: McGriff
@@ -371,6 +401,11 @@
   - type: StealTarget
     stealGroup: AnimalMcGriff
   - type: MessyDrinker
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Paperwork
@@ -405,6 +440,11 @@
     attributes:
       proper: true
       gender: male
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Walter
@@ -468,6 +508,11 @@
     speechVerb: Canine
     speechSounds: Dog
   - type: MessyDrinker
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Morty
@@ -492,6 +537,11 @@
     - VimPilot
   - type: StealTarget
     stealGroup: AnimalMorty
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Morty
@@ -511,6 +561,11 @@
         Base: possum_old
       Dead:
         Base: possum_dead_old
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Poppy # the Safety Possum
@@ -534,6 +589,11 @@
         Base: poppy
       Dead:
         Base: poppy_dead
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Morticia
@@ -556,6 +616,11 @@
     tags:
     - CannotSuicide
     - VimPilot
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Alexander
@@ -578,6 +643,11 @@
     tags:
     - CannotSuicide
     - VimPilot
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Renault
@@ -608,6 +678,11 @@
     - VimPilot
   - type: StealTarget
     stealGroup: AnimalRenault
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Hamlet
@@ -661,6 +736,11 @@
     flavors:
     - meaty
     - sadness
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   parent: MobHamsterHamlet
@@ -744,6 +824,11 @@
     - FootstepSound
   - type: StealTarget
     stealGroup: AnimalShiva
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Willow
@@ -775,6 +860,11 @@
   - type: GhostTakeoverAvailable
   - type: Loadout
     prototypes: [ BoxingKangarooGear ]
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Smile
@@ -856,6 +946,11 @@
     attributes:
       proper: true
       gender: female
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Pun Pun
@@ -891,6 +986,11 @@
     attributes:
       proper: true
       gender: male
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Tropico
@@ -918,6 +1018,11 @@
 #  - type: AlwaysRevolutionaryConvertible
   - type: StealTarget
     stealGroup: AnimalTropico
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Understand
+  # Utopia-Tweak : Language
 
 - type: entity
   name: Polly the parrot

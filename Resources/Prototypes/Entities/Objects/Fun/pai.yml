@@ -102,6 +102,11 @@
   - type: Tag
     tags:
     - SiliconEmotes
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Speak
+  # Utopia-Tweak : Language
 
 - type: entity
   parent: [ PersonalAI, BaseSyndicateContraband]

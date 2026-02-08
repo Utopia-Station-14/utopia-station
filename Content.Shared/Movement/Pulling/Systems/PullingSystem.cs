@@ -15,6 +15,7 @@ using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Item;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Mobs.Components;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Events;
@@ -38,7 +39,7 @@ namespace Content.Shared.Movement.Pulling.Systems;
 /// <summary>
 /// Allows one entity to pull another behind them via a physics distance joint.
 /// </summary>
-public sealed class PullingSystem : EntitySystem
+public abstract partial class PullingSystem : EntitySystem // Utopia-Tweak : Grab (sealed -> abstract partial)
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
@@ -74,7 +75,7 @@ public sealed class PullingSystem : EntitySystem
         SubscribeLocalEvent<PullerComponent, AfterAutoHandleStateEvent>(OnAfterState);
         SubscribeLocalEvent<PullerComponent, EntGotInsertedIntoContainerMessage>(OnPullerContainerInsert);
         SubscribeLocalEvent<PullerComponent, EntityUnpausedEvent>(OnPullerUnpaused);
-        SubscribeLocalEvent<PullerComponent, VirtualItemDeletedEvent>(OnVirtualItemDeleted);
+        SubscribeLocalEvent<PullerComponent, BeforeVirtualItemDeletedEvent>(OnVirtualItemDeleted); // Utopia-Tweak : Grab
         SubscribeLocalEvent<PullerComponent, RefreshMovementSpeedModifiersEvent>(OnRefreshMovespeed);
         SubscribeLocalEvent<PullerComponent, DropHandItemsEvent>(OnDropHandItems);
         SubscribeLocalEvent<PullerComponent, StopPullingAlertEvent>(OnStopPullingAlert);
@@ -89,6 +90,8 @@ public sealed class PullingSystem : EntitySystem
         CommandBinds.Builder
             .Bind(ContentKeyFunctions.ReleasePulledObject, InputCmdHandler.FromDelegate(OnReleasePulledObject, handle: false))
             .Register<PullingSystem>();
+
+        InitializeGrab(); // Utopia-Tweak : Grab
     }
 
     private void OnTargetHandcuffed(Entity<ActivePullerComponent> ent, ref TargetHandcuffedEvent args)
@@ -116,10 +119,18 @@ public sealed class PullingSystem : EntitySystem
         if (TryComp(args.PullerUid, out PullerComponent? pullerComp) && !pullerComp.NeedsHands)
             return;
 
-        if (!_virtual.TrySpawnVirtualItemInHand(args.PulledUid, uid))
+        if (!_virtual.TrySpawnVirtualItemInHand(args.PulledUid, uid, out var virtualItem)) // Utopia-Tweak : Grab
         {
             DebugTools.Assert("Unable to find available hand when starting pulling??");
         }
+
+        // Utopia-Tweak : Grab
+        if (pullerComp != null)
+        {
+            pullerComp.VirtualItems.Add(GetNetEntity(virtualItem.Value));
+            Dirty(args.PullerUid, pullerComp);
+        }
+        // Utopia-Tweak : Grab
     }
 
     private void HandlePullStopped(EntityUid uid, HandsComponent component, PullStoppedMessage args)
@@ -193,7 +204,7 @@ public sealed class PullingSystem : EntitySystem
             return;
         if (!TryComp<PullableComponent>(ent.Comp.Pulling, out var pullable))
             return;
-        args.Handled = TryStopPull(ent.Comp.Pulling.Value, pullable, ent);
+        args.Handled = TryLowerGrabStageOrStopPulling(ent, (ent.Comp.Pulling.Value, pullable)); // Utopia-Tweak : Grab
     }
 
     private void OnPullerContainerInsert(Entity<PullerComponent> ent, ref EntGotInsertedIntoContainerMessage args)
@@ -229,7 +240,15 @@ public sealed class PullingSystem : EntitySystem
         if (args.Handled)
             return;
 
-        args.Handled = TryStopPull(ent, ent, ent);
+        // Utopia-Tweak : Grab
+        if (!ent.Comp.Puller.HasValue)
+        {
+            TryStopPull(ent, ent);
+            return;
+        }
+
+        args.Handled = TryEscapeFromGrab(ent, ent.Comp.Puller.Value);
+        // Utopia-Tweak : Grab
     }
 
     public override void Shutdown()
@@ -243,7 +262,7 @@ public sealed class PullingSystem : EntitySystem
         component.NextThrow += args.PausedTime;
     }
 
-    private void OnVirtualItemDeleted(EntityUid uid, PullerComponent component, VirtualItemDeletedEvent args)
+    private void OnVirtualItemDeleted(EntityUid uid, PullerComponent component, BeforeVirtualItemDeletedEvent args) // Utopia-Tweak : Grab
     {
         // If client deletes the virtual hand then stop the pull.
         if (component.Pulling == null)
@@ -254,7 +273,14 @@ public sealed class PullingSystem : EntitySystem
 
         if (TryComp(args.BlockingEntity, out PullableComponent? comp))
         {
-            TryStopPull(args.BlockingEntity, comp);
+            // Utopia-Tweak : Grab
+            if (_combat.IsInCombatMode(uid))
+            {
+                args.Cancel();
+            }
+
+            TryLowerGrabStageOrStopPulling((uid, component), (args.BlockingEntity, comp));
+            // Utopia-Tweak : Grab
         }
     }
 
@@ -292,6 +318,11 @@ public sealed class PullingSystem : EntitySystem
 
     private void OnRefreshMovespeed(EntityUid uid, PullerComponent component, RefreshMovementSpeedModifiersEvent args)
     {
+        // Utopia-Tweak : Grab
+        if (!component.Pulling.HasValue)
+            return;
+        // Utopia-Tweak : Grab
+
         if (TryComp<HeldSpeedModifierComponent>(component.Pulling, out var heldMoveSpeed) && component.Pulling.HasValue)
         {
             var (walkMod, sprintMod) =
@@ -300,7 +331,12 @@ public sealed class PullingSystem : EntitySystem
             return;
         }
 
-        args.ModifySpeed(component.WalkSpeedModifier, component.SprintSpeedModifier);
+        // Utopia-Tweak : Grab
+        var index = (int)component.Stage + component.GrabbingDirection;
+
+        args.ModifySpeed(component.WalkSpeedModifier, component.GrabStats[(GrabStage)index].MovementSpeedModifier);
+        component.GrabbingDirection = 0;
+        // Utopia-Tweak : Grab
     }
 
     private void OnPullableMoveInput(EntityUid uid, PullableComponent component, ref MoveInputEvent args)
@@ -314,7 +350,12 @@ public sealed class PullingSystem : EntitySystem
         if (!_blocker.CanMove(entity))
             return;
 
-        TryStopPull(uid, component, user: uid);
+        // Utopia-Tweak : Grab
+        if (!TryComp<PullerComponent>(component.Puller, out var puller))
+            return;
+
+        TryEscapeFromGrab((uid, component), (component.Puller.Value, puller));
+        // Utopia-Tweak : Grab
     }
 
     private void OnPullableCollisionChange(EntityUid uid, PullableComponent component, ref CollisionChangeEvent args)
@@ -381,6 +422,20 @@ public sealed class PullingSystem : EntitySystem
             var pullerUid = oldPuller.Value;
             _alertsSystem.ClearAlert(pullerUid, pullerComp.PullingAlert);
             pullerComp.Pulling = null;
+            // Utopia-Tweak : Grab
+            _doAfter.Cancel(pullerComp.StageIncreaseDoAfter);
+            _doAfter.Cancel(pullableComp.EscapeAttemptDoAfter);
+            pullerComp.VirtualItems.ForEach(x =>
+            {
+                var item = GetEntity(x);
+                if (Exists(item) && !Terminating(item))
+                {
+                    _virtual.DeleteVirtualItem((item, Comp<VirtualItemComponent>(item)), pullerUid);
+                }
+            });
+            pullerComp.VirtualItems.Clear();
+            pullerComp.Stage = GrabStage.None;
+            // Utopia-Tweak : Grab
             Dirty(oldPuller.Value, pullerComp);
 
             // Messaging
@@ -392,6 +447,7 @@ public sealed class PullingSystem : EntitySystem
             RaiseLocalEvent(pullableUid, message);
         }
 
+        _blocker.UpdateCanMove(pullableUid); // Utopia-Tweak : Grab
         _alertsSystem.ClearAlert(pullableUid, pullableComp.PulledAlert);
     }
 
@@ -422,13 +478,23 @@ public sealed class PullingSystem : EntitySystem
             return;
         }
 
+        // Utopia-Tweak : Grab
+        if (TryComp<PullableComponent>(player, out var playerPullable) &&
+            TryComp<PullerComponent>(playerPullable.Puller, out var playerPuller) &&
+            playerPuller.Stage > GrabStage.None)
+        {
+            TryEscapeFromGrab((player, playerPullable), (playerPullable.Puller.Value, playerPuller));
+            return;
+        }
+        // Utopia-Tweak : Grab
+
         if (!TryComp(player, out PullerComponent? pullerComp) ||
             !TryComp(pullerComp.Pulling, out PullableComponent? pullableComp))
         {
             return;
         }
 
-        TryStopPull(pullerComp.Pulling.Value, pullableComp, user: player);
+        TryLowerGrabStageOrStopPulling((player, pullerComp), (pullerComp.Pulling.Value, pullableComp)); // Utopia-Tweak : Grab
     }
 
     public bool CanPull(EntityUid puller, EntityUid pullableUid, PullerComponent? pullerComp = null)
@@ -482,12 +548,12 @@ public sealed class PullingSystem : EntitySystem
         if (!Resolve(pullable, ref pullable.Comp, false))
             return false;
 
-        if (pullable.Comp.Puller == pullerUid)
-        {
-            return TryStopPull(pullable, pullable.Comp);
-        }
+        // Utopia-Tweak : Grab
+        if (!TryComp<PullerComponent>(pullerUid, out var puller))
+            return false;
+        // Utopia-Tweak : Grab
 
-        return TryStartPull(pullerUid, pullable, pullableComp: pullable);
+        return TryStartPullingOrGrab((pullerUid, puller), (pullable, pullable.Comp)); // Utopia-Tweak : Grab
     }
 
     public bool TogglePull(EntityUid pullerUid, PullerComponent puller)
@@ -577,11 +643,13 @@ public sealed class PullingSystem : EntitySystem
             _physics.SetFixedRotation(pullableUid, pullableComp.FixedRotationOnPull, body: pullablePhysics);
         }
 
+        var grab = _combat.IsInCombatMode(pullerUid) && HasComp<MobStateComponent>(pullableUid); // Utopia-Tweak : Grab
+
         // Messaging
         var message = new PullStartedMessage(pullerUid, pullableUid);
         _modifierSystem.RefreshMovementSpeedModifiers(pullerUid);
-        _alertsSystem.ShowAlert(pullerUid, pullerComp.PullingAlert);
-        _alertsSystem.ShowAlert(pullableUid, pullableComp.PulledAlert);
+        _alertsSystem.ShowAlert(pullerUid, pullerComp.PullingAlert, grab ? (short)1 : (short)0); // Utopia-Tweak : Grab
+        _alertsSystem.ShowAlert(pullableUid, pullableComp.PulledAlert, grab ? (short)1 : (short)0); // Utopia-Tweak : Grab
 
         RaiseLocalEvent(pullerUid, message);
         RaiseLocalEvent(pullableUid, message);
@@ -589,12 +657,22 @@ public sealed class PullingSystem : EntitySystem
         Dirty(pullerUid, pullerComp);
         Dirty(pullableUid, pullableComp);
 
-        var pullingMessage =
-            Loc.GetString("getting-pulled-popup", ("puller", Identity.Entity(pullerUid, EntityManager)));
-        _popup.PopupEntity(pullingMessage, pullableUid, pullableUid);
+        // Utopia-Tweak : Grab
+        if (grab)
+        {
+            TryStartPullingOrGrab((pullerUid, pullerComp), (pullableUid, pullableComp));
+        }
+        else
+        {
+            var pullingMessage =
+                Loc.GetString("getting-pulled-popup", ("puller", Identity.Entity(pullerUid, EntityManager)));
+            _popup.PopupEntity(pullingMessage, pullableUid, pullableUid);
 
-        _adminLogger.Add(LogType.Action, LogImpact.Low,
-            $"{ToPrettyString(pullerUid):user} started pulling {ToPrettyString(pullableUid):target}");
+            _adminLogger.Add(LogType.Action, LogImpact.Low,
+                $"{ToPrettyString(pullerUid):user} started pulling {ToPrettyString(pullableUid):target}");
+        }
+        // Utopia-Tweak : Grab
+
         return true;
     }
 

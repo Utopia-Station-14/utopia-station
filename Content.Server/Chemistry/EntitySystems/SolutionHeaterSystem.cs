@@ -4,6 +4,7 @@ using Content.Server.Power.EntitySystems;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry;
 using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Shared.Construction.Components;
 using Content.Shared.Placeable;
 using Content.Shared.Power;
 
@@ -23,6 +24,11 @@ public sealed class SolutionHeaterSystem : EntitySystem
         SubscribeLocalEvent<SolutionHeaterComponent, PowerChangedEvent>(OnPowerChanged);
         SubscribeLocalEvent<SolutionHeaterComponent, ItemPlacedEvent>(OnItemPlaced);
         SubscribeLocalEvent<SolutionHeaterComponent, ItemRemovedEvent>(OnItemRemoved);
+
+        // Utopia-Tweak : Machine Parts
+        SubscribeLocalEvent<SolutionHeaterComponent, RefreshPartsEvent>(OnRefreshParts);
+        SubscribeLocalEvent<SolutionHeaterComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+        // Utopia-Tweak : Machine Parts
     }
 
     private void TurnOn(EntityUid uid)
@@ -86,7 +92,7 @@ public sealed class SolutionHeaterSystem : EntitySystem
                 if (!TryComp<SolutionContainerManagerComponent>(heatingEntity, out var container))
                     continue;
 
-                var energy = heater.HeatPerSecond * frameTime;
+                var energy = heater.HeatPerSecond * heater.HeatMultiplier * frameTime; // Utopia-Tweak : Machine Parts
                 foreach (var (_, soln) in _solutionContainer.EnumerateSolutions((heatingEntity, container)))
                 {
                     _solutionContainer.AddThermalEnergy(soln, energy);
@@ -94,4 +100,18 @@ public sealed class SolutionHeaterSystem : EntitySystem
             }
         }
     }
+
+    // Utopia-Tweak : Machine Parts
+    private void OnRefreshParts(EntityUid uid, SolutionHeaterComponent component, RefreshPartsEvent args)
+    {
+        var heatTier = args.PartTiers[component.MachinePartHeatPerSecond] - 1;
+
+        component.HeatMultiplier = MathF.Pow(component.PartTierHeatMultiplier, heatTier);
+    }
+
+    private void OnUpgradeExamine(EntityUid uid, SolutionHeaterComponent component, UpgradeExamineEvent args)
+    {
+        args.AddPercentageUpgrade("solution-heater-upgrade-heat", component.HeatMultiplier);
+    }
+    // Utopia-Tweak : Machine Parts
 }

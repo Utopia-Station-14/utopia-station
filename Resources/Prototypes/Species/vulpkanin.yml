@@ -11,6 +11,10 @@
   maleFirstNames: names_vulpkanin_male
   femaleFirstNames: names_vulpkanin_female
   lastNames: names_vulpkanin_last
+  # Utopia-Tweak : Language
+  defaultLanguages:
+  - GalacticCommon
+  # Utopia-Tweak : Language
 
 - type: speciesBaseSprites
   id: MobVulpkaninSprites

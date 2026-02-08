@@ -14,6 +14,7 @@ using Content.Shared.Atmos;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Reagent;
+using Content.Shared.Construction.Components;
 using Content.Shared.UserInterface;
 using Content.Shared.Database;
 using Content.Shared.Emag.Components;
@@ -83,6 +84,11 @@ namespace Content.Server.Lathe
             SubscribeLocalEvent<TechnologyDatabaseComponent, LatheGetRecipesEvent>(OnGetRecipes);
             SubscribeLocalEvent<EmagLatheRecipesComponent, LatheGetRecipesEvent>(GetEmagLatheRecipes);
             SubscribeLocalEvent<LatheHeatProducingComponent, LatheStartPrintingEvent>(OnHeatStartPrinting);
+
+            // Utopia-Tweak : Machine Parts
+            SubscribeLocalEvent<LatheComponent, RefreshPartsEvent>(OnPartsRefresh);
+            SubscribeLocalEvent<LatheComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+            // Utopia-Tweak : Machine Parts
         }
         public override void Update(float frameTime)
         {
@@ -185,9 +191,9 @@ namespace Content.Server.Lathe
             foreach (var (mat, amount) in recipe.Materials)
             {
                 var adjustedAmount = recipe.ApplyMaterialDiscount
-                    ? (int)(-amount * component.MaterialUseMultiplier)
+                    ? (int)(-amount * component.FinalMaterialUseMultiplier) // Utopia-Tweak : Machine Parts
                     : -amount;
-                adjustedAmount *= quantity;
+                adjustedAmount *= quantity; // Utopia-Tweak : Machine Parts
 
                 _materialStorage.TryChangeMaterialAmount(uid, mat, adjustedAmount);
             }
@@ -217,7 +223,7 @@ namespace Content.Server.Lathe
 
             var lathe = EnsureComp<LatheProducingComponent>(uid);
             lathe.StartTime = _timing.CurTime;
-            lathe.ProductionLength = time;
+            lathe.ProductionLength = time * component.FinalTimeMultiplier; // Utopia-Tweak : Machine Parts
             component.CurrentRecipe = recipe;
 
             var ev = new LatheStartPrintingEvent(recipe);
@@ -349,6 +355,10 @@ namespace Content.Server.Lathe
             _appearance.SetData(uid, LatheVisuals.IsRunning, false);
 
             _materialStorage.UpdateMaterialWhitelist(uid);
+            // Utopia-Tweak : Machine Parts
+            component.FinalTimeMultiplier = component.TimeMultiplier;
+            component.FinalMaterialUseMultiplier = component.MaterialUseMultiplier;
+            // Utopia-Tweak : Machine Parts
         }
 
         /// <summary>
@@ -457,6 +467,24 @@ namespace Content.Server.Lathe
             UpdateUserInterfaceState(uid, component);
             UpdateRunningAppearance(uid, false);
         }
+
+        // Utopia-Tweak : Machine Parts
+        private void OnPartsRefresh(EntityUid uid, LatheComponent component, RefreshPartsEvent args)
+        {
+            var printTimeTiers = args.PartTiers[component.MachinePartPrintSpeed];
+            var materialUseTiers = args.PartTiers[component.MachinePartMaterialUse];
+
+            component.FinalTimeMultiplier = component.TimeMultiplier * MathF.Pow(component.PartRatingPrintTimeMultiplier, printTimeTiers - 1);
+            component.FinalMaterialUseMultiplier = component.MaterialUseMultiplier * MathF.Pow(component.PartRatingMaterialUseMultiplier, materialUseTiers - 1);
+            Dirty(uid, component);
+        }
+
+        private void OnUpgradeExamine(EntityUid uid, LatheComponent component, UpgradeExamineEvent args)
+        {
+            args.AddPercentageUpgrade("lathe-component-upgrade-speed", 1 / component.FinalTimeMultiplier);
+            args.AddPercentageUpgrade("lathe-component-upgrade-material-use", component.FinalMaterialUseMultiplier);
+        }
+        // Utopia-Tweak : Machine Parts
 
         #region UI Messages
 

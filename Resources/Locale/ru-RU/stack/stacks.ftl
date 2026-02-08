@@ -57,7 +57,7 @@ stack-plasma-glass =
         [1] лист
         [few] листа
        *[other] листов
-    } плазменного стекла
+    } форонового стекла
 stack-uranium =
     { $amount ->
         [1] лист
@@ -81,7 +81,7 @@ stack-reinforced-plasma-glass =
         [1] лист
         [few] листа
        *[other] листов
-    } плазменного бронестекла
+    } форонового бронестекла
 stack-reinforced-uranium-glass =
     { $amount ->
         [1] лист
@@ -247,7 +247,7 @@ stack-plasma =
         [1] лист
         [few] листа
        *[other] листов
-    } плазмы
+    } форона
 stack-biomass = биомасса
 stack-pyrotton = пирохлопок
 stack-sharkminnow-tooth =
@@ -266,7 +266,7 @@ stack-telecrystal = телекристалл
 stack-gold-ore = золотая руда
 stack-rough-diamond = сырой алмаз
 stack-iron-ore = железная руда
-stack-plasma-ore = плазменная руда
+stack-plasma-ore = фороновая руда
 stack-silver-ore = серебряная руда
 stack-space-quartz = космический кварц
 stack-uranium-ore = урановая руда
@@ -282,7 +282,7 @@ stack-brutepack = набор от ушибов
 stack-bloodpack = пакет крови
 stack-medicated-suture = медицинская нить
 stack-regenerative-mesh = регенеративная сеть
-stack-micro-manipulator = модульная машинная часть
+stack-micro-manipulator = микроманипулятор
 stack-pancake = блинчик
 stack-blueberry-pancake = блинчик с черникой
 stack-chocolate-chip-pancake = блинчик с шоколадной крошкой
@@ -403,5 +403,5 @@ stack-red-circuit-floor = плитка красных микросхем
 stack-asteroid-astro-sand-floor = астро-песок астероида
 stack-white-marble-floor = белый мраморный пол
 stack-dark-marble-floor = чёрный мраморный пол
-stack-plasma-marble-floor = плазменный мраморный пол
+stack-plasma-marble-floor = фороновый мраморный пол
 stack-uranium-marble-floor = урановый мраморный пол

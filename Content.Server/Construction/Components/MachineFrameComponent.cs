@@ -1,4 +1,5 @@
 ﻿using Content.Shared.Construction.Components;
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.Stacks;
 using Content.Shared.Tag;
 using Robust.Shared.Containers;
@@ -18,11 +19,21 @@ namespace Content.Server.Construction.Components
         [ViewVariables]
         public readonly Dictionary<ProtoId<StackPrototype>, int> MaterialProgress = new();
 
+        // Utopia-Tweak : Machine Parts
+        [ViewVariables]
+        public Dictionary<ProtoId<MachinePartPrototype>, int> Progress = new();
+        // Utopia-Tweak : Machine Parts
+
         [ViewVariables]
         public readonly Dictionary<string, int> ComponentProgress = new();
 
         [ViewVariables]
         public readonly Dictionary<ProtoId<TagPrototype>, int> TagProgress = new();
+
+        // Utopia-Tweak : Machine Parts
+        [ViewVariables]
+        public Dictionary<ProtoId<MachinePartPrototype>, int> Requirements = new();
+        // Utopia-Tweak : Machine Parts
 
         [ViewVariables]
         public Dictionary<ProtoId<StackPrototype>, int> MaterialRequirements = new();

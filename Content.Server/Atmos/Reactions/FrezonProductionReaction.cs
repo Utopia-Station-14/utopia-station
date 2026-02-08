@@ -14,6 +14,12 @@ public sealed partial class FrezonProductionReaction : IGasReactionEffect
 {
     public ReactionResult React(GasMixture mixture, IGasMixtureHolder? holder, AtmosphereSystem atmosphereSystem, float heatScale)
     {
+        // Utopia-Tweak : Gases
+        var initialHyperNoblium = mixture.GetMoles(Gas.HyperNoblium);
+        if (initialHyperNoblium >= 5.0f && mixture.Temperature > 20f)
+            return ReactionResult.NoReaction;
+        // Utopia-Tweak : Gases
+
         var initialN2 = mixture.GetMoles(Gas.Nitrogen);
         var initialOxy = mixture.GetMoles(Gas.Oxygen);
         var initialTrit = mixture.GetMoles(Gas.Tritium);

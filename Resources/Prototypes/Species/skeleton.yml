@@ -10,6 +10,10 @@
   femaleFirstNames: NamesSkeletonFirst
   dollPrototype: MobSkeletonPersonDummy
   skinColoration: TintedHues
+  # Utopia-Tweak : Language
+  defaultLanguages:
+  - GalacticCommon
+  # Utopia-Tweak : Language
 
 - type: speciesBaseSprites
   id: MobSkeletonSprites

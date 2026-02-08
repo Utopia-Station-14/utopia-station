@@ -12,6 +12,10 @@
   femaleFirstNames: NamesDionaFirst
   lastNames: NamesDionaLast
   naming: TheFirstofLast
+  # Utopia-Tweak : Language
+  defaultLanguages:
+  - GalacticCommon
+  # Utopia-Tweak : Language
 
 - type: speciesBaseSprites
   id: MobDionaSprites

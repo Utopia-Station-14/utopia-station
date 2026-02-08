@@ -5,6 +5,7 @@ using Content.Client.Inventory;
 using Content.Client.Lobby.UI;
 using Content.Client.Players.PlayTimeTracking;
 using Content.Client.Station;
+using Content.Shared._Utopia.Language;
 using Content.Shared.CCVar;
 using Content.Shared.Clothing;
 using Content.Shared.GameTicking;
@@ -127,6 +128,12 @@ public sealed class LobbyUIController : UIController, IOnStateEntered<LobbyState
             {
                 _profileEditor.RefreshTraits();
             }
+            // Utopia-Tweak : Language
+            if (obj.WasModified<LanguagePrototype>())
+            {
+                _profileEditor.RefreshLanguages();
+            }
+            // Utopia-Tweak : Language
         }
     }
 

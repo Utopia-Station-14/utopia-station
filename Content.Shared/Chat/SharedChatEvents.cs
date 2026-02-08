@@ -1,3 +1,4 @@
+using Content.Shared._Utopia.Language;
 using Content.Shared.Inventory;
 using Content.Shared.Radio;
 using Content.Shared.Speech;
@@ -61,17 +62,26 @@ public sealed class EntitySpokeEvent : EntityEventArgs
     public readonly string Message;
     public readonly string? ObfuscatedMessage; // not null if this was a whisper
 
+    // Utopia-Tweak : Language
+    public readonly bool IsWhisper;
+    public readonly LanguagePrototype Language;
+    // Utopia-Tweak : Language
+
     /// <summary>
     /// If the entity was trying to speak into a radio, this was the channel they were trying to access. If a radio
     /// message gets sent on this channel, this should be set to null to prevent duplicate messages.
     /// </summary>
     public RadioChannelPrototype? Channel;
 
-    public EntitySpokeEvent(EntityUid source, string message, RadioChannelPrototype? channel, string? obfuscatedMessage)
+    public EntitySpokeEvent(EntityUid source, string message, LanguagePrototype language, RadioChannelPrototype? channel, string? obfuscatedMessage, bool whisper = false) // Utopia-Tweak : Language
     {
         Source = source;
         Message = message;
         Channel = channel;
         ObfuscatedMessage = obfuscatedMessage;
+        // Utopia-Tweak : Language
+        Language = language;
+        IsWhisper = whisper;
+        // Utopia-Tweak : Language
     }
 }

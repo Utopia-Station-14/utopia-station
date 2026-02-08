@@ -2,6 +2,7 @@
 using Content.Server.Power.EntitySystems;
 using Content.Shared.Anomaly;
 using Content.Shared.Anomaly.Components;
+using Content.Shared.Construction.Components;
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
 using Content.Shared.Research.Components;
@@ -23,6 +24,11 @@ public sealed partial class AnomalySystem
         SubscribeLocalEvent<AnomalyVesselComponent, ExaminedEvent>(OnExamined);
         SubscribeLocalEvent<AnomalyVesselComponent, ResearchServerGetPointsPerSecondEvent>(OnVesselGetPointsPerSecond);
         SubscribeLocalEvent<AnomalyShutdownEvent>(OnVesselAnomalyShutdown);
+
+        // Utopia-Tweak : Machine Parts
+        SubscribeLocalEvent<AnomalyVesselComponent, RefreshPartsEvent>(OnRefreshParts);
+        SubscribeLocalEvent<AnomalyVesselComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+        // Utopia-Tweak : Machine Parts
     }
 
     private void OnExamined(EntityUid uid, AnomalyVesselComponent component, ExaminedEvent args)
@@ -165,4 +171,17 @@ public sealed partial class AnomalySystem
             vessel.NextBeep = beepInterval + Timing.CurTime;
         }
     }
+
+    // Utopia-Tweak : Machine Parts
+    private void OnRefreshParts(EntityUid uid, AnomalyVesselComponent component, RefreshPartsEvent args)
+    {
+        var modifierTier = args.PartTiers[component.MachinePartPointModifier] - 1;
+        component.PointMultiplier = MathF.Pow(component.PartTierPointModifier, modifierTier);
+    }
+
+    private void OnUpgradeExamine(EntityUid uid, AnomalyVesselComponent component, UpgradeExamineEvent args)
+    {
+        args.AddPercentageUpgrade("anomaly-vessel-component-upgrade-output", component.PointMultiplier);
+    }
+    // Utopia-Tweak : Machine Parts
 }

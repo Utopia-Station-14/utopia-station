@@ -1,7 +1,7 @@
 {
-    "version": 1,
-    "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from /vg/station at commit https://github.com/vgstation-coders/vgstation13/commit/02b9f6894af4419c9f7e699a22c402b086d8067e",
+    "version": 2,
+    "license": "CC-BY-NC-SA-3.0",
+    "copyright": "Taken from https://github.com/goonstation/goonstation/blob/master/icons/turf/floors.dmi, stairs_stage types made by KashRas2:github",
     "size": {
         "x": 32,
         "y": 32

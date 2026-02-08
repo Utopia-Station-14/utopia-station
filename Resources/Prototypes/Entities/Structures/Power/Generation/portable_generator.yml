@@ -187,6 +187,11 @@
     - type: PowerSupplier
       supplyRampRate: 5000
       supplyRampTolerance: 1500
+    # Utopia-Tweak : Machine Part
+    - type: UpgradePowerSupplier
+      powerSupplyMultiplier: 1.25
+      scaling: Exponential
+    # Utopia-Tweak : Machine Part
 
 - type: entity
   name: S.U.P.E.R.P.A.C.M.A.N.-type portable generator
@@ -243,6 +248,11 @@
     - type: PowerSupplier
       supplyRampRate: 7500
       supplyRampTolerance: 2500
+    # Utopia-Tweak : Machine Part
+    - type: UpgradePowerSupplier
+      powerSupplyMultiplier: 1.25
+      scaling: Exponential
+    # Utopia-Tweak : Machine Part
 
 - type: entity
   name: J.R.P.A.C.M.A.N.-type portable generator

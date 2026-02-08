@@ -44,7 +44,7 @@ namespace Content.Shared.Localizations
             _loc.AddFunction(culture, "NATURALFIXED", FormatNaturalFixed);
             _loc.AddFunction(culture, "NATURALPERCENT", FormatNaturalPercent);
             _loc.AddFunction(culture, "PLAYTIME", FormatPlaytime);
-            _loc.AddFunction(culture, "PLAYTIMEMINUTES", FormatPlaytimeMinutes); // ADT Change
+            _loc.AddFunction(culture, "PLAYTIMEMINUTES", FormatPlaytimeMinutes); // Utopia-Tweak
 
 
             /*
@@ -160,14 +160,14 @@ namespace Content.Shared.Localizations
             return Loc.GetString($"zzzz-fmt-playtime", ("hours", hours));
         }
 
-        // ADT changes start
+        // Utopia-Tweak
         public static string FormatPlaytimeMinutes(TimeSpan time)
         {
             time = TimeSpan.FromMinutes(Math.Ceiling(time.TotalMinutes));
             var minutes = (int)Math.Ceiling(time.TotalMinutes);
             return Loc.GetString($"zzzz-fmt-playtime-minutes", ("minutes", minutes));
         }
-        // ADT changes end
+        // Utopia-Tweak
 
         private static ILocValue FormatLoc(LocArgs args)
         {
@@ -281,7 +281,7 @@ namespace Content.Shared.Localizations
             return new LocValueString(FormatPlaytime(time));
         }
 
-        // ADT Changes start
+        // Utopia-Tweak
         private static ILocValue FormatPlaytimeMinutes(LocArgs args)
         {
             var time = TimeSpan.Zero;
@@ -290,6 +290,7 @@ namespace Content.Shared.Localizations
                 time = timeArg;
             }
             return new LocValueString(FormatPlaytimeMinutes(time));
-        } // ADT Changes end
+        }
+        // Utopia-Tweak
     }
 }

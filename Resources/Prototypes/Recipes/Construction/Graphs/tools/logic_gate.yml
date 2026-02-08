@@ -46,7 +46,7 @@
         doAfter: 1
     - to: memory_cell
       steps:
-      - material: Manipulator
+      - material: ScanningModule # Utopia-Tweak : Machine Parts
         amount: 2
       - material: Cable
         amount: 2
@@ -106,7 +106,7 @@
         doAfter: 2
       completed:
       - !type:SpawnPrototype
-        prototype: MicroManipulatorStockPart
+        prototype: ScanningModuleStockPart # Utopia-Tweak : Machine Parts
       - !type:SpawnPrototype
         prototype: CableApcStack1
         amount: 2

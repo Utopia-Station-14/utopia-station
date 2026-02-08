@@ -5,6 +5,7 @@ using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Projectiles;
 using Content.Server.Weapons.Ranged.Systems;
+using Content.Shared.Construction.Components;
 using Content.Shared.Database;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.Interaction;
@@ -43,6 +44,11 @@ namespace Content.Server.Singularity.EntitySystems
             SubscribeLocalEvent<EmitterComponent, ActivateInWorldEvent>(OnActivate);
             SubscribeLocalEvent<EmitterComponent, AnchorStateChangedEvent>(OnAnchorStateChanged);
             SubscribeLocalEvent<EmitterComponent, SignalReceivedEvent>(OnSignalReceived);
+
+            // Utopia-Tweak : Machine Part
+            SubscribeLocalEvent<EmitterComponent, RefreshPartsEvent>(OnRefreshParts);
+            SubscribeLocalEvent<EmitterComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+            // Utopia-Tweak : Machine Part
         }
 
         private void OnAnchorStateChanged(EntityUid uid, EmitterComponent component, ref AnchorStateChangedEvent args)
@@ -283,5 +289,28 @@ namespace Content.Server.Singularity.EntitySystems
                 component.BoltType = boltType;
             }
         }
+
+        // Utopia-Tweak : Machine Part
+        private void OnRefreshParts(EntityUid uid, EmitterComponent component, RefreshPartsEvent args)
+        {
+            if (component.IsOn)
+            {
+                SwitchOff(uid, component);
+            }
+
+            var fireRateTier = args.PartTiers[component.MachinePartFireRate];
+
+            component.FireInterval = component.BaseFireInterval * MathF.Pow(component.FireRateMultiplier, fireRateTier - 1);
+            component.FireBurstDelayMin = component.BaseFireBurstDelayMin * MathF.Pow(component.FireRateMultiplier, fireRateTier - 1);
+            component.FireBurstDelayMax = component.BaseFireBurstDelayMax * MathF.Pow(component.FireRateMultiplier, fireRateTier - 1);
+
+            SwitchOn(uid, component);
+        }
+
+        private void OnUpgradeExamine(EntityUid uid, EmitterComponent component, UpgradeExamineEvent args)
+        {
+            args.AddPercentageUpgrade("emitter-component-upgrade-fire-rate", (float)(component.BaseFireInterval.TotalSeconds / component.FireInterval.TotalSeconds));
+        }
+        // Utopia-Tweak : Machine Part
     }
 }

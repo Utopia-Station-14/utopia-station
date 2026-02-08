@@ -9,4 +9,12 @@ namespace Content.Server.Construction.Components
         [DataField("board", customTypeSerializer:typeof(PrototypeIdSerializer<EntityPrototype>))]
         public string? BoardPrototype;
     }
+
+    // Utopia-Tweak : Machine Parts
+    public enum MachineUpgradeScalingType : byte
+    {
+        Linear,
+        Exponential
+    }
+    // Utopia-Tweak : Machine Parts
 }

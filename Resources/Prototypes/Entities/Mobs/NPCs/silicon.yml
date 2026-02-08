@@ -110,6 +110,11 @@
   - type: Speech
     speechVerb: Robotic
     speechSounds: Pai #couldn't decide if this should be borg or pai sounds so I flipped a coin.
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Speak
+  # Utopia-Tweak : Language
 
 - type: entity
   parent: MobSiliconBase

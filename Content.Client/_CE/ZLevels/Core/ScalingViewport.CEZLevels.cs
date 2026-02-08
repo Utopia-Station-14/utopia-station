@@ -137,13 +137,55 @@ public sealed partial class ScalingViewport
                 break;
         }
 
+
+        // Try to locate the placement overlay so we can temporarily disable it while rendering z-levels.
+        var overlayMgr = IoCManager.Resolve<IOverlayManager>();
+        Overlay? placementOverlay = null;
+
+        // Search for placement overlay by type name
+        foreach (var overlay in overlayMgr.AllOverlays)
+        {
+            if (overlay.GetType().Name == "PlacementOverlay")   // i know this is junky af but i don't have any better solutions
+            {
+                placementOverlay = overlay;
+                break;
+            }
+        }
+
+        var placementRemoved = false;
+
         //From the lowest depth to the highest, render each level
         for (var depth = lowestDepth; depth <= lookUp; depth++)
         {
             if (depth == 0)
+            {
                 viewport.Eye = _fallbackEye;
+
+                // Restore placement overlay for the base layer
+                if (placementRemoved && placementOverlay is not null)
+                {
+                    try
+                    {
+                        overlayMgr.AddOverlay(placementOverlay);
+                        placementRemoved = false;
+                    }
+                    catch { }
+                }
+            }
             else
             {
+                // Remove placement overlay before rendering z-levels so it
+                // doesn't call PixelToMap with this z-level's eye.
+                if (!placementRemoved && placementOverlay is not null)
+                {
+                    try
+                    {
+                        overlayMgr.RemoveOverlay(placementOverlay);
+                        placementRemoved = true;
+                    }
+                    catch { }
+                }
+
                 if (!_zLevels.TryMapOffset(playerXform.MapUid.Value, depth, out var mapUidBelow))
                     continue;
 
@@ -168,9 +210,20 @@ public sealed partial class ScalingViewport
             viewport.Render();
         }
 
+
+        // Ensure placement overlay is restored
+        if (placementRemoved && placementOverlay is not null)
+        {
+            try
+            {
+                overlayMgr.AddOverlay(placementOverlay);
+            }
+            catch { }
+        }
+
         // Restore the Eye
         Eye = _fallbackEye;
-        viewport.Eye = Eye;
+        viewport.Eye = _fallbackEye;
     }
 
     public sealed class ZEye(int lowest, int depth, int high) : Robust.Shared.Graphics.Eye

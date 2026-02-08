@@ -27,6 +27,8 @@
     - alertType: Rooted
     - alertType: Pacified
     - alertType: Stealthy
+    - alertType: UtopiaPulling # Utopia-Tweak : Grab
+    - alertType: UtopiaPulled  # Utopia-Tweak : Grab
 
 - type: entity
   id: AlertSpriteView

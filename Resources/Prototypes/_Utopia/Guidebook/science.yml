@@ -1,0 +1,4 @@
+- type: guideEntry
+  id: MachineUpgrading
+  name: guide-entry-machine-upgrading
+  text: "/ServerInfo/_Utopia/Guidebook/Science/MachineUpgrading.xml"
