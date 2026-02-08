@@ -24,7 +24,7 @@ public sealed class ZNetworkMappingSystem : EntitySystem
     [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
     [Dependency] private readonly CEZLevelsSystem _zLevels = default!;
     [Dependency] private readonly TransformSystem _transform = default!;
-    [Dependency] private readonly GridMotionPhysicsSyncSystem _motionLink = default!;
+    [Dependency] private readonly SharedGridMotionLinkSystem _motionLink = default!;
 
     #region Saving
     public bool TrySaveMap(string path, EntityUid target, [NotNullWhen(false)] out string? error)
@@ -307,6 +307,8 @@ public sealed class ZNetworkMappingSystem : EntitySystem
         var ents = EntityManager.AllEntities<GridMotionLinkComponent>().Where(x => maps.ContainsKey(Transform(x.Owner).MapUid ?? EntityUid.Invalid));
         foreach (var linked in ents)
             _motionLink.UpdateOffset(linked);
+        foreach (var linked in ents)
+            Dirty(linked);
 
         return true;
     }
@@ -366,6 +368,8 @@ public sealed class ZNetworkMappingSystem : EntitySystem
 
         foreach (var linked in linkedGrids)
             _motionLink.UpdateOffset(linked);
+        foreach (var linked in linkedGrids)
+            Dirty(linked);
 
         return true;
     }

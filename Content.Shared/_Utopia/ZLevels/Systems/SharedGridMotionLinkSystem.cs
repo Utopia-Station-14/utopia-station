@@ -1,5 +1,4 @@
 using Content.Shared._Utopia.ZLevels.Components;
-using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
@@ -10,7 +9,7 @@ using System.Numerics;
 
 namespace Content.Shared._Utopia.ZLevels.Systems;
 
-public sealed class GridMotionPhysicsSyncSystem : EntitySystem
+public abstract class SharedGridMotionLinkSystem : EntitySystem
 {
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
@@ -22,21 +21,9 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<GridMotionLinkComponent, MapInitEvent>(OnMapInit);
-        SubscribeLocalEvent<GridMotionLinkComponent, GridFixtureChangeEvent>(OnGridFixtureChange);
-
         UpdatesAfter.Add(typeof(SharedPhysicsSystem));
     }
 
-    private void OnMapInit(Entity<GridMotionLinkComponent> ent, ref MapInitEvent args)
-    {
-        UpdateOffset(ent);
-    }
-
-    private void OnGridFixtureChange(Entity<GridMotionLinkComponent> ent, ref GridFixtureChangeEvent args)
-    {
-        UpdateOffset(ent);
-    }
 
     public void UpdateOffset(Entity<GridMotionLinkComponent> ent)
     {
@@ -72,8 +59,7 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
         foreach (var (targetUid, link, grid, phys) in matches)
         {
             _physics.SetLinearVelocity(targetUid, linear, body: phys);
-
-            _physics.SetAngularVelocity(targetUid, angular);
+            _physics.SetAngularVelocity(targetUid, angular, body: phys);
 
             if (biggest != targetUid)
                 SetOffsetPos(biggest, (targetUid, link));
@@ -100,8 +86,8 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
                                   out List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>> matches,
                                   GridMotionLinkComponent? comp = null)
     {
-        linearSpeed = null;
-        angularSpeed = null;
+        linearSpeed = Vector2.Zero;
+        angularSpeed = 0f;
         biggestGrid = null;
         matches = new();
 
@@ -110,14 +96,9 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
 
         matches = GetGridsOfGroup(comp.GroupId);
 
-        linearSpeed = Vector2.Zero;
-        angularSpeed = 0f;
-
         if (matches.Count == 0)
             return false;
 
-        linearSpeed /= matches.Count;
-        angularSpeed /= matches.Count;
 
         var biggest = new KeyValuePair<int, EntityUid>(0, EntityUid.Invalid);
         foreach (var (targetUid, link, grid, phys) in matches)
@@ -125,12 +106,17 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
             if (link.GroupId != comp.GroupId)
                 continue;
 
+            linearSpeed += phys.LinearVelocity;
+            angularSpeed += phys.AngularVelocity;
+
             var tilesCount = _map.GetAllTiles(targetUid, grid, true).Count();
 
             if (biggest.Key < tilesCount)
                 biggest = new(tilesCount, targetUid);
         }
 
+        linearSpeed /= matches.Count;
+        angularSpeed /= matches.Count;
         biggestGrid = biggest.Value;
         return true;
     }
@@ -149,15 +135,6 @@ public sealed class GridMotionPhysicsSyncSystem : EntitySystem
         }
 
         return matches;
-    }
-
-    private void DirtyGroup(string groupId)
-    {
-        var grids = GetGridsOfGroup(groupId);
-        foreach (var item in grids)
-        {
-            Dirty(item.Owner, item.Comp1);
-        }
     }
 
     public override void Update(float frameTime)
