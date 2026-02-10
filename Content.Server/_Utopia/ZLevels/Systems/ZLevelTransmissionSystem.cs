@@ -61,7 +61,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         if (!TryComp(uid, out TransformComponent? xform) || !xform.Anchored)
             return;
 
-        if (!TryComp(uid, out NodeContainerComponent? container))
+        if (!TryComp(uid, out NodeContainerComponent? container) || container.Nodes.Count == 0)
             return;
 
         if (xform.GridUid is not { } gridUid)
@@ -72,7 +72,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
 
         _zPipes.ClearAll(container);
 
-        var worldBox = GetTileWorldBox(gridUid, grid, xform.Coordinates.Position);
+        var worldBox = GetTileWorldBox(gridUid, grid, xform);
 
         foreach (var node in container.Nodes.Values)
         {
@@ -106,16 +106,21 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
     }
 
     private void TryFindPipeMatches(
-    EntityUid source,
-    ZPipeNode self,
-    Box2 worldBox,
-    EntityUid targetMap,
-    ZPipeDirection requiredDir)
+        EntityUid source,
+        ZPipeNode self,
+        Box2 worldBox,
+        EntityUid targetMap,
+        ZPipeDirection requiredDir)
     {
-        if (!TryComp(targetMap, out MapComponent? map))
+        if (!TryComp(targetMap, out TransformComponent? mapXform))
             return;
 
-        foreach (var ent in _lookup.GetEntitiesIntersecting(map.MapId, worldBox, LookupFlags.All))
+        var mapId = mapXform.MapID;
+
+        foreach (var ent in _lookup.GetEntitiesIntersecting(
+                    mapId,
+                    worldBox,
+                    LookupFlags.All))
         {
             if (ent == source)
                 continue;
@@ -139,17 +144,23 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         }
     }
 
-    private Box2 GetTileWorldBox(EntityUid gridUid, MapGridComponent grid, Vector2 localPos)
+    private Box2 GetTileWorldBox(
+        EntityUid gridUid,
+        MapGridComponent grid,
+        TransformComponent xform)
     {
-        var size = grid.TileSize;
-        var tileX = (int)(localPos.X / size);
-        var tileY = (int)(localPos.Y / size);
+        var tile = grid.TileIndicesFor(xform.Coordinates);
+        var tileSize = grid.TileSize;
 
-        var origin =
+        var tileOrigin =
             _transform.GetWorldPosition(gridUid) +
-            new Vector2(tileX * size, tileY * size);
+            new Vector2(tile.X * tileSize, tile.Y * tileSize);
 
-        return new Box2(origin, origin + new Vector2(size, size));
+        var center = tileOrigin + new Vector2(tileSize / 2f, tileSize / 2f);
+        const float epsilon = 0.01f; // вынести в компонент
+
+        var half = new Vector2(epsilon / 2f, epsilon / 2f);
+        return new Box2(center - half, center + half);
     }
 
     private bool TryGetContext(EntityUid uid, out ZLevelContext ctx)
