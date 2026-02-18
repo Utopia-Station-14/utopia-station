@@ -39,7 +39,7 @@ git clone https://github.com/Utopia-Station-14/utopia-station.git
 ```
 2. Перейдите в директорию проекта и запустите ```RUN_THIS.py``` для инициализации подмодулей и скачивания движка:
 ```shell
-cd station-utopia
+cd utopia-station
 python RUN_THIS.py
 ```
 3. Скомпилируйте проект:
