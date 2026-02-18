@@ -52,9 +52,9 @@ dotnet build
 
 ## Лицензия
 
-Содержимое, добавленное в этот репозиторий после коммита d1a272d41bee774028da2b6073f5722dcf8297f3 (`5 января 2026 10:26 UTC`), распространяется по лицензии GNU Affero General Public License версии 3.0, если не указано иное. См. [LICENSE-AGPLv3](https://github.com/KashRas2/station-utopia/blob/master/LICENSES/LICENSE-AGPLv3.txt).
+Содержимое, добавленное в этот репозиторий после коммита d1a272d41bee774028da2b6073f5722dcf8297f3 (`5 января 2026 10:26 UTC`), распространяется по лицензии GNU Affero General Public License версии 3.0, если не указано иное. См. [LICENSE-AGPLv3](https://github.com/KashRas2/station-utopia/blob/master/LICENSE-AGPLv3.txt).
 
-Содержимое, добавленное в этот репозиторий до коммита d1a272d41bee774028da2b6073f5722dcf8297f3 (`5 января 2026 10:26 UTC`), распространяется по лицензии MIT если не указано иное. См. [LICENSE](https://github.com/KashRas2/station-utopia/blob/master/LICENSES/LICENSE.TXT).
+Содержимое, добавленное в этот репозиторий до коммита d1a272d41bee774028da2b6073f5722dcf8297f3 (`5 января 2026 10:26 UTC`), распространяется по лицензии MIT если не указано иное. См. [LICENSE](https://github.com/KashRas2/station-utopia/blob/master/LICENSE.TXT).
 
 Большинство ресурсов лицензированы по [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.ru), если не указано иное. У ресурсов есть собственная лицензия и информация об авторском праве в метаданных файла.
 
