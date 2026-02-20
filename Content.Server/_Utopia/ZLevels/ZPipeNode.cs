@@ -1,11 +1,17 @@
 using Content.Server.NodeContainer.Nodes;
 using Robust.Shared.Serialization.Manager.Attributes;
 
-namespace Content.Server._Utopia.ZLevels.Pipes.Nodes;
+namespace Content.Server._Utopia.ZLevels.Nodes;
 
 [DataDefinition]
 public sealed partial class ZPipeNode : PipeNode
 {
     [DataField(required: true)]
-    public ZPipeDirection ZDirection;
+    public ZNodeDirection ZDirection;
+}
+
+public enum ZNodeDirection
+{
+    Up,
+    Down
 }

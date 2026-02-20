@@ -1,5 +1,5 @@
 using Content.Server._Utopia.ZLevels.Pipes.Systems;
-using Content.Server._Utopia.ZLevels.Pipes.Nodes;
+using Content.Server._Utopia.ZLevels.Nodes;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.NodeContainer;
 using Content.Shared._CE.ZLevels.Core.Components;
@@ -80,18 +80,18 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
                 continue;
 
             EntityUid? targetMap;
-            ZPipeDirection requiredDir;
+            ZNodeDirection requiredDir;
 
             switch (zNode.ZDirection)
             {
-                case ZPipeDirection.Up:
+                case ZNodeDirection.Up:
                     targetMap = link.AboveMap;
-                    requiredDir = ZPipeDirection.Down;
+                    requiredDir = ZNodeDirection.Down;
                     break;
 
-                case ZPipeDirection.Down:
+                case ZNodeDirection.Down:
                     targetMap = link.BelowMap;
-                    requiredDir = ZPipeDirection.Up;
+                    requiredDir = ZNodeDirection.Up;
                     break;
 
                 default:
@@ -110,7 +110,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         ZPipeNode self,
         Box2 worldBox,
         EntityUid targetMap,
-        ZPipeDirection requiredDir)
+        ZNodeDirection requiredDir)
     {
         if (!TryComp(targetMap, out TransformComponent? mapXform))
             return;
