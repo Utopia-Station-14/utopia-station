@@ -1,8 +1,8 @@
 - type: entity
   parent: GasPipeBase
-  name: up
-  id: UtopiaGasZPipeUp
-  suffix: Half
+  id: UtopiaGasZPipeStraightUp
+  name: UP
+  suffix: Straight
   placement:
     mode: AlignAtmosPipeLayers
   components:
@@ -11,43 +11,22 @@
       pipe:
         !type:PipeNode
         nodeGroupID: Pipe
-        pipeDirection: South
-      up:
+        pipeDirection: Longitudinal
+      zUp:
         !type:ZPipeNode
         nodeGroupID: Pipe
         zDirection: Up
-  - type: Sprite
-    layers:
-    - state: pipeHalf
-      map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: AtmosPipeLayers
-    alternativePrototypes:
-      Primary: GasPipeHalf
-      Secondary: GasPipeHalfAlt1
-      Tertiary: GasPipeHalfAlt2
-  - type: Construction
-    graph: GasPipe
-    node: half
-  - type: Item
-    size: Small
-    storedSprite:
-      sprite: Structures/Piping/Atmospherics/pipe.rsi
-      state: storageHalf
-  - type: GuideHelp
-    guides:
-    - Pipes
-    - PipeNetworks
   - type: ZPipe
   - type: ZLevelTransmitter
-    useGrid: true
     allowUp: true
-    allowDown: true
+  - type: ZLevelEntityLink
+  - type: AtmosDevice
 
 - type: entity
   parent: GasPipeBase
-  name: down
-  id: UtopiaGasZPipeDown
-  suffix: Half
+  id: UtopiaGasZPipeStraightDown
+  name: DOWN
+  suffix: Straight
   placement:
     mode: AlignAtmosPipeLayers
   components:
@@ -56,34 +35,13 @@
       pipe:
         !type:PipeNode
         nodeGroupID: Pipe
-        pipeDirection: South
-      down:
+        pipeDirection: Longitudinal
+      zDown:
         !type:ZPipeNode
         nodeGroupID: Pipe
         zDirection: Down
-  - type: Sprite
-    layers:
-    - state: pipeHalf
-      map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: AtmosPipeLayers
-    alternativePrototypes:
-      Primary: GasPipeHalf
-      Secondary: GasPipeHalfAlt1
-      Tertiary: GasPipeHalfAlt2
-  - type: Construction
-    graph: GasPipe
-    node: half
-  - type: Item
-    size: Small
-    storedSprite:
-      sprite: Structures/Piping/Atmospherics/pipe.rsi
-      state: storageHalf
-  - type: GuideHelp
-    guides:
-    - Pipes
-    - PipeNetworks
   - type: ZPipe
   - type: ZLevelTransmitter
-    useGrid: true
-    allowUp: true
     allowDown: true
+  - type: ZLevelEntityLink
+  - type: AtmosDevice

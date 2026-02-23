@@ -1,5 +1,7 @@
 using Content.Server._Utopia.ZLevels.Pipes.Systems;
 using Content.Server._Utopia.ZLevels.Nodes;
+using Content.Server._Utopia.ZLevels.Power;
+using Content.Shared._Utopia.ZLevels.Cables.Components;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.NodeContainer;
 using Content.Shared._CE.ZLevels.Core.Components;
@@ -19,6 +21,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
     [Dependency] private readonly ZPipeSystem _zPipes = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly ZCableSystem _zCables = default!;
 
     public override void Initialize()
     {
@@ -26,6 +29,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         SubscribeLocalEvent<ZLevelTransmitterComponent, MoveEvent>(OnMove);
     }
 
+    #region Base
     private void OnRefresh(EntityUid uid, ZLevelTransmitterComponent comp, ComponentStartup args)
         => Refresh(uid, comp);
 
@@ -53,10 +57,15 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
             : null;
 
         if (HasComp<ZPipeComponent>(uid))
-            RebuildPipeLinks(uid, link);
-    }
+            RebuildPipeLinks(uid, link, transmitter);
 
-    private void RebuildPipeLinks(EntityUid uid, ZLevelEntityLinkComponent link)
+        if (HasComp<ZCableComponent>(uid))
+            RebuildCableLinks(uid, link, transmitter);
+    }
+    #endregion Base
+
+    #region AtmosPipe
+    private void RebuildPipeLinks(EntityUid uid, ZLevelEntityLinkComponent link, ZLevelTransmitterComponent transmitter)
     {
         if (!TryComp(uid, out TransformComponent? xform) || !xform.Anchored)
             return;
@@ -72,7 +81,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
 
         _zPipes.ClearAll(container);
 
-        var worldBox = GetTileWorldBox(gridUid, grid, xform);
+        var worldBox = GetTileWorldBox(gridUid, grid, xform, transmitter);
 
         foreach (var node in container.Nodes.Values)
         {
@@ -143,11 +152,104 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
             }
         }
     }
+    #endregion AtmosPipe
 
+    #region Cables
+    private void RebuildCableLinks(EntityUid uid, ZLevelEntityLinkComponent link, ZLevelTransmitterComponent transmitter)
+    {
+        if (!TryComp(uid, out TransformComponent? xform) || !xform.Anchored)
+            return;
+
+        if (!TryComp(uid, out NodeContainerComponent? container) || container.Nodes.Count == 0)
+            return;
+
+        if (xform.GridUid is not { } gridUid)
+            return;
+
+        if (!TryComp(gridUid, out MapGridComponent? grid))
+            return;
+
+        _zCables.ClearAll(container);
+
+        var worldBox = GetTileWorldBox(gridUid, grid, xform, transmitter);
+
+        foreach (var node in container.Nodes.Values)
+        {
+            if (node is not ZCableNode zNode)
+                continue;
+
+            EntityUid? targetMap;
+            ZNodeDirection requiredDir;
+
+            switch (zNode.ZDirection)
+            {
+                case ZNodeDirection.Up:
+                    targetMap = link.AboveMap;
+                    requiredDir = ZNodeDirection.Down;
+                    break;
+
+                case ZNodeDirection.Down:
+                    targetMap = link.BelowMap;
+                    requiredDir = ZNodeDirection.Up;
+                    break;
+
+                default:
+                    continue;
+            }
+
+            if (targetMap is not { } mapUid)
+                continue;
+
+            TryFindCableMatches(uid, zNode, worldBox, mapUid, requiredDir);
+        }
+    }
+    private void TryFindCableMatches(
+        EntityUid source,
+        ZCableNode self,
+        Box2 worldBox,
+        EntityUid targetMap,
+        ZNodeDirection requiredDir)
+    {
+        if (!TryComp(targetMap, out TransformComponent? mapXform))
+            return;
+
+        var mapId = mapXform.MapID;
+
+        foreach (var ent in _lookup.GetEntitiesIntersecting(
+                    mapId,
+                    worldBox,
+                    LookupFlags.All))
+        {
+            if (ent == source)
+                continue;
+
+            if (!TryComp(ent, out TransformComponent? xform) || !xform.Anchored)
+                continue;
+
+            if (!TryComp(ent, out NodeContainerComponent? container))
+                continue;
+
+            foreach (var node in container.Nodes.Values)
+            {
+                if (node is not ZCableNode other)
+                    continue;
+
+                if (other.ZDirection != requiredDir)
+                    continue;
+
+                _zCables.AddZConnection(self, other);
+            }
+        }
+    }
+    #endregion
+
+
+    #region General
     private Box2 GetTileWorldBox(
         EntityUid gridUid,
         MapGridComponent grid,
-        TransformComponent xform)
+        TransformComponent xform,
+        ZLevelTransmitterComponent transmitter)
     {
         var tile = grid.TileIndicesFor(xform.Coordinates);
         var tileSize = grid.TileSize;
@@ -156,10 +258,10 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
             _transform.GetWorldPosition(gridUid) +
             new Vector2(tile.X * tileSize, tile.Y * tileSize);
 
+        var range = transmitter.Range;
         var center = tileOrigin + new Vector2(tileSize / 2f, tileSize / 2f);
-        const float epsilon = 0.01f; // вынести в компонент
 
-        var half = new Vector2(epsilon / 2f, epsilon / 2f);
+        var half = new Vector2(range / 2f, range / 2f);
         return new Box2(center - half, center + half);
     }
 
@@ -225,4 +327,5 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
             ZNetwork = zNetwork;
         }
     }
+    #endregion
 }

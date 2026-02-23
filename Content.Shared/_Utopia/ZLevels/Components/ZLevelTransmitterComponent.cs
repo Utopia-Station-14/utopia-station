@@ -18,4 +18,7 @@ public sealed partial class ZLevelTransmitterComponent : Component
 
     [DataField]
     public bool AllowDown = true;
+
+    [DataField]
+    public float Range = 0.01f;
 }
