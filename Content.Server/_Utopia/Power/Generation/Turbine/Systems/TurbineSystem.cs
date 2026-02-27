@@ -300,7 +300,6 @@ public sealed class TurbineSystem : EntitySystem
             _ => TurbineStatusType.Nominal
         };
     }
-
     private void OnSelectTurbine(Entity<TurbineConsoleComponent> ent, ref TurbineConsoleFocusChangeMessage msg)
     {
         ent.Comp.FocusTurbine = msg.FocusTurbine;
