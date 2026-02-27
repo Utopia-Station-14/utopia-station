@@ -28,6 +28,11 @@ public sealed class TurbineSystem : EntitySystem
     {
         base.Initialize();
         _nodeContainerQuery = GetEntityQuery<NodeContainerComponent>();
+
+        Subs.BuiEvents<TurbineConsoleComponent>(TurbineConsoleUiKey.Key, subs =>
+        {
+            subs.Event<TurbineConsoleFocusChangeMessage>(OnSelectTurbine);
+        });
     }
 
     public override void Update(float frameTime)
@@ -175,6 +180,13 @@ public sealed class TurbineSystem : EntitySystem
         rotor.Integrity -= damage;
     }
 
+    private void OnSelectTurbine(Entity<TurbineConsoleComponent> ent, ref TurbineConsoleFocusChangeMessage msg)
+    {
+        ent.Comp.FocusTurbine = msg.FocusTurbine;
+        Dirty(ent);
+        UpdateConsoleState(ent.Comp);
+    }
+
     /// <summary>
     /// Обновляем состояние консолей напрямую в UI
     /// </summary>
@@ -213,5 +225,12 @@ public sealed class TurbineSystem : EntitySystem
 
         comp.Turbines = turbines.ToArray();
         comp.FocusData = focusData;
+
+        var state = new TurbineConsoleBoundInterfaceState(
+            comp.Turbines,
+            comp.FocusData
+        );
+
+        _ui.SetUiState(comp.Owner, TurbineConsoleUiKey.Key, state);
     }
 }
