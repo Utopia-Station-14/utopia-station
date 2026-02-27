@@ -1,5 +1,6 @@
 atm-wrong-pin = Неверный PIN-код.
 atm-not-enough-cash = Недостаточно средств.
+atm-deposit-failed = Операция отклонена.
 atm-trying-insert-cash-error = Купюроприемник закрыт.
 atm-error = Банкомат заел купюры и выплюнул их обратно!
 

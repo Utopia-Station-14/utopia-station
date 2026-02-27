@@ -1,4 +1,5 @@
 ﻿using Content.Shared.Cargo.Prototypes;
+using Content.Shared.Mind;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
@@ -10,12 +11,11 @@ public sealed class BankAccount
     public readonly int AccountPin;
     public int Balance;
     public bool CommandBudgetAccount;
-    public NetEntity? Mind;
+    public Entity<MindComponent>? Mind;
     public string Name = string.Empty;
     public ProtoId<CargoAccountPrototype>? AccountPrototype;
     public EntityUid? CartridgeUid;
     public List<TransactionsHistory> History;
-    public bool IsBlocked;
 
     public BankAccount(int accountId, int balance, IRobustRandom random)
     {

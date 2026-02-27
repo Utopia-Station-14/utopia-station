@@ -16,18 +16,9 @@ public sealed class SalaryConsoleBoundUserInterface : BoundUserInterface
     {
         base.Open();
 
-        _menu = new SalaryConsoleMenu();
+        _menu = new SalaryConsoleMenu(this);
         _menu.OnFiltersChanged += (type, filterValue) =>
             SendMessage(new SetStationRecordFilter(type, filterValue));
-
-        _menu.OnKeySelected += key =>
-            SendMessage(new SelectStationRecord(key));
-
-        _menu.OnSendMoney += (recordKey, amount, pin) =>
-            SendMessage(new SalaryConsoleSendMoneyMessage(recordKey, amount, pin));
-
-        _menu.OnEjectCard += () =>
-            SendMessage(new ItemSlotButtonPressedEvent(SalaryConsoleComponent.BudgetCardSlotId));
 
         _menu.OnClose += Close;
         _menu?.OpenCentered();
@@ -51,5 +42,20 @@ public sealed class SalaryConsoleBoundUserInterface : BoundUserInterface
             return;
 
         _menu?.UpdateState(consoleState);
+    }
+
+    public void EjectCard()
+    {
+        SendMessage(new ItemSlotButtonPressedEvent(SalaryConsoleComponent.BudgetCardSlotId));
+    }
+
+    public void SelectRecord(uint? key)
+    {
+        SendMessage(new SalaryConsoleSelectRecordMessage(key));
+    }
+
+    public void SendMoney(uint recordKey, int amount)
+    {
+        SendMessage(new SalaryConsoleSendMoneyMessage(recordKey, amount));
     }
 }

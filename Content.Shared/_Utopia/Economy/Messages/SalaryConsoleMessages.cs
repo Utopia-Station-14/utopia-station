@@ -11,7 +11,7 @@ public sealed class SalaryConsoleUserInterfaceState : BoundUserInterfaceState
     public readonly GeneralStationRecord? Record;
     public readonly StationRecordsFilter? Filter;
     public readonly bool BudgetCardInserted;
-    public readonly int BudgetCardBalance;
+    public readonly int? BudgetCardBalance;
     public readonly string? BudgetCardLabel;
 
     public SalaryConsoleUserInterfaceState(
@@ -20,7 +20,7 @@ public sealed class SalaryConsoleUserInterfaceState : BoundUserInterfaceState
         GeneralStationRecord? record,
         StationRecordsFilter? filter,
         bool budgetCardInserted,
-        int budgetCardBalance,
+        int? budgetCardBalance,
         string? budgetCardLabel)
     {
         RecordListing = recordListing;
@@ -34,9 +34,14 @@ public sealed class SalaryConsoleUserInterfaceState : BoundUserInterfaceState
 }
 
 [Serializable, NetSerializable]
-public sealed class SalaryConsoleSendMoneyMessage(uint recordKey, int amount, int pin) : BoundUserInterfaceMessage
+public sealed class SalaryConsoleSelectRecordMessage(uint? key) : BoundUserInterfaceMessage
+{
+    public readonly uint? SelectedKey = key;
+}
+
+[Serializable, NetSerializable]
+public sealed class SalaryConsoleSendMoneyMessage(uint recordKey, int amount) : BoundUserInterfaceMessage
 {
     public readonly uint RecordKey = recordKey;
     public readonly int Amount = amount;
-    public readonly int Pin = pin;
 }
