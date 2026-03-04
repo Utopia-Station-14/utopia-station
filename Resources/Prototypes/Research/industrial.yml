@@ -15,6 +15,11 @@
   - OreProcessorIndustrialMachineCircuitboard
   - ClothingMaskWeldingGas
   - ClothingShoesBootsJump
+  # Utopia-Tweak : Research
+  position: 3,0
+  technologyPrerequisites:
+  - SpaceScanning
+  # Utopia-Tweak : Research
 
 - type: technology
   id: SpaceScanning
@@ -28,6 +33,11 @@
   recipeUnlocks:
   - RadarConsoleCircuitboard
   - HandHeldMassScanner
+  # Utopia-Tweak : Research
+  position: 2,0
+  technologyPrerequisites:
+  - PowerGeneration
+  # Utopia-Tweak : Research
 
 - type: technology
   id: AdvancedPowercells
@@ -42,6 +52,11 @@
   - PowerCellHigh
   - TurboItemRechargerCircuitboard
   - SMESAdvancedMachineCircuitboard
+  # Utopia-Tweak : Research
+  position: 0,-1
+  technologyPrerequisites:
+  - IndustrialEngineering
+  # Utopia-Tweak : Research
 
 - type: technology
   id: MechanicalCompression
@@ -54,6 +69,11 @@
   cost: 10000
   recipeUnlocks:
   - FlatpackerMachineCircuitboard
+  # Utopia-Tweak : Research
+  position: 2,1
+  technologyPrerequisites:
+  - SpaceScanning
+  # Utopia-Tweak : Research
 
 - type: technology
   id: IndustrialEngineering
@@ -69,6 +89,11 @@
   - ProtolatheHyperConvectionMachineCircuitboard
   - CircuitImprinterHyperConvectionMachineCircuitboard
   - SheetifierMachineCircuitboard
+  # Utopia-Tweak : Research
+  position: 1,2
+  technologyPrerequisites:
+  - MechanicalCompression
+  # Utopia-Tweak : Research
 
 - type: technology
   id: PowerGeneration
@@ -86,6 +111,7 @@
   - SolarControlComputerCircuitboard
   - SolarTrackerElectronics
   - EmitterCircuitboard
+  position: 0,0 # Utopia-Tweak : Research
 
 - type: technology
   id: AtmosphericTech
@@ -99,6 +125,11 @@
   recipeUnlocks:
   - ThermomachineFreezerMachineCircuitBoard
   - GasRecyclerMachineCircuitboard
+  # Utopia-Tweak : Research
+  position: 2,-1
+  technologyPrerequisites:
+  - SpaceScanning
+  # Utopia-Tweak : Research
 
 - type: technology
   id: RipleyAPLU
@@ -118,6 +149,11 @@
   - RipleyCentralElectronics
   - RipleyPeripheralsElectronics
   - MechEquipmentGrabber
+  # Utopia-Tweak : Research
+  position: 0,-5
+  technologyPrerequisites:
+  - SalvageEquipment
+  # Utopia-Tweak : Research
 
 # Tier 2
 
@@ -135,6 +171,11 @@
   - ThrusterMachineCircuitboard
   - GyroscopeMachineCircuitboard
   - MiniGravityGeneratorCircuitboard
+  # Utopia-Tweak : Research
+  position: 3,2
+  technologyPrerequisites:
+  - MechanicalCompression
+  # Utopia-Tweak : Research
 
 - type: technology
   id: AdvancedAtmospherics
@@ -151,6 +192,9 @@
   - HolofanProjector
   technologyPrerequisites:
   - AtmosphericTech
+  # Utopia-Tweak : Research
+  position: 1,-1
+  # Utopia-Tweak : Research
 
 - type: technology
   id: AdvancedToolsTechnology
@@ -168,6 +212,11 @@
     - BorgModuleAdvancedTool
     - Fulton
     - FultonBeacon
+  # Utopia-Tweak : Research
+  position: 3,-2
+  technologyPrerequisites:
+  - Shuttlecraft
+  # Utopia-Tweak : Research
 
 - type: technology
   id: MassExcavation
@@ -183,6 +232,11 @@
     - MiningDrillDiamond
     - AdvancedMineralScannerEmpty
     - BorgModuleAdvancedMining
+  # Utopia-Tweak : Research
+  position: 4,-1
+  technologyPrerequisites:
+  - RipleyAPLU
+  # Utopia-Tweak : Research
 
 # Tier 3
 
@@ -199,6 +253,11 @@
   - ClothingBackpackHolding
   - ClothingBackpackSatchelHolding
   - ClothingBackpackDuffelHolding
+  # Utopia-Tweak : Research
+  position: 2,-3
+  technologyPrerequisites:
+   - OptimizedMicrogalvanism
+  # Utopia-Tweak : Research
 
 - type: technology
   id: OptimizedMicrogalvanism
@@ -214,3 +273,4 @@
   - PowerCellHyper
   technologyPrerequisites:
   - AdvancedPowercells
+  position: 2,-6 # Utopia-Tweak : Research

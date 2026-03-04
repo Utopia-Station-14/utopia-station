@@ -45,4 +45,9 @@ public sealed partial class TechDisciplinePrototype : IPrototype
     /// </summary>
     [DataField("lockoutTier")]
     public int LockoutTier = 3;
+
+    // Utopia-Tweak : Research
+    [DataField(required: true)]
+    public string UiName = string.Empty;
+    // Utopia-Tweak : Research
 }

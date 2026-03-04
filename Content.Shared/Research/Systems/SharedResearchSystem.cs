@@ -73,8 +73,8 @@ public abstract class SharedResearchSystem : EntitySystem
         if (!component.SupportedDisciplines.Contains(tech.Discipline))
             return false;
 
-        if (tech.Tier > disciplineTiers[tech.Discipline])
-            return false;
+        // if (tech.Tier > disciplineTiers[tech.Discipline]) // Utopia-Tweak : Research
+        //     return false; // Utopia-Tweak : Research
 
         if (component.UnlockedTechnologies.Contains(tech.ID))
             return false;

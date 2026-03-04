@@ -1,3 +1,4 @@
+using Content.Shared._Utopia.Research;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared.Research.Components
@@ -29,9 +30,12 @@ namespace Content.Shared.Research.Components
     public sealed class ResearchConsoleBoundInterfaceState : BoundUserInterfaceState
     {
         public int Points;
-        public ResearchConsoleBoundInterfaceState(int points)
+        public Dictionary<string, ResearchAvailablity> Researches;
+
+        public ResearchConsoleBoundInterfaceState(int points, Dictionary<string, ResearchAvailablity> list) // ADT Research menu rework tweaked
         {
             Points = points;
+            Researches = list;   // ADT Research menu rework field
         }
     }
 }

@@ -1,21 +1,28 @@
-﻿<controls:FancyWindow xmlns="https://spacestation14.io"
+<controls:FancyWindow xmlns="https://spacestation14.io"
                       xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
                       xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                       xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+                      xmlns:rsch="clr-namespace:Content.Client._Utopia.Research.UI"
                       Title="{Loc 'research-console-menu-title'}"
-                      MinSize="625 400"
-                      SetSize="700 550">
+                      SetSize="1260 850">
     <BoxContainer Orientation="Vertical"
                   HorizontalExpand="True"
                   VerticalExpand="True">
+        <controls:StripeBack MinSize="52 52">
+            <BoxContainer Name="DisciplinesContainer"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Stretch"
+                        MinSize="52 52"
+                        Margin="5"/>
+            <!--Disciplines populated in .cs-->
+        </controls:StripeBack>
         <BoxContainer Orientation="Horizontal"
                       HorizontalExpand="True"
                       VerticalExpand="False"
-                      MinHeight="85"
+                      MinHeight="60"
                       Margin="10">
             <BoxContainer Orientation="Vertical" VerticalExpand="True" HorizontalExpand="True">
                 <RichTextLabel Name="ResearchAmountLabel"/>
-                <RichTextLabel Name="MainDisciplineLabel"/>
                 <Control VerticalExpand="True"/>
                 <BoxContainer Name="TierDisplayContainer" Orientation="Horizontal" HorizontalExpand="True" VerticalAlignment="Bottom"/>
                 <!-- This is where we put all of the little graphics that display discipline tiers!-->
@@ -30,69 +37,38 @@
             <BoxContainer Orientation="Vertical"
                           VerticalExpand="True"
                           HorizontalExpand="True"
-                          SizeFlagsStretchRatio="2"
-                          Margin="10 0 10 10"
-                          MinWidth="175">
-                <Label Text="{Loc 'research-console-available-text'}" HorizontalAlignment="Center"/>
-                <customControls:HSeparator StyleClasses="LowDivider" Margin="0 0 0 10"/>
-                <PanelContainer VerticalExpand="True">
+                          SizeFlagsStretchRatio="5"
+                          Margin="0 0 0 10">
+                <PanelContainer Name="ResearchesContainer" VerticalExpand="True" HorizontalExpand="True">
                     <PanelContainer.PanelOverride>
-                        <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+                        <gfx:StyleBoxFlat BackgroundColor="#000000FF" BorderColor="#25252a" BorderThickness="10"/>
                     </PanelContainer.PanelOverride>
-                    <ScrollContainer
-                        HScrollEnabled="False"
+                    <TextureRect Name="StaticSprite"
                         HorizontalExpand="True"
                         VerticalExpand="True">
-                        <BoxContainer
-                            Name="AvailableCardsContainer"
-                            Orientation="Vertical"
-                            VerticalExpand="True">
-                        </BoxContainer>
-                    </ScrollContainer>
-                </PanelContainer>
-                <Control MinHeight="10"/>
-                <Label Text="{Loc 'research-console-unlocked-text'}" HorizontalAlignment="Center"/>
-                <customControls:HSeparator StyleClasses="LowDivider" Margin="0 0 0 10"/>
-                <PanelContainer VerticalExpand="True">
-                    <PanelContainer.PanelOverride>
-                        <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
-                    </PanelContainer.PanelOverride>
-                    <ScrollContainer
-                        HScrollEnabled="False"
-                        HorizontalExpand="True"
-                        VerticalExpand="True">
-                        <BoxContainer
-                            Name="UnlockedCardsContainer"
-                            Orientation="Vertical"
-                            VerticalExpand="True">
-                        </BoxContainer>
-                    </ScrollContainer>
+                        <rsch:DraggablePanel
+                            HorizontalExpand="True"
+                            VerticalExpand="True"
+                            Name="DragContainer"
+                            MouseFilter="Pass"
+                            RectClipContent="True">
+                        </rsch:DraggablePanel>
+                    </TextureRect>
+                <Button Name="RecenterButton" Text="{Loc 'research-console-menu-recenter-button'}"
+                    MinHeight="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="1 -5"/>
                 </PanelContainer>
             </BoxContainer>
-            <BoxContainer Orientation="Vertical"
-                          VerticalExpand="True"
-                          HorizontalExpand="True"
-                          SizeFlagsStretchRatio="3"
-                          Margin="0 0 10 10">
-                <PanelContainer VerticalExpand="True" MinSize="0 200">
-                    <PanelContainer.PanelOverride>
-                        <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
-                    </PanelContainer.PanelOverride>
-                    <ScrollContainer
-                        HScrollEnabled="False"
-                        HorizontalExpand="True"
-                        SizeFlagsStretchRatio="2"
-                        VerticalExpand="True">
-                        <BoxContainer
-                            Name="TechnologyCardsContainer"
-                            MinSize="100 256"
-                            Orientation="Vertical"
-                            SizeFlagsStretchRatio="2"
-                            VerticalExpand="True">
-                        </BoxContainer>
-                    </ScrollContainer>
-                </PanelContainer>
-            </BoxContainer>
+            <PanelContainer SizeFlagsStretchRatio="2">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+                </PanelContainer.PanelOverride>
+                <BoxContainer Name="InfoContainer"
+                    Orientation="Vertical"
+                    VerticalExpand="True"
+                    HorizontalExpand="True"
+                    SizeFlagsStretchRatio="1"
+                    Margin="0"/>
+            </PanelContainer>
         </BoxContainer>
     </BoxContainer>
 </controls:FancyWindow>

@@ -1,5 +1,7 @@
+using System.Linq;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Research.Components;
+using Content.Shared._Utopia.Research;
 using Content.Shared.UserInterface;
 using Content.Shared.Access.Components;
 using Content.Shared.Emag.Components;
@@ -74,14 +76,46 @@ public sealed partial class ResearchSystem
 
         ResearchConsoleBoundInterfaceState state;
 
-        if (TryGetClientServer(uid, out _, out var serverComponent, clientComponent))
+        Dictionary<string, ResearchAvailablity> list = new();
+        foreach (var proto in PrototypeManager.EnumeratePrototypes<TechnologyPrototype>().ToList())
         {
+            list.Add(proto.ID, ResearchAvailablity.Unavailable);
+        }
+
+        if (TryGetClientServer(uid, out var serverUid, out var serverComponent, clientComponent))
+        {
+            if (clientComponent.Server.HasValue && TryComp<TechnologyDatabaseComponent>(clientComponent.Server.Value, out var db))
+            {
+                var toList = list.ToList();
+                for (var i = 0; i < toList.Count; i++)
+                {
+                    var item = PrototypeManager.Index<TechnologyPrototype>(toList[i].Key);
+                    if (CompOrNull<TechnologyDatabaseComponent>(serverUid)?.UnlockedTechnologies.Contains(item.ID) ?? false)
+                        list[item.ID] = ResearchAvailablity.Researched;
+                    else if (item.TechnologyPrerequisites.Count <= 0)
+                        list[item.ID] = serverComponent.Points >= item.Cost ? ResearchAvailablity.Available : ResearchAvailablity.Unavailable;
+                    else
+                    {
+                        var success = true;
+                        foreach (var required in item.TechnologyPrerequisites)
+                        {
+                            if (!db.UnlockedTechnologies.Contains(required))
+                                success = false;
+                        }
+
+                        var available = success && serverComponent.Points >= item.Cost;
+                        if (success)
+                            list[item.ID] = available ? ResearchAvailablity.Available : ResearchAvailablity.Unavailable;
+                    }
+                }
+            }
+
             var points = clientComponent.ConnectedToServer ? serverComponent.Points : 0;
-            state = new ResearchConsoleBoundInterfaceState(points);
+            state = new ResearchConsoleBoundInterfaceState(points, list);
         }
         else
         {
-            state = new ResearchConsoleBoundInterfaceState(default);
+            state = new ResearchConsoleBoundInterfaceState(default, list);
         }
 
         _uiSystem.SetUiState(uid, ResearchConsoleUiKey.Key, state);
