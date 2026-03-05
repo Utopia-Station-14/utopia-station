@@ -2,6 +2,8 @@ using Content.Server._Utopia.ZLevels.Pipes.Systems;
 using Content.Server._Utopia.ZLevels.Nodes;
 using Content.Server._Utopia.ZLevels.Power;
 using Content.Shared._Utopia.ZLevels.Cables.Components;
+using Content.Server.Disposal.Tube;
+using Content.Server._Utopia.ZLevels.Disposal.Components;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.NodeContainer;
 using Content.Shared._CE.ZLevels.Core.Components;
@@ -242,7 +244,69 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         }
     }
     #endregion
+    #region Disposal
+    public EntityUid? TryFindZDisposalTarget(
+        EntityUid source,
+        EntityUid targetMap,
+        ZNodeDirection dir)
+    {
+        if (!TryComp(source, out TransformComponent? srcXform))
+            return null;
 
+        if (srcXform.GridUid is not { } srcGridUid)
+            return null;
+
+        if (!TryComp(srcGridUid, out MapGridComponent? srcGrid))
+            return null;
+
+        var tile = srcGrid.TileIndicesFor(srcXform.Coordinates);
+        if (!TryComp(targetMap, out TransformComponent? targetMapXform))
+            return null;
+
+        if (targetMapXform.GridUid is not { } targetGridUid)
+            return null;
+
+        if (!TryComp(targetGridUid, out MapGridComponent? targetGrid))
+            return null;
+
+        var tileSize = targetGrid.TileSize;
+        var gridWorldPos = _transform.GetWorldPosition(targetGridUid);
+
+        var tileOrigin = gridWorldPos +
+            new Vector2(tile.X * tileSize, tile.Y * tileSize);
+
+        var worldBox = new Box2(
+            tileOrigin,
+            tileOrigin + new Vector2(tileSize, tileSize)
+        );
+
+        var required = dir == ZNodeDirection.Up
+            ? ZNodeDirection.Down
+            : ZNodeDirection.Up;
+
+        foreach (var ent in _lookup.GetEntitiesIntersecting(
+                    targetMapXform.MapID,
+                    worldBox,
+                    LookupFlags.All))
+        {
+            if (!TryComp(ent, out ZDisposalPipeComponent? zPipe))
+                continue;
+
+            if (zPipe.ZDirection != required)
+                continue;
+
+            if (!TryComp(ent, out TransformComponent? xform) || !xform.Anchored)
+                continue;
+
+            if (!TryComp(ent, out DisposalTubeComponent? tube))
+                continue;
+
+            return ent;
+        }
+
+        return null;
+    }
+    #endregion
 
     #region General
     private Box2 GetTileWorldBox(
