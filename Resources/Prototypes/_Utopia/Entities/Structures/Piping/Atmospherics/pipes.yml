@@ -1,69 +1,47 @@
 - type: entity
-  parent: GasPipeHalf
-  id: UtopiaGasPipeHalf
-  categories: [ HideSpawnMenu ]
-  suffix: Half, Utopia
+  parent: GasPipeBase
+  id: UtopiaGasZPipeStraightUp
+  name: UP
+  suffix: Straight
+  placement:
+    mode: AlignAtmosPipeLayers
   components:
-  - type: Transform
-    anchored: false
-  - type: Physics
-    bodyType: Dynamic
-    canCollide: True
-  - type: Construction
-    deconstructionTarget: null
+  - type: NodeContainer
+    nodes:
+      pipe:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+      zUp:
+        !type:ZPipeNode
+        nodeGroupID: Pipe
+        zDirection: Up
+  - type: ZPipe
+  - type: ZLevelTransmitter
+    allowUp: true
+  - type: ZLevelEntityLink
+  - type: AtmosDevice
 
 - type: entity
-  parent: GasPipeStraight
-  id: UtopiaGasPipeStraight
-  categories: [ HideSpawnMenu ]
-  suffix: Straight, Utopia
+  parent: GasPipeBase
+  id: UtopiaGasZPipeStraightDown
+  name: DOWN
+  suffix: Straight
+  placement:
+    mode: AlignAtmosPipeLayers
   components:
-  - type: Transform
-    anchored: false
-  - type: Physics
-    bodyType: Dynamic
-    canCollide: True
-  - type: Construction
-    deconstructionTarget: null
-
-- type: entity
-  parent: GasPipeBend
-  id: UtopiaGasPipeBend
-  categories: [ HideSpawnMenu ]
-  suffix: Bend, Utopia
-  components:
-  - type: Transform
-    anchored: false
-  - type: Physics
-    bodyType: Dynamic
-    canCollide: True
-  - type: Construction
-    deconstructionTarget: null
-
-- type: entity
-  parent: GasPipeTJunction
-  id: UtopiaGasPipeTJunction
-  categories: [ HideSpawnMenu ]
-  suffix: TJunction, Utopia
-  components:
-  - type: Transform
-    anchored: false
-  - type: Physics
-    bodyType: Dynamic
-    canCollide: True
-  - type: Construction
-    deconstructionTarget: null
-
-- type: entity
-  parent: GasPipeFourway
-  id: UtopiaGasPipeFourway
-  categories: [ HideSpawnMenu ]
-  suffix: Fourway, Utopia
-  components:
-  - type: Transform
-    anchored: false
-  - type: Physics
-    bodyType: Dynamic
-    canCollide: True
-  - type: Construction
-    deconstructionTarget: null
+  - type: NodeContainer
+    nodes:
+      pipe:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+      zDown:
+        !type:ZPipeNode
+        nodeGroupID: Pipe
+        zDirection: Down
+  - type: ZPipe
+  - type: ZLevelTransmitter
+    allowDown: true
+  - type: ZLevelEntityLink
+  - type: AtmosDevice
