@@ -32,6 +32,7 @@
     languages:
       GalacticCommon: Speak
   # Utopia-Tweak : Language
+  - type: CEZLevelGhostMover  # ECHO-Tweak
 
 # shared parent between aghosts, replay spectators and normal observers
 - type: entity
