@@ -191,9 +191,40 @@ public sealed class ZNetworkMappingSystem : EntitySystem
     #endregion
 
     #region Loading
-    public bool TryLoadMap(string path, MapId mapId, [NotNullWhen(false)] out string? error)
+    public bool TryLoadMap(string path,
+                           [NotNullWhen(true)] out List<Entity<MapComponent>>? maps,
+                           [NotNullWhen(true)] out List<Entity<MapGridComponent>>? grids,
+                           [NotNullWhen(false)] out string? error)
+    {
+        var id = new MapId((int)_map.GetAllMapIds().Max() + 1);
+        return TryLoadMap(path, id, out maps, out grids, out error);
+    }
+
+    public bool TryLoadMap(ResPath path,
+                           [NotNullWhen(true)] out List<Entity<MapComponent>>? maps,
+                           [NotNullWhen(true)] out List<Entity<MapGridComponent>>? grids,
+                           [NotNullWhen(false)] out string? error)
+    {
+        var id = new MapId((int)_map.GetAllMapIds().Max() + 1);
+        return TryLoadMap(path, id, out maps, out grids, out error);
+    }
+
+    public bool TryLoadMap(string path, MapId mapId,
+                           [NotNullWhen(true)] out List<Entity<MapComponent>>? maps,
+                           [NotNullWhen(true)] out List<Entity<MapGridComponent>>? grids,
+                           [NotNullWhen(false)] out string? error)
+    {
+        return TryLoadMap(new ResPath(path), mapId, out maps, out grids, out error);
+    }
+
+    public bool TryLoadMap(ResPath path, MapId mapId,
+                           [NotNullWhen(true)] out List<Entity<MapComponent>>? maps,
+                           [NotNullWhen(true)] out List<Entity<MapGridComponent>>? grids,
+                           [NotNullWhen(false)] out string? error)
     {
         error = null;
+        maps = null;
+        grids = null;
 
         if (_map.TryGetMap(mapId, out var mapUid))
         {
@@ -201,8 +232,7 @@ public sealed class ZNetworkMappingSystem : EntitySystem
             return false;
         }
 
-        var dataPath = new ResPath($"{path}/map-data.json").ToRootedPath();
-        if (!_resMan.UserData.TryReadAllText(dataPath, out var rawData))
+        if (!_resMan.UserData.TryReadAllText(path, out var rawData))
         {
             error = "Could not find map-data.json file in target directory.";
             return false;
@@ -225,7 +255,7 @@ public sealed class ZNetworkMappingSystem : EntitySystem
             }
         }
 
-        return LoadMap(path, mapId, data);
+        return LoadMap(path.CanonPath, mapId, data, out maps, out grids);
     }
 
     public bool TryLoadGrid(string path, MapId mapId, Vector2 offset, float rotation, [NotNullWhen(false)] out string? error)
@@ -285,8 +315,13 @@ public sealed class ZNetworkMappingSystem : EntitySystem
         return _zLevels.TryAddMapsIntoZNetwork(network, maps);
     }
 
-    private bool LoadMap(string path, MapId mapId, SavedZNetworkMapData data)
+    private bool LoadMap(string path, MapId mapId, SavedZNetworkMapData data,
+                         [NotNullWhen(true)] out List<Entity<MapComponent>>? resultMaps,
+                         [NotNullWhen(true)] out List<Entity<MapGridComponent>>? resultGrids)
     {
+        resultMaps = new();
+        resultGrids = new();
+
         var network = _zLevels.CreateZNetwork();
         Dictionary<EntityUid, int> maps = new();
         var i = 0;
@@ -298,6 +333,8 @@ public sealed class ZNetworkMappingSystem : EntitySystem
             if (_mapLoader.TryLoadMapWithId(curMapId, mapPath, out var map, out var grids))
             {
                 maps.Add(map.Value.Owner, i);
+                resultMaps.Add(map.Value);
+                resultGrids.AddRange(grids);
             }
 
             i++;

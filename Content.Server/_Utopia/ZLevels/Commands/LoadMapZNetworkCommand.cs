@@ -67,7 +67,7 @@ public sealed class LoadMapZNetworkCommand : LocalizedEntityCommands
             return;
         }
 
-        if (_zLoader.TryLoadMap(args[1], mapId, out var error))
+        if (_zLoader.TryLoadMap(args[1], mapId, out _, out _, out var error))
             shell.WriteLine(Loc.GetString("cmd-loadmap-success", ("mapId", mapId), ("path", args[1])));
         else
             shell.WriteLine(error);
