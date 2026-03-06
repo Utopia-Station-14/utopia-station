@@ -251,7 +251,7 @@ public sealed class ZNetworkMappingSystem : EntitySystem
 
         if (!_map.TryGetMap(mapId, out var mapUid))
         {
-            return LoadGridWithMaps(path, data, offset, angle);
+            return LoadGridWithMaps(path, data, mapId, offset, angle);
         }
         else
         {
@@ -259,7 +259,7 @@ public sealed class ZNetworkMappingSystem : EntitySystem
         }
     }
 
-    private bool LoadGridWithMaps(string path, SavedZNetworkGridData data, Vector2 offset, Angle rotation)
+    private bool LoadGridWithMaps(string path, SavedZNetworkGridData data, MapId mapId, Vector2 offset, Angle rotation)
     {
         var network = _zLevels.CreateZNetwork();
         Dictionary<EntityUid, int> maps = new();
@@ -268,16 +268,17 @@ public sealed class ZNetworkMappingSystem : EntitySystem
         {
             var item = data.LevelPaths[i];
 
+            var map = i == 0 ? _map.CreateMap(mapId, false) : _map.CreateMap(false);
+            maps.Add(map, i);
+
             foreach (var grid in item)
             {
                 var mapPath = new ResPath($"{path}/{grid.Path}");
-                var map = _map.CreateUninitializedMap();
 
                 Quaternion2D q = new(rotation);
                 var gridOffset = Quaternion2D.RotateVector(q, grid.Offset);
 
-                if (_mapLoader.TryLoadGrid(map.Comp1.MapId, mapPath, out _, offset: offset + gridOffset, rot: rotation))
-                    maps.Add(map, i);
+                _mapLoader.TryLoadGrid(Comp<MapComponent>(map).MapId, mapPath, out _, offset: offset + gridOffset, rot: rotation);
             }
         }
 
