@@ -31,7 +31,8 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         SubscribeLocalEvent<ZLevelTransmitterComponent, MoveEvent>(OnMove);
     }
 
-    #region Base
+#region Base
+
     private void OnRefresh(EntityUid uid, ZLevelTransmitterComponent comp, ComponentStartup args)
         => Refresh(uid, comp);
 
@@ -51,7 +52,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         link.GridEntity = transmitter.UseGrid ? ctx.Transform.GridUid : null;
 
         link.AboveMap = transmitter.AllowUp
-            ? GetNeighborMap(ctx, +1)
+            ? GetNeighborMap(ctx, 1)
             : null;
 
         link.BelowMap = transmitter.AllowDown
@@ -64,9 +65,11 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         if (HasComp<ZCableComponent>(uid))
             RebuildCableLinks(uid, link, transmitter);
     }
-    #endregion Base
 
-    #region AtmosPipe
+#endregion
+
+#region AtmosPipe
+
     private void RebuildPipeLinks(EntityUid uid, ZLevelEntityLinkComponent link, ZLevelTransmitterComponent transmitter)
     {
         if (!TryComp(uid, out TransformComponent? xform) || !xform.Anchored)
@@ -128,10 +131,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
 
         var mapId = mapXform.MapID;
 
-        foreach (var ent in _lookup.GetEntitiesIntersecting(
-                    mapId,
-                    worldBox,
-                    LookupFlags.All))
+        foreach (var ent in _lookup.GetEntitiesIntersecting(mapId, worldBox, LookupFlags.All))
         {
             if (ent == source)
                 continue;
@@ -154,9 +154,11 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
             }
         }
     }
-    #endregion AtmosPipe
 
-    #region Cables
+#endregion
+
+#region Cables
+
     private void RebuildCableLinks(EntityUid uid, ZLevelEntityLinkComponent link, ZLevelTransmitterComponent transmitter)
     {
         if (!TryComp(uid, out TransformComponent? xform) || !xform.Anchored)
@@ -205,6 +207,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
             TryFindCableMatches(uid, zNode, worldBox, mapUid, requiredDir);
         }
     }
+
     private void TryFindCableMatches(
         EntityUid source,
         ZCableNode self,
@@ -217,10 +220,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
 
         var mapId = mapXform.MapID;
 
-        foreach (var ent in _lookup.GetEntitiesIntersecting(
-                    mapId,
-                    worldBox,
-                    LookupFlags.All))
+        foreach (var ent in _lookup.GetEntitiesIntersecting(mapId, worldBox, LookupFlags.All))
         {
             if (ent == source)
                 continue;
@@ -243,8 +243,11 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
             }
         }
     }
-    #endregion
-    #region Disposal
+
+#endregion
+
+#region Disposal
+
     public EntityUid? TryFindZDisposalTarget(
         EntityUid source,
         EntityUid targetMap,
@@ -260,34 +263,27 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
             return null;
 
         var tile = srcGrid.TileIndicesFor(srcXform.Coordinates);
-        if (!TryComp(targetMap, out TransformComponent? targetMapXform))
-            return null;
+        var tileSize = srcGrid.TileSize;
 
-        if (targetMapXform.GridUid is not { } targetGridUid)
-            return null;
-
-        if (!TryComp(targetGridUid, out MapGridComponent? targetGrid))
-            return null;
-
-        var tileSize = targetGrid.TileSize;
-        var gridWorldPos = _transform.GetWorldPosition(targetGridUid);
-
-        var tileOrigin = gridWorldPos +
+        var worldPos =
+            _transform.GetWorldPosition(srcGridUid) +
             new Vector2(tile.X * tileSize, tile.Y * tileSize);
 
         var worldBox = new Box2(
-            tileOrigin,
-            tileOrigin + new Vector2(tileSize, tileSize)
-        );
+            worldPos,
+            worldPos + new Vector2(tileSize, tileSize));
 
         var required = dir == ZNodeDirection.Up
             ? ZNodeDirection.Down
             : ZNodeDirection.Up;
 
+        if (!TryComp(targetMap, out TransformComponent? targetMapXform))
+            return null;
+
         foreach (var ent in _lookup.GetEntitiesIntersecting(
-                    targetMapXform.MapID,
-                    worldBox,
-                    LookupFlags.All))
+                     targetMapXform.MapID,
+                     worldBox,
+                     LookupFlags.All))
         {
             if (!TryComp(ent, out ZDisposalPipeComponent? zPipe))
                 continue;
@@ -298,7 +294,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
             if (!TryComp(ent, out TransformComponent? xform) || !xform.Anchored)
                 continue;
 
-            if (!TryComp(ent, out DisposalTubeComponent? tube))
+            if (!TryComp(ent, out DisposalTubeComponent? disposal))
                 continue;
 
             return ent;
@@ -306,9 +302,11 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
 
         return null;
     }
-    #endregion
 
-    #region General
+#endregion
+
+#region General
+
     private Box2 GetTileWorldBox(
         EntityUid gridUid,
         MapGridComponent grid,
@@ -358,18 +356,10 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
     {
         var mapEntity = new Entity<CEZLevelMapComponent?>(ctx.MapUid, ctx.ZMap);
 
-        if (offset > 0)
-        {
-            if (!_zLevels.TryMapUp(mapEntity, out var above) || above is null)
-                return null;
-
-            return above.Value.Owner;
-        }
-
-        if (!_zLevels.TryMapDown(mapEntity, out var below) || below is null)
+        if (!_zLevels.TryMapOffset(mapEntity, offset, out var target) || target == null)
             return null;
 
-        return below.Value.Owner;
+        return target.Value.Owner;
     }
 
     private readonly struct ZLevelContext
@@ -391,5 +381,6 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
             ZNetwork = zNetwork;
         }
     }
-    #endregion
+
+#endregion
 }
