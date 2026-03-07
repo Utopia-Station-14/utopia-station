@@ -16,7 +16,7 @@
   - PillCanister
   - HandLabeler
   - BaseChemistryEmptyVial
-  - Dropper
+  # - Dropper # Utopia-Tweak-Research
 
 - type: latheRecipePack
   parent: BasicChemistryStatic
