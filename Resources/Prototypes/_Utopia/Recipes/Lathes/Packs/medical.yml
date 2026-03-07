@@ -10,3 +10,10 @@
   - CloningPodMachineCircuitboard
   - MedicalScannerMachineCircuitboard
   - CloningConsoleComputerCircuitboard
+
+- type: latheRecipePack
+  id: MedicalDynamic
+  recipes:
+  - Jug
+  - LargeBeaker
+  - ClothingEyesGlassesChemical
