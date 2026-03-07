@@ -197,7 +197,7 @@
     unlitRunningState: unlit-building
     staticPacks:
     - ChemistryStatic
-    # - SurgeryStatic # Utopia-Tweak-Research
+    # - SurgeryStatic # Utopia-Tweak : Research
     dynamicPacks:
     - AdvancedTools
     - ScienceEquipment
@@ -212,9 +212,9 @@
     - Janitor
     - Instruments
     - Equipment
-    # Utopia-Tweak-Research
+    # Utopia-Tweak : Research
     - ChemistryStatic
-    # Utopia-Tweak-Research
+    # Utopia-Tweak : Research
   - type: EmagLatheRecipes
     emagDynamicPacks:
     - SecurityAmmo
