@@ -1,5 +1,5 @@
 research-discipline-bluespace = Блюспейс
-research-discipline-biochemical = Биохимияя
+research-discipline-biochemical = Биохимия
 
 research-technology-chemistry = Химия
 research-technology-surgical-tools = Хирургические инструменты
