@@ -49,7 +49,6 @@ public sealed partial class DraggablePanel : LayoutContainer
     {
         return dependent.Availablity switch
         {
-            // Researched - bright green
             ResearchAvailablity.Researched => Color.LimeGreen,
 
             ResearchAvailablity.Available => Color.DarkCyan,

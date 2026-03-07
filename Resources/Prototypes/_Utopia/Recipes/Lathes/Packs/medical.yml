@@ -1,0 +1,12 @@
+- type: latheRecipePack
+  id: MedicalBoardsDynamic
+  recipes:
+  - ElectrolysisUnitMachineCircuitboard
+  - CentrifugeMachineCircuitboard
+  - ChemDispenserMachineCircuitboard
+  - ChemMasterMachineCircuitboard
+  - DiagnoserMachineCircuitboard
+  - VaccinatorMachineCircuitboard
+  - CloningPodMachineCircuitboard
+  - MedicalScannerMachineCircuitboard
+  - CloningConsoleComputerCircuitboard

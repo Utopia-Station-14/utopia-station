@@ -26,7 +26,7 @@ public sealed partial class ResearchConsoleItem : LayoutContainer
         (Panel.Color, Panel.HoveredColor, Panel.BorderColor) = availablity switch
         {
             ResearchAvailablity.Researched => (Color.DarkOliveGreen, Color.PaleGreen, Color.LimeGreen),
-            ResearchAvailablity.Available => (Color.FromHex("#1297a3"), Color.FromHex("#1ee8fa"), Color.DarkCyan),
+            ResearchAvailablity.Available => (Color.FromHex("#0abaca"), Color.FromHex("#1ee8fa"), Color.DarkCyan),
             ResearchAvailablity.Unavailable => (Color.DarkRed, Color.FromHex("#ad1111"), Color.Crimson),
             _ => (Color.DarkRed, Color.PaleVioletRed, Color.Crimson)
         };

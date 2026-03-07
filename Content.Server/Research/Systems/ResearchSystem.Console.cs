@@ -25,6 +25,13 @@ public sealed partial class ResearchSystem
         SubscribeLocalEvent<ResearchConsoleComponent, TechnologyDatabaseModifiedEvent>(OnConsoleDatabaseModified);
         SubscribeLocalEvent<ResearchConsoleComponent, TechnologyDatabaseSynchronizedEvent>(OnConsoleDatabaseSynchronized);
         SubscribeLocalEvent<ResearchConsoleComponent, GotEmaggedEvent>(OnEmagged);
+
+        // Utopia-Tweak : Research
+        Subs.BuiEvents<ResearchConsoleComponent>(ResearchConsoleUiKey.Key, subs =>
+        {
+            subs.Event<ResearchConsoleSelectDisciplineMessage>(OnSelectDiscipline);
+        });
+        // Utopia-Tweak : Research
     }
 
     private void OnConsoleUnlock(EntityUid uid, ResearchConsoleComponent component, ConsoleUnlockTechnologyMessage args)
@@ -69,6 +76,14 @@ public sealed partial class ResearchSystem
         SyncClientWithServer(uid);
     }
 
+    // Utopia-Tweak : Research
+
+    private void OnSelectDiscipline(Entity<ResearchConsoleComponent> ent, ref ResearchConsoleSelectDisciplineMessage msg)
+    {
+        ent.Comp.CurrentDiscipline = msg.ProtoId;
+        UpdateConsoleInterface(ent);
+    }
+
     private void UpdateConsoleInterface(EntityUid uid, ResearchConsoleComponent? component = null, ResearchClientComponent? clientComponent = null)
     {
         if (!Resolve(uid, ref component, ref clientComponent, false))
@@ -91,9 +106,15 @@ public sealed partial class ResearchSystem
                 {
                     var item = PrototypeManager.Index<TechnologyPrototype>(toList[i].Key);
                     if (CompOrNull<TechnologyDatabaseComponent>(serverUid)?.UnlockedTechnologies.Contains(item.ID) ?? false)
+                    {
                         list[item.ID] = ResearchAvailablity.Researched;
+                    }
+
                     else if (item.TechnologyPrerequisites.Count <= 0)
+                    {
                         list[item.ID] = serverComponent.Points >= item.Cost ? ResearchAvailablity.Available : ResearchAvailablity.Unavailable;
+                    }
+
                     else
                     {
                         var success = true;
@@ -111,15 +132,16 @@ public sealed partial class ResearchSystem
             }
 
             var points = clientComponent.ConnectedToServer ? serverComponent.Points : 0;
-            state = new ResearchConsoleBoundInterfaceState(points, list);
+            state = new ResearchConsoleBoundInterfaceState(points, list, component.CurrentDiscipline);
         }
         else
         {
-            state = new ResearchConsoleBoundInterfaceState(default, list);
+            state = new ResearchConsoleBoundInterfaceState(default, list, component.CurrentDiscipline);
         }
 
         _uiSystem.SetUiState(uid, ResearchConsoleUiKey.Key, state);
     }
+    // Utopia-Tweak : Research
 
     private void OnPointsChanged(EntityUid uid, ResearchConsoleComponent component, ref ResearchServerPointsChangedEvent args)
     {

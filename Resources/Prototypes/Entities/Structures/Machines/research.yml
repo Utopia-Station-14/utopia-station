@@ -29,6 +29,10 @@
     - Arsenal
     - Experimental
     - CivilianServices
+    # Utopia-Tweak : Research
+    - Biochemical
+    - Bluespace
+    # Utopia-Tweak : Research
   - type: ApcPowerReceiver
     powerLoad: 200
   - type: ExtensionCableReceiver

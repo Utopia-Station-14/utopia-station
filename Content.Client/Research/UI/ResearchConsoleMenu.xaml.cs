@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Client._Utopia.Research.UI;
+using Content.Client.Parallax;
 using Content.Client.UserInterface.Controls;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
@@ -24,6 +25,7 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
 {
     public Action<string>? OnTechnologyCardPressed;
     public Action? OnServerButtonPressed;
+    public Action<ProtoId<TechDisciplinePrototype>>? OnDisciplineButtonPressed;
 
     [Dependency] private readonly IEntityManager _entity = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
@@ -32,14 +34,22 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
     private readonly ResearchSystem _research;
     private readonly SpriteSystem _sprite;
     private readonly AccessReaderSystem _accessReader;
+    private ParallaxControl _parallaxControl;
+
+    public string ParallaxPrototype { get; set; } = "Default";
+    public void SetParallaxPrototype(string parallaxPrototype)
+    {
+        ParallaxPrototype = parallaxPrototype;
+        _parallaxControl?.ParallaxPrototype = parallaxPrototype;
+    }
 
     public EntityUid Entity;
-    private bool _draggin;
-    public ProtoId<TechDisciplinePrototype> CurrentDiscipline = "Industrial";
+    public ProtoId<TechDisciplinePrototype> CurrentDiscipline;
     public ProtoId<TechnologyPrototype>? CurrentTech;
     public Dictionary<string, ResearchAvailablity> List = new();
-    private ResearchConsoleBoundInterfaceState _localState = new(0, new());
+    private ResearchConsoleBoundInterfaceState _localState = new(0, new(), new());
     private Vector2 _position = new Vector2(45, 250);
+    private bool _draggin;
 
     public ResearchConsoleMenu()
     {
@@ -50,7 +60,16 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
         _sprite = _entity.System<SpriteSystem>();
         _accessReader = _entity.System<AccessReaderSystem>();
 
-        StaticSprite.TexturePath = new("/Textures/_Utopia/Interface/rndbackground/background.png");
+        _parallaxControl = new ParallaxControl
+        {
+            ParallaxPrototype = ParallaxPrototype,
+            HorizontalExpand = true,
+            VerticalExpand = true,
+        };
+
+        ResearchesContainer.AddChild(_parallaxControl);
+
+        _parallaxControl.SetPositionInParent(0);
 
         ServerButton.OnPressed += _ => OnServerButtonPressed?.Invoke();
         DragContainer.OnKeyBindDown += OnKeybindDown;
@@ -58,7 +77,6 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
         RecenterButton.OnPressed += _ => Recenter();
 
         UpdatePanels(_localState);
-        Recenter();
     }
 
     public void SetEntity(EntityUid entity)
@@ -73,9 +91,14 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
         List = state.Researches;
         _localState = state;
 
+        if (state.CurrentDiscipline != CurrentDiscipline)
+        {
+            CurrentDiscipline = state.CurrentDiscipline;
+        }
+
         var disciplines = _prototype.EnumeratePrototypes<TechDisciplinePrototype>()
-                .ToList()
-                .OrderBy(x => x.UiName);
+            .ToList()
+            .OrderBy(x => x.Name);
 
         foreach (var proto in disciplines)
         {
@@ -84,13 +107,17 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
                 ToggleMode = true,
                 HorizontalExpand = true,
                 VerticalExpand = true,
-                MuteSounds = true,
-                Text = Loc.GetString(proto.UiName),
-                Margin = new(5)
+                Text = Loc.GetString(proto.Name),
+                Margin = new(2)
             };
 
             discipline.SetClickPressed(proto.ID == CurrentDiscipline);
             DisciplinesContainer.AddChild(discipline);
+
+            if (proto.ID == CurrentDiscipline)
+            {
+                _parallaxControl.ModulateSelfOverride = proto.Color;
+            }
 
             discipline.OnPressed += SelectDiscipline;
         }
@@ -150,6 +177,7 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
                     }
                 }
             };
+
             TierDisplayContainer.AddChild(control);
         }
     }
@@ -159,14 +187,14 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
     {
         base.MouseMove(args);
 
-        if (_draggin)
-        {
-            _position += args.Relative;
+        if (!_draggin)
+            return;
 
-            foreach (var child in DragContainer.Children)
-            {
-                LayoutContainer.SetPosition(child, child.Position + args.Relative);
-            }
+        _position += args.Relative;
+
+        foreach (var child in DragContainer.Children)
+        {
+            LayoutContainer.SetPosition(child, child.Position + args.Relative);
         }
     }
 
@@ -209,13 +237,11 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
         var proto = discipline.Proto;
 
         CurrentDiscipline = proto.ID;
-        StaticSprite.ModulateSelfOverride = proto.Color;
 
         discipline.SetClickPressed(false);
-        UserInterfaceManager.ClickSound();
+        OnDisciplineButtonPressed?.Invoke(proto.ID);
 
         UpdatePanels(_localState);
-        Recenter();
     }
 
     public void Recenter()

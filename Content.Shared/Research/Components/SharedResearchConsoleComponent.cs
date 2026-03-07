@@ -1,4 +1,6 @@
 using Content.Shared._Utopia.Research;
+using Content.Shared.Research.Prototypes;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared.Research.Components
@@ -31,11 +33,23 @@ namespace Content.Shared.Research.Components
     {
         public int Points;
         public Dictionary<string, ResearchAvailablity> Researches;
+        public ProtoId<TechDisciplinePrototype> CurrentDiscipline;
 
-        public ResearchConsoleBoundInterfaceState(int points, Dictionary<string, ResearchAvailablity> list) // ADT Research menu rework tweaked
+        public ResearchConsoleBoundInterfaceState(int points, Dictionary<string, ResearchAvailablity> list, ProtoId<TechDisciplinePrototype> currentDiscipline) // Utopia-Tweak : Research
         {
             Points = points;
-            Researches = list;   // ADT Research menu rework field
+            // Utopia-Tweak : Research
+            Researches = list;
+            CurrentDiscipline = currentDiscipline;
+            // Utopia-Tweak : Research
         }
     }
+
+    // Utopia-Tweak : Research
+    [Serializable, NetSerializable]
+    public sealed class ResearchConsoleSelectDisciplineMessage(ProtoId<TechDisciplinePrototype> protoId) : BoundUserInterfaceMessage
+    {
+        public readonly ProtoId<TechDisciplinePrototype> ProtoId = protoId;
+    }
+    // Utopia-Tweak : Research
 }

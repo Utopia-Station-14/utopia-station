@@ -79,10 +79,12 @@
 - type: latheRecipePack
   id: MedicalBoardsStatic
   recipes:
-  - ElectrolysisUnitMachineCircuitboard
-  - CentrifugeMachineCircuitboard
-  - ChemDispenserMachineCircuitboard
-  - ChemMasterMachineCircuitboard
+  # Utopia-Tweak-Research
+  # - ElectrolysisUnitMachineCircuitboard
+  # - CentrifugeMachineCircuitboard
+  # - ChemDispenserMachineCircuitboard
+  # - ChemMasterMachineCircuitboard
+  # Utopia-Tweak-Research
   - CondenserMachineCircuitBoard
   - HotplateMachineCircuitboard
 

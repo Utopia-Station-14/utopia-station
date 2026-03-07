@@ -4,31 +4,36 @@
                       xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
                       xmlns:rsch="clr-namespace:Content.Client._Utopia.Research.UI"
                       Title="{Loc 'research-console-menu-title'}"
-                      SetSize="1260 850">
+                      SetSize="935 590">
     <BoxContainer Orientation="Vertical"
                   HorizontalExpand="True"
                   VerticalExpand="True">
-        <controls:StripeBack MinSize="52 52">
-            <BoxContainer Name="DisciplinesContainer"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Stretch"
-                        MinSize="52 52"
-                        Margin="5"/>
+        <controls:StripeBack MinSize="48 70">
+            <ScrollContainer Margin="5" VScrollEnabled="False">
+                <BoxContainer Name="DisciplinesContainer"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Stretch"
+                            MinSize="35 35"
+                            Margin="5"/>
+            </ScrollContainer>
             <!--Disciplines populated in .cs-->
         </controls:StripeBack>
         <BoxContainer Orientation="Horizontal"
                       HorizontalExpand="True"
                       VerticalExpand="False"
-                      MinHeight="60"
-                      Margin="10">
+                      MinHeight="55"
+                      Margin="5">
             <BoxContainer Orientation="Vertical" VerticalExpand="True" HorizontalExpand="True">
                 <RichTextLabel Name="ResearchAmountLabel"/>
                 <Control VerticalExpand="True"/>
                 <BoxContainer Name="TierDisplayContainer" Orientation="Horizontal" HorizontalExpand="True" VerticalAlignment="Bottom"/>
                 <!-- This is where we put all of the little graphics that display discipline tiers!-->
             </BoxContainer>
-            <BoxContainer Orientation="Vertical" VerticalExpand="True" HorizontalAlignment="Right">
-                <Button Name="ServerButton" Text="{Loc 'research-console-menu-server-selection-button'}" MinHeight="40"/>
+            <BoxContainer Orientation="Vertical" HorizontalAlignment="Stretch">
+                <BoxContainer Orientation="Horizontal">
+                    <Button Name="RecenterButton" Text="{Loc 'research-console-menu-recenter-button'}" MinHeight="35" Margin="0 0 5 0"/>
+                    <Button Name="ServerButton" Text="{Loc 'research-console-menu-server-selection-button'}" MinHeight="35" Margin="0 0 5 0"/>
+                </BoxContainer>
             </BoxContainer>
         </BoxContainer>
         <BoxContainer Orientation="Horizontal"
@@ -37,25 +42,19 @@
             <BoxContainer Orientation="Vertical"
                           VerticalExpand="True"
                           HorizontalExpand="True"
-                          SizeFlagsStretchRatio="5"
+                          SizeFlagsStretchRatio="3"
                           Margin="0 0 0 10">
                 <PanelContainer Name="ResearchesContainer" VerticalExpand="True" HorizontalExpand="True">
                     <PanelContainer.PanelOverride>
-                        <gfx:StyleBoxFlat BackgroundColor="#000000FF" BorderColor="#25252a" BorderThickness="10"/>
+                        <gfx:StyleBoxFlat BackgroundColor="#000000FF"/>
                     </PanelContainer.PanelOverride>
-                    <TextureRect Name="StaticSprite"
+                    <rsch:DraggablePanel
                         HorizontalExpand="True"
-                        VerticalExpand="True">
-                        <rsch:DraggablePanel
-                            HorizontalExpand="True"
-                            VerticalExpand="True"
-                            Name="DragContainer"
-                            MouseFilter="Pass"
-                            RectClipContent="True">
-                        </rsch:DraggablePanel>
-                    </TextureRect>
-                <Button Name="RecenterButton" Text="{Loc 'research-console-menu-recenter-button'}"
-                    MinHeight="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="1 -5"/>
+                        VerticalExpand="True"
+                        Name="DragContainer"
+                        MouseFilter="Pass"
+                        RectClipContent="True">
+                    </rsch:DraggablePanel>
                 </PanelContainer>
             </BoxContainer>
             <PanelContainer SizeFlagsStretchRatio="2">
@@ -69,6 +68,16 @@
                     SizeFlagsStretchRatio="1"
                     Margin="0"/>
             </PanelContainer>
+        </BoxContainer>
+        <PanelContainer StyleClasses="LowDivider" />
+        <BoxContainer Orientation="Vertical">
+            <BoxContainer Orientation="Horizontal" Margin="10 2 5 0" VerticalAlignment="Bottom">
+                <Label Text="{Loc 'research-console-flavor-left'}" StyleClasses="WindowFooterText" />
+                <Label Text="{Loc 'research-console-flavor-right'}" StyleClasses="WindowFooterText"
+                        HorizontalAlignment="Right" HorizontalExpand="True"  Margin="0 0 5 0" />
+                <TextureRect StyleClasses="NTLogoDark" Stretch="KeepAspectCentered"
+                        VerticalAlignment="Center" HorizontalAlignment="Right" SetSize="19 19"/>
+            </BoxContainer>
         </BoxContainer>
     </BoxContainer>
 </controls:FancyWindow>

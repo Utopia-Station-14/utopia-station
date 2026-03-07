@@ -35,6 +35,13 @@ public sealed class ResearchConsoleBoundUserInterface : BoundUserInterface
             SendMessage(new ConsoleServerSelectionMessage());
         };
 
+        // Utopia-Tweak : Research
+        _consoleMenu?.OnDisciplineButtonPressed += protoId =>
+        {
+            SendPredictedMessage(new ResearchConsoleSelectDisciplineMessage(protoId));
+        };
+        // Utopia-Tweak : Research
+
         _consoleMenu?.OpenCentered();
     }
 

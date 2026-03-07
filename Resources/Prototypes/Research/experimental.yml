@@ -11,7 +11,9 @@
   cost: 5000
   recipeUnlocks:
   - ProximitySensor
-  position: -1,0 # Utopia-Tweak : Research
+  # Utopia-Tweak : Research
+  position: 0,0
+  # Utopia-Tweak : Research
 
 - type: technology
   id: BasicAnomalousResearch
@@ -29,7 +31,7 @@
   - APECircuitboard
   - AnomalyVesselCircuitboard
   # Utopia-Tweak : Research
-  position: -2,0
+  position: 0,1
   technologyPrerequisites:
   - BasicRobotics
   # Utopia-Tweak : Research
@@ -48,7 +50,7 @@
   - AnalysisComputerCircuitboard
   - ArtifactAnalyzerMachineCircuitboard
   # Utopia-Tweak : Research
-  position: -2,2
+  position: 0,-1
   technologyPrerequisites:
   - BasicRobotics
   # Utopia-Tweak : Research
@@ -65,9 +67,9 @@
   recipeUnlocks:
   - TechDiskComputerCircuitboard
   # Utopia-Tweak : Research
+  position: 1,0
   technologyPrerequisites:
   - BasicRobotics
-  position: -2,-1
   # Utopia-Tweak : Research
 
 - type: technology
@@ -83,9 +85,9 @@
   - ClothingShoesBootsMagSci
   - ClothingShoesBootsMoon
   # Utopia-Tweak : Research
-  position: -3,-1
+  position: 1,-1
   technologyPrerequisites:
-  - AlternativeResearch
+  - BasicXenoArcheology
   # Utopia-Tweak : Research
 
 - type: technology
@@ -100,7 +102,7 @@
   recipeUnlocks:
   - WeaponGauntletGorilla
   # Utopia-Tweak : Research
-  position: -3,1
+  position: 0,2
   technologyPrerequisites:
   - BasicAnomalousResearch
   # Utopia-Tweak : Research
@@ -119,11 +121,10 @@
   recipeUnlocks:
   - ArtifactCrusherMachineCircuitboard
   # Utopia-Tweak : Research
-  position: -3,2
+  position: 0,-2
   technologyPrerequisites:
   - BasicXenoArcheology
   # Utopia-Tweak : Research
-
 
 - type: technology
   id: AdvancedAnomalyResearch
@@ -138,9 +139,11 @@
   - WeaponPistolCHIMP
   - AnomalySynchronizerCircuitboard
   - AnomalyVesselExperimentalCircuitboard
+  # Utopia-Tweak : Research
+  position: 0,3
   technologyPrerequisites:
-  - BasicAnomalousResearch
-  position: -3,0
+  - AnomalyCoreHarnessing
+  # Utopia-Tweak : Research
 
 - type: technology
   id: DeterrenceTechnologies
@@ -155,7 +158,7 @@
   - WeaponParticleDecelerator
   - HoloprojectorField
   # Utopia-Tweak : Research
-  position: -3,-2
+  position: 2,0
   technologyPrerequisites:
   - AlternativeResearch
   # Utopia-Tweak : Research
@@ -173,9 +176,8 @@
     - WeaponForceGun
     - WeaponTetherGun
   # Utopia-Tweak : Research
-  position: -4,2
+  position: -1,2
   technologyPrerequisites:
-  - AbnormalArtifactManipulation
   - AnomalyCoreHarnessing
   # Utopia-Tweak : Research
 
@@ -193,7 +195,7 @@
   recipeUnlocks:
   - DeviceQuantumSpinInverter
   # Utopia-Tweak : Research
-  position: -5,2
+  position: -2,2
   technologyPrerequisites:
   - GravityManipulation
   # Utopia-Tweak : Research
@@ -210,7 +212,7 @@
   recipeUnlocks:
   - DeviceDesynchronizer
   # Utopia-Tweak : Research
-  position: -5,3
+  position: -1,3
   technologyPrerequisites:
   - GravityManipulation
   # Utopia-Tweak : Research
