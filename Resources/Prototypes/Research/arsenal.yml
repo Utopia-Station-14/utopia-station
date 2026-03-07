@@ -35,6 +35,7 @@
   - MagazineBoxPistolIncendiary
   - MagazineBoxMagnumIncendiary
   - MagazineBoxLightRifleIncendiary
+  - MagazineBoxRifleIncendiary
   # Utopia-Tweak : Research
   position: 1,-1
   technologyPrerequisites:
