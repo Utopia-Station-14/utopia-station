@@ -58,6 +58,12 @@ public sealed partial class CEZPhysicsComponent : Component
     [DataField, AutoNetworkedField]
     public float GravityMultiplier = 1f;
 
+    /// <summary>
+    /// ECHO-Tweak: for better logic
+    /// </summary>
+    [ViewVariables, AutoNetworkedField]
+    public bool IsGrounded = true;
+
     // Visuals
 
     /// <summary>
