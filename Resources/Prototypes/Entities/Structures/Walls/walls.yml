@@ -58,6 +58,7 @@
   # ECHO-Tweak-start: Z-levels
   - type: CEZPhysics
   - type: CEZLevelHighGround
+    fixtureId: fix1
   # ECHO-Tweak-end
 
 - type: entity

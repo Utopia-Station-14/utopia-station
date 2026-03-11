@@ -35,4 +35,7 @@ public sealed partial class CEZLevelHighGroundComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public bool Corner = false;
+
+    [DataField, AutoNetworkedField]
+    public string FixtureId = "slowdown";
 }

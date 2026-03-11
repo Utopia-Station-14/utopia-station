@@ -56,7 +56,7 @@ public abstract partial class CESharedZLevelsSystem
         if (ent.Comp.IgnoreHighGround)
             return;
 
-        ent.Comp.CurrentGroundHeight = ComputeGroundHeightInternal((ent, ent), out var sticky);
+        ent.Comp.CurrentGroundHeight = ComputeGroundHeightInternal2((ent, ent), out var sticky);    // ECHO-Tweak: Использование нашего метода
         ent.Comp.CurrentStickyGround = sticky;
     }
 
