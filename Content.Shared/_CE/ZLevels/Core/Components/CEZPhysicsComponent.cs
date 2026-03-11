@@ -42,13 +42,13 @@ public sealed partial class CEZPhysicsComponent : Component
     /// Cached value of the current distance to the ground in the current z-level. Updates only on MoveEvent and when tiles below change.
     /// </summary>
     [DataField]
-    public float CurrentGroundHeight;
+    public float CurrentGroundHeight = 0f;
 
     /// <summary>
     /// Cached value of whether the entity is currently on sticky ground (ladders).
     /// </summary>
     [DataField]
-    public bool CurrentStickyGround;
+    public bool CurrentStickyGround = false;
 
     // Physics
 
@@ -63,6 +63,12 @@ public sealed partial class CEZPhysicsComponent : Component
     /// </summary>
     [ViewVariables, AutoNetworkedField]
     public bool IsGrounded = true;
+
+    /// <summary>
+    /// ECHO-Tweak: for better ghost movement
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public bool IgnoreHighGround = false;
 
     // Visuals
 

@@ -53,6 +53,9 @@ public abstract partial class CESharedZLevelsSystem
 
     private void CacheMovement(Entity<CEZPhysicsComponent> ent)
     {
+        if (ent.Comp.IgnoreHighGround)
+            return;
+
         ent.Comp.CurrentGroundHeight = ComputeGroundHeightInternal((ent, ent), out var sticky);
         ent.Comp.CurrentStickyGround = sticky;
     }
