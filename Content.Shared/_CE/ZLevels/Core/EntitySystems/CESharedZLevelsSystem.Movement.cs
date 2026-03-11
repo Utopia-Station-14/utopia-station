@@ -56,7 +56,7 @@ public abstract partial class CESharedZLevelsSystem
         if (ent.Comp.IgnoreHighGround)
             return;
 
-        ent.Comp.CurrentGroundHeight = ComputeGroundHeightInternal2((ent, ent), out var sticky);    // ECHO-Tweak: Использование нашего метода
+        ent.Comp.CurrentGroundHeight = ComputeGroundHeightInternal((ent, ent), out var sticky);
         ent.Comp.CurrentStickyGround = sticky;
     }
 
@@ -147,100 +147,6 @@ public abstract partial class CESharedZLevelsSystem
             return 0;
 
         return target.Comp.LocalPosition - target.Comp.CurrentGroundHeight;
-    }
-
-    /// <summary>
-    /// Computes the "ground height" relative to the entity's current Z-level baseline.
-    /// Returns values where 0 means ground on the same level, -1 means ground one level below,
-    /// and intermediate values are possible for high ground entities (stairs).
-    /// </summary>
-    private float ComputeGroundHeightInternal(Entity<CEZPhysicsComponent?> target, out bool stickyGround, int maxFloors = 1)
-    {
-        stickyGround = false;
-        if (!Resolve(target, ref target.Comp, false))
-            return 0;
-
-        var xform = Transform(target);
-        if (!_zMapQuery.TryComp(xform.MapUid, out var zMapComp))
-            return 0;
-        if (!_gridQuery.TryComp(xform.MapUid, out var mapGrid))
-            return 0;
-
-        var worldPosI = _transform.GetGridOrMapTilePosition(target);
-        var worldPos = _transform.GetWorldPosition(target);
-
-        //Select current map by default
-        Entity<CEZLevelMapComponent> checkingMap = (xform.MapUid.Value, zMapComp);
-        var checkingGrid = mapGrid;
-
-        for (var floor = 0; floor <= maxFloors; floor++)
-        {
-            if (floor != 0) //Select map below
-            {
-                if (!TryMapOffset((checkingMap.Owner, checkingMap.Comp), -floor, out var tempCheckingMap))
-                    continue;
-                if (!_gridQuery.TryComp(tempCheckingMap, out var tempCheckingGrid))
-                    continue;
-
-                checkingMap = tempCheckingMap.Value;
-                checkingGrid = tempCheckingGrid;
-            }
-
-            //Check all types of ZHeight entities
-            var query = _map.GetAnchoredEntitiesEnumerator(checkingMap, checkingGrid, worldPosI);
-            while (query.MoveNext(out var uid))
-            {
-                if (!_highgroundQuery.TryComp(uid, out var heightComp))
-                    continue;
-
-                var dir = _transform.GetWorldRotation(uid.Value).GetCardinalDir();
-
-                var local = new Vector2((worldPos.X % 1 + 1) % 1, (worldPos.Y % 1 + 1) % 1);
-
-                var t = dir switch
-                {
-                    Direction.East => heightComp.Corner ? (local.X + 1f - local.Y) / 2f : local.X,
-                    Direction.West => heightComp.Corner ? (1f - local.X + local.Y) / 2f : 1f - local.X,
-                    Direction.North => heightComp.Corner ? (local.X + local.Y) / 2f : local.Y,
-                    Direction.South => heightComp.Corner ? (1f - local.X + 1f - local.Y) / 2f : 1f - local.Y,
-                    _ => 0.5f,
-                };
-
-                t = Math.Clamp(t, 0f, 1f);
-
-                var curve = heightComp.HeightCurve;
-                if (curve.Count == 0)
-                    continue;
-
-                if (curve.Count == 1)
-                {
-                    var groundY = curve[0];
-                    // groundHeight is negative downwards: -floor + groundY
-                    return -floor + groundY;
-                }
-
-                var step = 1f / (curve.Count - 1);
-                var index = (int)(t / step);
-                var frac = (t - index * step) / step;
-
-                var y0 = curve[Math.Clamp(index, 0, curve.Count - 1)];
-                var y1 = curve[Math.Clamp(index + 1, 0, curve.Count - 1)];
-
-                var groundYInterp = MathHelper.Lerp(y0, y1, frac);
-
-                if (target.Comp.Velocity < -0 && target.Comp.Velocity > -2 && heightComp.Stick)
-                    stickyGround = true;
-
-                return -floor + groundYInterp;
-            }
-
-            //No ZEntities found, check floor tiles
-            if (_map.TryGetTileRef(checkingMap, checkingGrid, worldPosI, out var tileRef) &&
-                !tileRef.Tile.IsEmpty)
-                return -floor; // tile ground has groundY == 0 -> -floor
-        }
-
-        return -maxFloors;
     }
 
     /// <summary>

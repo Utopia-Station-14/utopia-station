@@ -30,12 +30,12 @@ public sealed partial class CEZLevelHighGroundComponent : Component
     [DataField, AutoNetworkedField]
     public bool Stick = false;
 
-    /// <summary>
-    /// SHITCODE - we cant mapping entities rotated by 45 radians, so we just use this
-    /// </summary>
-    [DataField, AutoNetworkedField]
-    public bool Corner = false;
+    // ECHO-Tweak: Удалил ненужное поле, добавил нужное
+    // :f_aga:
 
+    /// <summary>
+    /// Id of fixture that is used for height curve calculating
+    /// </summary>
     [DataField, AutoNetworkedField]
     public string FixtureId = "slowdown";
 }

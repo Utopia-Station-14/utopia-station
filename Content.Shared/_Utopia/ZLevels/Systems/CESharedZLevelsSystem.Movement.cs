@@ -118,7 +118,7 @@ public abstract partial class CESharedZLevelsSystem
     /// Returns values where 0 means ground on the same level, -1 means ground one level below,
     /// and intermediate values are possible for high ground entities (stairs).
     /// </summary>
-    private float ComputeGroundHeightInternal2(Entity<CEZPhysicsComponent?> target, out bool stickyGround, int maxFloors = 1)
+    private float ComputeGroundHeightInternal(Entity<CEZPhysicsComponent?> target, out bool stickyGround, int maxFloors = 1)
     {
         stickyGround = false;
         if (!Resolve(target, ref target.Comp, false))
