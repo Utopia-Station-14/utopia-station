@@ -14,7 +14,7 @@ public sealed class LoadMapZNetworkCommand : LocalizedEntityCommands
     [Dependency] private readonly IResourceManager _resMan = default!;
     [Dependency] private readonly ZNetworkMappingSystem _zLoader = default!;
 
-    public override string Command => "loadmap-znetwork";
+    public override string Command => "znetwork-loadmap";
     public override string Description => "Load your ZNetwork map";
 
     public static CompletionResult GetCompletionResult(IConsoleShell shell, string[] args, IResourceManager resource, ILocalizationManager loc)
