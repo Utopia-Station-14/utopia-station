@@ -37,7 +37,7 @@ public abstract partial class CESharedZLevelsSystem
     private const float ImpactVelocityLimit = 5.0f;
 
     private EntityQuery<CEZLevelHighGroundComponent> _highgroundQuery;
-    private Dictionary<EntityUid, float> _queuedLandings = new();   // ECHO-Tweak
+    private Dictionary<EntityUid, float> _queuedLandings = new();   // Utopia-Tweak
 
     private void InitMovement()
     {
@@ -115,16 +115,16 @@ public abstract partial class CESharedZLevelsSystem
     {
         base.Update(frameTime);
 
-        _queuedLandings.Clear();    // ECHO-Tweak
+        _queuedLandings.Clear();    // Utopia-Tweak
 
         var query = EntityQueryEnumerator<CEZPhysicsComponent, CEActiveZPhysicsComponent, TransformComponent, PhysicsComponent>();
         while (query.MoveNext(out var uid, out var zPhys, out _, out var xform, out var physics))
         {
-            // ECHO-Tweak: Removed old logic
+            // Utopia-Tweak: Removed old logic
             UpdateMovement(uid, zPhys, xform, physics, frameTime);
         }
 
-        // ECHO-Tweak-start: fix exception issue
+        // Utopia-Tweak-start: fix exception issue
         for (var i = _queuedLandings.Count - 1; i >= 0; i--)
         {
             var landing = _queuedLandings.ElementAt(i);
@@ -133,7 +133,7 @@ public abstract partial class CESharedZLevelsSystem
             var land = new LandEvent(null, true);
             RaiseLocalEvent(landing.Key, ref land);
         }
-        // ECHO-Tweak-end
+        // Utopia-Tweak-end
     }
 
     /// <summary>

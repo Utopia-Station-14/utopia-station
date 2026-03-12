@@ -69,7 +69,7 @@ public abstract partial class CESharedZLevelsSystem
 
     private void HandleFalling(EntityUid uid, CEZPhysicsComponent zPhys)
     {
-        if (MathF.Abs(zPhys.Velocity) >= Cfg.GetCVar(EchoCCVars.ZImpactVelocityLimit))
+        if (MathF.Abs(zPhys.Velocity) >= ImpactVelocityLimit)
         {
             _queuedLandings.Add(uid, -zPhys.Velocity);
         }
@@ -97,7 +97,7 @@ public abstract partial class CESharedZLevelsSystem
         {
             if (HasTileAbove(uid)) //Hit roof
             {
-                if (MathF.Abs(zPhys.Velocity) >= Cfg.GetCVar(EchoCCVars.ZImpactVelocityLimit)) // ECHO-Tweak: перенос констант в конфиг
+                if (MathF.Abs(zPhys.Velocity) >= ImpactVelocityLimit)
                 {
                     _queuedLandings.Add(uid, zPhys.Velocity);
                 }

@@ -73,7 +73,7 @@ public sealed partial class GameMapPrototype : IPrototype
     public IReadOnlyDictionary<string, StationConfig> Stations => _stations;
 
     /// <summary>
-    /// ECHO-Tweak: Является ли эта карта многоэтажной
+    /// Utopia-Tweak: Является ли эта карта многоэтажной
     /// </summary>
     [DataField]
     public bool ZMap = false;

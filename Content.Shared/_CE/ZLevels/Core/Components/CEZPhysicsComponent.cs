@@ -59,13 +59,13 @@ public sealed partial class CEZPhysicsComponent : Component
     public float GravityMultiplier = 1f;
 
     /// <summary>
-    /// ECHO-Tweak: for better logic
+    /// Utopia-Tweak: for better logic
     /// </summary>
     [ViewVariables, AutoNetworkedField]
     public bool IsGrounded = true;
 
     /// <summary>
-    /// ECHO-Tweak: for better ghost movement
+    /// Utopia-Tweak: for better ghost movement
     /// </summary>
     [DataField, AutoNetworkedField]
     public bool IgnoreHighGround = false;

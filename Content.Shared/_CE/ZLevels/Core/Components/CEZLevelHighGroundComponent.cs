@@ -30,7 +30,7 @@ public sealed partial class CEZLevelHighGroundComponent : Component
     [DataField, AutoNetworkedField]
     public bool Stick = false;
 
-    // ECHO-Tweak: Удалил ненужное поле, добавил нужное
+    // Utopia-Tweak: Удалил ненужное поле, добавил нужное
     // :f_aga:
 
     /// <summary>

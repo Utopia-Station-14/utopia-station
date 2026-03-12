@@ -44,7 +44,7 @@
     noRot: false
   - type: Pullable
   - type: DamageExaminable
-  - type: CEZPhysics  # ECHO-Tweak
+  - type: CEZPhysics  # Utopia-Tweak
 
 - type: entity
   name: "storage item"

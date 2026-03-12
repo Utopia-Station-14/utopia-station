@@ -41,12 +41,12 @@ namespace Content.Server.Power.EntitySystems
 
                 var otherTransform = Transform(reachable.Owner);
 
-                // ECHO-Tweak-start
+                // Utopia-Tweak-start
                 if (!TryComp<MapGridComponent>(otherTransform.GridUid, out var otherGrid))
                     continue;
 
                 var otherTile = _map.TileIndicesFor((otherTransform.GridUid.Value, otherGrid), otherTransform.Coordinates);
-                // ECHO-Tweak-end
+                // Utopia-Tweak-end
 
                 var diff = otherTile - tile;
 

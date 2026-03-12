@@ -66,7 +66,7 @@ namespace Content.Server.GameTicking
         [Dependency] private readonly MetaDataSystem _metaData = default!;
         [Dependency] private readonly SharedRoleSystem _roles = default!;
         [Dependency] private readonly ServerDbEntryManager _dbEntryManager = default!;
-        [Dependency] private readonly ZNetworkMappingSystem _zMapping = default!;   // ECHO-Tweak: for map loading support in the game ticker, specifically for ZLevels mapping
+        [Dependency] private readonly ZNetworkMappingSystem _zMapping = default!;   // Utopia-Tweak: for map loading support in the game ticker, specifically for ZLevels mapping
 
         [ViewVariables] private bool _initialized;
         [ViewVariables] private bool _postInitialized;

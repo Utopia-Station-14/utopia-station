@@ -27,12 +27,12 @@
         density: 15
         layer:
         - GhostImpassable
-  # Utopia-Tweak : Language
+  # Utopia-Tweak-start
   - type: LanguageSpeaker
     languages:
       GalacticCommon: Speak
-  # Utopia-Tweak : Language
-  - type: CEZLevelGhostMover  # ECHO-Tweak
+  - type: CEZLevelGhostMover
+  # Utopia-Tweak-end
 
 # shared parent between aghosts, replay spectators and normal observers
 - type: entity
@@ -74,10 +74,10 @@
     radius: 6
     castShadows: false
     enabled: false
-  # ECHO-Tweak-start: better ghost movement
+  # Utopia-Tweak-start: better ghost movement
   - type: CEZPhysics
     ignoreHighGround: true
-  # ECHO-Tweak-end
+  # Utopia-Tweak-end
 
 # proto for player ghosts specifically
 - type: entity
