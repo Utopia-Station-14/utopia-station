@@ -6,4 +6,3 @@ eftpos-ui-card-lock-desc = Проведите картой для блокиро
 eftpos-ui-card-unlock-desc = Проведите картой для разблокировки
 eftpos-ui-account-text = Аккаунт: { $owner }
 eftpos-transaction-success = Транзакция успешно завершена
-eftpos-transaction-error = Ошибка транзакции

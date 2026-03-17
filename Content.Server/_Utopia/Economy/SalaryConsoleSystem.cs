@@ -3,6 +3,8 @@ using Content.Server.StationRecords.Systems;
 using Content.Shared._Utopia.Economy;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.StationRecords;
+using Content.Shared.Popups;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 
 namespace Content.Server._Utopia.Economy;
@@ -15,55 +17,31 @@ public sealed class SalaryConsoleSystem : EntitySystem
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
     [Dependency] private readonly StationRecordsSystem _stationRecords = default!;
     [Dependency] private readonly StationRecordKeyStorageSystem _keyStorage = default!;
+    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
+    [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<SalaryConsoleComponent, EntInsertedIntoContainerMessage>(OnCardInserted);
-        SubscribeLocalEvent<SalaryConsoleComponent, EntRemovedFromContainerMessage>(OnCardRemoved);
-        SubscribeLocalEvent<SalaryConsoleComponent, BoundUIOpenedEvent>(OnBuiOpened);
-        SubscribeLocalEvent<SalaryConsoleComponent, RecordModifiedEvent>(OnRecordModified);
+        SubscribeLocalEvent<SalaryConsoleComponent, EntInsertedIntoContainerMessage>(UpdateUiState);
+        SubscribeLocalEvent<SalaryConsoleComponent, EntRemovedFromContainerMessage>(UpdateUiState);
+
+        SubscribeLocalEvent<SalaryConsoleComponent, RecordModifiedEvent>(UpdateUiState);
+        SubscribeLocalEvent<SalaryConsoleComponent, AfterGeneralRecordCreatedEvent>(UpdateUiState);
+        SubscribeLocalEvent<SalaryConsoleComponent, RecordRemovedEvent>(UpdateUiState);
 
         Subs.BuiEvents<SalaryConsoleComponent>(SalaryConsoleUiKey.Key, subs =>
         {
-            subs.Event<SalaryConsoleSelectRecordMessage>(OnSelectRecord);
+            subs.Event<BoundUIOpenedEvent>(UpdateUiState);
+            subs.Event<SelectStationRecord>(OnSelectRecord);
             subs.Event<SetStationRecordFilter>(OnFiltersChanged);
             subs.Event<SalaryConsoleSendMoneyMessage>(OnSendMoney);
         });
     }
-
-    private void OnCardInserted(Entity<SalaryConsoleComponent> ent, ref EntInsertedIntoContainerMessage args)
-    {
-        UpdateUiState(ent);
-    }
-
-    private void OnCardRemoved(Entity<SalaryConsoleComponent> ent, ref EntRemovedFromContainerMessage args)
-    {
-        UpdateUiState(ent);
-    }
-
-    private void OnBuiOpened(Entity<SalaryConsoleComponent> ent, ref BoundUIOpenedEvent args)
-    {
-        if (args.UiKey is not SalaryConsoleUiKey.Key)
-            return;
-
-        UpdateUiState(ent);
-    }
-
-    private void OnRecordModified(Entity<SalaryConsoleComponent> ent, ref RecordModifiedEvent args)
-    {
-        var station = _station.GetOwningStation(ent.Owner);
-        if (station != args.Key.OriginStation)
-            return;
-
-        UpdateUiState(ent);
-    }
-
-    private void OnSelectRecord(Entity<SalaryConsoleComponent> ent, ref SalaryConsoleSelectRecordMessage msg)
+    private void OnSelectRecord(Entity<SalaryConsoleComponent> ent, ref SelectStationRecord msg)
     {
         ent.Comp.ActiveKey = msg.SelectedKey;
-        Dirty(ent);
         UpdateUiState(ent);
     }
 
@@ -105,15 +83,26 @@ public sealed class SalaryConsoleSystem : EntitySystem
         var budgetAccountId = bankCard.AccountId.Value;
         var recipientAccountId = targetCard.AccountId.Value;
 
-        if (!_bankCard.TryChangeBalance(budgetAccountId, -msg.Amount))
-            return;
-
-        if (!_bankCard.TryChangeBalance(recipientAccountId, msg.Amount))
+        if (!_bankCard.TryGetAccount(recipientAccountId, out var recipientAccount) || recipientAccount.IsBlocked)
         {
-            _bankCard.TryChangeBalance(budgetAccountId, msg.Amount);
+            _popupSystem.PopupEntity(Loc.GetString("bank-operation-error"), ent, PopupType.Medium);
+            _audioSystem.PlayPvs(ent.Comp.SoundDeny, ent);
             return;
         }
 
+        if (!_bankCard.TryGetAccount(budgetAccountId, out var budgetAccount) || budgetAccount.AccountPin != msg.Pin)
+            return;
+
+        if (_bankCard.TryChangeBalance(budgetAccountId, -msg.Amount))
+        {
+            _bankCard.TryChangeBalance(recipientAccountId, msg.Amount);
+        }
+
+        UpdateUiState(ent);
+    }
+
+    private void UpdateUiState<T>(Entity<SalaryConsoleComponent> ent, ref T args)
+    {
         UpdateUiState(ent);
     }
 
@@ -137,7 +126,7 @@ public sealed class SalaryConsoleSystem : EntitySystem
         }
 
         var budgetCardInserted = false;
-        int? budgetCardBalance = null;
+        var budgetCardBalance = 0;
         string? budgetCardLabel = null;
 
         if (slot.Item is { } card && TryComp<BankCardComponent>(card, out var bankCard)
@@ -146,7 +135,7 @@ public sealed class SalaryConsoleSystem : EntitySystem
         {
             budgetCardInserted = true;
             budgetCardBalance = _bankCard.GetBalance(bankCard.AccountId.Value);
-            budgetCardLabel = account.Name;
+            budgetCardLabel = account.Name ?? Loc.GetString("salary-console-budget-card");
         }
 
         var state = new SalaryConsoleUserInterfaceState(

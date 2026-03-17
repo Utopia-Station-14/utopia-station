@@ -203,7 +203,7 @@ namespace Content.Shared.VendingMachines
 
         // Utopia-Tweak : Economy
         [DataField, ViewVariables(VVAccess.ReadWrite)]
-        public double PriceMultiplier = 0.25;
+        public double PriceMultiplier = 0.75;
 
         public ProtoId<StackPrototype> CreditStackPrototype = "Credit";
 
@@ -222,7 +222,7 @@ namespace Content.Shared.VendingMachines
         public int Credits;
 
         [DataField]
-        public bool AllForFree = true;
+        public bool AllForFree;
         // Utopia-Tweak : Economy
     }
 
@@ -243,12 +243,12 @@ namespace Content.Shared.VendingMachines
         public int Price;
         //ADT-Economy
 
-        public VendingMachineInventoryEntry(InventoryType type, string id, uint amount, int price)
+        public VendingMachineInventoryEntry(InventoryType type, string id, uint amount, int price) // Utopia-Tweak : Economy
         {
             Type = type;
             ID = id;
             Amount = amount;
-            Price = price;
+            Price = price; // Utopia-Tweak : Economy
         }
 
         public VendingMachineInventoryEntry(VendingMachineInventoryEntry entry)
@@ -256,7 +256,7 @@ namespace Content.Shared.VendingMachines
             Type = entry.Type;
             ID = entry.ID;
             Amount = entry.Amount;
-            Price = entry.Price;
+            Price = entry.Price; // Utopia-Tweak : Economy
         }
     }
 

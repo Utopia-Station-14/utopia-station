@@ -1,6 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared.Cargo.Components;
+using Content.Shared.Cargo.Prototypes;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
 namespace Content.Shared._Utopia.Economy;
@@ -11,7 +13,7 @@ public abstract partial class SharedEconomySystem : EntitySystem
 
     protected readonly List<BankAccount> Accounts = new();
 
-    public BankAccount CreateAccount(int accountId = default, int startingBalance = 0)
+    protected BankAccount CreateAccount(int accountId = default, int startingBalance = 0)
     {
         if (TryGetAccount(accountId, out var acc))
             return acc;
@@ -34,7 +36,25 @@ public abstract partial class SharedEconomySystem : EntitySystem
         }
 
         Accounts.Add(account);
+        return account;
+    }
 
+    protected BankAccount CreateBudgetAccount(ProtoId<CargoAccountPrototype> departmentType)
+    {
+        int accountNumber;
+        do
+        {
+            accountNumber = Random.Next(100000, 999999);
+        } while (AccountExist(accountNumber));
+
+        var account = new BankAccount(accountNumber, 0, Random)
+        {
+            AccountPrototype = departmentType,
+            CommandBudgetAccount = true,
+            Name = Loc.GetString($"command-budget-{departmentType}")
+        };
+
+        Accounts.Add(account);
         return account;
     }
 
@@ -67,4 +87,12 @@ public abstract partial class SharedEconomySystem : EntitySystem
 
         return account.Balance;
     }
+
+    public bool ToggleAccount(BankAccount bankAccount)
+    {
+        return !bankAccount.IsBlocked;
+    }
 }
+
+[ByRefEvent]
+public record struct EconomyBalanceChangedEvent(string OperationType);

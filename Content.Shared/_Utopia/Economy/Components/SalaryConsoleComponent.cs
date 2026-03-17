@@ -1,19 +1,22 @@
 using Content.Shared.StationRecords;
-using Robust.Shared.GameStates;
+using Robust.Shared.Audio;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared._Utopia.Economy;
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent]
 public sealed partial class SalaryConsoleComponent : Component
 {
     public const string BudgetCardSlotId = "BankCardSlot";
 
-    [ViewVariables(VVAccess.ReadOnly), AutoNetworkedField]
+    [ViewVariables]
     public uint? ActiveKey;
 
-    [DataField]
+    [ViewVariables]
     public StationRecordsFilter? Filter;
+
+    [DataField]
+    public SoundSpecifier SoundDeny = new SoundPathSpecifier("/Audio/_Utopia/Machines/buzz-sigh.ogg");
 }
 
 [Serializable, NetSerializable]

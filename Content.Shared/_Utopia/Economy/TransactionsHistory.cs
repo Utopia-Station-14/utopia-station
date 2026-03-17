@@ -9,7 +9,6 @@ public sealed class TransactionsHistory
     public TimeSpan Timestamp;
     public string Type;
     public string InitiatorName;
-
     public string? TargetId;
 
     public TransactionsHistory(int amount, TimeSpan timestamp, string type, string initiatorName, string? targetId)

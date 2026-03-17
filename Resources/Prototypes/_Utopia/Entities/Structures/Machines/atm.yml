@@ -26,7 +26,6 @@
   - type: ItemSlots
     slots:
       BankCardSlot:
-        name: BankCard
         ejectSound: /Audio/Machines/id_swipe.ogg
         insertSound: /Audio/Weapons/Guns/MagIn/batrifle_magin.ogg
         ejectOnBreak: true

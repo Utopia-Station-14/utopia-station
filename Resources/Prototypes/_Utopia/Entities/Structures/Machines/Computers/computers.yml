@@ -2,7 +2,46 @@
   parent: BaseComputer
   id: UtopiaSalaryConsole
   name: salary console
-  description: test
+  description: Used to pay salaries to station employees.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerKeys"]
+      state: generic_keys
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+    - map: ["computerLayerScreen"]
+      sprite: _Utopia/Structures/Machines/computers.rsi
+      state: salary
+  - type: ActivatableUI
+    key: enum.SalaryConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.SalaryConsoleUiKey.Key:
+        type: SalaryConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: SalaryConsole
+  - type: ItemSlots
+    slots:
+      BankCardSlot:
+        whitelist:
+          tags:
+          - UtopiaDepartamentCard
+  - type: ContainerContainer
+    containers:
+      BankCardSlot: !type:ContainerSlot
+      board: !type:Container
+
+- type: entity
+  parent: BaseComputerAiAccess
+  id: UtopiaEconomicRecordsConsole
+  name: economic records computer
+  description: Shows crew economic records.
   components:
   - type: Sprite
     layers:
@@ -18,22 +57,11 @@
       sprite: _Utopia/Structures/Machines/computers.rsi
       state: accounts
   - type: ActivatableUI
-    key: enum.SalaryConsoleUiKey.Key
+    key: enum.EconomicRecordsConsoleKey.Key
   - type: UserInterface
     interfaces:
-        enum.SalaryConsoleUiKey.Key:
-          type: SalaryConsoleBoundUserInterface
-        enum.WiresUiKey.Key:
-          type: WiresBoundUserInterface
-  - type: SalaryConsole
-  - type: ItemSlots
-    slots:
-      BankCardSlot:
-        name: BankCard
-        whitelist:
-          tags:
-          - UtopiaDepartamentCard
-  - type: ContainerContainer
-    containers:
-      BankCardSlot: !type:ContainerSlot
-      board: !type:Container
+      enum.EconomicRecordsConsoleKey.Key:
+        type: EconomicRecordsConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: EconomicRecordsConsole

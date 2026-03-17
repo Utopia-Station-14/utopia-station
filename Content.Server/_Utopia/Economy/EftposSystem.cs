@@ -32,6 +32,13 @@ public sealed class EftposSystem : EntitySystem
         || ent.Comp.Amount <= 0 || bankCard.CommandBudgetCard)
             return;
 
+        if (!_bankCardSystem.TryGetAccount(bankCard.AccountId.Value, out var account) || account.IsBlocked)
+        {
+            _popupSystem.PopupEntity(Loc.GetString("bank-operation-error"), ent, PopupType.Medium);
+            _audioSystem.PlayPvs(ent.Comp.SoundDeny, ent);
+            return;
+        }
+
         if (_bankCardSystem.TryChangeBalance(bankCard.AccountId.Value, -ent.Comp.Amount)
         && _bankCardSystem.TryChangeBalance(ent.Comp.BankAccountId.Value, ent.Comp.Amount))
         {
@@ -40,7 +47,7 @@ public sealed class EftposSystem : EntitySystem
         }
         else
         {
-            _popupSystem.PopupEntity(Loc.GetString("eftpos-transaction-error"), ent);
+            _popupSystem.PopupEntity(Loc.GetString("bank-operation-error"), ent);
             _audioSystem.PlayPvs(ent.Comp.SoundDeny, ent);
         }
     }

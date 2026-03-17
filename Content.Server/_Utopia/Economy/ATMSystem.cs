@@ -82,9 +82,11 @@ public sealed class ATMSystem : EntitySystem
             return;
         }
 
-        if (!_bankCardSystem.TryChangeBalance(bankCard.AccountId!.Value, amount))
+        if (!_bankCardSystem.TryChangeBalance(bankCard.AccountId!.Value, amount)
+        || !_bankCardSystem.TryGetAccount(bankCard.AccountId.Value, out var account)
+        || account.IsBlocked)
         {
-            _popupSystem.PopupEntity(Loc.GetString("atm-deposit-failed"), ent, args.User, PopupType.Medium);
+            _popupSystem.PopupEntity(Loc.GetString("bank-operation-error"), ent, args.User, PopupType.Medium);
             _audioSystem.PlayPvs(ent.Comp.SoundDeny, ent);
             return;
         }
@@ -131,6 +133,13 @@ public sealed class ATMSystem : EntitySystem
         || account.AccountPin != args.Pin && !HasComp<EmaggedComponent>(ent))
         {
             _popupSystem.PopupEntity(Loc.GetString("atm-wrong-pin"), ent);
+            _audioSystem.PlayPvs(ent.Comp.SoundDeny, ent);
+            return;
+        }
+
+        if (account.IsBlocked)
+        {
+            _popupSystem.PopupEntity(Loc.GetString("bank-operation-error"), ent, PopupType.Medium);
             _audioSystem.PlayPvs(ent.Comp.SoundDeny, ent);
             return;
         }
