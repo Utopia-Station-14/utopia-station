@@ -3,13 +3,13 @@ namespace Content.Shared._Utopia.Combat;
 [RegisterComponent]
 public sealed partial class ComboCounterComponent : Component
 {
-    [ViewVariables]
+    [DataField]
     public int ComboCounter;
 
     [DataField]
     public int MaxCombo;
 
-    [ViewVariables]
+    [DataField]
     public TimeSpan LastCombo;
 
     [DataField]
