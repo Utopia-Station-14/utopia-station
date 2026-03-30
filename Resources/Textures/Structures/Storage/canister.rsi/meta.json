@@ -189,6 +189,12 @@
         },
         {
             "name": "hydrogen-1"
+        },
+        {
+            "name": "deuterium"
+        },
+        {
+            "name": "deuterium-1"
         }
     ]
 }
