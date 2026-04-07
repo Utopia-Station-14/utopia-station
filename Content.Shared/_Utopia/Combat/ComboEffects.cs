@@ -8,6 +8,7 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
+using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Popups;
@@ -17,6 +18,7 @@ using Content.Shared.Stunnable;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Serialization;
+using Robust.Shared.Timing;
 
 namespace Content.Shared._Utopia.Combat;
 
@@ -198,7 +200,7 @@ public sealed partial class ComboHandsRetakeEffect : IComboEffect
     }
 }
 
-[Serializable]
+[Serializable, NetSerializable]
 public sealed partial class ComboAudioEffect : IComboEffect
 {
     [DataField(required: true)]
@@ -207,7 +209,24 @@ public sealed partial class ComboAudioEffect : IComboEffect
     public void DoEffect(EntityUid user, EntityUid target, IEntityManager entMan)
     {
         var audio = entMan.System<SharedAudioSystem>();
-        audio.PlayPredicted(Sound, user, user);
+        var coords = user.ToCoordinates();
+
+        audio.PlayPredicted(Sound, coords, null);
+    }
+}
+
+[Serializable, NetSerializable]
+public sealed partial class ComboAudioTargetEffect : IComboEffect
+{
+    [DataField(required: true)]
+    public SoundSpecifier Sound;
+
+    public void DoEffect(EntityUid user, EntityUid target, IEntityManager entMan)
+    {
+        var audio = entMan.System<SharedAudioSystem>();
+        var coords = target.ToCoordinates();
+
+        audio.PlayPredicted(Sound, coords, null);
     }
 }
 
@@ -255,7 +274,7 @@ public sealed partial class ComboMoreStaminaDamageToDownedEffect : IComboEffect
     }
 }
 
-[Serializable]
+[Serializable, NetSerializable]
 public sealed partial class ComboFlashEffect : IComboEffect
 {
     [DataField]
@@ -274,7 +293,7 @@ public sealed partial class ComboFlashEffect : IComboEffect
     }
 }
 
-[Serializable]
+[Serializable, NetSerializable]
 public sealed partial class ComboStopGrabEffect : IComboEffect
 {
     public void DoEffect(EntityUid user, EntityUid target, IEntityManager entMan)
@@ -294,7 +313,7 @@ public sealed partial class ComboStopGrabEffect : IComboEffect
     }
 }
 
-[Serializable]
+[Serializable, NetSerializable]
 public sealed partial class ComboStopTargetGrabEffect : IComboEffect
 {
     public void DoEffect(EntityUid user, EntityUid target, IEntityManager entMan)
@@ -313,7 +332,7 @@ public sealed partial class ComboStopTargetGrabEffect : IComboEffect
     }
 }
 
-[Serializable]
+[Serializable, NetSerializable]
 public sealed partial class ComboThrowTargetEffect : IComboEffect
 {
     [DataField]
@@ -331,7 +350,7 @@ public sealed partial class ComboThrowTargetEffect : IComboEffect
     }
 }
 
-[Serializable]
+[Serializable, NetSerializable]
 public sealed partial class ComboThrowOnUserEffect : IComboEffect
 {
     [DataField]
@@ -441,7 +460,28 @@ public sealed partial class ComboEffectCounterDamageBonus : IComboEffect
     }
 }
 
-[Serializable, NetSerializable]
+[Serializable]
+public sealed partial class ComboDelayedEffect : IComboEffect
+{
+    [DataField(required: true)]
+    public List<IComboEffect> ComboEvents = new();
+
+    [DataField(required: true)]
+    public TimeSpan Delay;
+
+    public void DoEffect(EntityUid user, EntityUid target, IEntityManager entMan)
+    {
+        Timer.Spawn(Delay, () =>
+        {
+            foreach (var comboEvent in ComboEvents)
+            {
+                comboEvent.DoEffect(user, target, entMan);
+            }
+        });
+    }
+}
+
+[Serializable]
 public sealed partial class ComboEffectOnCounterDoCombo : IComboEffect
 {
     [DataField]
@@ -483,6 +523,44 @@ public sealed partial class ComboEffectToDowned : IComboEffect
 }
 
 [Serializable]
+public sealed partial class ComboEffectUserWalking : IComboEffect
+{
+    [DataField(required: true)]
+    public List<IComboEffect> ComboEvents = new();
+
+    public void DoEffect(EntityUid user, EntityUid target, IEntityManager entMan)
+    {
+        if (entMan.TryGetComponent<InputMoverComponent>(user, out var comp)
+        && !comp.Sprinting)
+        {
+            foreach (var comboEvent in ComboEvents)
+            {
+                comboEvent.DoEffect(user, target, entMan);
+            }
+        }
+    }
+}
+
+[Serializable]
+public sealed partial class ComboEffectUserSprinting : IComboEffect
+{
+    [DataField(required: true)]
+    public List<IComboEffect> ComboEvents = new();
+
+    public void DoEffect(EntityUid user, EntityUid target, IEntityManager entMan)
+    {
+        if (entMan.TryGetComponent<InputMoverComponent>(user, out var comp)
+        && comp.Sprinting)
+        {
+            foreach (var comboEvent in ComboEvents)
+            {
+                comboEvent.DoEffect(user, target, entMan);
+            }
+        }
+    }
+}
+
+[Serializable]
 public sealed partial class ComboEffectToStanding : IComboEffect
 {
     [DataField(required: true)]
@@ -503,6 +581,30 @@ public sealed partial class ComboEffectToStanding : IComboEffect
 
 [Serializable]
 public sealed partial class ComboEffectToUserPuller : IComboEffect
+{
+    [DataField(required: true)]
+    public List<IComboEffect> ComboEvents = new();
+
+    public void DoEffect(EntityUid user, EntityUid target, IEntityManager entMan)
+    {
+        if (!entMan.TryGetComponent<PullableComponent>(user, out var pullable))
+            return;
+
+        if (pullable.Puller == null || pullable.Puller != target)
+            return;
+
+        if (ComboEvents == null)
+            return;
+
+        foreach (var comboEvent in ComboEvents)
+        {
+            comboEvent?.DoEffect(user, target, entMan);
+        }
+    }
+}
+
+[Serializable]
+public sealed partial class ComboEffectByUserPuller : IComboEffect
 {
     [DataField(required: true)]
     public List<IComboEffect> ComboEvents = new();

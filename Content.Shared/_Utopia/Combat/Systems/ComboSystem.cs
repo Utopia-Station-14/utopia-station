@@ -2,11 +2,7 @@ using System.Linq;
 using Content.Shared._Utopia.Grab;
 using Content.Shared.Actions.Events;
 using Content.Shared.CombatMode;
-using Content.Shared.Coordinates;
 using Content.Shared.Humanoid;
-using Content.Shared.Movement.Pulling.Components;
-using Content.Shared.Movement.Pulling.Systems;
-using Content.Shared.Stunnable;
 using Content.Shared.Weapons.Melee.Events;
 using Robust.Shared.Prototypes;
 
@@ -14,7 +10,6 @@ namespace Content.Shared._Utopia.Combat;
 
 public sealed class SharedComboSystem : EntitySystem
 {
-    [Dependency] private readonly PullingSystem _pullingSystem = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
 
     public override void Initialize()
@@ -27,64 +22,60 @@ public sealed class SharedComboSystem : EntitySystem
         SubscribeLocalEvent<ComboComponent, ToggleCombatActionEvent>(OnCombatToggled);
     }
 
-    private void OnDisarmUsed(EntityUid uid, ComboComponent comp, DisarmAttemptEvent args)
+    private void OnDisarmUsed(Entity<ComboComponent> entity, ref DisarmAttemptEvent args)
     {
-        if (args.DisarmerUid != uid || args.DisarmerUid == args.TargetUid)
+        if (args.DisarmerUid != entity.Owner || args.DisarmerUid == args.TargetUid)
             return;
 
-        comp.CurrestActions.Add(CombatAction.Disarm);
+        entity.Comp.CurrestActions.Add(CombatAction.Disarm);
 
-        if (comp.CurrestActions.Count >= 5)
+        if (entity.Comp.CurrestActions.Count >= 5)
         {
-            comp.CurrestActions.RemoveAt(0);
+            entity.Comp.CurrestActions.RemoveAt(0);
         }
 
-        comp.Target = args.DisarmerUid;
-        TryDoCombo(args.DisarmerUid, args.TargetUid, comp);
+        TryDoCombo(entity.Owner, args.TargetUid, entity.Comp);
     }
 
-    private void OnMeleeHit(EntityUid uid, ComboComponent comp, MeleeHitEvent args)
+    private void OnMeleeHit(Entity<ComboComponent> entity, ref MeleeHitEvent args)
     {
-        if (!args.IsHit || !args.HitEntities.Any())
+        if (args.User != entity.Owner || !args.IsHit || !args.HitEntities.Any())
             return;
 
         if (!HasComp<HumanoidAppearanceComponent>(args.HitEntities[0]))
             return;
 
-        comp.CurrestActions.Add(CombatAction.Hit);
+        entity.Comp.CurrestActions.Add(CombatAction.Hit);
 
-        if (comp.CurrestActions.Count >= 5 && comp.CurrestActions != null)
+        if (entity.Comp.CurrestActions.Count >= 5 && entity.Comp.CurrestActions != null)
         {
-            comp.CurrestActions.RemoveAt(0);
+            entity.Comp.CurrestActions.RemoveAt(0);
         }
 
-        comp.Target = args.HitEntities[0];
-        TryDoCombo(uid, comp.Target.Value, comp);
+        TryDoCombo(entity.Owner, args.HitEntities[0], entity.Comp);
     }
 
-    private void OnGrab(EntityUid uid, ComboComponent comp, ref GrabStageChangedEvent args)
+    private void OnGrab(Entity<ComboComponent> entity, ref GrabStageChangedEvent args)
     {
-        if (args.Puller.Owner != uid || args.NewStage <= args.OldStage)
+        if (args.Puller.Owner != entity.Owner || args.NewStage <= args.OldStage)
             return;
 
-        comp.CurrestActions.Add(CombatAction.Grab);
+        entity.Comp.CurrestActions.Add(CombatAction.Grab);
 
-        if (comp.CurrestActions.Count >= 5)
+        if (entity.Comp.CurrestActions.Count >= 5)
         {
-            comp.CurrestActions.RemoveAt(0);
+            entity.Comp.CurrestActions.RemoveAt(0);
         }
 
-        comp.Target = args.Pulling.Owner;
-        TryDoCombo(args.Puller.Owner, comp.Target.Value, comp);
+        TryDoCombo(entity.Owner, args.Pulling.Owner, entity.Comp);
     }
 
-    private void OnCombatToggled(EntityUid uid, ComboComponent comp, ToggleCombatActionEvent args)
+    private void OnCombatToggled(Entity<ComboComponent> entity, ref ToggleCombatActionEvent args)
     {
-        if (!HasComp<CombatModeComponent>(uid))
+        if (!HasComp<CombatModeComponent>(entity))
             return;
 
-        comp.CurrestActions.Clear();
-        comp.Target = null;
+        entity.Comp.CurrestActions.Clear();
     }
 
     private bool TryDoCombo(EntityUid user, EntityUid target, ComboComponent comp)

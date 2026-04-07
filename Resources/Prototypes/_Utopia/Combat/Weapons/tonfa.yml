@@ -10,7 +10,7 @@
         types:
           Blunt: 5
     - !type:ComboDropFromHandsEffect
-    - !type:ComboAudioEffect
+    - !type:ComboAudioTargetEffect
       sound:
         collection: GenericHit
 
@@ -25,7 +25,7 @@
       comboEvents:
       - !type:ComboSlowdownEffect
         time: 10
-      - !type:ComboAudioEffect
+      - !type:ComboAudioTargetEffect
         sound:
           collection: GenericHit
     - !type:ComboFallEffect
@@ -38,14 +38,14 @@
    - OffensiveWideHit
    - ProtectiveHit
   comboEvent:
-    - !type:ComboEffectToUserPuller
+    - !type:ComboEffectByUserPuller
       comboEvents:
       - !type:ComboDamageToUserEffect
         damage:
           types:
             Blunt: 10
       - !type:ComboStopGrabEffect
-      - !type:ComboAudioEffect
+      - !type:ComboAudioTargetEffect
         sound:
           collection: GenericHit
       - !type:ComboFallEffect
@@ -61,7 +61,7 @@
   comboEvent:
     - !type:ComboStaminaDamageEffect
       staminaDamage: 40
-    - !type:ComboAudioEffect
+    - !type:ComboAudioTargetEffect
       sound:
         collection: GenericHit
 
@@ -75,6 +75,6 @@
       damage:
         types:
           Blunt: 10
-    - !type:ComboAudioEffect
+    - !type:ComboAudioTargetEffect
       sound:
         collection: GenericHit

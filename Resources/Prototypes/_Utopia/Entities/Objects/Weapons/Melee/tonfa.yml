@@ -8,7 +8,7 @@
     sprite: _Utopia/Objects/Weapons/Melee/tonfa.rsi
     layers:
     - state: icon-of
-      map: [ "enum.ComboWeaponState.State" ]
+      map: [ "icon", "enum.ComboWeaponState.State" ]
   - type: Clothing
     sprite: _Utopia/Objects/Weapons/Melee/tonfa.rsi
     quickEquip: false
@@ -33,14 +33,13 @@
       - TonfaGrabEscape
       - TonfaStaminaDamage
       - TonfaSlam
-      - BlackFlash
+  - type: Appearance
   - type: GenericVisualizer
     visuals:
       enum.ComboWeaponState.State:
-        enum.ComboWeaponState.State:
-          True: {state: icon-of}
-          False: {state: icon-prot}
-  - type: Appearance
+        icon:
+          Offensive: {state: icon-of}
+          Protective: {state: icon-prot}
   - type: Tag
     tags:
     - SecBeltEquip
