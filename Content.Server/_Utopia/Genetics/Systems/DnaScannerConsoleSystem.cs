@@ -38,13 +38,13 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
     [Dependency] private readonly MutationUnlockTriggerSystem _unlockTrigger = default!;
 
-    private const float SequencerButtonCellularDamage = 0.2f;
-    private const float ScrambleCellularDamage = 15f;
+    private const float SequencerButtonRadiationDamage = 0.2f;
+    private const float ScrambleRadiationDamage = 15f;
     private const float ScrambleCooldownSeconds = 30f;
     private const int MaxActiveResearchSlots = 5;
     private const int ResearchDurationSeconds = 180;
     private const float JokerCooldownSeconds = 600f;
-    private const string Cellular = "Cellular";
+    private const string Radiation = "Radiation";
 
     private static readonly TimeSpan UpdateTickInterval = TimeSpan.FromSeconds(1);
 
@@ -273,7 +273,7 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
             _genetics.TryDeactivateMutation(subject, genetics, msg.MutationId);
         }
 
-        var damage = new DamageSpecifier(_proto.Index<DamageTypePrototype>(Cellular), SequencerButtonCellularDamage);
+        var damage = new DamageSpecifier(_proto.Index<DamageTypePrototype>(Radiation), SequencerButtonRadiationDamage);
         if (TryComp<DamageableComponent>(subject, out var damageable))
         {
             _damageable.TryChangeDamage(subject, damage, ignoreResistances: true);
@@ -334,7 +334,7 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
 
         if (HasComp<DamageableComponent>(subject))
         {
-            var damage = new DamageSpecifier(_proto.Index<DamageTypePrototype>(Cellular), ScrambleCellularDamage);
+            var damage = new DamageSpecifier(_proto.Index<DamageTypePrototype>(Radiation), ScrambleRadiationDamage);
             _damageable.TryChangeDamage(subject, damage, ignoreResistances: true);
         }
 
@@ -440,7 +440,8 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
         List<MutationEntry>? mutations = null;
         string? subjectName = null;
         string? healthStatus = null;
-        float? cellularDamage = null;
+        float? radiationDamage = null;
+
         var instability = 0;
         var discovered = new HashSet<string>();
         var baseIds = new HashSet<string>();
@@ -449,7 +450,7 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
         {
             subjectName = Name(subject);
             healthStatus = GetHealthString(subject);
-            cellularDamage = GetCellularDamage(subject);
+            radiationDamage = GetRadiationDamage(subject);
 
             if (TryComp<GeneticsComponent>(subject, out var genetics))
             {
@@ -482,22 +483,19 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
             discovered = _discovery.GetGridDiscovered(uid);
         }
 
-        return new GeneticistsConsoleBoundUserInterfaceState(
-            subjectName: subjectName,
-            healthStatus: healthStatus,
-            cellularDamage: cellularDamage,
-            subjectGeneticInstability: instability,
-            scrambleCooldownEnd: comp.ScrambleCooldownEnd,
-            mutations: fullUpdate ? mutations : null,
-            discoveredMutationIds: fullUpdate ? discovered : null,
-            baseMutationIds: fullUpdate ? baseIds : null,
-            savedMutations: fullUpdate ? comp.SavedMutations : null,
-            isFullUpdate: fullUpdate,
-            researchRemaining: researchRemaining,
-            researchOriginal: researchOriginal,
-            activeResearchMutationIds: activeResearchIds,
-            jokerCooldownEnd: comp.JokerCooldownEnd
-        );
+        return new GeneticistsConsoleBoundUserInterfaceState(subjectName,
+            healthStatus,
+            radiationDamage,
+            instability,
+            comp.ScrambleCooldownEnd,
+            fullUpdate ? mutations : null,
+            fullUpdate ? discovered : null,
+            fullUpdate ? baseIds : null,
+            fullUpdate ? comp.SavedMutations : null,
+            fullUpdate, researchRemaining,
+            researchOriginal,
+            activeResearchIds,
+            comp.JokerCooldownEnd);
     }
 
     private string? GetHealthString(EntityUid uid)
@@ -515,13 +513,15 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
         };
     }
 
-    private float? GetCellularDamage(EntityUid uid)
+    private float? GetRadiationDamage(EntityUid uid)
     {
         if (!TryComp<DamageableComponent>(uid, out var damageable))
             return null;
 
-        var cell = damageable.Damage["Cellular"];
-        return MathF.Round(cell.Float(), 2);
+        if (!damageable.Damage.DamageDict.TryGetValue(Radiation, out var rad))
+            return 0f;
+
+        return MathF.Round(rad.Float(), 2);
     }
 
     private void ProcessResearchTick(EntityUid uid, DnaScannerConsoleComponent console, ResearchPointSourceComponent source)

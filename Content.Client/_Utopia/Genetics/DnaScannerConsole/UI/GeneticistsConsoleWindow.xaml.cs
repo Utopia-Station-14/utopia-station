@@ -65,11 +65,8 @@ public sealed partial class GeneticistsConsoleWindow : FancyWindow
         _enzymesView.OnSequencerButtonPressed += (i, c, id) => OnSequencerButtonPressed?.Invoke(i, c, id);
         _enzymesView.OnSaveMutationPressed += id => OnSaveMutationPressed?.Invoke(id);
         _storageView.OnDeleteMutationPressed += id => OnDeleteMutationPressed?.Invoke(id);
-        _enzymesView.OnPrintActivatorPressed += id => OnPrintActivatorPressed?.Invoke(id);
         _storageView.OnPrintActivatorPressed += id => OnPrintActivatorPressed?.Invoke(id);
-        _enzymesView.OnPrintMutatorPressed += id => OnPrintMutatorPressed?.Invoke(id);
         _storageView.OnPrintMutatorPressed += id => OnPrintMutatorPressed?.Invoke(id);
-        _enzymesView.OnToggleResearchPressed += id => OnToggleResearchPressed?.Invoke(id);
         _storageView.OnToggleResearchPressed += id => OnToggleResearchPressed?.Invoke(id);
         _enzymesView.OnJokerUsed += () => OnJokerUsed?.Invoke();
 

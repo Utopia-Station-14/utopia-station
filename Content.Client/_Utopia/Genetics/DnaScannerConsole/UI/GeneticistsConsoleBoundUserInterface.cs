@@ -55,7 +55,7 @@ public sealed class GeneticistsConsoleBoundUserInterface : BoundUserInterface
         _mainWindow.UpdateSubjectInfo(
             scannerState.SubjectName,
             scannerState.HealthStatus,
-            scannerState.CellularDamage,
+            scannerState.RadiationDamage,
             scannerState.SubjectGeneticInstability,
             scannerState.ScrambleCooldownEnd);
 

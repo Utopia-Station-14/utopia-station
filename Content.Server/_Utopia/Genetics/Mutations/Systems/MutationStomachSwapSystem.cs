@@ -30,6 +30,12 @@ public sealed class MutationStomachSwapSystem : EntitySystem
             return;
         }
 
+        if (!TryGetStomachSlot(ent.Owner, out var stomachSlot) || stomachSlot is null)
+        {
+            RemComp<MutationStomachSwapComponent>(ent.Owner);
+            return;
+        }
+
         ent.Comp.OriginalStomach = originalStomach;
         _container.Insert(originalStomach, hiddenContainer);
 
@@ -38,13 +44,6 @@ public sealed class MutationStomachSwapSystem : EntitySystem
 
         TransferOrganSolutions(originalStomach, newStomach);
 
-        if (!TryGetStomachSlot(ent.Owner, out var stomachSlot) || stomachSlot is null)
-        {
-            Del(newStomach);
-            RemComp<MutationStomachSwapComponent>(ent.Owner);
-            return;
-        }
-
         _container.Insert(newStomach, stomachSlot);
     }
 
@@ -52,8 +51,8 @@ public sealed class MutationStomachSwapSystem : EntitySystem
     {
         var comp = ent.Comp;
 
-        if (comp.OriginalStomach is not { Valid: true } original ||
-            comp.SwappedStomach is not { Valid: true } swapped)
+        if (comp.OriginalStomach is not { Valid: true } _
+        || comp.SwappedStomach is not { Valid: true } swapped)
             return;
 
         if (!TryGetStomachSlot(ent.Owner, out var stomachSlot) || stomachSlot is null)
