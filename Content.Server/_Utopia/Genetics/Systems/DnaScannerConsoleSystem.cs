@@ -43,7 +43,7 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
     private const float ScrambleCooldownSeconds = 30f;
     private const int MaxActiveResearchSlots = 5;
     private const int ResearchDurationSeconds = 180;
-    private const float JokerCooldownSeconds = 600f;
+    private const float JokerCooldownSeconds = 180f;
     private const string Radiation = "Radiation";
 
     private static readonly TimeSpan UpdateTickInterval = TimeSpan.FromSeconds(1);

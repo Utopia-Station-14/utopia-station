@@ -19,7 +19,7 @@ public sealed partial class UniqueEnzymeButton : Button
 
         _iconView = new EntityPrototypeView
         {
-            MinSize = new Vector2(60, 35),
+            MinSize = new Vector2(60, 28),
             HorizontalAlignment = HAlignment.Center,
             VerticalAlignment = VAlignment.Center
         };

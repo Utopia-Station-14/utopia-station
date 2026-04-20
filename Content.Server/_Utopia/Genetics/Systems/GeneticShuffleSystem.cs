@@ -10,11 +10,15 @@ public sealed class GeneticShuffleSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
 
     private const int MaxShuffledBlocks = 150;
+
     private static ReadOnlySpan<char> Bases => "ATGC";
     private static ReadOnlySpan<char> Pairs => "TACG";
-    private Dictionary<string, GeneticBlock> _currentMapping = new();
+
     private readonly HashSet<string> _usedSequences = new();
     private readonly List<int> _shuffledBlocks = new();
+
+    private Dictionary<string, GeneticBlock> _currentMapping = new();
+
     private int _nextSequentialBlock = 1;
 
     public override void Initialize()
