@@ -434,18 +434,25 @@ public sealed partial class GunSystem : SharedGunSystem
 
         var xform = Transform(user.Value);
 
+        if (!TryComp<SpriteComponent>(gun.Owner, out var gunSprite))
+            return;
+
         var effect = Spawn(GunIconEffectProto, xform.Coordinates);
 
-        if (!TryComp<SpriteComponent>(gun.Owner, out var gunSprite)
-        || !TryComp<SpriteComponent>(effect, out var spriteComp))
+        if (!TryComp<SpriteComponent>(effect, out var spriteComp))
+        {
+            QueueDel(effect);
             return;
+        }
+
+        spriteComp.NoRotation = true;
 
         _sprite.CopySprite((gun.Owner, gunSprite), (effect, spriteComp));
 
         var scale = gun.Comp.GunEffectScale;
         _sprite.SetScale((effect, spriteComp), new Vector2(scale, scale));
 
-        _sprite.SetRotation((effect, spriteComp), Angle.FromDegrees(gun.Comp.EffectAngle));
+        _sprite.SetRotation((effect, spriteComp), worldAngle - Angle.FromDegrees(gun.Comp.EffectAngle));
         _xform.SetWorldRotationNoLerp(effect, worldAngle);
 
         var track = EnsureComp<TrackUserComponent>(effect);
