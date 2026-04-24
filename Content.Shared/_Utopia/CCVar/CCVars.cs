@@ -27,8 +27,4 @@ public sealed class UCCVars
     // Economy
     public static readonly CVarDef<bool> PaySalary =
         CVarDef.Create("economy.pay_salary", true, CVar.SERVERONLY);
-
-    // Combat
-    public static readonly CVarDef<bool> CombatShowIcons =
-        CVarDef.Create("combat.show_icons", false, CVar.CLIENTONLY | CVar.ARCHIVE);
 }
