@@ -12,8 +12,8 @@ public sealed partial class GeneticistsConsoleWindow : FancyWindow
 {
     [Dependency] private readonly IGameTiming _timing = default!;
 
-    private GeneticistsConsoleUniqueEnzymesView _enzymesView = null!;
-    private GeneticistsConsoleStorageView _storageView = null!;
+    private readonly GeneticistsConsoleUniqueEnzymesView _enzymesView = null!;
+    private readonly GeneticistsConsoleStorageView _storageView = null!;
 
     private Control _activeView = null!;
 
@@ -36,14 +36,12 @@ public sealed partial class GeneticistsConsoleWindow : FancyWindow
     public event Action? OnScrambleDnaPressed;
     public event Action<string>? OnToggleResearchPressed;
     public event Action? OnJokerUsed;
-    public event Action<string, bool>? OnMutationSelectionChanged;
 
     public GeneticistsConsoleWindow()
     {
         IoCManager.InjectDependencies(this);
         RobustXamlLoader.Load(this);
 
-        // Shared top buttons
         ScrambleDnaButton.OnPressed += _ => OnScrambleDnaPressed?.Invoke();
 
         _enzymesView = new GeneticistsConsoleUniqueEnzymesView();
@@ -57,18 +55,17 @@ public sealed partial class GeneticistsConsoleWindow : FancyWindow
         _activeView = _enzymesView;
         _storageView.Visible = false;
 
-        // Tab buttons
         UniqueEnzymesTabButton.OnPressed += _ => SwitchToEnzymes();
         StorageTabButton.OnPressed += _ => SwitchToStorage();
 
-        // Forward view events to server
         _enzymesView.OnSequencerButtonPressed += (i, c, id) => OnSequencerButtonPressed?.Invoke(i, c, id);
         _enzymesView.OnSaveMutationPressed += id => OnSaveMutationPressed?.Invoke(id);
+        _enzymesView.OnJokerUsed += () => OnJokerUsed?.Invoke();
+
         _storageView.OnDeleteMutationPressed += id => OnDeleteMutationPressed?.Invoke(id);
         _storageView.OnPrintActivatorPressed += id => OnPrintActivatorPressed?.Invoke(id);
         _storageView.OnPrintMutatorPressed += id => OnPrintMutatorPressed?.Invoke(id);
         _storageView.OnToggleResearchPressed += id => OnToggleResearchPressed?.Invoke(id);
-        _enzymesView.OnJokerUsed += () => OnJokerUsed?.Invoke();
 
         SwitchToEnzymes();
     }
@@ -109,7 +106,9 @@ public sealed partial class GeneticistsConsoleWindow : FancyWindow
         IsSubjectDead = isNowDead;
 
         if (justDied)
+        {
             _enzymesView.UpdateSequencerButtonsState();
+        }
 
         UpdateScrambleButtonState(scrambleCooldownEnd);
 
@@ -122,19 +121,19 @@ public sealed partial class GeneticistsConsoleWindow : FancyWindow
 
     private void UpdateScrambleButtonState(TimeSpan? cooldownEnd)
     {
-        var hasSubject = SubjectInfoBox.Visible; // TODO: Not this
+        var hasSubject = SubjectInfoBox.Visible;
+        var isCooldownActive = cooldownEnd.HasValue && cooldownEnd.Value > _timing.CurTime;
 
-        if (!cooldownEnd.HasValue || cooldownEnd.Value <= _timing.CurTime)
+        if (!isCooldownActive)
         {
             ScrambleDnaButton.Disabled = !hasSubject;
             ScrambleDnaButton.Text = Loc.GetString("dna-scanner-scramble-dna");
             return;
         }
 
-        var remaining = cooldownEnd.Value - _timing.CurTime;
+        var remainingSeconds = (int)(cooldownEnd!.Value - _timing.CurTime).TotalSeconds;
         ScrambleDnaButton.Disabled = true;
-        ScrambleDnaButton.Text = Loc.GetString("dna-scanner-scramble-cooldown",
-            ("seconds", (int)remaining.TotalSeconds));
+        ScrambleDnaButton.Text = Loc.GetString("dna-scanner-scramble-cooldown", ("seconds", remainingSeconds));
     }
 
     public void UpdateGeneticsTab(List<MutationEntry>? mutations, HashSet<string>? baseMutationIds)

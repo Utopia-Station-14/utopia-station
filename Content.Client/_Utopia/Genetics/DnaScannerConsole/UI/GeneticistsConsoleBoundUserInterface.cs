@@ -57,12 +57,14 @@ public sealed class GeneticistsConsoleBoundUserInterface : BoundUserInterface
             scannerState.HealthStatus,
             scannerState.RadiationDamage,
             scannerState.SubjectGeneticInstability,
-            scannerState.ScrambleCooldownEnd);
+            scannerState.ScrambleCooldownEnd
+        );
 
         _mainWindow.UpdateResearchData(
             scannerState.ResearchRemaining,
             scannerState.ResearchOriginal,
-            scannerState.ActiveResearchMutationIds ?? new HashSet<string>());
+            scannerState.ActiveResearchMutationIds ?? new HashSet<string>()
+        );
 
         if (scannerState.IsFullUpdate)
         {

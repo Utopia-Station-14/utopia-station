@@ -12,4 +12,5 @@ public sealed record MutationEntry(
     bool Enabled,
     string Description,
     int Instability = 0,
-    IReadOnlyList<string>? Conflicts = null);
+    IReadOnlyList<string>? Conflicts = null
+);

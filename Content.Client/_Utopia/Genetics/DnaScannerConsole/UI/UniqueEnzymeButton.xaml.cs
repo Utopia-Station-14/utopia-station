@@ -19,7 +19,7 @@ public sealed partial class UniqueEnzymeButton : Button
 
         _iconView = new EntityPrototypeView
         {
-            MinSize = new Vector2(60, 28),
+            SetSize = new Vector2(70, 40),
             HorizontalAlignment = HAlignment.Center,
             VerticalAlignment = VAlignment.Center
         };
@@ -32,6 +32,7 @@ public sealed partial class UniqueEnzymeButton : Button
     public void UpdateIcon(bool isDiscovered, bool isBase)
     {
         string prototype;
+
         if (!isDiscovered)
         {
             prototype = UndiscoveredIconPrototype;

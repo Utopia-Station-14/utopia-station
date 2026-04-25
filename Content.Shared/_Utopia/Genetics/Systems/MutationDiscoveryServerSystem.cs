@@ -16,7 +16,7 @@ public sealed class SharedMutationDiscoverySystem : EntitySystem
             return new();
 
         return TryComp<DnaScannerDiscoveryTrackerComponent>(gridUid, out var tracker)
-            ? new HashSet<string>(tracker.GridDiscoveredMutations)
+            ? [.. tracker.GridDiscoveredMutations]
             : new();
     }
 
@@ -59,12 +59,14 @@ public sealed class SharedMutationDiscoverySystem : EntitySystem
             tracker = EnsureComp<DnaScannerDiscoveryTrackerComponent>(gridUid);
         }
 
-        if (tracker.GridResearchProgress.TryGetValue(mutationId, out var current))
+        if (tracker.GridResearchProgress.ContainsKey(mutationId))
         {
             tracker.GridResearchProgress[mutationId] -= deductAmount;
 
             if (tracker.GridResearchProgress[mutationId] < 0)
+            {
                 tracker.GridResearchProgress[mutationId] = 0;
+            }
         }
     }
 }

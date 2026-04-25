@@ -1,7 +1,7 @@
 <ui:UniqueEnzymeButton xmlns="https://spacestation14.io"
     xmlns:ui="clr-namespace:Content.Client._Utopia.Genetics.DnaScannerConsole.UI"
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
-    MaxWidth="70"
-    MinHeight="40"
+    SetWidth="70"
+    SetHeight="40"
     HorizontalExpand="False"
     VerticalExpand="False" />

@@ -17,7 +17,7 @@ public sealed partial class GeneticistsConsoleUniqueEnzymesView : Control
 {
     [Dependency] private readonly IGameTiming _timing = default!;
 
-    private readonly char[] _bases = { 'A', 'T', 'G', 'C' };
+    private readonly char[] _bases = ['A', 'T', 'G', 'C'];
     private readonly SequencerButton[] _sequencerButtons = new SequencerButton[32];
 
     private static readonly Color ColorAT = new(110, 255, 110);
@@ -357,7 +357,9 @@ public sealed partial class GeneticistsConsoleUniqueEnzymesView : Control
             var mut = _currentMutations?.FirstOrDefault(m => m.Id == _selectedMutationId);
 
             if (mut != null)
+            {
                 UpdateMutationDetails(mut);
+            }
 
             UpdateSaveButtonState();
         }
@@ -415,8 +417,7 @@ public sealed partial class GeneticistsConsoleUniqueEnzymesView : Control
             if (!ParentWindow.DiscoveredMutationIds.Contains(conflictId))
                 continue;
 
-            if (IoCManager.Resolve<IPrototypeManager>()
-                .TryIndex<GeneticMutationPrototype>(conflictId, out var proto))
+            if (IoCManager.Resolve<IPrototypeManager>().TryIndex<GeneticMutationPrototype>(conflictId, out var proto))
             {
                 knownNames.Add(Loc.GetString(proto.Name));
             }

@@ -11,6 +11,7 @@ using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Content.Shared.Mobs;
 using Content.Server._Utopia.Genetics.Mutations.Systems;
+using Content.Shared._Utopia.Helpers;
 
 namespace Content.Server._Utopia.Genetics.Systems;
 
@@ -22,7 +23,7 @@ public sealed partial class GeneticsSystem : EntitySystem
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
-    private const string Radiation = "Radiation";
+    private const string DamageType = "Radiation";
     private const float MinSequenceRevealFraction = 0.45f;
     private const float MaxSequenceRevealFraction = 0.80f;
     private const float MinRadsUntilMutation = 20f;
@@ -51,13 +52,13 @@ public sealed partial class GeneticsSystem : EntitySystem
         if (!args.DamageIncreased || args.DamageDelta is not { } delta)
             return;
 
-        if (!delta.DamageDict.TryGetValue(Radiation, out var radDamage) || radDamage <= FixedPoint2.Zero)
+        if (!delta.DamageDict.TryGetValue(DamageType, out var typeDamage) || typeDamage <= FixedPoint2.Zero)
             return;
 
         if (TryComp<MobStateComponent>(uid, out var mobState) && mobState.CurrentState == MobState.Dead)
             return;
 
-        component.RadsUntilRandomMutation -= radDamage.Float();
+        component.RadsUntilRandomMutation -= typeDamage.Float();
 
         if (component.RadsUntilRandomMutation > 0)
             return;
@@ -286,7 +287,7 @@ public sealed partial class GeneticsSystem : EntitySystem
         return true;
     }
 
-    public bool TryRemoveMutation(EntityUid uid, GeneticsComponent component, string mutationId)
+    private bool TryRemoveMutation(EntityUid uid, GeneticsComponent component, string mutationId)
     {
         var entry = component.Mutations.Find(m => m.Id == mutationId);
         if (entry == null)
@@ -396,7 +397,8 @@ public sealed partial class GeneticsSystem : EntitySystem
 
     private void ModifyInstability(EntityUid uid, GeneticsComponent component, int delta)
     {
-        if (delta == 0) return;
+        if (delta == 0)
+            return;
 
         var old = component.GeneticInstability;
         component.GeneticInstability += delta;
@@ -438,13 +440,13 @@ public sealed partial class GeneticsSystem : EntitySystem
 
         if (proto.StrictEntityWhitelist != null && proto.StrictEntityWhitelist.Count > 0)
         {
-            if (!IsPrototypeOrParentInList(protoId, proto.StrictEntityWhitelist))
+            if (!UtopiaHelper.IsPrototypeOrParentInList(protoId, proto.StrictEntityWhitelist))
                 return false;
         }
 
         if (proto.StrictEntityBlacklist != null && proto.StrictEntityBlacklist.Count > 0)
         {
-            if (IsPrototypeOrParentInList(protoId, proto.StrictEntityBlacklist))
+            if (UtopiaHelper.IsPrototypeOrParentInList(protoId, proto.StrictEntityBlacklist))
                 return false;
         }
 
@@ -455,29 +457,18 @@ public sealed partial class GeneticsSystem : EntitySystem
         {
             if (proto.EntityWhitelist != null && proto.EntityWhitelist.Count > 0)
             {
-                if (!IsPrototypeOrParentInList(protoId, proto.EntityWhitelist))
+                if (!UtopiaHelper.IsPrototypeOrParentInList(protoId, proto.EntityWhitelist))
                     return false;
             }
 
             if (proto.EntityBlacklist != null && proto.EntityBlacklist.Count > 0)
             {
-                if (IsPrototypeOrParentInList(protoId, proto.EntityBlacklist))
+                if (UtopiaHelper.IsPrototypeOrParentInList(protoId, proto.EntityBlacklist))
                     return false;
             }
         }
 
         return true;
-    }
-
-    private bool IsPrototypeOrParentInList(string entityProtoId, IReadOnlyList<string> list)
-    {
-        if (list.Contains(entityProtoId))
-            return true;
-
-        if (!_proto.TryIndex<EntityPrototype>(entityProtoId, out var proto) || proto.Parents == null)
-            return false;
-
-        return proto.Parents.Any(parent => IsPrototypeOrParentInList(parent, list));
     }
 
     public bool TryModifyMutationSequence(EntityUid uid, GeneticsComponent component, string mutationId, int index, char newBase)

@@ -88,22 +88,22 @@
                     <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="4">
                         <BoxContainer Orientation="Vertical" Margin="0 0 0 4" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <ui:SequencerButton Name="Seq_1"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                            <Label Text="|" Margin="16 0 0 0"/>
+                            <Label Text="|" Margin="19 0 0 0"/>
                             <ui:SequencerButton Name="Seq_2" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                         </BoxContainer>
                         <BoxContainer Orientation="Vertical" Margin="0 0 0 4">
                             <ui:SequencerButton Name="Seq_3"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                            <Label Text="|" Margin="16 0 0 0"/>
+                            <Label Text="|" Margin="19 0 0 0"/>
                             <ui:SequencerButton Name="Seq_4" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                         </BoxContainer>
                         <BoxContainer Orientation="Vertical" Margin="0 0 0 4">
                             <ui:SequencerButton Name="Seq_5"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                            <Label Text="|" Margin="16 0 0 0"/>
+                            <Label Text="|" Margin="19 0 0 0"/>
                             <ui:SequencerButton Name="Seq_6" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                         </BoxContainer>
                         <BoxContainer Orientation="Vertical">
                             <ui:SequencerButton Name="Seq_7"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                            <Label Text="|" Margin="16 0 0 0"/>
+                            <Label Text="|" Margin="19 0 0 0"/>
                             <ui:SequencerButton Name="Seq_8" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                         </BoxContainer>
                     </BoxContainer>
@@ -117,22 +117,22 @@
                 <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="4">
                     <BoxContainer Orientation="Vertical" Margin="0 0 0 4">
                         <ui:SequencerButton Name="Seq_9"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_10" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                     <BoxContainer Orientation="Vertical" Margin="0 0 0 4">
                         <ui:SequencerButton Name="Seq_11"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_12" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                     <BoxContainer Orientation="Vertical" Margin="0 0 0 4">
                         <ui:SequencerButton Name="Seq_13"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_14" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                     <BoxContainer Orientation="Vertical">
                         <ui:SequencerButton Name="Seq_15"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_16" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                 </BoxContainer>
@@ -146,22 +146,22 @@
                 <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="4">
                     <BoxContainer Orientation="Vertical" Margin="0 0 0 4">
                         <ui:SequencerButton Name="Seq_17"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_18" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                     <BoxContainer Orientation="Vertical" Margin="0 0 0 4">
                         <ui:SequencerButton Name="Seq_19"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_20" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                     <BoxContainer Orientation="Vertical" Margin="0 0 0 4">
                         <ui:SequencerButton Name="Seq_21"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_22" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                     <BoxContainer Orientation="Vertical">
                         <ui:SequencerButton Name="Seq_23"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_24" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                 </BoxContainer>
@@ -175,22 +175,22 @@
                 <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="4">
                     <BoxContainer Orientation="Vertical" Margin="0 0 0 4">
                         <ui:SequencerButton Name="Seq_25"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_26"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                     <BoxContainer Orientation="Vertical" Margin="0 0 0 4">
                         <ui:SequencerButton Name="Seq_27"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_28" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                     <BoxContainer Orientation="Vertical" Margin="0 0 0 4">
                         <ui:SequencerButton Name="Seq_29"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_30" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                     <BoxContainer Orientation="Vertical">
                         <ui:SequencerButton Name="Seq_31"  Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
-                        <Label Text="|" Margin="16 0 0 0"/>
+                        <Label Text="|" Margin="19 0 0 0"/>
                         <ui:SequencerButton Name="Seq_32" Text="X" StyleClasses="ButtonSquare" MinWidth="42" Margin="3 4 2 0" />
                     </BoxContainer>
                 </BoxContainer>

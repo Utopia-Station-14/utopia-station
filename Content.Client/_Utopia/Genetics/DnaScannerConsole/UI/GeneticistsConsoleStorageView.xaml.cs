@@ -137,25 +137,6 @@ public sealed partial class GeneticistsConsoleStorageView : Control
         UpdateResearchCountLabel();
     }
 
-    public void OnMutationSelected(string? id)
-    {
-        if (string.IsNullOrEmpty(id))
-        {
-            ClearSelection();
-            return;
-        }
-
-        _selectedMutationId = id;
-
-        var mutation = _savedMutations.FirstOrDefault(m => m.Id == id);
-        if (mutation != null)
-        {
-            UpdateMutationDetails(mutation);
-        }
-
-        UpdateActionButtonsState();
-    }
-
     private void UpdateMutationDetails(MutationEntry mutation)
     {
         var isDiscovered = ParentWindow?.DiscoveredMutationIds?.Contains(mutation.Id) ?? false;
@@ -192,8 +173,7 @@ public sealed partial class GeneticistsConsoleStorageView : Control
             if (!ParentWindow.DiscoveredMutationIds.Contains(conflictId))
                 continue;
 
-            if (IoCManager.Resolve<IPrototypeManager>()
-                .TryIndex<GeneticMutationPrototype>(conflictId, out var proto))
+            if (IoCManager.Resolve<IPrototypeManager>().TryIndex<GeneticMutationPrototype>(conflictId, out var proto))
             {
                 knownNames.Add(Loc.GetString(proto.Name));
             }
