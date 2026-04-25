@@ -25,6 +25,7 @@
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/kinetic_accel.ogg
     projectileSpeed: 25
+    showGunEffect: true # Utopia-Tweak : Gun Shoot Effect
   - type: AmmoCounter
   - type: Appearance
   - type: GenericVisualizer

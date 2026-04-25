@@ -13,6 +13,7 @@
     selectedMode: SemiAuto
     availableModes:
     - SemiAuto
+    showGunEffect: true # Utopia-Tweak : Gun Shoot Effect
   - type: AmmoCounter
   # These will only do anything if the effect layer is actually set.
   - type: Appearance

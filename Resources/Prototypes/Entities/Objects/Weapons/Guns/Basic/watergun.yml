@@ -20,6 +20,7 @@
     - SemiAuto
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/water_spray.ogg
+    showGunEffect: true # Utopia-Tweak : Gun Shoot Effect
   - type: SolutionContainerManager
     solutions:
       chamber:
