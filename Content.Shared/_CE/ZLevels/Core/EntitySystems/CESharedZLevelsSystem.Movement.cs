@@ -297,7 +297,6 @@ public abstract partial class CESharedZLevelsSystem
         return false;
     }
 }
-
 /// <summary>
 /// Is called on an entity when it moves between z-levels.
 /// </summary>

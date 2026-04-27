@@ -8,10 +8,12 @@ using System.Linq;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Damage.Systems;
+using Content.Shared.Gravity;
 using Content.Shared.Popups;
 using Content.Shared.Stunnable;
 using JetBrains.Annotations;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.Configuration;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
@@ -31,7 +33,9 @@ public abstract partial class CESharedZLevelsSystem : EntitySystem
     [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly FixtureSystem _fix = default!;    // Utopia-Tweak: для улучшения системы
+    [Dependency] private readonly FixtureSystem _fix = default!; // Utopia-Tweak : ZLevels
+    [Dependency] private readonly SharedGravitySystem _gravity = default!; // Utopia-Tweak : ZLevels
+    [Dependency] private readonly IConfigurationManager _config = default!; // Utopia-Tweak : ZLevels
 
     private EntityQuery<MapComponent> _mapQuery;
     private EntityQuery<CEZLevelMapComponent> _zMapQuery;

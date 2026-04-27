@@ -1,0 +1,9 @@
+- type: tile
+  id: UtopiaSpace
+  name: tiles-Zspace
+  sprite: /Textures/_Utopia/Tiles/zspace-tile.png
+  isSubfloor: true
+  isSpace: false
+  sturdy: false
+  thermalConductivity: 0.4
+  heatCapacity: 700000

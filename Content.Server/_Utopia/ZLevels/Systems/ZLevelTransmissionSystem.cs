@@ -10,6 +10,7 @@ using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared._Utopia.ZLevels.Pipes.Components;
 using Content.Shared._Utopia.ZLevels.Transmission.Components;
+using Content.Server._Utopia.ZLevels.Atmos;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -182,6 +183,37 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
                 _zCables.AddZConnection(self, other);
             }
         }
+    }
+    #endregion
+
+    #region Atmos
+    public EntityUid? TryFindAtmosTarget(
+        EntityUid source,
+        EntityUid targetMap)
+    {
+        if (!TryGetAnchoredGrid(source, out var xform, out var gridUid, out var grid))
+            return null;
+
+        var worldBox = GetTileBox(gridUid, grid, xform);
+
+        if (!TryComp(targetMap, out TransformComponent? mapXform))
+            return null;
+
+        foreach (var ent in _lookup.GetEntitiesIntersecting(mapXform.MapID, worldBox, LookupFlags.All))
+        {
+            if (ent == source)
+                continue;
+
+            if (!TryComp(ent, out ZLevelAtmosTransmissionComponent? _))
+                continue;
+
+            if (!TryComp(ent, out TransformComponent? exform) || !exform.Anchored)
+                continue;
+
+            return ent;
+        }
+
+        return null;
     }
     #endregion
 

@@ -5,6 +5,7 @@ namespace Content.Shared._Utopia.CCVar;
 [CVarDefs]
 public sealed class UCCVars
 {
+    #region Barks
     public static readonly CVarDef<bool> BarksEnabled =
         CVarDef.Create("barks.enabled", true, CVar.SERVER | CVar.REPLICATED | CVar.ARCHIVE);
 
@@ -22,5 +23,10 @@ public sealed class UCCVars
 
     public static readonly CVarDef<float> BarksVolume =
         CVarDef.Create("barks.volume", 1f, CVar.CLIENTONLY | CVar.ARCHIVE);
+    #endregion
 
+    #region ZLevels
+    public static readonly CVarDef<bool> FallToBackroomsEnabled =
+        CVarDef.Create("fall_to_backrooms.enabled", false, CVar.SERVER | CVar.REPLICATED | CVar.ARCHIVE);
+    #endregion
 }
