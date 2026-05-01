@@ -25,6 +25,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly ZCableSystem _zCables = default!;
+    [Dependency] private readonly ZLevelAtmosTransmissionSystem _zAtmos = default!;
 
     public override void Initialize()
     {
@@ -187,34 +188,6 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
     #endregion
 
     #region Atmos
-    public EntityUid? TryFindAtmosTarget(
-        EntityUid source,
-        EntityUid targetMap)
-    {
-        if (!TryGetAnchoredGrid(source, out var xform, out var gridUid, out var grid))
-            return null;
-
-        var worldBox = GetTileBox(gridUid, grid, xform);
-
-        if (!TryComp(targetMap, out TransformComponent? mapXform))
-            return null;
-
-        foreach (var ent in _lookup.GetEntitiesIntersecting(mapXform.MapID, worldBox, LookupFlags.All))
-        {
-            if (ent == source)
-                continue;
-
-            if (!TryComp(ent, out ZLevelAtmosTransmissionComponent? _))
-                continue;
-
-            if (!TryComp(ent, out TransformComponent? exform) || !exform.Anchored)
-                continue;
-
-            return ent;
-        }
-
-        return null;
-    }
     #endregion
 
     #region Disposal
