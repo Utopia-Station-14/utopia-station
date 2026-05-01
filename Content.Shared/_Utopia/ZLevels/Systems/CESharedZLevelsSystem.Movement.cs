@@ -1,26 +1,28 @@
 using System.Numerics;
+using JetBrains.Annotations;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._Utopia.CCVar;
-using Content.Shared.CCVar;
 using Content.Shared.Gravity;
-using Robust.Shared.Map;
+using Content.Shared.Maps;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Collision.Shapes;
 using Robust.Shared.Physics.Components;
+using Robust.Shared.Physics.Systems;
+using Robust.Shared.Map;
 
 namespace Content.Shared._CE.ZLevels.Core.EntitySystems;
 
 public abstract partial class CESharedZLevelsSystem
 {
-    private const string ZTileID = "UtopiaSpace";
+    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
+    [Dependency] private readonly IMapManager _mapManager = default!;
+    [Dependency] protected readonly TurfSystem Turf = default!;
 
+    public const string ZTileID = "UtopiaSpace";
     private const float NoGround = float.NegativeInfinity;
 
-    private void UpdateMovement(EntityUid uid,
-                                CEZPhysicsComponent zPhys,
-                                TransformComponent xform,
-                                PhysicsComponent physics,
-                                float frameTime)
+    private void UpdateMovement(EntityUid uid, CEZPhysicsComponent zPhys, TransformComponent xform,
+        PhysicsComponent physics, float frameTime)
     {
         var oldVelocity = zPhys.Velocity;
         var oldHeight = zPhys.LocalPosition;
@@ -52,18 +54,17 @@ public abstract partial class CESharedZLevelsSystem
                 zPhys.Velocity = -1f;
 
             HandleLevelChange(uid, zPhys, false);
-            
+
             if (Math.Abs(oldVelocity - zPhys.Velocity) > 0.01f)
                 DirtyField(uid, zPhys, nameof(CEZPhysicsComponent.Velocity));
 
             if (Math.Abs(oldHeight - zPhys.LocalPosition) > 0.01f)
                 DirtyField(uid, zPhys, nameof(CEZPhysicsComponent.LocalPosition));
-                
+
             return;
         }
 
         UpdateGrounded(uid, zPhys, hasGround, groundHeight, frameTime, out var landed);
-
         HandleLevelChange(uid, zPhys, hasGround);
 
         if (landed)
@@ -82,17 +83,13 @@ public abstract partial class CESharedZLevelsSystem
 
         var xform = Transform(uid);
 
-        if (!_gridQuery.TryComp(xform.MapUid, out var grid))
+        if (!GridQuery.HasComp(xform.MapUid))
             return false;
 
-        var indices = _transform.GetGridOrMapTilePosition(uid);
-
-        if (_map.TryGetTileRef(xform.MapUid.Value, grid, indices, out var tileRef) &&
-            TilDefMan.TryGetDefinition(tileRef.Tile.TypeId, out var def) &&
-            def.ID == ZTileID)
+        if (IsSpaceTile(uid, xform))
         {
             ground = NoGround;
-            return true;
+            return false;
         }
 
         if (!zPhys.IgnoreHighGround)
@@ -101,16 +98,11 @@ public abstract partial class CESharedZLevelsSystem
             return true;
         }
 
-        ground = 0;
         return true;
     }
 
-    private void UpdateGrounded(EntityUid uid,
-                                CEZPhysicsComponent zPhys,
-                                bool hasGround,
-                                float groundHeight,
-                                float frameTime,
-                                out bool landed)
+    private void UpdateGrounded(EntityUid uid, CEZPhysicsComponent zPhys, bool hasGround,
+        float groundHeight, float frameTime, out bool landed)
     {
         landed = false;
 
@@ -122,14 +114,14 @@ public abstract partial class CESharedZLevelsSystem
                 DirtyField(uid, zPhys, nameof(CEZPhysicsComponent.IsGrounded));
             }
 
-            if (groundHeight == NoGround)
+            if (hasGround)
             {
                 if (zPhys.Velocity >= 0)
                     zPhys.Velocity = -1f;
-                    
+
                 if (IsGravityEnabled(uid))
                     zPhys.Velocity -= ZGravityForce * zPhys.GravityMultiplier * frameTime;
-                    
+
                 HandleLevelChange(uid, zPhys, false);
             }
 
@@ -138,9 +130,8 @@ public abstract partial class CESharedZLevelsSystem
 
         var distanceToGround = zPhys.LocalPosition - groundHeight;
 
-        var currentlyGrounded =
-            (distanceToGround <= 0.05f || zPhys.CurrentStickyGround) &&
-            distanceToGround <= MaxStepHeight;
+        var currentlyGrounded = (distanceToGround <= 0.05f || zPhys.CurrentStickyGround)
+            && distanceToGround <= MaxStepHeight;
 
         if (currentlyGrounded)
         {
@@ -169,39 +160,88 @@ public abstract partial class CESharedZLevelsSystem
         zPhys.Velocity = -zPhys.Velocity * zPhys.Bounciness;
     }
 
+    [PublicAPI]
+    public bool IsSpaceTile(EntityUid uid, TransformComponent xform)
+    {
+        var mapId = xform.MapID;
+        var worldPos = _transform.GetWorldPosition(uid);
+
+        if (!_mapManager.TryFindGridAt(mapId, worldPos, out var gridUid, out var grid))
+            return false;
+
+        var gridXform = Transform(gridUid);
+        var localPos = _transform.GetInvWorldMatrix(gridXform);
+
+        var realpos = Vector2.Transform(worldPos, localPos);
+
+        var indices = new Vector2i(
+            (int)Math.Floor(realpos.X / grid.TileSize),
+            (int)Math.Floor(realpos.Y / grid.TileSize)
+        );
+
+        if (!MapSys.TryGetTileRef(gridUid, grid, indices, out var tileRef))
+            return false;
+
+        if (!TilDefMan.TryGetDefinition(tileRef.Tile.TypeId, out var def))
+            return false;
+
+        return def.ID == ZTileID;
+    }
+
+    [PublicAPI]
+    public bool IsSpaceTile(Vector2i indices, EntityUid? mapUid)
+    {
+        if (!GridQuery.TryComp(mapUid, out var grid))
+            return false;
+
+        if (!MapSys.TryGetTileRef(mapUid.Value, grid, indices, out var tileRef))
+            return false;
+
+        if (!TilDefMan.TryGetDefinition(tileRef.Tile.TypeId, out var def))
+            return false;
+
+        return def.ID == ZTileID;
+    }
+
     private void HandleLevelChange(EntityUid uid, CEZPhysicsComponent zPhys, bool hasGround)
     {
         if (zPhys.LocalPosition < 0)
         {
-            // Реализовать падение в бэкрумс при включенном ккваре.
+            var xform = Transform(uid);
+
+            if (!_zMapQuery.TryComp(xform.MapUid, out var zMap))
+            {
+                StopFall(uid, zPhys);
+                return;
+            }
+
+            if (!TryMapOffset((xform.MapUid.Value, zMap), -1, out var below) || below == null)
+            {
+                StopFall(uid, zPhys);
+                return;
+            }
+
             if (_config.GetCVar(UCCVars.FallToBackroomsEnabled))
             {
-                var xform = Transform(uid);
-
-                if (!_zMapQuery.TryComp(xform.MapUid, out var zMap) ||
-                    !TryMapOffset((xform.MapUid.Value, zMap), -1, out var below) ||
-                    below == null)
-                {
-                    zPhys.LocalPosition = 0;
-                    zPhys.Velocity = 0;
-
-                    if (!zPhys.IsGrounded)
-                    {
-                        zPhys.IsGrounded = true;
-                        DirtyField(uid, zPhys, nameof(CEZPhysicsComponent.IsGrounded));
-                    }
-
-                    return;
-                }
-            }
-        
-            if (!TryMoveDownOrChasm(uid))
+                StopFall(uid, zPhys);
                 return;
+            }
+
+            if (!TryMoveDownOrChasm(uid))
+            {
+                StopFall(uid, zPhys);
+                return;
+            }
 
             zPhys.LocalPosition += 1;
 
             if (zPhys.CurrentStickyGround)
                 return;
+
+            if (!IsGravityEnabled(uid))
+            {
+                zPhys.Velocity = 0;
+            }
 
             var fallEv = new CEZLevelFallMapEvent();
             RaiseLocalEvent(uid, fallEv);
@@ -226,6 +266,24 @@ public abstract partial class CESharedZLevelsSystem
         }
     }
 
+    private void StopFall(EntityUid uid, CEZPhysicsComponent zPhys)
+    {
+        zPhys.LocalPosition = 0;
+        SetZVelocity((uid, zPhys), 0);
+
+        if (TryComp<PhysicsComponent>(uid, out var physics))
+        {
+            _physics.SetLinearVelocity(uid, Vector2.Zero);
+            Dirty(uid, physics);
+        }
+
+        if (!zPhys.IsGrounded)
+        {
+            zPhys.IsGrounded = true;
+            DirtyField(uid, zPhys, nameof(CEZPhysicsComponent.IsGrounded));
+        }
+    }
+
     private bool IsGravityEnabled(EntityUid uid)
     {
         if (HasComp<GravityAffectedComponent>(uid))
@@ -234,14 +292,7 @@ public abstract partial class CESharedZLevelsSystem
         return true;
     }
 
-    /// <summary>
-    /// Computes the "ground height" relative to the entity's current Z-level baseline.
-    /// Returns values where 0 means ground on the same level, -1 means ground one level below,
-    /// and intermediate values are possible for high ground entities (stairs).
-    /// </summary>
-    private float ComputeGroundHeightInternal(Entity<CEZPhysicsComponent?> target,
-                                              out bool stickyGround,
-                                              int maxFloors = 1)
+    private float ComputeGroundHeightInternal(Entity<CEZPhysicsComponent?> target, out bool stickyGround, int maxFloors = 1)
     {
         stickyGround = false;
 
@@ -253,7 +304,7 @@ public abstract partial class CESharedZLevelsSystem
         if (!_zMapQuery.TryComp(xform.MapUid, out var zMapComp))
             return 0;
 
-        if (!_gridQuery.TryComp(xform.MapUid, out var mapGrid))
+        if (!GridQuery.TryComp(xform.MapUid, out var mapGrid))
             return 0;
 
         var worldPosI = _transform.GetGridOrMapTilePosition(target);
@@ -269,14 +320,14 @@ public abstract partial class CESharedZLevelsSystem
                 if (!TryMapOffset((checkingMap.Owner, checkingMap.Comp), -floor, out var tempMap))
                     continue;
 
-                if (!_gridQuery.TryComp(tempMap, out var tempGrid))
+                if (!GridQuery.TryComp(tempMap, out var tempGrid))
                     continue;
 
                 checkingMap = tempMap.Value;
                 checkingGrid = tempGrid;
             }
 
-            var query = _map.GetAnchoredEntitiesEnumerator(checkingMap, checkingGrid, worldPosI);
+            var query = MapSys.GetAnchoredEntitiesEnumerator(checkingMap, checkingGrid, worldPosI);
 
             while (query.MoveNext(out var ent))
             {
@@ -317,18 +368,18 @@ public abstract partial class CESharedZLevelsSystem
                 t = Math.Clamp(t, 0f, 1f);
                 t = 1f - t;
 
-                float index = t * (curve.Count - 1);
-                int lower = (int)Math.Floor(index);
-                int upper = Math.Min(lower + 1, curve.Count - 1);
-                float frac = index - lower;
+                var index = t * (curve.Count - 1);
+                var lower = (int)Math.Floor(index);
+                var upper = Math.Min(lower + 1, curve.Count - 1);
+                var frac = index - lower;
 
                 var y = curve[lower] * (1 - frac) + curve[upper] * frac;
 
                 return -floor + y;
             }
 
-            if (_map.TryGetTileRef(checkingMap, checkingGrid, worldPosI, out var tileRef) &&
-                !tileRef.Tile.IsEmpty)
+            if (MapSys.TryGetTileRef(checkingMap, checkingGrid, worldPosI, out var tileRef) &&
+                !tileRef.Tile.IsEmpty || !IsSpaceTile(worldPosI, checkingMap))
             {
                 return -floor;
             }

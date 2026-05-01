@@ -30,7 +30,7 @@ public abstract partial class CESharedZLevelsSystem : EntitySystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly ActionBlockerSystem _blocker = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
+    [Dependency] protected readonly SharedMapSystem MapSys = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly FixtureSystem _fix = default!; // Utopia-Tweak : ZLevels
@@ -39,7 +39,7 @@ public abstract partial class CESharedZLevelsSystem : EntitySystem
 
     private EntityQuery<MapComponent> _mapQuery;
     private EntityQuery<CEZLevelMapComponent> _zMapQuery;
-    private EntityQuery<MapGridComponent> _gridQuery;
+    protected EntityQuery<MapGridComponent> GridQuery;
 
     protected EntityQuery<CEZPhysicsComponent> ZPhyzQuery = default!;
 
@@ -49,7 +49,7 @@ public abstract partial class CESharedZLevelsSystem : EntitySystem
 
         _mapQuery = GetEntityQuery<MapComponent>();
         _zMapQuery = GetEntityQuery<CEZLevelMapComponent>();
-        _gridQuery = GetEntityQuery<MapGridComponent>();
+        GridQuery = GetEntityQuery<MapGridComponent>();
         ZPhyzQuery = GetEntityQuery<CEZPhysicsComponent>();
 
         InitMovement();

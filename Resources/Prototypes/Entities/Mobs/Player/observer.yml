@@ -74,10 +74,6 @@
     radius: 6
     castShadows: false
     enabled: false
-  # Utopia-Tweak-start: better ghost movement
-  - type: CEZPhysics
-    ignoreHighGround: true
-  # Utopia-Tweak-end
 
 # proto for player ghosts specifically
 - type: entity

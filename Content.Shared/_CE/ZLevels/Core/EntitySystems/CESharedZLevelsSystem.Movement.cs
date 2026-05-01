@@ -37,7 +37,7 @@ public abstract partial class CESharedZLevelsSystem
     private const float ImpactVelocityLimit = 5.0f;
 
     private EntityQuery<CEZLevelHighGroundComponent> _highgroundQuery;
-    private Dictionary<EntityUid, float> _queuedLandings = new();   // Utopia-Tweak
+    private readonly Dictionary<EntityUid, float> _queuedLandings = new();   // Utopia-Tweak
 
     private void InitMovement()
     {
@@ -164,10 +164,10 @@ public abstract partial class CESharedZLevelsSystem
         if (!TryMapUp(currentMapUid.Value, out var mapAboveUid))
             return false;
 
-        if (!_gridQuery.TryComp(mapAboveUid.Value, out var mapAboveGrid))
+        if (!GridQuery.TryComp(mapAboveUid.Value, out var mapAboveGrid))
             return false;
 
-        if (_map.TryGetTileRef(mapAboveUid.Value, mapAboveGrid, _transform.GetWorldPosition(ent), out var tileRef) &&
+        if (MapSys.TryGetTileRef(mapAboveUid.Value, mapAboveGrid, _transform.GetWorldPosition(ent), out var tileRef) &&
             !tileRef.Tile.IsEmpty)
             return true;
 
@@ -187,10 +187,10 @@ public abstract partial class CESharedZLevelsSystem
         if (!TryMapUp(map, out var mapAboveUid))
             return false;
 
-        if (!_gridQuery.TryComp(mapAboveUid.Value, out var mapAboveGrid))
+        if (!GridQuery.TryComp(mapAboveUid.Value, out var mapAboveGrid))
             return false;
 
-        if (_map.TryGetTileRef(mapAboveUid.Value, mapAboveGrid, indices, out var tileRef) &&
+        if (MapSys.TryGetTileRef(mapAboveUid.Value, mapAboveGrid, indices, out var tileRef) &&
             !tileRef.Tile.IsEmpty)
             return true;
 

@@ -1,11 +1,8 @@
-using System.Collections.Generic;
 using Content.Server.Popups;
-using Content.Server.UserInterface;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared._Utopia.ZLevels.Components;
 using Robust.Server.GameObjects;
-using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 
@@ -19,8 +16,6 @@ public sealed class ZLevelLadderSystem : EntitySystem
     [Dependency] private readonly MapSystem _map = default!;
     [Dependency] private readonly ITileDefinitionManager _tileDefs = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
-
-    private const string RequiredTile = "UtopiaSpace";
 
     public override void Initialize()
     {
@@ -112,7 +107,7 @@ public sealed class ZLevelLadderSystem : EntitySystem
 
         var tile = _map.GetTileRef(coords.EntityId, grid, coords);
 
-        var expected = _tileDefs[RequiredTile].TileId;
+        var expected = _tileDefs[CESharedZLevelsSystem.ZTileID].TileId;
         return tile.Tile.TypeId == expected;
     }
 
