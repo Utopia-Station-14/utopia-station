@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Shared.CCVar;
+using Content.Shared.CombatMode; // Utopia-Tweak : MobCollision
 using Content.Shared.Movement.Components;
 using Robust.Shared;
 using Robust.Shared.Configuration;
@@ -19,6 +20,7 @@ public abstract class SharedMobCollisionSystem : EntitySystem
     [Dependency] private   readonly MovementSpeedModifierSystem _moveMod = default!;
     [Dependency] protected readonly SharedPhysicsSystem Physics = default!;
     [Dependency] private   readonly SharedTransformSystem _xformSystem = default!;
+    [Dependency] private readonly SharedCombatModeSystem _combat = default!; // Utopia-Tweak : MobCollision
 
     protected EntityQuery<MobCollisionComponent> MobQuery;
     protected EntityQuery<PhysicsComponent> PhysicsQuery;
@@ -269,6 +271,16 @@ public abstract class SharedMobCollisionSystem : EntitySystem
             // This is also so we don't have to trigger the speed-cap above.
             // Maybe we just do speedcap and dump this? Though it's less configurable and the cap is just there for cheaters.
             var penDepth = Math.Clamp(0.7f - diff.Length(), 0f, _penCap);
+
+            // Utopia-Tweak : MobCollision
+            var selfCombat = _combat.IsInCombatMode(entity.Owner);
+            var otherCombat = _combat.IsInCombatMode(other);
+
+            if (selfCombat || otherCombat)
+            {
+                penDepth = _penCap;
+            }
+            // Utopia-Tweak : MobCollision
 
             // Sum the strengths so we get pushes back the same amount (impulse-wise, ignoring prediction).
             var mobMovement = penDepth * diff.Normalized() * (entity.Comp1.Strength + otherComp.Strength);
