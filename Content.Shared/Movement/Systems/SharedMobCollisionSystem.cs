@@ -1,6 +1,6 @@
 using System.Numerics;
 using Content.Shared.CCVar;
-using Content.Shared.CombatMode; // Utopia-Tweak : MobCollision
+using Content.Shared.CombatMode;
 using Content.Shared.Movement.Components;
 using Robust.Shared;
 using Robust.Shared.Configuration;
