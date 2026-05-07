@@ -95,15 +95,15 @@ public sealed class InstabilityCountdownSystem : EntitySystem
             var conflictEntry = genetics.Mutations.FirstOrDefault(m => m.Id == conflictId);
             if (conflictEntry != null && conflictEntry.Enabled)
             {
-                _genetics.TryDeactivateMutation(uid, genetics, conflictId);
+                _genetics.TryDeactivateMutation((uid, genetics), conflictId);
             }
         }
 
         if (!genetics.Mutations.Any(m => m.Id == chosenProto.ID))
         {
-            _genetics.TryAddMutation(uid, genetics, chosenProto.ID);
+            _genetics.TryAddMutation((uid, genetics), chosenProto.ID);
         }
 
-        _genetics.TryActivateMutation(uid, genetics, chosenProto.ID);
+        _genetics.TryActivateMutation((uid, genetics), chosenProto.ID);
     }
 }

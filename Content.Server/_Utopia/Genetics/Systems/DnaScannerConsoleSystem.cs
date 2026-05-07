@@ -266,11 +266,11 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
 
         if (isCorrect && !mutation.Enabled)
         {
-            _genetics.TryActivateMutation(subject, genetics, msg.MutationId);
+            _genetics.TryActivateMutation((subject, genetics), msg.MutationId);
         }
         else if (!isCorrect && mutation.Enabled)
         {
-            _genetics.TryDeactivateMutation(subject, genetics, msg.MutationId);
+            _genetics.TryDeactivateMutation((subject, genetics), msg.MutationId);
         }
 
         var damage = new DamageSpecifier(_proto.Index<DamageTypePrototype>(Radiation), SequencerButtonRadiationDamage);
@@ -330,7 +330,7 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
         if (comp.CurrentSubject is not { Valid: true } subject || !TryComp<GeneticsComponent>(subject, out var genetics))
             return;
 
-        _genetics.ScrambleDna(subject, genetics);
+        _genetics.ScrambleDna((subject, genetics));
 
         if (HasComp<DamageableComponent>(subject))
         {

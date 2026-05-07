@@ -11,6 +11,7 @@ public sealed class MutationSpeedBoostSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationSpeedBoostComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<MutationSpeedBoostComponent, ComponentRemove>(OnRemove);
         SubscribeLocalEvent<MutationSpeedBoostComponent, RefreshMovementSpeedModifiersEvent>(OnRefreshMovement);

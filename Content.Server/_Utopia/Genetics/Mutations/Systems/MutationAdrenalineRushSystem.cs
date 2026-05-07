@@ -30,7 +30,9 @@ public sealed class MutationAdrenalineRushSystem : EntitySystem
     private void OnShutdown(Entity<MutationAdrenalineRushComponent> ent, ref ComponentShutdown args)
     {
         if (ent.Comp.GrantedAction is { Valid: true } action)
+        {
             _actions.RemoveAction(action);
+        }
     }
 
     private void OnActionPerformed(Entity<MutationAdrenalineRushComponent> ent, ref AdrenalineRushActionEvent args)

@@ -118,7 +118,8 @@ public sealed class GeneticAnalyzerSystem : SharedGeneticAnalyzerSystem
 
         args.Handled = true;
 
-        var doAfter = new DoAfterArgs(EntityManager, args.User, TimeSpan.FromSeconds(1.5f), new GeneticAnalyzerDoAfterEvent(), uid, target)
+        var doAfter = new DoAfterArgs(EntityManager, args.User, TimeSpan.FromSeconds(1.5f),
+            new GeneticAnalyzerDoAfterEvent(), uid, target)
         {
             BreakOnDamage = true,
             BreakOnMove = true,

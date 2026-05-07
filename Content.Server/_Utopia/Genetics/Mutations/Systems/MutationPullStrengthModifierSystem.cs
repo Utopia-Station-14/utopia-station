@@ -9,6 +9,7 @@ public sealed class MutationPullStrengthModifierSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationPullStrengthModifierComponent, RefreshMovementSpeedModifiersEvent>(OnRefresh);
     }
 

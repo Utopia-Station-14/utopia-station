@@ -1,0 +1,5 @@
+- type: entity
+  id: FoodEggMystery
+  description: I wouldn't eat that if I were you.
+  parent: FoodEgg
+  suffix: Mystery

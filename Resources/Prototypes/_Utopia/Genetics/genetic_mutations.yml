@@ -127,6 +127,7 @@
   id: ApianHoneyGlands
   name: mutation-name-apian-honey-glands
   desc: mutation-desc-apian-honey-glands
+  popupText: mutation-popup-apian-honey-glands
   instability: 5
   components:
   - type: MutationChronicReagentVomit
@@ -141,6 +142,7 @@
   id: MothStomach
   name: mutation-name-moth-stomach
   desc: mutation-desc-moth-stomach
+  popupText: mutation-popup-moth-stomach
   instability: 0
   entityWhitelist:
     - MobMoth
@@ -157,6 +159,7 @@
   id: ReptilianStomach
   name: mutation-name-reptilian-stomach
   desc: mutation-desc-reptilian-stomach
+  popupText: mutation-popup-reptilian-stomach
   instability: 0
   entityWhitelist:
     - MobReptilian
@@ -173,6 +176,7 @@
   id: CarnivoreStomach
   name: mutation-name-carnivore-stomach
   desc: mutation-desc-carnivore-stomach
+  popupText: mutation-popup-carnivore-stomach
   instability: 0
   entityWhitelist:
     - BaseMobVulpkanin
@@ -189,6 +193,7 @@
   id: HumanStomach
   name: mutation-name-human-stomach
   desc: mutation-desc-human-stomach
+  popupText: mutation-popup-human-stomach
   instability: 0
   entityWhitelist:
     - MobHuman
@@ -205,36 +210,39 @@
   id: NitrogenBreathingMutation
   name: mutation-name-nitrogen-breathing
   desc: mutation-desc-nitrogen-breathing
+  popupText: mutation-popup-nitrogen-breathing
   instability: 0
   entityWhitelist:
     - MobVox
     - BaseMobVox
   conflicts:
-    - PlasmaBreathingMutation
+    - PhoronBreathingMutation
   components:
   - type: MutationLungSwap
     newLungPrototype: OrganVoxLungs
 
 - type: geneticMutation
-  id: PlasmaBreathingMutation
-  name: mutation-name-plasma-breathing
-  desc: mutation-desc-plasma-breathing
+  id: PhoronBreathingMutation
+  name: mutation-name-phoron-breathing
+  desc: mutation-desc-phoron-breathing
+  popupText: mutation-popup-phoron-breathing
   instability: 0
   probabilityWeight: 5
   conflicts:
     - NitrogenBreathingMutation
   components:
   - type: MutationLungSwap
-    newLungPrototype: OrganPlasmaLungs
+    newLungPrototype: UtopiaOrganPhoronLungs
 
 - type: geneticMutation
   id: AlcoholImmunity
   name: mutation-name-alcohol-immunity
   desc: mutation-desc-alcohol-immunity
+  popupText: mutation-popup-alcohol-immunity
   instability: 0
   conflicts:
     - AcidResistance
-    - PlasmaImmunity
+    - PhoronImmunity
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
@@ -253,10 +261,11 @@
   id: AcidResistance
   name: mutation-name-acid-resistance
   desc: mutation-desc-acid-resistance
+  popupText: mutation-popup-acid-resistance
   instability: 8
   conflicts:
     - AlcoholImmunity
-    - PlasmaImmunity
+    - PhoronImmunity
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
@@ -274,9 +283,10 @@
       - PolytrinicAcid
 
 - type: geneticMutation
-  id: PlasmaImmunity
-  name: mutation-name-plasma-immunity
-  desc: mutation-desc-plasma-immunity
+  id: PhoronImmunity
+  name: mutation-name-phoron-immunity
+  desc: mutation-desc-phoron-immunity
+  popupText: mutation-popup-phoron-immunity
   instability: 5
   conflicts:
     - AlcoholImmunity
@@ -299,11 +309,12 @@
   id: GeneralToxinResistance
   name: mutation-name-general-toxin-resistance
   desc: mutation-desc-general-toxin-resistance
+  popupText: mutation-popup-general-toxin-resistance
   instability: 15
   conflicts:
     - AlcoholImmunity
     - AcidResistance
-    - PlasmaImmunity
+    - PhoronImmunity
     - NeurotoxinResistance
     - RadiationToxinResistance
     - BruteMedicineImmunity
@@ -327,11 +338,12 @@
   id: NeurotoxinResistance
   name: mutation-name-neurotoxin-resistance
   desc: mutation-desc-neurotoxin-resistance
+  popupText: mutation-popup-neurotoxin-resistance
   instability: 10
   conflicts:
     - AlcoholImmunity
     - AcidResistance
-    - PlasmaImmunity
+    - PhoronImmunity
     - GeneralToxinResistance
     - RadiationToxinResistance
     - BruteMedicineImmunity
@@ -351,12 +363,13 @@
   id: RadiationToxinResistance
   name: mutation-name-radiation-toxin-resistance
   desc: mutation-desc-radiation-toxin-resistance
+  popupText: mutation-popup-radiation-toxin-resistance
   mutadoneResistant: true
   instability: 5
   conflicts:
     - AlcoholImmunity
     - AcidResistance
-    - PlasmaImmunity
+    - PhoronImmunity
     - GeneralToxinResistance
     - NeurotoxinResistance
     - BruteMedicineImmunity
@@ -374,6 +387,7 @@
   id: AnaerobicMetabolism
   name: mutation-name-anaerobic-metabolism
   desc: mutation-desc-anaerobic-metabolism
+  popupText: mutation-popup-anaerobic-metabolism
   probabilityWeight: 4
   instability: 30
   components:
@@ -383,6 +397,7 @@
   id: ChitinoarmisDurescutis
   name: mutation-name-chitinoarmis-durescutis
   desc: mutation-desc-chitinoarmis-durescutis
+  popupText: mutation-popup-chitinoarmis-durescutis
   instability: 12
   conflicts:
     - KeratinHyperplasia
@@ -398,6 +413,7 @@
   id: KeratinHyperplasia
   name: mutation-name-keratin-hyperplasia
   desc: mutation-desc-keratin-hyperplasia
+  popupText: mutation-popup-keratin-hyperplasia
   instability: 14
   conflicts:
     - ChitinoarmisDurescutis
@@ -413,6 +429,7 @@
   id: OssifiedExoskeleton
   name: mutation-name-ossified-exoskeleton
   desc: mutation-desc-ossified-exoskeleton
+  popupText: mutation-popup-ossified-exoskeleton
   instability: 18
   conflicts:
     - ChitinoarmisDurescutis
@@ -428,6 +445,7 @@
   id: CrystallineDermalLattice
   name: mutation-name-crystalline-dermal-lattice
   desc: mutation-desc-crystalline-dermal-lattice
+  popupText: mutation-popup-crystalline-dermal-lattice
   hidden: true
   researchPoints: 1600
   instability: 18
@@ -445,6 +463,7 @@
   id: AblativeCuticle
   name: mutation-name-ablative-cuticle
   desc: mutation-desc-ablative-cuticle
+  popupText: mutation-popup-ablative-cuticle
   hidden: true
   researchPoints: 1600
   instability: 18
@@ -462,6 +481,7 @@
   id: ComprehensiveDermalFortification
   name: mutation-name-comprehensive-dermal-fortification
   desc: mutation-desc-comprehensive-dermal-fortification
+  popupText: mutation-popup-comprehensive-dermal-fortification
   hidden: true
   researchPoints: 3000
   instability: 24
@@ -522,6 +542,7 @@
   id: HemopoiesisOverdrive
   name: mutation-name-hemopoiesis-overdrive
   desc: mutation-desc-hemopoiesis-overdrive
+  popupText: mutation-popup-hemopoiesis-overdrive
   instability: 12
   components:
   - type: MutationBloodRegeneration
@@ -532,6 +553,7 @@
   id: MetaNeuralAntenna
   name: mutation-name-meta-neural-antenna
   desc: mutation-desc-meta-neural-antenna
+  popupText: mutation-popup-meta-neural-antenna
   instability: 5
   components:
   - type: MutationRadio
@@ -542,6 +564,7 @@
   id: MusculatureEnhancement
   name: mutation-name-musculature-enhancement
   desc: mutation-desc-musculature-enhancement
+  popupText: mutation-popup-musculature-enhancement
   instability: 10
   components:
   - type: BonusMeleeDamage
@@ -553,6 +576,7 @@
   id: EnhancedPhysicalConditioning
   name: mutation-name-enhanced-physical-conditioning
   desc: mutation-desc-enhanced-physical-conditioning
+  popupText: mutation-popup-enhanced-physical-conditioning
   instability: 10
   components:
   - type: MutationIncreaseStaminaCritThreshold
@@ -562,6 +586,7 @@
   id: RadiationResistance
   name: mutation-name-radiation-resistance
   desc: mutation-desc-radiation-resistance
+  popupText: mutation-popup-radiation-resistance
   instability: 25
   sequencerResistant: true
   scrambleResistant: true
@@ -575,6 +600,7 @@
   id: Regeneration
   name: mutation-name-regeneration
   desc: mutation-desc-regeneration
+  popupText: mutation-popup-regeneration
   conflicts:
     - MinorRegeneration
   probabilityWeight: 2.5
@@ -589,6 +615,7 @@
   id: Insulated
   name: mutation-name-insulated
   desc: mutation-desc-insulated
+  popupText: mutation-popup-insulated
   instability: 15
   components:
   - type: Insulated
@@ -597,6 +624,7 @@
   id: AdaptiveIridophores
   name: mutation-name-adaptive-iridophores
   desc: mutation-desc-adaptive-iridophores
+  popupText: mutation-popup-adaptive-iridophores
   instability: 30
   entityWhitelist:
   - MobReptilian
@@ -616,6 +644,7 @@
   id: NoSlip
   name: mutation-name-no-slip
   desc: mutation-desc-no-slip
+  popupText: mutation-popup-no-slip
   instability: 10
   components:
   - type: NoSlip
@@ -624,6 +653,7 @@
   id: AdrenalHypersecretion
   name: mutation-name-adrenal-hypersecretion
   desc: mutation-desc-adrenal-hypersecretion
+  popupText: mutation-popup-adrenal-hypersecretion
   instability: 20
   probabilityWeight: 6
   researchPoints: 1800
@@ -636,6 +666,7 @@
   id: MitochondrialEfficiencyEnhancement
   name: mutation-name-mitochondrial-efficiency-enhancement
   desc: mutation-desc-mitochondrial-efficiency-enhancement
+  popupText: mutation-popup-mitochondrial-efficiency-enhancement
   instability: 15
   components:
   - type: MutationStaminaRegenerationBoost
@@ -648,6 +679,7 @@
   id: PressureResistance
   name: mutation-name-pressure-resistance
   desc: mutation-desc-pressure-resistance
+  popupText: mutation-popup-pressure-resistance
   instability: 15
   components:
   - type: PressureImmunity
@@ -656,6 +688,7 @@
   id: MinorRegeneration
   name: mutation-name-minor-regeneration
   desc: mutation-desc-minor-regeneration
+  popupText: mutation-popup-minor-regeneration
   conflicts:
     - Regeneration
   instability: 15
@@ -668,6 +701,7 @@
   id: PhotoreceptorDesensitization
   name: mutation-name-photoreceptor-desensitization
   desc: mutation-desc-photoreceptor-desensitization
+  popupText: mutation-popup-photoreceptor-desensitization
   instability: 18
   components:
   - type: FlashImmunity
@@ -676,6 +710,7 @@
   id: QuickReflexes
   name: mutation-name-quick-reflexes
   desc: mutation-desc-quick-reflexes
+  popupText: mutation-popup-quick-reflexes
   instability: 18
   probabilityWeight: 5
   researchPoints: 1200
@@ -691,7 +726,7 @@
   conflicts:
     - AlcoholImmunity
     - AcidResistance
-    - PlasmaImmunity
+    - PhoronImmunity
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
@@ -717,7 +752,7 @@
   conflicts:
     - AlcoholImmunity
     - AcidResistance
-    - PlasmaImmunity
+    - PhoronImmunity
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
@@ -742,7 +777,7 @@
   conflicts:
     - AlcoholImmunity
     - AcidResistance
-    - PlasmaImmunity
+    - PhoronImmunity
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
@@ -765,7 +800,7 @@
   conflicts:
     - AlcoholImmunity
     - AcidResistance
-    - PlasmaImmunity
+    - PhoronImmunity
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
@@ -788,7 +823,7 @@
   conflicts:
     - AlcoholImmunity
     - AcidResistance
-    - PlasmaImmunity
+    - PhoronImmunity
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
@@ -815,7 +850,7 @@
   conflicts:
     - AlcoholImmunity
     - AcidResistance
-    - PlasmaImmunity
+    - PhoronImmunity
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
@@ -833,6 +868,7 @@
   id: SevereMyopia
   name: mutation-name-severe-myopia
   desc: mutation-desc-severe-myopia
+  popupText: mutation-popup-severe-myopia
   instability: -10
   components:
   - type: PermanentBlindness
@@ -842,6 +878,7 @@
   id: Blindness
   name: mutation-name-blindness
   desc: mutation-desc-blindness
+  popupText: mutation-popup-blindness
   instability: -20
   components:
   - type: PermanentBlindness
@@ -850,6 +887,7 @@
   id: Unrevivable
   name: mutation-name-unrevivable
   desc: mutation-desc-unrevivable
+  popupText: mutation-popup-unrevivable
   instability: -20
   components:
   - type: Unrevivable
@@ -858,6 +896,7 @@
   id: BloodToxification
   name: mutation-name-blood-toxification
   desc: mutation-desc-blood-toxification
+  popupText: mutation-popup-blood-toxification
   instability: -15
   components:
   - type: MutationBloodToxification
@@ -881,6 +920,7 @@
   id: Dyspraxia
   name: mutation-name-dyspraxia
   desc: mutation-desc-dyspraxia
+  popupText: mutation-popup-dyspraxia
   instability: -10
   components:
   - type: Clumsy
@@ -889,6 +929,7 @@
   id: FrontalGyrusSuspension
   name: mutation-name-frontal-gyrus-suspension
   desc: mutation-desc-frontal-gyrus-suspension
+  popupText: mutation-popup-frontal-gyrus-suspension
   instability: -5
   components:
   - type: Muted
@@ -897,6 +938,7 @@
   id: Pacifist
   name: mutation-name-pacifist
   desc: mutation-desc-pacifist
+  popupText: mutation-popup-pacifist
   instability: -10
   components:
   - type: Pacified
@@ -905,6 +947,7 @@
   id: Narcolepsy
   name: mutation-name-narcolepsy
   desc: mutation-desc-narcolepsy
+  popupText: mutation-popup-narcolepsy
   instability: -5
   components:
   - type: Narcolepsy
@@ -917,6 +960,7 @@
   id: Radioactive
   name: mutation-name-radioactive
   desc: mutation-desc-radioactive
+  popupText: mutation-popup-radioactive
   instability: 15
   components:
   - type: RadiationSource
@@ -935,6 +979,7 @@
   id: PhysicallyUnfit
   name: mutation-name-physically-unfit
   desc: mutation-desc-physically-unfit
+  popupText: mutation-popup-physically-unfit
   instability: -5
   components:
   - type: MutationIncreaseStaminaCritThreshold
@@ -944,6 +989,7 @@
   id: SpatialDestabilization
   name: mutation-name-spatial-destabilization
   desc: mutation-desc-spatial-destabilization
+  popupText: mutation-popup-spatial-destabilization
   instability: 20
   probabilityWeight: 12
   components:
@@ -959,6 +1005,7 @@
   id: Stupefaction
   name: mutation-name-stupefaction
   desc: mutation-desc-stupefaction
+  popupText: mutation-popup-stupefaction
   instability: -10
   probabilityWeight: 12
   mutadoneResistant: true
@@ -972,6 +1019,7 @@
   id: MusculatureAtrophy
   name: mutation-name-musculature-atrophy
   desc: mutation-desc-musculature-atrophy
+  popupText: mutation-popup-musculature-atrophy
   instability: -5
   conflicts:
     - MusculatureEnhancement
@@ -985,6 +1033,7 @@
   id: ReducedPhysicalConditioning
   name: mutation-name-reduced-physical-conditioning
   desc: mutation-desc-reduced-physical-conditioning
+  popupText: mutation-popup-reduced-physical-conditioning
   instability: -5
   conflicts:
     - EnhancedPhysicalConditioning
@@ -996,6 +1045,7 @@
   id: AdrenalHyposecretion
   name: mutation-name-adrenal-hyposecretion
   desc: mutation-desc-adrenal-hyposecretion
+  popupText: mutation-popup-adrenal-hyposecretion
   instability: -10
   conflicts:
     - AdrenalHypersecretion
@@ -1008,6 +1058,7 @@
   id: MitochondrialInefficiency
   name: mutation-name-mitochondrial-inefficiency
   desc: mutation-desc-mitochondrial-inefficiency
+  popupText: mutation-popup-mitochondrial-inefficiency
   instability: -5
   conflicts:
     - MitochondrialEfficiencyEnhancement
@@ -1022,6 +1073,7 @@
   id: CerebellarDysmetria
   name: mutation-name-cerebellar-dysmetria
   desc: mutation-desc-cerebellar-dysmetria
+  popupText: mutation-popup-cerebellar-dysmetria
   instability: -10
   conflicts:
     - NeuralHyperkinesis
@@ -1033,6 +1085,7 @@
   id: BioluminescentGlands
   name: mutation-name-bioluminescent-glands
   desc: mutation-desc-bioluminescent-glands
+  popupText: mutation-popup-bioluminescent-glands
   instability: 0
   probabilityWeight: 15
   components:
@@ -1046,6 +1099,7 @@
   id: FelinidTailMutation
   name: mutation-name-felinid-tail-mutation
   desc: mutation-desc-felinid-tail-mutation
+  popupText: mutation-popup-felinid-tail-mutation
   instability: 5
   researchPoints: 600
   strictEntityWhitelist:
@@ -1055,12 +1109,13 @@
     - ReptilianTailMutation
   components:
   - type: MutationTailSwap
-    newTailMarking: FelinidFluffyTail
+    newTailMarking: CatTail
 
 - type: geneticMutation
   id: VulpkaninTailMutation
   name: mutation-name-vulpkanin-tail-mutation
   desc: mutation-desc-vulpkanin-tail-mutation
+  popupText: mutation-popup-vulpkanin-tail-mutation
   instability: 5
   researchPoints: 600
   strictEntityWhitelist:
@@ -1076,6 +1131,7 @@
   id: ReptilianTailMutation
   name: mutation-name-reptilian-tail-mutation
   desc: mutation-desc-reptilian-tail-mutation
+  popupText: mutation-popup-reptilian-tail-mutation
   instability: 5
   researchPoints: 600
   strictEntityWhitelist:
@@ -1091,6 +1147,7 @@
   id: SpiderWeb
   name: mutation-name-spider-web
   desc: mutation-desc-spider-web
+  popupText: mutation-popup-spider-web
   researchPoints: 600
   instability: 12
   conflicts:
@@ -1103,6 +1160,7 @@
   id: ClownSpiderWeb
   name: mutation-name-clown-spider-web
   desc: mutation-desc-clown-spider-web
+  popupText: mutation-popup-clown-spider-web
   researchPoints: 3000
   hidden: true
   instability: 18
@@ -1117,6 +1175,7 @@
   id: OvipositionGlands
   name: mutation-name-oviposition-glands
   desc: mutation-desc-oviposition-glands
+  popupText: mutation-popup-oviposition-glands
   instability: 10
   probabilityWeight: 7
   researchPoints: 800
@@ -1130,6 +1189,7 @@
   id: Firebreath
   name: mutation-name-firebreath
   desc: mutation-desc-firebreath
+  popupText: mutation-popup-firebreath
   instability: 25
   entityWhitelist:
     - BaseMobReptilian
@@ -1143,6 +1203,7 @@
   id: AdrenalineRush
   name: mutation-name-adrenaline-rush
   desc: mutation-desc-adrenaline-rush
+  popupText: mutation-popup-adrenaline-rush
   instability: 20
   probabilityWeight: 5
   researchPoints: 950
@@ -1154,6 +1215,7 @@
   id: Cryokinesis
   name: mutation-name-cryokinesis
   desc: mutation-desc-cryokinesis
+  popupText: mutation-popup-cryokinesis
   instability: 15
   probabilityWeight: 2
   researchPoints: 1000
@@ -1164,6 +1226,7 @@
   id: InkGlands
   name: mutation-name-ink-glands
   desc: mutation-desc-ink-glands
+  popupText: mutation-popup-ink-glands
   instability: 8
   probabilityWeight: 8
   researchPoints: 600
@@ -1175,6 +1238,7 @@
   id: OpticEnergizer
   name: mutation-name-optic-energizer
   desc: mutation-desc-optic-energizer
+  popupText: mutation-popup-optic-energizer
   instability: 15
   probabilityWeight: 5
   researchPoints: 1200
@@ -1186,6 +1250,7 @@
   id: TrichochromaticShift
   name: mutation-name-trichochromatic-shift
   desc: mutation-desc-trichochromatic-shift
+  popupText: mutation-popup-trichochromatic-shift
   instability: 6
   probabilityWeight: 9
   researchPoints: 700
@@ -1197,6 +1262,7 @@
   id: geneticMonkeyMorph
   name: mutation-name-genetic-monkey-morph
   desc: mutation-desc-genetic-monkey-morph
+  popupText: mutation-popup-genetic-monkey-morph
   hidden: true
   researchPoints: 6000
   instabilityMutation: true
@@ -1215,6 +1281,7 @@
   id: geneticKoboldMorph
   name: mutation-name-genetic-kobold-morph
   desc: mutation-desc-genetic-kobold-morph
+  popupText: mutation-popup-genetic-kobold-morph
   hidden: true
   researchPoints: 6000
   instabilityMutation: true
@@ -1233,6 +1300,7 @@
   id: FleshJaredCurse
   name: mutation-name-flesh-jared-curse
   desc: mutation-desc-flesh-jared-curse
+  popupText: mutation-popup-flesh-jared-curse
   hidden: true
   researchPoints: 6000
   instabilityMutation: true
@@ -1249,6 +1317,7 @@
   id: FleshGolemCurse
   name: mutation-name-flesh-golem-curse
   desc: mutation-desc-flesh-golem-curse
+  popupText: mutation-popup-flesh-golem-curse
   hidden: true
   researchPoints: 6000
   instabilityMutation: true
@@ -1265,6 +1334,7 @@
   id: FleshClampCurse
   name: mutation-name-flesh-clamp-curse
   desc: mutation-desc-flesh-clamp-curse
+  popupText: mutation-popup-flesh-clamp-curse
   hidden: true
   researchPoints: 6000
   instabilityMutation: true
@@ -1281,6 +1351,7 @@
   id: FleshLoverCurse
   name: mutation-name-flesh-lover-curse
   desc: mutation-desc-flesh-lover-curse
+  popupText: mutation-popup-flesh-lover-curse
   researchPoints: 6000
   hidden: true
   instabilityMutation: true
@@ -1292,210 +1363,3 @@
   components:
   - type: MutationInstabilityPolymorph
     polymorphId: GeneticFleshLoverMorph
-
-- type: entity
-  id: OrganPlasmaLungs
-  parent: OrganHumanLungs
-  name: plasma lungs
-  description: "Highly adapted lungs that metabolize plasma as a respiratory gas. Oxygen is toxic, and normal breathing gas mixtures are suffocating."
-  components:
-  - type: Metabolizer
-    metabolizerTypes: [ PlasmaBreather ]
-  - type: Lung
-    alert: LowOxygen
-  - type: Item
-    size: Normal
-    shape:
-    - 0,0,1,1
-    heldPrefix: lungs
-
-- type: metabolizerType
-  id: PlasmaBreather
-  name: metabolizer-type-plasma
-
-- type: damageModifierSet
-  id: ChitinoarmisDurescutisArmor
-  coefficients:
-    Blunt: 85.0
-    Slash: 85.0
-
-- type: damageModifierSet
-  id: KeratinHyperplasiaArmor
-  coefficients:
-    Slash: 90.0
-    Piercing: 90.0
-
-- type: damageModifierSet
-  id: OssifiedExoskeletonArmor
-  coefficients:
-    Piercing: 85.0
-    Slash: 85.0
-    Blunt: 80.0
-
-- type: damageModifierSet
-  id: CrystallineDermalLatticeArmor
-  coefficients:
-    Heat: 85.0
-    Cold: 85.0
-    Shock: 80.0
-
-- type: damageModifierSet
-  id: AblativeCuticleArmor
-  coefficients:
-    Heat: 85.0
-    Caustic: 85.0
-
-- type: damageModifierSet
-  id: ComprehensiveDermalFortificationArmor
-  coefficients:
-    Blunt: 85.0
-    Slash: 90.0
-    Piercing: 90.0
-    Heat: 85.0
-    Cold: 85.0
-    Caustic: 85.0
-    Shock: 80.0
-
-- type: damageModifierSet
-  id: RadiationResistance
-  coefficients:
-    Radiation: 0.05
-
-- type: entity
-  id: FoodEggMystery
-  description: I wouldn't eat that if I were you.
-  parent: FoodEgg
-  suffix: Mystery
-
-- type: entity
-  id: ActionGeneticFireball
-  name: fire breath
-  components:
-  - type: Action
-    useDelay: 10
-    itemIconStyle: BigAction
-    raiseOnUser: true
-    sound: !type:SoundPathSpecifier
-      path: /Audio/Magic/fireball.ogg
-    icon:
-      sprite: Objects/Magic/magicactions.rsi
-      state: fireball
-  - type: TargetAction
-    checkCanAccess: false
-    range: 60
-  - type: WorldTargetAction
-    event: !type:ProjectileSpellEvent
-      prototype: ProjectileWeakFireball
-
-- type: entity
-  id: ProjectileWeakFireball
-  parent: ProjectileFireball
-  name: weak fireball
-  description: A small, mildly destructive fireball.
-  components:
-  - type: Projectile
-    damage:
-      types:
-        Heat: 10
-  - type: Explosive
-    explosionType: Default
-    maxIntensity: 25
-    intensitySlope: 1
-    totalIntensity: 5
-    maxTileBreak: 0
-  - type: IgnitionSource
-    temperature: 1000
-    ignited: true
-  - type: IgniteOnCollide
-    fireStacks: 0.35
-  - type: PointLight
-    radius: 1.5
-    energy: 3.0
-
-- type: entity
-  id: ActionAdrenalineRush
-  name: "Adrenaline Rush"
-  description: "Triggers a powerful surge of adrenaline."
-  components:
-  - type: InstantAction
-    useDelay: 60
-    icon:
-      sprite: Objects/Misc/books.rsi
-      state: icon_lightning
-    event: !type:AdrenalineRushActionEvent
-
-- type: entity
-  id: ActionGeneticIceball
-  name: "Cryokinesis"
-  description: "Fire a bolt of ice from your fingertips."
-  components:
-  - type: WorldTargetAction
-    useDelay: 30
-    itemIconStyle: BigAction
-    checkCanAccess: false
-    raiseOnUser: true
-    range: 60
-    sound: !type:SoundPathSpecifier
-      path: /Audio/Weapons/bladeslice.ogg
-    icon:
-      sprite: Structures/Specific/Anomalies/ice_anom.rsi
-      state: bullet
-    event: !type:ProjectileSpellEvent
-      prototype: ProjectileIcicle
-
-- type: entity
-  id: ActionInkSpurt
-  name: "Ink Spurt"
-  description: "Spurt a puddle of slippery black ink behind you."
-  components:
-  - type: InstantAction
-    useDelay: 45
-    icon:
-      sprite: Objects/Misc/pens.rsi
-      state: pen_centcom
-    event: !type:InkSpurtActionEvent
-
-- type: reagent
-  id: Ink
-  name: reagent-name-ink
-  desc: reagent-desc-ink
-  physicalDesc: reagent-physical-desc-viscous
-  flavor: bitter
-  color: "#000000"
-  slipData:
-    requiredSlipSpeed: 3.5
-  recognizable: true
-  boilingPoint: 100.0
-  meltingPoint: 0.0
-  friction: 0.4
-
-- type: entity
-  id: ActionOpticBlast
-  name: "Optic Blast"
-  components:
-  - type: Action
-    useDelay: 8
-    itemIconStyle: BigAction
-    raiseOnUser: true
-    sound: !type:SoundPathSpecifier
-      path: /Audio/Weapons/Guns/Gunshots/laser3.ogg
-    icon:
-      sprite: Objects/Weapons/Guns/Projectiles/projectiles.rsi
-      state: bolt
-  - type: TargetAction
-    range: 60
-    checkCanAccess: false
-  - type: WorldTargetAction
-    event: !type:OpticBlastActionEvent
-
-- type: entity
-  id: ActionTrichochromaticShift
-  name: "Trichochromatic Shift"
-  description: "Shift your hair to a random color."
-  components:
-  - type: InstantAction
-    useDelay: 5
-    icon:
-      sprite: _Funkystation/Clothing/Head/Hats/pwig.rsi
-      state: icon
-    event: !type:TrichochromaticShiftActionEvent

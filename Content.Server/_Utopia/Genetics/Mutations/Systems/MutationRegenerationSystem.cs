@@ -27,6 +27,7 @@ public sealed class MutationRegenerationSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationRegenerationComponent, ComponentInit>(OnInit);
     }
 

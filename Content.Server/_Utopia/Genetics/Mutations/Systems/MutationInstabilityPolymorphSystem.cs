@@ -72,12 +72,11 @@ public sealed class MutationInstabilityPolymorphSystem : EntitySystem
 
         foreach (var mutationId in enabledMutationIds)
         {
-            _genetics.TryDeactivateMutation(newUid.Value, newGenetics, mutationId);
-            _genetics.TryActivateMutation(newUid.Value, newGenetics, mutationId);
+            _genetics.TryDeactivateMutation((newUid.Value, newGenetics), mutationId);
+            _genetics.TryActivateMutation((newUid.Value, newGenetics), mutationId);
         }
 
         RemCompDeferred<MutationInstabilityPolymorphComponent>(newUid.Value);
-
         Dirty(newUid.Value, newGenetics);
     }
 }

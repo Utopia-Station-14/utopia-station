@@ -21,6 +21,8 @@ public sealed class MutationFirebreathSystem : EntitySystem
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
 
+    private const string Action = "ActionGeneticFireball";
+
     public override void Initialize()
     {
         base.Initialize();
@@ -31,13 +33,15 @@ public sealed class MutationFirebreathSystem : EntitySystem
 
     private void OnInit(EntityUid uid, MutationFirebreathComponent comp, ComponentInit args)
     {
-        _actions.AddAction(uid, ref comp.GrantedAction, "ActionGeneticFireball");
+        _actions.AddAction(uid, ref comp.GrantedAction, Action);
     }
 
     private void OnShutdown(EntityUid uid, MutationFirebreathComponent comp, ComponentShutdown args)
     {
         if (comp.GrantedAction is { Valid: true } action)
+        {
             _actions.RemoveAction(action);
+        }
     }
 
     private void OnFireball(EntityUid uid, MutationFirebreathComponent comp, ProjectileSpellEvent args)
@@ -47,7 +51,8 @@ public sealed class MutationFirebreathSystem : EntitySystem
         var curTime = _timing.CurTime;
         if (curTime < comp.NextUse) return;
 
-        if (!TryComp(uid, out TransformComponent? xform)) return;
+        if (!TryComp(uid, out TransformComponent? xform))
+            return;
 
         var fromCoords = xform.Coordinates;
         var toCoords = args.Target;

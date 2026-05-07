@@ -15,6 +15,7 @@ public sealed class MutationLungSwapSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationLungSwapComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<MutationLungSwapComponent, ComponentShutdown>(OnShutdown);
     }
@@ -62,9 +63,9 @@ public sealed class MutationLungSwapSystem : EntitySystem
             Del(current);
         }
 
-        if (_container.TryGetContainer(ent.Owner, HiddenStorageContainerId, out var baseHiddenContainer) &&
-            baseHiddenContainer is ContainerSlot hiddenContainer &&
-            hiddenContainer.ContainedEntity is { } storedLung)
+        if (_container.TryGetContainer(ent.Owner, HiddenStorageContainerId, out var baseHiddenContainer)
+        && baseHiddenContainer is ContainerSlot hiddenContainer
+        && hiddenContainer.ContainedEntity is { } storedLung)
         {
             _container.Remove(storedLung, hiddenContainer);
             _container.Insert(storedLung, lungSlot);
@@ -73,9 +74,9 @@ public sealed class MutationLungSwapSystem : EntitySystem
         ent.Comp.OriginalLung = null;
         ent.Comp.SwappedLung = null;
 
-        if (_container.TryGetContainer(ent.Owner, HiddenStorageContainerId, out var cleanupBase) &&
-            cleanupBase is ContainerSlot cleanupSlot &&
-            cleanupSlot.ContainedEntity is null)
+        if (_container.TryGetContainer(ent.Owner, HiddenStorageContainerId, out var cleanupBase)
+        && cleanupBase is ContainerSlot cleanupSlot
+        && cleanupSlot.ContainedEntity is null)
         {
             _container.ShutdownContainer(cleanupSlot);
         }
@@ -103,8 +104,8 @@ public sealed class MutationLungSwapSystem : EntitySystem
 
         foreach (var (partId, _) in _body.GetBodyChildren(body))
         {
-            if (_container.TryGetContainer(partId, "body_organ_slot_lungs", out var container) &&
-                container is ContainerSlot organSlot)
+            if (_container.TryGetContainer(partId, "body_organ_slot_lungs", out var container)
+            && container is ContainerSlot organSlot)
             {
                 slot = organSlot;
                 return true;

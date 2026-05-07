@@ -36,7 +36,7 @@ public sealed partial class DnaScannerConsoleComponent : Component
     /// Number of available DNA injectors in storage
     /// </summary>
     [DataField]
-    public int DnaInjectors = 60;
+    public int DnaInjectors = 5;
 
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
     public TimeSpan? ScrambleCooldownEnd;

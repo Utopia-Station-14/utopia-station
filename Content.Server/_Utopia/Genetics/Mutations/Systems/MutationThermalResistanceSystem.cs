@@ -39,6 +39,5 @@ public sealed class MutationThermalResistanceSystem : EntitySystem
 public struct GetThermalInsulationEvent(float coefficient)
 {
     public float Coefficient = coefficient;
-
     public float TemperatureDelta = 0f;
 }

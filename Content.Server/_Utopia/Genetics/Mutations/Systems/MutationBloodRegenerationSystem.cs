@@ -28,7 +28,6 @@ public sealed class MutationBloodRegenerationSystem : EntitySystem
         var query = EntityQueryEnumerator<MutationBloodRegenerationComponent, BloodstreamComponent>();
         while (query.MoveNext(out var uid, out var regen, out var bloodstream))
         {
-            // Skip if dead or in crit (no passive regen while dead)
             if (_mobState.IsDead(uid) || _mobState.IsCritical(uid))
                 continue;
 
@@ -42,7 +41,8 @@ public sealed class MutationBloodRegenerationSystem : EntitySystem
             if (currentPercentage >= targetPercentage)
                 continue;
 
-            if (!_solutionContainerSystem.ResolveSolution(uid, bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var bloodSolution))
+            if (!_solutionContainerSystem.ResolveSolution(uid, bloodstream.BloodSolutionName,
+            ref bloodstream.BloodSolution, out var bloodSolution))
                 continue;
 
             var deficitPercentage = targetPercentage - currentPercentage;

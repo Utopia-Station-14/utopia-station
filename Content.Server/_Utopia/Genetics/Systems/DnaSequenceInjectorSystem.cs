@@ -145,12 +145,12 @@ public sealed class DNASequenceInjectorSystem : EntitySystem
 
         if (comp.IsMutator)
         {
-            success = _genetics.TryAddMutation(targetUid, genetics, mutationId) &&
-                _genetics.TryActivateMutation(targetUid, genetics, mutationId);
+            success = _genetics.TryAddMutation((targetUid, genetics), mutationId) &&
+                _genetics.TryActivateMutation((targetUid, genetics), mutationId);
         }
         else
         {
-            success = _genetics.TryActivateMutation(targetUid, genetics, mutationId);
+            success = _genetics.TryActivateMutation((targetUid, genetics), mutationId);
         }
 
         if (!success)
@@ -158,7 +158,7 @@ public sealed class DNASequenceInjectorSystem : EntitySystem
             _popup.PopupEntity(Loc.GetString("dna-injector-no-effect"), targetUid, user);
         }
 
-        var empty = Spawn("DNAInjectorEmpty", Transform(injector).Coordinates);
+        var empty = Spawn(comp.EntityEmpty, Transform(injector).Coordinates);
 
         if (TryComp<HandsComponent>(user, out var hands)
         && _hands.TryGetActiveItem(user, out var held)

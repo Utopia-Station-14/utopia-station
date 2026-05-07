@@ -7,15 +7,17 @@ namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 public sealed class MutationStaminaRegenerationBoostSystem : EntitySystem
 {
     [Dependency] private readonly StaminaSystem _staminaSystem = default!;
+
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
 
-        foreach (var (boost, stamina) in EntityQuery<MutationStaminaRegenerationBoostComponent, StaminaComponent>())
+        var query = EntityQueryEnumerator<MutationStaminaRegenerationBoostComponent, StaminaComponent>();
+        while (query.MoveNext(out var uid, out var boost, out var stamina))
         {
             if (stamina.ActiveDrains.Count == 0)
             {
-                _staminaSystem.TakeStaminaDamage(boost.Owner, -boost.RegenBonus * frameTime, stamina, visual: false);
+                _staminaSystem.TakeStaminaDamage(uid, -boost.RegenBonus * frameTime, stamina, visual: false);
             }
         }
     }

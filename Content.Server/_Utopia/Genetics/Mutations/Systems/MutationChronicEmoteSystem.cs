@@ -40,7 +40,6 @@ public sealed class MutationChronicCoughSystem : EntitySystem
             if (_timing.CurTime < comp.NextCheck)
                 continue;
 
-            // Randomize time to next cough check
             comp.NextCheck = _timing.CurTime + TimeSpan.FromSeconds(_random.NextFloat(0.8f * comp.Interval, 1.2f * comp.Interval));
 
             if (!_random.Prob(comp.EmoteChance))
@@ -51,7 +50,6 @@ public sealed class MutationChronicCoughSystem : EntitySystem
 
             _chat.TryEmoteWithChat(uid, comp.EmoteId);
 
-            // Chance to drop held item
             if (!_random.Prob(comp.DropChance))
                 continue;
 

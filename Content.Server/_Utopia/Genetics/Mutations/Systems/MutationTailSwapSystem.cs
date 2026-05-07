@@ -13,6 +13,7 @@ public sealed class MutationTailSwapSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationTailSwapComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<MutationTailSwapComponent, ComponentShutdown>(OnShutdown);
     }
@@ -28,6 +29,7 @@ public sealed class MutationTailSwapSystem : EntitySystem
             foreach (var marking in currentTails)
             {
                 var colors = new List<Color>();
+
                 for (var i = 0; i < marking.MarkingColors.Count; i++)
                 {
                     colors.Add(marking.MarkingColors[i]);
@@ -42,6 +44,7 @@ public sealed class MutationTailSwapSystem : EntitySystem
         humanoid.MarkingSet.RemoveCategory(MarkingCategories.Tail);
 
         Color tailColor;
+
         if (comp.TailColor is { } customColor)
         {
             tailColor = customColor;

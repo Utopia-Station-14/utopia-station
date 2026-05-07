@@ -1,10 +1,11 @@
 using System.Linq;
-using Content.Server._Utopia.Genetics.Systems;
+using Content.Shared._Utopia.Genetics;
+using Content.Shared._Utopia.Genetics.Systems;
 using Content.Shared._Utopia.Genetics.Components;
 using Content.Shared._Utopia.Genetics.Prototypes;
 using Robust.Shared.Prototypes;
 
-namespace Content.Shared._Utopia.Genetics.Systems;
+namespace Content.Server._Utopia.Genetics.Systems;
 
 public sealed class MutationUnlockTriggerSystem : EntitySystem
 {

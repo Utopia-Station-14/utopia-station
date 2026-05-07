@@ -1,0 +1,15 @@
+- type: entity
+  id: UtopiaOrganPhoronLungs
+  parent: OrganHumanLungs
+  name: phoron lungs
+  description: Highly adapted lungs that metabolize phoron as a respiratory gas. Oxygen is toxic, and normal breathing gas mixtures are suffocating.
+  components:
+  - type: Metabolizer
+    metabolizerTypes: [ PhoronBreather ]
+  - type: Lung
+    alert: LowOxygen
+  - type: Item
+    size: Normal
+    shape:
+    - 0,0,1,1
+    heldPrefix: lungs

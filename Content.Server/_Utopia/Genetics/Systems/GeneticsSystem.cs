@@ -1,17 +1,16 @@
 using System.Linq;
 using Content.Server._Utopia.Genetics.Components;
+using Content.Server._Utopia.Genetics.Mutations.Systems;
 using Content.Server.Popups;
 using Content.Shared._Utopia.Genetics;
 using Content.Shared._Utopia.Genetics.Prototypes;
 using Content.Shared.Damage.Systems;
 using Content.Shared.FixedPoint;
+using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
-using Content.Shared.Mobs;
-using Content.Server._Utopia.Genetics.Mutations.Systems;
-using Content.Shared._Utopia.Helpers;
 
 namespace Content.Server._Utopia.Genetics.Systems;
 
@@ -41,13 +40,13 @@ public sealed partial class GeneticsSystem : EntitySystem
         SubscribeLocalEvent<GeneticsComponent, DamageChangedEvent>(OnRadiationDamage);
     }
 
-    private void OnInit(EntityUid uid, GeneticsComponent component, ComponentInit args)
+    private void OnInit(Entity<GeneticsComponent> ent, ref ComponentInit args)
     {
-        FillBaseMutations(uid, component);
-        component.RadsUntilRandomMutation = _random.NextFloat(MinRadsUntilMutation, MaxRadsUntilMutation);
+        FillBaseMutations(ent);
+        ent.Comp.RadsUntilRandomMutation = _random.NextFloat(MinRadsUntilMutation, MaxRadsUntilMutation);
     }
 
-    private void OnRadiationDamage(EntityUid uid, GeneticsComponent component, ref DamageChangedEvent args)
+    private void OnRadiationDamage(Entity<GeneticsComponent> ent, ref DamageChangedEvent args)
     {
         if (!args.DamageIncreased || args.DamageDelta is not { } delta)
             return;
@@ -55,36 +54,33 @@ public sealed partial class GeneticsSystem : EntitySystem
         if (!delta.DamageDict.TryGetValue(DamageType, out var typeDamage) || typeDamage <= FixedPoint2.Zero)
             return;
 
-        if (TryComp<MobStateComponent>(uid, out var mobState) && mobState.CurrentState == MobState.Dead)
+        if (TryComp<MobStateComponent>(ent.Owner, out var mobState) && mobState.CurrentState == MobState.Dead)
             return;
 
-        component.RadsUntilRandomMutation -= typeDamage.Float();
+        ent.Comp.RadsUntilRandomMutation -= typeDamage.Float();
 
-        if (component.RadsUntilRandomMutation > 0)
+        if (ent.Comp.RadsUntilRandomMutation > 0)
             return;
 
-        TriggerRandomMutation(uid, component);
-        component.RadsUntilRandomMutation = _random.NextFloat(MinRadsUntilMutation, MaxRadsUntilMutation);
+        TriggerRandomMutation(ent);
+        ent.Comp.RadsUntilRandomMutation = _random.NextFloat(MinRadsUntilMutation, MaxRadsUntilMutation);
     }
 
-    public void FillBaseMutations(EntityUid uid, GeneticsComponent? component = null)
+    public void FillBaseMutations(Entity<GeneticsComponent> ent)
     {
-        if (!Resolve(uid, ref component))
-            return;
-
-        component.Mutations.Clear();
-        component.BaseMutationIds.Clear();
+        ent.Comp.Mutations.Clear();
+        ent.Comp.BaseMutationIds.Clear();
 
         var mutationsToAdd = new List<MutationEntry>();
         var addedForcedCount = 0;
 
-        foreach (var forced in component.ForcedBaseMutations)
+        foreach (var forced in ent.Comp.ForcedBaseMutations)
         {
             if (!(_random.NextFloat() < forced.Chance))
                 continue;
 
-            if (!_proto.TryIndex<GeneticMutationPrototype>(forced.Id, out var proto) ||
-                !CanEntityReceiveMutation(uid, proto))
+            if (!_proto.TryIndex<GeneticMutationPrototype>(forced.Id, out var proto)
+            || !CanEntityReceiveMutation(ent, proto))
                 continue;
 
             var slot = _shuffle.GetOrAssignSlot(forced.Id);
@@ -97,21 +93,21 @@ public sealed partial class GeneticsSystem : EntitySystem
             var entry = CreateMutationEntry(forced.Id, proto, slot.Block, slot.Sequence, revealed, startsActive);
 
             mutationsToAdd.Add(entry);
-            component.BaseMutationIds.Add(forced.Id);
+            ent.Comp.BaseMutationIds.Add(forced.Id);
 
             if (startsActive)
             {
-                ApplyMutationComponents(uid, component, proto);
+                ApplyMutationComponents(ent.Owner, proto);
             }
 
             addedForcedCount++;
         }
 
-        var slotsLeft = Math.Max(0, component.MutationSlots - addedForcedCount);
+        var slotsLeft = Math.Max(0, ent.Comp.MutationSlots - addedForcedCount);
 
         for (var i = 0; i < slotsLeft; i++)
         {
-            var chosenId = PickRandomAvailableMutation(uid, component);
+            var chosenId = PickRandomAvailableMutation(ent);
             if (chosenId == null)
                 break;
 
@@ -127,24 +123,24 @@ public sealed partial class GeneticsSystem : EntitySystem
                 chosenId, proto, slot.Block, slot.Sequence, revealed, false);
 
             mutationsToAdd.Add(entry);
-            component.BaseMutationIds.Add(chosenId);
+            ent.Comp.BaseMutationIds.Add(chosenId);
         }
 
         _random.Shuffle(mutationsToAdd);
 
         foreach (var entry in mutationsToAdd)
         {
-            component.Mutations.Add(entry);
+            ent.Comp.Mutations.Add(entry);
         }
     }
 
-    private string? PickRandomAvailableMutation(EntityUid uid, GeneticsComponent component)
+    private string? PickRandomAvailableMutation(Entity<GeneticsComponent> ent)
     {
         var candidates = _proto.EnumeratePrototypes<GeneticMutationPrototype>()
-            .Where(p => CanEntityReceiveMutation(uid, p, true))
-            .Where(p => !component.Mutations.Any(m => m.Id == p.ID))
-            .Where(p => !IsConflictingWithExisting(component, p))
-            .Where(p => !component.BaseMutationIds.Contains(p.ID))
+            .Where(p => CanEntityReceiveMutation(ent.Owner, p, true))
+            .Where(p => !ent.Comp.Mutations.Any(m => m.Id == p.ID))
+            .Where(p => !IsConflictingWithExisting(ent.Comp, p))
+            .Where(p => !ent.Comp.BaseMutationIds.Contains(p.ID))
             .ToList();
 
         if (candidates.Count == 0)
@@ -173,9 +169,9 @@ public sealed partial class GeneticsSystem : EntitySystem
         return candidates.Last().ID;
     }
 
-    public void TriggerRandomMutation(EntityUid uid, GeneticsComponent component)
+    public void TriggerRandomMutation(Entity<GeneticsComponent> ent)
     {
-        var chosenId = PickRandomAvailableMutation(uid, component);
+        var chosenId = PickRandomAvailableMutation(ent);
         if (chosenId == null)
             return;
 
@@ -183,15 +179,15 @@ public sealed partial class GeneticsSystem : EntitySystem
         if (slot.Block <= 0)
             return;
 
-        TryAddMutation(uid, component, chosenId);
-        TryActivateMutation(uid, component, chosenId);
+        TryAddMutation(ent, chosenId);
+        TryActivateMutation(ent, chosenId);
     }
 
-    public void RemoveRandomMutation(EntityUid uid, GeneticsComponent component, bool mutadone = false)
+    public void RemoveRandomMutation(Entity<GeneticsComponent> ent, bool mutadone = false)
     {
         var removable = new List<string>();
 
-        foreach (var entry in component.Mutations)
+        foreach (var entry in ent.Comp.Mutations)
         {
             if (mutadone)
             {
@@ -200,7 +196,7 @@ public sealed partial class GeneticsSystem : EntitySystem
                     continue;
             }
 
-            if (!component.BaseMutationIds.Contains(entry.Id))
+            if (!ent.Comp.BaseMutationIds.Contains(entry.Id))
             {
                 removable.Add(entry.Id);
                 continue;
@@ -217,7 +213,7 @@ public sealed partial class GeneticsSystem : EntitySystem
 
         var chosenId = _random.Pick(removable);
 
-        TryRemoveMutation(uid, component, chosenId);
+        TryRemoveMutation(ent, chosenId);
     }
 
     private string RandomizeSequence(string original)
@@ -227,6 +223,7 @@ public sealed partial class GeneticsSystem : EntitySystem
 
         var length = original.Length;
         var result = new char[length];
+
         result[0] = original[0];
         result[length - 1] = original[length - 1];
 
@@ -252,19 +249,19 @@ public sealed partial class GeneticsSystem : EntitySystem
         return new string(result);
     }
 
-    public bool TryAddMutation(EntityUid uid, GeneticsComponent component, string mutationId)
+    public bool TryAddMutation(Entity<GeneticsComponent> ent, string mutationId)
     {
         var slot = _shuffle.GetOrAssignSlot(mutationId);
 
         if (slot == GeneticBlock.Invalid
-        || component.Mutations.Any(m => m.Id == mutationId)
+        || ent.Comp.Mutations.Any(m => m.Id == mutationId)
         || !_proto.TryIndex(mutationId, out GeneticMutationPrototype? proto))
             return false;
 
-        if (!CanEntityReceiveMutation(uid, proto, false))
+        if (!CanEntityReceiveMutation(ent.Owner, proto, false))
             return false;
 
-        if (IsConflictingWithExisting(component, proto))
+        if (IsConflictingWithExisting(ent.Comp, proto))
             return false;
 
         var revealed = RandomizeSequence(slot.Sequence);
@@ -277,27 +274,27 @@ public sealed partial class GeneticsSystem : EntitySystem
             enabled: false
         );
 
-        component.Mutations.Add(entry);
+        ent.Comp.Mutations.Add(entry);
 
-        if (!component.BaseMutationIds.Contains(mutationId))
+        if (!ent.Comp.BaseMutationIds.Contains(mutationId))
         {
-            ModifyInstability(uid, component, proto.Instability);
+            ModifyInstability(ent, proto.Instability);
         }
 
         return true;
     }
 
-    private bool TryRemoveMutation(EntityUid uid, GeneticsComponent component, string mutationId)
+    private bool TryRemoveMutation(Entity<GeneticsComponent> ent, string mutationId)
     {
-        var entry = component.Mutations.Find(m => m.Id == mutationId);
+        var entry = ent.Comp.Mutations.Find(m => m.Id == mutationId);
         if (entry == null)
             return false;
 
-        var isBase = component.BaseMutationIds.Contains(mutationId);
+        var isBase = ent.Comp.BaseMutationIds.Contains(mutationId);
 
         if (entry.Enabled)
         {
-            if (!TryDeactivateMutation(uid, component, mutationId))
+            if (!TryDeactivateMutation(ent, mutationId))
                 return false;
         }
 
@@ -308,75 +305,75 @@ public sealed partial class GeneticsSystem : EntitySystem
 
         if (_proto.TryIndex<GeneticMutationPrototype>(mutationId, out var proto))
         {
-            ModifyInstability(uid, component, -proto.Instability);
+            ModifyInstability(ent, -proto.Instability);
         }
 
-        component.Mutations.Remove(entry);
+        ent.Comp.Mutations.Remove(entry);
 
         return true;
     }
 
-    public bool TryActivateMutation(EntityUid uid, GeneticsComponent component, string mutationId)
+    public bool TryActivateMutation(Entity<GeneticsComponent> ent, string mutationId)
     {
-        var index = component.Mutations.FindIndex(m => m.Id == mutationId);
+        var index = ent.Comp.Mutations.FindIndex(m => m.Id == mutationId);
         if (index == -1)
             return false;
 
-        var entry = component.Mutations[index];
+        var entry = ent.Comp.Mutations[index];
         if (entry.Enabled)
             return false;
 
         if (!_proto.TryIndex(mutationId, out GeneticMutationPrototype? proto))
             return false;
 
-        if (!CanEntityReceiveMutation(uid, proto, false))
+        if (!CanEntityReceiveMutation(ent.Owner, proto, false))
             return false;
 
         foreach (var conflictId in proto.Conflicts)
         {
-            if (component.Mutations.Any(m => m.Id == conflictId && m.Enabled))
+            if (ent.Comp.Mutations.Any(m => m.Id == conflictId && m.Enabled))
                 return false;
         }
 
-        component.Mutations[index] = entry with
+        ent.Comp.Mutations[index] = entry with
         {
             Enabled = true,
             RevealedSequence = entry.OriginalSequence
         };
 
-        ApplyMutationComponents(uid, component, proto);
+        ApplyMutationComponents(ent.Owner, proto);
 
         var popMsg = !string.IsNullOrWhiteSpace(proto.PopupText)
             ? Loc.GetString(proto.PopupText)
             : Loc.GetString("genetics-mutation-activated");
 
-        _popup.PopupEntity(popMsg, uid, uid);
+        _popup.PopupEntity(popMsg, ent.Owner, ent.Owner);
 
         return true;
     }
 
-    public bool TryDeactivateMutation(EntityUid uid, GeneticsComponent component, string mutationId)
+    public bool TryDeactivateMutation(Entity<GeneticsComponent> ent, string mutationId)
     {
-        for (var i = 0; i < component.Mutations.Count; i++)
+        for (var i = 0; i < ent.Comp.Mutations.Count; i++)
         {
-            if (component.Mutations[i].Id != mutationId)
+            if (ent.Comp.Mutations[i].Id != mutationId)
                 continue;
 
-            if (!component.Mutations[i].Enabled)
+            if (!ent.Comp.Mutations[i].Enabled)
                 return false;
 
             if (!_proto.TryIndex<GeneticMutationPrototype>(mutationId, out var proto))
                 return false;
 
-            component.Mutations[i] = component.Mutations[i] with { Enabled = false };
-            RemoveMutationComponents(uid, proto);
+            ent.Comp.Mutations[i] = ent.Comp.Mutations[i] with { Enabled = false };
+            RemoveMutationComponents(ent.Owner, proto);
             return true;
         }
 
         return false;
     }
 
-    private void ApplyMutationComponents(EntityUid uid, GeneticsComponent component, GeneticMutationPrototype proto)
+    private void ApplyMutationComponents(EntityUid uid, GeneticMutationPrototype proto)
     {
         EntityManager.AddComponents(uid, proto.Components);
     }
@@ -395,20 +392,20 @@ public sealed partial class GeneticsSystem : EntitySystem
             component.Mutations.Any(m => m.Id == conflictId));
     }
 
-    private void ModifyInstability(EntityUid uid, GeneticsComponent component, int delta)
+    private void ModifyInstability(Entity<GeneticsComponent> ent, int delta)
     {
         if (delta == 0)
             return;
 
-        var old = component.GeneticInstability;
-        component.GeneticInstability += delta;
-        var newVal = component.GeneticInstability;
+        var old = ent.Comp.GeneticInstability;
+        ent.Comp.GeneticInstability += delta;
+        var newVal = ent.Comp.GeneticInstability;
 
         if (old <= InstabilityMutationThreshold && newVal > InstabilityMutationThreshold)
         {
-            RemComp<PendingInstabilityMutationComponent>(uid);
+            RemComp<PendingInstabilityMutationComponent>(ent.Owner);
 
-            var pending = AddComp<PendingInstabilityMutationComponent>(uid);
+            var pending = AddComp<PendingInstabilityMutationComponent>(ent.Owner);
             pending.MutationId = string.Empty;
 
             var durationSeconds = _random.Next(MinInstabilityTimerSeconds, MaxInstabilityTimerSeconds);
@@ -417,21 +414,32 @@ public sealed partial class GeneticsSystem : EntitySystem
 
         else if (old >= InstabilityMutationThreshold && newVal < InstabilityMutationThreshold)
         {
-            if (RemComp<PendingInstabilityMutationComponent>(uid))
+            if (RemComp<PendingInstabilityMutationComponent>(ent.Owner))
             {
-                _popup.PopupEntity(Loc.GetString("genetics-instability-cancelled"), uid, uid);
+                _popup.PopupEntity(Loc.GetString("genetics-instability-cancelled"), ent.Owner, ent.Owner);
             }
         }
 
         if (old <= InstabilityDamageThreshold && newVal > InstabilityDamageThreshold)
         {
-            EnsureComp<GeneticsInstabilityDamageComponent>(uid);
+            EnsureComp<GeneticsInstabilityDamageComponent>(ent.Owner);
         }
 
         else if (old > InstabilityDamageThreshold && newVal <= InstabilityDamageThreshold)
         {
-            RemComp<GeneticsInstabilityDamageComponent>(uid);
+            RemComp<GeneticsInstabilityDamageComponent>(ent.Owner);
         }
+    }
+
+    private bool IsPrototypeOrParentInList(string entityProtoId, IReadOnlyList<string> list)
+    {
+        if (list.Contains(entityProtoId))
+            return true;
+
+        if (!_proto.TryIndex<EntityPrototype>(entityProtoId, out var proto) || proto.Parents == null)
+            return false;
+
+        return proto.Parents.Any(parent => IsPrototypeOrParentInList(parent, list));
     }
 
     public bool CanEntityReceiveMutation(EntityUid uid, GeneticMutationPrototype proto, bool isRandom = true)
@@ -440,13 +448,13 @@ public sealed partial class GeneticsSystem : EntitySystem
 
         if (proto.StrictEntityWhitelist != null && proto.StrictEntityWhitelist.Count > 0)
         {
-            if (!UtopiaHelper.IsPrototypeOrParentInList(protoId, proto.StrictEntityWhitelist))
+            if (!IsPrototypeOrParentInList(protoId, proto.StrictEntityWhitelist))
                 return false;
         }
 
         if (proto.StrictEntityBlacklist != null && proto.StrictEntityBlacklist.Count > 0)
         {
-            if (UtopiaHelper.IsPrototypeOrParentInList(protoId, proto.StrictEntityBlacklist))
+            if (IsPrototypeOrParentInList(protoId, proto.StrictEntityBlacklist))
                 return false;
         }
 
@@ -457,13 +465,13 @@ public sealed partial class GeneticsSystem : EntitySystem
         {
             if (proto.EntityWhitelist != null && proto.EntityWhitelist.Count > 0)
             {
-                if (!UtopiaHelper.IsPrototypeOrParentInList(protoId, proto.EntityWhitelist))
+                if (!IsPrototypeOrParentInList(protoId, proto.EntityWhitelist))
                     return false;
             }
 
             if (proto.EntityBlacklist != null && proto.EntityBlacklist.Count > 0)
             {
-                if (UtopiaHelper.IsPrototypeOrParentInList(protoId, proto.EntityBlacklist))
+                if (IsPrototypeOrParentInList(protoId, proto.EntityBlacklist))
                     return false;
             }
         }
@@ -509,11 +517,11 @@ public sealed partial class GeneticsSystem : EntitySystem
         );
     }
 
-    public void ScrambleDna(EntityUid uid, GeneticsComponent genetics)
+    public void ScrambleDna(Entity<GeneticsComponent> ent)
     {
         var preservedEntries = new List<MutationEntry>();
 
-        foreach (var entry in genetics.Mutations)
+        foreach (var entry in ent.Comp.Mutations)
         {
             if (!_proto.TryIndex<GeneticMutationPrototype>(entry.Id, out var proto))
                 continue;
@@ -522,34 +530,34 @@ public sealed partial class GeneticsSystem : EntitySystem
                 preservedEntries.Add(entry);
         }
 
-        foreach (var entry in genetics.Mutations.ToList())
+        foreach (var entry in ent.Comp.Mutations.ToList())
         {
             if (!entry.Enabled)
                 continue;
 
             if (!_proto.TryIndex<GeneticMutationPrototype>(entry.Id, out var proto) || !proto.ScrambleResistant)
             {
-                TryDeactivateMutation(uid, genetics, entry.Id);
+                TryDeactivateMutation(ent, entry.Id);
             }
         }
 
-        genetics.Mutations.Clear();
-        genetics.BaseMutationIds.Clear();
+        ent.Comp.Mutations.Clear();
+        ent.Comp.BaseMutationIds.Clear();
 
-        genetics.GeneticInstability = 0;
+        ent.Comp.GeneticInstability = 0;
 
-        FillBaseMutations(uid, genetics);
+        FillBaseMutations(ent);
 
         foreach (var preserved in preservedEntries)
         {
-            if (TryAddMutation(uid, genetics, preserved.Id))
+            if (TryAddMutation(ent, preserved.Id))
             {
-                var index = genetics.Mutations.FindIndex(m => m.Id == preserved.Id);
+                var index = ent.Comp.Mutations.FindIndex(m => m.Id == preserved.Id);
                 if (index != -1)
                 {
-                    var newEntry = genetics.Mutations[index];
+                    var newEntry = ent.Comp.Mutations[index];
 
-                    genetics.Mutations[index] = newEntry with
+                    ent.Comp.Mutations[index] = newEntry with
                     {
                         RevealedSequence = preserved.RevealedSequence,
                         Enabled = preserved.Enabled

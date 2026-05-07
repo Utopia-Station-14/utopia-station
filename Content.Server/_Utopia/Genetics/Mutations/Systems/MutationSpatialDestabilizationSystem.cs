@@ -14,6 +14,7 @@ public sealed class MutationSpatialDestabilizationSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationSpatialDestabilizationComponent, ComponentInit>(OnInit);
     }
 

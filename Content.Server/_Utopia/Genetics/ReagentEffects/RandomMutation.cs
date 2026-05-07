@@ -24,7 +24,7 @@ public sealed partial class RandomMutationSystem : EntityEffectSystem<GeneticsCo
         {
             if (random.Prob(args.Effect.Chance * scale))
             {
-                geneticsSystem.TriggerRandomMutation(entity.Owner, entity.Comp);
+                geneticsSystem.TriggerRandomMutation((entity.Owner, entity.Comp));
                 mutationsApplied++;
             }
         }

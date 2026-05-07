@@ -1,8 +1,8 @@
 using Content.Server._Utopia.Genetics.Mutations.Components;
+using Content.Server.Damage.Systems;
+using Content.Shared.Damage.Components;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
-using Content.Shared.Damage.Components;
-using Content.Server.Damage.Systems;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
@@ -15,6 +15,7 @@ public sealed class MutationStupefactionSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationStupefactionComponent, ComponentInit>(OnInit);
     }
 
@@ -46,7 +47,6 @@ public sealed class MutationStupefactionSystem : EntitySystem
             }
 
             _stamina.TakeStaminaDamage(uid, comp.DrainAmount, stamina);
-
             ScheduleNextDrain(comp);
         }
     }

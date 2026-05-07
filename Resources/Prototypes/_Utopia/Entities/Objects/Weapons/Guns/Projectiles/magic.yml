@@ -1,0 +1,24 @@
+- type: entity
+  id: UtopiaProjectileWeakFireball
+  parent: ProjectileFireball
+  name: weak fireball
+  description: A small, mildly destructive fireball.
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Heat: 10
+  - type: Explosive
+    explosionType: Default
+    maxIntensity: 25
+    intensitySlope: 1
+    totalIntensity: 5
+    maxTileBreak: 0
+  - type: IgnitionSource
+    temperature: 1000
+    ignited: true
+  - type: IgniteOnCollide
+    fireStacks: 0.35
+  - type: PointLight
+    radius: 1.5
+    energy: 3.0

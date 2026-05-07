@@ -21,6 +21,7 @@ public sealed class MutationInkGlandsSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationInkGlandsComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<MutationInkGlandsComponent, ComponentShutdown>(OnShutdown);
         SubscribeLocalEvent<MutationInkGlandsComponent, InkSpurtActionEvent>(OnActionPerformed);
@@ -34,7 +35,9 @@ public sealed class MutationInkGlandsSystem : EntitySystem
     private void OnShutdown(Entity<MutationInkGlandsComponent> uid, ref ComponentShutdown args)
     {
         if (uid.Comp.GrantedAction is { Valid: true } action)
+        {
             _actions.RemoveAction(action);
+        }
     }
 
     private void OnActionPerformed(EntityUid uid, MutationInkGlandsComponent comp, ref InkSpurtActionEvent args)
@@ -49,10 +52,9 @@ public sealed class MutationInkGlandsSystem : EntitySystem
         var solution = new Solution();
         solution.AddReagent(ReagentId, amount);
 
-        if (!TryComp<TransformComponent>(uid, out var xform))
+        if (!TryComp(uid, out TransformComponent? xform))
             return;
 
-        // Spill ink one tile behind facing direction to prevent slipping yourself
         var behindCoords = xform.Coordinates.Offset(xform.LocalRotation.GetCardinalDir().GetOpposite().ToVec());
 
         if (_puddle.TrySpillAt(behindCoords, solution, out var puddleUid))
@@ -61,9 +63,9 @@ public sealed class MutationInkGlandsSystem : EntitySystem
         }
         else
         {
-            // Fallback to feet if blocked
             _puddle.TrySpillAt(xform.Coordinates, solution, out _);
         }
+
         _audio.PlayPredicted(comp.SpillSound, uid, uid);
     }
 }

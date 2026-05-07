@@ -14,6 +14,7 @@ public sealed class MutationParanoiaSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationParanoiaComponent, ComponentInit>(OnInit);
     }
 

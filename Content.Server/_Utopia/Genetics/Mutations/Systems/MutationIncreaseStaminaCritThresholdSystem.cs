@@ -8,6 +8,7 @@ public sealed class MutationIncreaseStaminaCritThresholdSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationIncreaseStaminaCritThresholdComponent, ComponentAdd>(OnAdd);
         SubscribeLocalEvent<MutationIncreaseStaminaCritThresholdComponent, ComponentRemove>(OnRemove);
     }

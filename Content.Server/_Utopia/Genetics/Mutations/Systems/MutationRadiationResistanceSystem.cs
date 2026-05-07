@@ -11,6 +11,7 @@ public sealed class MutationRadiationResistanceSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationRadiationResistanceComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<MutationRadiationResistanceComponent, ComponentShutdown>(OnShutdown);
     }
@@ -21,6 +22,7 @@ public sealed class MutationRadiationResistanceSystem : EntitySystem
             return;
 
         var buffComp = EnsureComp<DamageProtectionBuffComponent>(uid);
+
         if (!buffComp.Modifiers.ContainsKey(component.ModifierSetId))
         {
             buffComp.Modifiers.Add(component.ModifierSetId, modifier);

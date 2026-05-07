@@ -11,12 +11,12 @@ namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 public sealed class GeneticsInstabilityDamageSystem : EntitySystem
 {
     [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
 
     private const int InstabilityThreshold = 150;
     private const float DamagePerTick = 1f;
     private const float TickInterval = 2f;
+    private const string DamageType = "Cellular";
 
     private float _accumulator = 0f;
 
@@ -36,12 +36,12 @@ public sealed class GeneticsInstabilityDamageSystem : EntitySystem
         _accumulator -= TickInterval;
 
         var query = EntityQueryEnumerator<GeneticsComponent, DamageableComponent, GeneticsInstabilityDamageComponent>();
-        while (query.MoveNext(out var uid, out var genetics, out var damageable, out _))
+        while (query.MoveNext(out var uid, out var genetics, out var _, out _))
         {
             if (genetics.GeneticInstability <= InstabilityThreshold)
                 continue;
 
-            var damage = new DamageSpecifier(_prototypeManager.Index<DamageTypePrototype>("Cellular"), DamagePerTick);
+            var damage = new DamageSpecifier(_prototypeManager.Index<DamageTypePrototype>(DamageType), DamagePerTick);
             _damageable.TryChangeDamage(uid, damage, true);
         }
     }

@@ -53,20 +53,15 @@ public sealed class MutationChronicReagentVomitSystem : EntitySystem
     {
         var amount = FixedPoint2.New(_random.Next(comp.MinAmount, comp.MaxAmount));
 
-        // Create a solution with just our reagent
         var solution = new Solution();
         solution.AddReagent(comp.Reagent, amount);
 
-        // Use the real VomitSystem logic but override the solution
-        // First, apply hunger/thirst/slowdown via normal vomit
         _vomit.Vomit(uid, thirstAdded: -30f, hungerAdded: -30f);
 
-        // Then, add solution to puddle
         if (TryComp(uid, out TransformComponent? xform))
         {
             if (_puddle.TrySpillAt(xform.Coordinates, solution, out var puddleUid))
             {
-                // Transfer DNA so forensics works
                 _forensics.TransferDna(puddleUid, uid, false);
             }
         }

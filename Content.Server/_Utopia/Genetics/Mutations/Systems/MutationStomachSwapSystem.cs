@@ -11,11 +11,13 @@ public sealed class MutationStomachSwapSystem : EntitySystem
     [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solution = default!;
+
     private const string HiddenStorageContainerId = "mutation_hidden_stomach_storage";
 
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationStomachSwapComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<MutationStomachSwapComponent, ComponentShutdown>(OnShutdown);
     }
@@ -99,7 +101,8 @@ public sealed class MutationStomachSwapSystem : EntitySystem
         slot = null;
         foreach (var part in _body.GetBodyChildren(body))
         {
-            if (_container.TryGetContainer(part.Id, "body_organ_slot_stomach", out var container) && container is ContainerSlot organSlot)
+            if (_container.TryGetContainer(part.Id, "body_organ_slot_stomach", out var container)
+            && container is ContainerSlot organSlot)
             {
                 slot = organSlot;
                 return true;

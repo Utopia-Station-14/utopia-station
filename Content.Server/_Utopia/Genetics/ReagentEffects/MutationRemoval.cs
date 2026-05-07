@@ -24,7 +24,7 @@ public sealed partial class MutationRemovalSystem : EntityEffectSystem<GeneticsC
         {
             if (random.Prob(args.Effect.Chance * scale))
             {
-                geneticsSystem.RemoveRandomMutation(entity.Owner, entity.Comp, true);
+                geneticsSystem.RemoveRandomMutation((entity.Owner, entity.Comp), true);
                 removalsApplied++;
             }
         }

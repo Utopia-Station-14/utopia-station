@@ -6,7 +6,6 @@ namespace Content.Server._Utopia.Genetics.Systems;
 
 public sealed class GeneticShuffleSystem : EntitySystem
 {
-    [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
 
     private const int MaxShuffledBlocks = 150;
