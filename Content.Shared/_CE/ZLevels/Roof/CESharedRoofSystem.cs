@@ -76,7 +76,7 @@ public abstract class CESharedRoofSystem : EntitySystem
             {
                 Roof.SetRoof((mapBelow, mapGridBelow, roofBelow), indices, rooved);
 
-                if (Map.TryGetTile(mapGridBelow, indices, out var tile) && !tile.IsEmpty || !ZLevel.IsSpaceTile(indices, mapBelow))
+                if (Map.TryGetTile(mapGridBelow, indices, out var tile) && !tile.IsEmpty)
                     roofMap[indices] = true;
             }
         }

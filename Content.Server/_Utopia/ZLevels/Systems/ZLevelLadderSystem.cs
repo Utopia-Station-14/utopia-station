@@ -17,6 +17,8 @@ public sealed class ZLevelLadderSystem : EntitySystem
     [Dependency] private readonly ITileDefinitionManager _tileDefs = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
 
+    private const string RequiredTile = "UtopiaSpace";
+
     public override void Initialize()
     {
         SubscribeLocalEvent<ZLevelLadderComponent, ZLevelLadderMessage>(OnSelect);
@@ -107,7 +109,7 @@ public sealed class ZLevelLadderSystem : EntitySystem
 
         var tile = _map.GetTileRef(coords.EntityId, grid, coords);
 
-        var expected = _tileDefs[CESharedZLevelsSystem.ZTileID].TileId;
+        var expected = _tileDefs[RequiredTile].TileId;
         return tile.Tile.TypeId == expected;
     }
 
