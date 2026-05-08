@@ -1,4 +1,5 @@
 using Content.Server.Atmos.Components;
+using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Robust.Shared.Map.Components;
@@ -99,11 +100,17 @@ namespace Content.Server.Atmos.EntitySystems
                 }
             }
 
-            if(tile.Air != null)
-                React(tile.Air, tile);
+            // Utopia-Tweak : ZLevels
+            //if(tile.Air != null)
+            if (ProcessZAtmos(ent, tile, tile.GridIndices, fireCount))
+            {
+                if (tile.Air != null)
+                    React(tile.Air, tile);
 
-            InvalidateVisuals(ent, tile);
-
+                InvalidateVisuals(ent, tile);
+                return;
+            }
+            // Utopia-Tweak : ZLevels
             var remove = true;
 
             if(tile.Air!.Temperature > Atmospherics.MinimumTemperatureStartSuperConduction)
