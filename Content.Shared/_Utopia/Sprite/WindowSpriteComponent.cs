@@ -8,5 +8,5 @@ namespace Content.Shared._Utopia.Sprite;
 [RegisterComponent, NetworkedComponent]
 public sealed partial class WindowSpriteComponent : Component
 {
-
+    public float Alpha = 0.6f;
 }

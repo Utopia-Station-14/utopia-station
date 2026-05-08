@@ -6,8 +6,6 @@ namespace Content.Client._Utopia.Sprite;
 
 public sealed class WindowSpriteSystem : EntitySystem
 {
-    private const float TargetAlpha = 0.4f;
-
     public override void Initialize()
     {
         base.Initialize();
@@ -20,6 +18,6 @@ public sealed class WindowSpriteSystem : EntitySystem
         if (!TryComp<SpriteComponent>(uid, out var sprite))
             return;
 
-        sprite.Color = sprite.Color.WithAlpha(TargetAlpha);
+        sprite.Color = sprite.Color.WithAlpha(component.Alpha);
     }
 }

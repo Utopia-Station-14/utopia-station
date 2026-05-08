@@ -75,11 +75,12 @@
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
   - type: Airtight
-  ## Utopia-tweak
+  # Utopia-tweak : SpriteUpdate
   - type: IconSmooth
     key: walls
     base: window
-  ## Utopia-tweak
+  - type: WindowSprite
+  # Utopia-tweak : SpriteUpdate
   - type: InteractionPopup
     interactSuccessString: comp-window-knock
     messagePerceivedByOthers: comp-window-knock
