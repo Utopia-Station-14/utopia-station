@@ -4,6 +4,7 @@ using Content.Shared.Damage.Components;
 using Content.Shared.Database;
 using Content.Shared.Explosion;
 using Content.Shared.Explosion.Components;
+using Content.Shared._Utopia.Explosion.Events;
 using Content.Shared.Maps;
 using Content.Shared.Physics;
 using Content.Shared.Projectiles;
@@ -204,7 +205,13 @@ public sealed partial class ExplosionSystem
         float? fireStacks,
         float? temperature,
         float currentIntensity,
-        EntityUid? cause)
+        EntityUid? cause,
+        // Utopia-Tweak : Toxicology
+        float totalIntensity,
+        float slope,
+        float maxTileIntensity
+        // Utopia-Tweak : Toxicology
+        )
     {
         var size = grid.Comp.TileSize;
         var gridBox = new Box2(tile * size, (tile + 1) * size);
@@ -223,7 +230,7 @@ public sealed partial class ExplosionSystem
         // process those entities
         foreach (var (uid, xform) in list)
         {
-            ProcessEntity(uid, epicenter, damage, throwForce, id, xform, fireStacks, cause);
+            ProcessEntity(uid, epicenter, damage, throwForce, id, xform, fireStacks, cause, slope, maxTileIntensity, currentIntensity, totalIntensity); // Utopia-Tweak : Toxicology
         }
 
         // process anchored entities
@@ -233,7 +240,7 @@ public sealed partial class ExplosionSystem
         foreach (var entity in _anchored)
         {
             processed.Add(entity);
-            ProcessEntity(entity, epicenter, damage, throwForce, id, null, fireStacks, cause);
+            ProcessEntity(entity, epicenter, damage, throwForce, id, null, fireStacks, cause, slope, maxTileIntensity, currentIntensity, totalIntensity); // Utopia-Tweak : Toxicology 
         }
 
         // heat the atmosphere
@@ -275,7 +282,7 @@ public sealed partial class ExplosionSystem
         {
             // Here we only throw, no dealing damage. Containers n such might drop their entities after being destroyed, but
             // they should handle their own damage pass-through, with their own damage reduction calculation.
-            ProcessEntity(uid, epicenter, null, throwForce, id, xform, null, cause);
+            ProcessEntity(uid, epicenter, null, throwForce, id, xform, null, cause, slope, maxTileIntensity, currentIntensity, totalIntensity); // Utopia-Tweak : Toxicology
         }
 
         return !tileBlocked;
@@ -312,7 +319,14 @@ public sealed partial class ExplosionSystem
         HashSet<EntityUid> processed,
         string id,
         float? fireStacks,
-        EntityUid? cause)
+        EntityUid? cause,
+        // Utopia-Tweak : Toxicology
+        float slope,
+        float maxTileIntensity,
+        float currentIntensity,
+        float totalIntensity
+        // Utopia-Tweak : Toxicology
+        )
     {
         var gridBox = Box2.FromDimensions(tile * DefaultTileSize, new Vector2(DefaultTileSize, DefaultTileSize));
         var worldBox = spaceMatrix.TransformBox(gridBox);
@@ -328,7 +342,7 @@ public sealed partial class ExplosionSystem
         foreach (var (uid, xform) in state.Item1)
         {
             processed.Add(uid);
-            ProcessEntity(uid, epicenter, damage, throwForce, id, xform, fireStacks, cause);
+            ProcessEntity(uid, epicenter, damage, throwForce, id, xform, fireStacks, cause, slope, maxTileIntensity, currentIntensity, totalIntensity); // Utopia-Tweak : Toxicology
         }
 
         if (throwForce <= 0)
@@ -342,7 +356,7 @@ public sealed partial class ExplosionSystem
 
         foreach (var (uid, xform) in list)
         {
-            ProcessEntity(uid, epicenter, null, throwForce, id, xform, fireStacks, cause);
+            ProcessEntity(uid, epicenter, null, throwForce, id, xform, fireStacks, cause, slope, maxTileIntensity, currentIntensity, totalIntensity); // Utopia-Tweak : Toxicology
         }
     }
 
@@ -441,8 +455,26 @@ public sealed partial class ExplosionSystem
         string id,
         TransformComponent? xform,
         float? fireStacksOnIgnite,
-        EntityUid? cause)
+        EntityUid? cause,
+        // Utopia-Tweak : Toxicology
+        float slope,
+        float maxTileIntensity,
+        float currentIntensity,
+        float totalIntensity
+        // Utopia-Tweak : Toxicology
+        )
     {
+        // Utopia-Tweak : Toxicology
+        var ev = new ExplosionPowerEvent(
+            epicenter,
+            slope,
+            maxTileIntensity,
+            currentIntensity,
+            totalIntensity
+            );
+
+        RaiseLocalEvent(uid, ref ev);
+        // Utopia-Tweak : Toxicology
         if (originalDamage is not null)
         {
             GetEntitiesToDamage(uid, originalDamage, id);
@@ -673,6 +705,12 @@ sealed class Explosion
 
     public readonly EntityUid? Cause;
 
+    // Utopia-Tweak : Toxicology
+    public readonly float TotalIntensity;
+    public readonly float Slope;
+    public readonly float MaxTileIntensity;
+    // Utopia-Tweak : Toxicology
+
     /// <summary>
     ///     Initialize a new instance for processing
     /// </summary>
@@ -687,6 +725,11 @@ sealed class Explosion
         float tileBreakScale,
         int maxTileBreak,
         bool canCreateVacuum,
+        // Utopia-Tweak : Toxicology
+        float totalIntensity,
+        float slope,
+        float maxTileIntensity,
+        // Utopia-Tweak : Toxicology
         IEntityManager entMan,
         EntityUid visualEnt,
         EntityUid? cause,
@@ -707,6 +750,12 @@ sealed class Explosion
         _canCreateVacuum = canCreateVacuum;
         _entMan = entMan;
         _damageable = damageable;
+
+        // Utopia-Tweak : Toxicology
+        TotalIntensity = totalIntensity;
+        Slope = slope;
+        MaxTileIntensity = maxTileIntensity;
+        // Utopia-Tweak : Toxicology
 
         _xformQuery = entMan.GetEntityQuery<TransformComponent>();
         _physicsQuery = entMan.GetEntityQuery<PhysicsComponent>();
@@ -865,7 +914,13 @@ sealed class Explosion
                     ExplosionType.FireStacks,
                     ExplosionType.Temperature,
                     _currentIntensity,
-                    Cause);
+                    Cause,
+                    // Utopia-Tweak : Toxicology
+                    TotalIntensity,
+                    Slope,
+                    MaxTileIntensity
+                    // Utopia-Tweak : Toxicology
+                    );
 
                 // If the floor is not blocked by some dense object, damage the floor tiles.
                 if (canDamageFloor)
@@ -884,7 +939,14 @@ sealed class Explosion
                     ProcessedEntities,
                     ExplosionType.ID,
                     ExplosionType.FireStacks,
-                    Cause);
+                    Cause,
+                    // Utopia-Tweak : Toxicology
+                    Slope,
+                    MaxTileIntensity,
+                    _currentIntensity,
+                    TotalIntensity
+                    // Utopia-Tweak : Toxicology
+                    );
             }
 
             if (!MoveNext())

@@ -393,6 +393,11 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
             queued.TileBreakScale,
             queued.MaxTileBreak,
             queued.CanCreateVacuum,
+            // Utopia-Tweak : Toxicology
+            queued.TotalIntensity,
+            queued.Slope,
+            queued.MaxTileIntensity,
+            // Utopia-Tweak : Toxicology
             EntityManager,
             visualEnt,
             queued.Cause,
