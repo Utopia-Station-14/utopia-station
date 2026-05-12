@@ -16,8 +16,6 @@ public abstract partial class CESharedZLevelsSystem
 {
     [Dependency] protected readonly TurfSystem Turf = default!;
 
-    public const string ZTileID = "UtopiaSpace";
-
     private void UpdateMovement(EntityUid uid, CEZPhysicsComponent zPhys, TransformComponent xform,
         PhysicsComponent physics, float frameTime)
     {
@@ -80,7 +78,7 @@ public abstract partial class CESharedZLevelsSystem
 
         var xform = Transform(uid);
 
-        if (!GridQuery.HasComp(xform.GridUid) || IsSpaceTile(uid))
+        if (!GridQuery.HasComp(xform.GridUid) && IsSpaceTile(uid))
             return false;
 
         if (!zPhys.IgnoreHighGround)
@@ -163,8 +161,7 @@ public abstract partial class CESharedZLevelsSystem
             return false;
 
         var tile = tileRef.Value.Tile;
-
-        return tile.IsEmpty || ZTileID == TilDefMan[tile.TypeId].ID;
+        return tile.IsEmpty;
     }
 
     [PublicAPI]
@@ -176,15 +173,8 @@ public abstract partial class CESharedZLevelsSystem
         if (!MapSys.TryGetTileRef(mapUid.Value, grid, indices, out var tileRef))
             return false;
 
-        if (tileRef.Tile.IsEmpty)
-            return true;
-
-        if (!TilDefMan.TryGetDefinition(tileRef.Tile.TypeId, out var def))
-            return false;
-
-        var tileDef = (ContentTileDefinition)def;
-
-        return tileDef.ID == ZTileID;
+        var tile = tileRef.Tile;
+        return tile.IsEmpty;
     }
 
     private void HandleLevelChange(EntityUid uid, CEZPhysicsComponent zPhys)

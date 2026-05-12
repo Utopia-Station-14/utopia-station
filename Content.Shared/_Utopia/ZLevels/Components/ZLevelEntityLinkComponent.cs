@@ -1,6 +1,3 @@
-using Robust.Shared.GameObjects;
-using Robust.Shared.Map;
-
 namespace Content.Shared._Utopia.ZLevels.Transmission.Components;
 
 [RegisterComponent]

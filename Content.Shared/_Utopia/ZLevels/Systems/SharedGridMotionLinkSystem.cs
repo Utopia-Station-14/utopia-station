@@ -1,11 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Numerics;
 using Content.Shared._Utopia.ZLevels.Components;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Numerics;
 
 namespace Content.Shared._Utopia.ZLevels.Systems;
 
@@ -24,13 +24,34 @@ public abstract class SharedGridMotionLinkSystem : EntitySystem
         UpdatesAfter.Add(typeof(SharedPhysicsSystem));
     }
 
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        var query = EntityQueryEnumerator<GridMotionLinkComponent, PhysicsComponent>();
+        List<string> groupsMoved = new();
+
+        while (query.MoveNext(out var uid, out var comp, out var phys))
+        {
+            if (groupsMoved.Contains(comp.GroupId))
+                continue;
+
+            if (!TryGetMotionData(uid, out var linear, out var angular, out var biggest, out var group, comp))
+                continue;
+
+            RelayMotion(linear.Value, angular.Value, biggest.Value, group);
+            groupsMoved.Add(comp.GroupId);
+        }
+    }
 
     public void UpdateOffset(Entity<GridMotionLinkComponent> ent)
     {
         ent.Comp.Root = GetBiggestGridOfGroup(ent.Comp.GroupId);
 
         if (ent.Comp.Root == ent.Owner)
+        {
             ent.Comp.Offset = Vector2.Zero;
+        }
         else
         {
             var rootRot = _transformSystem.GetWorldRotation(ent.Comp.Root);
@@ -53,10 +74,10 @@ public abstract class SharedGridMotionLinkSystem : EntitySystem
     }
 
     private void RelayMotion(Vector2 linear, float angular,
-                             EntityUid biggest,
-                             List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>> matches)
+        EntityUid biggest,
+        List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>> matches)
     {
-        foreach (var (targetUid, link, grid, phys) in matches)
+        foreach (var (targetUid, link, _, phys) in matches)
         {
             _physics.SetLinearVelocity(targetUid, linear, body: phys);
             _physics.SetAngularVelocity(targetUid, angular, body: phys);
@@ -80,11 +101,11 @@ public abstract class SharedGridMotionLinkSystem : EntitySystem
     }
 
     private bool TryGetMotionData(EntityUid uid,
-                                 [NotNullWhen(true)] out Vector2? linearSpeed,
-                                 [NotNullWhen(true)] out float? angularSpeed,
-                                 [NotNullWhen(true)] out EntityUid? biggestGrid,
-                                  out List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>> matches,
-                                  GridMotionLinkComponent? comp = null)
+        [NotNullWhen(true)] out Vector2? linearSpeed,
+        [NotNullWhen(true)] out float? angularSpeed,
+        [NotNullWhen(true)] out EntityUid? biggestGrid,
+        out List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>> matches,
+        GridMotionLinkComponent? comp = null)
     {
         linearSpeed = Vector2.Zero;
         angularSpeed = 0f;
@@ -135,26 +156,6 @@ public abstract class SharedGridMotionLinkSystem : EntitySystem
         }
 
         return matches;
-    }
-
-    public override void Update(float frameTime)
-    {
-        base.Update(frameTime);
-
-        var query = EntityQueryEnumerator<GridMotionLinkComponent, PhysicsComponent>();
-        List<string> groupsMoved = new();
-
-        while (query.MoveNext(out var uid, out var comp, out var phys))
-        {
-            if (groupsMoved.Contains(comp.GroupId))
-                continue;
-
-            if (!TryGetMotionData(uid, out var linear, out var angular, out var biggest, out var group, comp))
-                continue;
-
-            RelayMotion(linear.Value, angular.Value, biggest.Value, group);
-            groupsMoved.Add(comp.GroupId);
-        }
     }
 
     public void SetGridPosition(EntityUid origin, Vector2 position, GridMotionLinkComponent? link = null)

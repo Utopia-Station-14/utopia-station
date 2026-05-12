@@ -14,10 +14,7 @@ public sealed class ZLevelLadderSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _xform = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly MapSystem _map = default!;
-    [Dependency] private readonly ITileDefinitionManager _tileDefs = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
-
-    private const string RequiredTile = "UtopiaSpace";
 
     public override void Initialize()
     {
@@ -109,8 +106,7 @@ public sealed class ZLevelLadderSystem : EntitySystem
 
         var tile = _map.GetTileRef(coords.EntityId, grid, coords);
 
-        var expected = _tileDefs[RequiredTile].TileId;
-        return tile.Tile.TypeId == expected;
+        return tile.Tile.IsEmpty;
     }
 
     private void Teleport(EntityUid user, EntityUid targetMap)

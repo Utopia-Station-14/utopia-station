@@ -15,7 +15,7 @@ public sealed class GridDraggingSystem : SharedGridDraggingSystem
     [Dependency] private readonly IConGroupController _admin = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
-    [Dependency] private readonly GridMotionLinkSystem _gridMotion = default!;   // Utopia tweak
+    [Dependency] private readonly GridMotionLinkSystem _gridMotion = default!; // Utopia-Tweak : ZLevels
 
     private readonly HashSet<ICommonSession> _draggers = new();
 
@@ -80,8 +80,6 @@ public sealed class GridDraggingSystem : SharedGridDraggingSystem
             return;
         }
 
-        // Utopia tweak - использование системы для многоэтажных гридов
-        //_transformSystem.SetWorldPosition(grid, msg.WorldPosition);
-        _gridMotion.SetGridPosition(grid, msg.WorldPosition);
+        _gridMotion.SetGridPosition(grid, msg.WorldPosition); // Utopia-Tweak : ZLevels - использование системы для многоэтажных гридов
     }
 }
