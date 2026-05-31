@@ -106,9 +106,9 @@
     active: true
   - type: ResearchClient
   - type: DnaScannerConsole
-  - type: GuideHelp
-    guides:
-    - Genetics
+  # - type: GuideHelp
+  #   guides:
+  #   - Genetics
   - type: Tag
     tags:
     - AccessBreakerImmune

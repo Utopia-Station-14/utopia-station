@@ -1,7 +1,7 @@
 - type: entity
   abstract: true
   parent: BaseItem
-  id: UtopiaBaseDNAInjectorSyringe
+  id: BaseUtopiaDNAInjectorSyringe
   name: DNA injector
   description: A single-use syringe containing a pre-loaded genetic sequence.
   components:
@@ -17,14 +17,14 @@
     sprite: _Utopia/Objects/Specific/Medical/dnainjector.rsi
   - type: Appearance
   - type: DnaSequenceInjector
-  - type: GuideHelp
-    guides:
-    - Genetics
+  # - type: GuideHelp
+  #   guides:
+  #   - Genetics
 
 - type: entity
   id: UtopiaDNAInjectorEmpty
   name: dna injector (empty)
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   components:
   - type: Sprite
     sprite: _Utopia/Objects/Specific/Medical/dnainjector.rsi
@@ -40,7 +40,7 @@
     - Trash
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAInjectorGenericActivator
   name: dna activator
   components:
@@ -48,7 +48,7 @@
     isMutator: false
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAInjectorGenericMutator
   name: dna mutator
   components:
@@ -56,7 +56,7 @@
     isMutator: true
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAActivatorPacifist
   name: dna activator (pacifist)
   components:
@@ -65,7 +65,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorPacifist
   name: dna mutator (pacifist)
   components:
@@ -75,7 +75,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorFrontalGyrusSuspension
   name: dna mutator (FrontalGyrusSuspension)
   components:
@@ -85,7 +85,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorFleshJaredCurse
   name: dna mutator (FleshJaredCurse)
   components:
@@ -95,7 +95,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorAdrenalineRush
   name: dna mutator (AdrenalineRush)
   components:
@@ -105,7 +105,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorCryokinesis
   name: dna mutator (Cryokinesis)
   components:
@@ -115,7 +115,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorInkGlands
   name: dna mutator (InkGlands)
   components:
@@ -125,7 +125,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorOpticEnergizer
   name: dna mutator (OpticEnergizer)
   components:
@@ -135,7 +135,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorApianHoneyGlands
   name: dna mutator (ApianHoneyGlands)
   components:
@@ -145,7 +145,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorAdaptiveIridophores
   name: dna mutator (AdaptiveIridophores)
   components:
@@ -155,7 +155,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorBioluminescentDermalGlands
   name: dna mutator (BioluminescentDermalGlands)
   components:
@@ -165,7 +165,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorFleshGolemCurse
   name: dna mutator (FleshGolemCurse)
   components:
@@ -175,7 +175,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorFleshClampCurse
   name: dna mutator (Flesh Clamp)
   components:
@@ -185,7 +185,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorFleshLoverCurse
   name: dna mutator (Flesh Lover)
   components:
@@ -195,7 +195,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorTrichochromaticShift
   name: dna mutator (TrichochromaticShift)
   components:
@@ -205,7 +205,7 @@
   - type: Item
 
 - type: entity
-  parent: UtopiaBaseDNAInjectorSyringe
+  parent: BaseUtopiaDNAInjectorSyringe
   id: UtopiaDNAMutatorFirebreath
   name: dna mutator (Firebreath)
   components:

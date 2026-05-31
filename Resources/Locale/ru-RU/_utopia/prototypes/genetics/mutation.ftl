@@ -63,13 +63,13 @@ mutation-desc-phoron-breathing = Субъект обладает форонов�
 mutation-name-alcohol-immunity = Иммунитет к алкоголю
 mutation-desc-alcohol-immunity = Печень субъекта, полностью игнорирует этанол.
 
-mutation-name-acid-resistance = Кислотная толерантность
+mutation-name-acid-resistance = Кислотная невосприимчивость
 mutation-desc-acid-resistance = Ткани и кровь субъекта обладают высокой устойчивостью к кислотным соединениям.
 
 mutation-name-phoron-immunity = Фороновый иммунитет
 mutation-desc-phoron-immunity = Организм субъекта полностью нейтрализует токсичное воздействие форона.
 
-mutation-name-general-toxin-resistance = Широкая устойчивость к токсинам
+mutation-name-general-toxin-resistance = Устойчивость к токсинам
 mutation-desc-general-toxin-resistance = Метаболизм субъекта эффективно нейтрализует многие распространенные яды и токсины.
 
 mutation-name-neurotoxin-resistance = Толерантность к нейротоксинам
@@ -77,9 +77,6 @@ mutation-desc-neurotoxin-resistance = Нервная система субъек
 
 mutation-name-radiation-toxin-resistance = Устойчивость к радиационным токсинам
 mutation-desc-radiation-toxin-resistance = Клетки субъекта устойчивы к повреждениям от радиоактивных соединений.
-
-mutation-name-anaerobic-metabolism = Анаэробный метаболизм
-mutation-desc-anaerobic-metabolism = Организм субъекта самостоятельно вырабатывает кислород.
 
 mutation-name-chitinoarmis-durescutis = Хитиновый панцирь
 mutation-desc-chitinoarmis-durescutis = Кожа субъекта развивается в твердый хитиновый панцирь.
@@ -154,21 +151,6 @@ mutation-name-quick-reflexes = Быстрые рефлексы
 mutation-desc-quick-reflexes = Субъект демонстрирует гиперактивную скорость нейронной передачи.
 
 # === Harmful Mutations ===
-mutation-name-brute-medicine-immunity = Отторжение лекарств от тупых травм
-mutation-desc-brute-medicine-immunity = Организм субъекта отвергает обычные лекарства лечения физических повреждений.
-
-mutation-name-burn-medicine-immunity = Отторжение лекарств от ожогов
-mutation-desc-burn-medicine-immunity = Организм субъекта отвергает обычные лекарства от ожогов, предотвращая их действие.
-
-mutation-name-airloss-medicine-immunity = Отторжение респираторных лекарств
-mutation-desc-airloss-medicine-immunity = Легкие субъекта отвергают обычные лекарства от асфиксии.
-
-mutation-name-detox-medicine-immunity = Отторжение детоксикантов
-mutation-desc-detox-medicine-immunity = Печень и почки субъекта отвергают обычные антитоксины, блокируя химическую детоксикацию.
-
-mutation-name-advanced-medicine-immunity = Отторжение продвинутых лекарств
-mutation-desc-advanced-medicine-immunity = Метаболизм субъекта полностью отвергает мощные продвинутые лечебные соединения.
-
 mutation-name-mutation-medicine-immunity = Отторжение генетических стабилизаторов
 mutation-desc-mutation-medicine-immunity = ДНК субъекта отвергает средства удаления мутаций.
 

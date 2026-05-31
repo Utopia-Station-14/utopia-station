@@ -246,11 +246,6 @@
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
-    - BruteMedicineImmunity
-    - BurnMedicineImmunity
-    - AirlossMedicineImmunity
-    - DetoxMedicineImmunity
-    - AdvancedMedicineImmunity
     - MutationMedicineImmunity
   components:
   - type: ChemicalResistance
@@ -269,11 +264,6 @@
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
-    - BruteMedicineImmunity
-    - BurnMedicineImmunity
-    - AirlossMedicineImmunity
-    - DetoxMedicineImmunity
-    - AdvancedMedicineImmunity
     - MutationMedicineImmunity
   components:
   - type: ChemicalResistance
@@ -294,11 +284,6 @@
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
-    - BruteMedicineImmunity
-    - BurnMedicineImmunity
-    - AirlossMedicineImmunity
-    - DetoxMedicineImmunity
-    - AdvancedMedicineImmunity
     - MutationMedicineImmunity
   components:
   - type: ChemicalResistance
@@ -317,11 +302,6 @@
     - PhoronImmunity
     - NeurotoxinResistance
     - RadiationToxinResistance
-    - BruteMedicineImmunity
-    - BurnMedicineImmunity
-    - AirlossMedicineImmunity
-    - DetoxMedicineImmunity
-    - AdvancedMedicineImmunity
     - MutationMedicineImmunity
   components:
   - type: ChemicalResistance
@@ -346,11 +326,6 @@
     - PhoronImmunity
     - GeneralToxinResistance
     - RadiationToxinResistance
-    - BruteMedicineImmunity
-    - BurnMedicineImmunity
-    - AirlossMedicineImmunity
-    - DetoxMedicineImmunity
-    - AdvancedMedicineImmunity
     - MutationMedicineImmunity
   components:
   - type: ChemicalResistance
@@ -372,26 +347,11 @@
     - PhoronImmunity
     - GeneralToxinResistance
     - NeurotoxinResistance
-    - BruteMedicineImmunity
-    - BurnMedicineImmunity
-    - AirlossMedicineImmunity
-    - DetoxMedicineImmunity
-    - AdvancedMedicineImmunity
     - MutationMedicineImmunity
   components:
   - type: ChemicalResistance
     reagents:
       - UnstableMutagen
-
-- type: geneticMutation
-  id: AnaerobicMetabolism
-  name: mutation-name-anaerobic-metabolism
-  desc: mutation-desc-anaerobic-metabolism
-  popupText: mutation-popup-anaerobic-metabolism
-  probabilityWeight: 4
-  instability: 30
-  components:
-  - type: BreathingImmunity
 
 - type: geneticMutation
   id: ChitinoarmisDurescutis
@@ -637,8 +597,6 @@
   - type: StealthOnMove
     passiveVisibilityRate: -0.14
     movementVisibilityRate: 1
-    invisibilityPenalty: 1
-    maxInvisibilityPenalty: 1.5
 
 - type: geneticMutation
   id: NoSlip
@@ -719,127 +677,6 @@
     multiplier: 0.75
 
 - type: geneticMutation
-  id: BruteMedicineImmunity
-  name: mutation-name-brute-medicine-immunity
-  desc: mutation-desc-brute-medicine-immunity
-  instability: -5
-  conflicts:
-    - AlcoholImmunity
-    - AcidResistance
-    - PhoronImmunity
-    - GeneralToxinResistance
-    - NeurotoxinResistance
-    - RadiationToxinResistance
-    - BurnMedicineImmunity
-    - AirlossMedicineImmunity
-    - DetoxMedicineImmunity
-    - AdvancedMedicineImmunity
-    - MutationMedicineImmunity
-  components:
-  - type: ChemicalResistance
-    reagents:
-      - Libital
-      - Probital
-      - SalicylicAcid
-      - Granibitulari
-      - StypticPowder
-
-- type: geneticMutation
-  id: BurnMedicineImmunity
-  name: mutation-name-burn-medicine-immunity
-  desc: mutation-desc-burn-medicine-immunity
-  instability: -5
-  conflicts:
-    - AlcoholImmunity
-    - AcidResistance
-    - PhoronImmunity
-    - GeneralToxinResistance
-    - NeurotoxinResistance
-    - RadiationToxinResistance
-    - BruteMedicineImmunity
-    - AirlossMedicineImmunity
-    - DetoxMedicineImmunity
-    - AdvancedMedicineImmunity
-    - MutationMedicineImmunity
-  components:
-  - type: ChemicalResistance
-    reagents:
-      - Aiuri
-      - Lenturi
-      - Oxandrolone
-      - SilverSulfadiazine
-
-- type: geneticMutation
-  id: AirlossMedicineImmunity
-  name: mutation-name-airloss-medicine-immunity
-  desc: mutation-desc-airloss-medicine-immunity
-  instability: -10
-  conflicts:
-    - AlcoholImmunity
-    - AcidResistance
-    - PhoronImmunity
-    - GeneralToxinResistance
-    - NeurotoxinResistance
-    - RadiationToxinResistance
-    - BruteMedicineImmunity
-    - BurnMedicineImmunity
-    - DetoxMedicineImmunity
-    - AdvancedMedicineImmunity
-    - MutationMedicineImmunity
-  components:
-  - type: ChemicalResistance
-    reagents:
-      - Salbutamol
-      - Convermol
-
-- type: geneticMutation
-  id: DetoxMedicineImmunity
-  name: mutation-name-detox-medicine-immunity
-  desc: mutation-desc-detox-medicine-immunity
-  instability: -5
-  conflicts:
-    - AlcoholImmunity
-    - AcidResistance
-    - PhoronImmunity
-    - GeneralToxinResistance
-    - NeurotoxinResistance
-    - RadiationToxinResistance
-    - BruteMedicineImmunity
-    - BurnMedicineImmunity
-    - AirlossMedicineImmunity
-    - AdvancedMedicineImmunity
-    - MutationMedicineImmunity
-  components:
-  - type: ChemicalResistance
-    reagents:
-      - Multiver
-      - PenteticAcid
-
-- type: geneticMutation
-  id: AdvancedMedicineImmunity
-  name: mutation-name-advanced-medicine-immunity
-  desc: mutation-desc-advanced-medicine-immunity
-  instability: -10
-  conflicts:
-    - AlcoholImmunity
-    - AcidResistance
-    - PhoronImmunity
-    - GeneralToxinResistance
-    - NeurotoxinResistance
-    - RadiationToxinResistance
-    - BruteMedicineImmunity
-    - BurnMedicineImmunity
-    - AirlossMedicineImmunity
-    - DetoxMedicineImmunity
-    - MutationMedicineImmunity
-  components:
-  - type: ChemicalResistance
-    reagents:
-      - Hypothium
-      - Granibitulari
-      - Pyroxadone
-
-- type: geneticMutation
   id: MutationMedicineImmunity
   name: mutation-name-mutation-medicine-immunity
   desc: mutation-desc-mutation-medicine-immunity
@@ -854,11 +691,6 @@
     - GeneralToxinResistance
     - NeurotoxinResistance
     - RadiationToxinResistance
-    - BruteMedicineImmunity
-    - BurnMedicineImmunity
-    - AirlossMedicineImmunity
-    - DetoxMedicineImmunity
-    - AdvancedMedicineImmunity
   components:
   - type: ChemicalResistance
     reagents:
