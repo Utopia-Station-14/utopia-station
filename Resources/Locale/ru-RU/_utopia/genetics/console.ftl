@@ -35,9 +35,6 @@ dna-scanner-console-unknown = Неизвестно
 dna-scanner-undiscovered = Неопознаная мутация.
 dna-scanner-mutation-block = Мутация: { $block }
 
-
-Loc.GetString("dna-scanner-unresearched-mutations")
-
 # Popup messages
 dna-scanner-empty-injector = Инжектор добавлен в консоль.
 dna-scanner-mutation-already-stored = Это мутация уже есть в хранилище.
