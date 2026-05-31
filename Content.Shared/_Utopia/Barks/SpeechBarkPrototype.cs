@@ -4,8 +4,8 @@ using Robust.Shared.Audio;
 
 namespace Content.Shared._Utopia.SpeechBarks;
 
-[Prototype("speechBark")]
-public sealed partial class BarkPrototype : IPrototype
+[Prototype]
+public sealed partial class SpeechBarkPrototype : IPrototype
 {
     [IdDataField]
     public string ID { get; private set; } = default!;
@@ -13,8 +13,7 @@ public sealed partial class BarkPrototype : IPrototype
     [DataField]
     public bool RoundStart = true;
 
-    [DataField]
-    public string Name = "Default";
+    public string LocName => Loc.GetString("bark-" + ID + "-name");
 
     [DataField]
     public string Category = "standard";
@@ -28,18 +27,18 @@ public sealed partial class BarkPrototype : IPrototype
 public sealed partial class BarkData
 {
     [DataField]
-    public ProtoId<BarkPrototype> Proto = "Human1";
+    public ProtoId<SpeechBarkPrototype> Proto = "Human1";
 
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public SoundSpecifier? Sound = null;
 
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float MinVar = 0.1f;
 
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float MaxVar = 0.5f;
 
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float Pitch = 1f;
 
     public BarkData WithProto(string proto)
@@ -70,7 +69,7 @@ public sealed partial class BarkData
         return data;
     }
 
-    public BarkData(ProtoId<BarkPrototype> proto, float pitch, float minVar, float maxVar)
+    public BarkData(ProtoId<SpeechBarkPrototype> proto, float pitch, float minVar, float maxVar)
     {
         Proto = proto;
         Pitch = pitch;
@@ -92,11 +91,21 @@ public sealed partial class BarkData
 
     public bool MemberwiseEquals(BarkData other)
     {
-        if (Proto != other.Proto) return false;
-        if (Sound != other.Sound) return false;
-        if (Pitch != other.Pitch) return false;
-        if (MinVar != other.MinVar) return false;
-        if (MaxVar != other.MaxVar) return false;
+        if (Proto != other.Proto)
+            return false;
+
+        if (Sound != other.Sound)
+            return false;
+
+        if (Pitch != other.Pitch)
+            return false;
+
+        if (MinVar != other.MinVar)
+            return false;
+
+        if (MaxVar != other.MaxVar)
+            return false;
+
         return true;
     }
 }

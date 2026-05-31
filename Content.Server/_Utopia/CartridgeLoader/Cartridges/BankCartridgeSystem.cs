@@ -1,10 +1,10 @@
-using Content.Server.CartridgeLoader;
+using Content.Server._Utopia.Economy;
 using Content.Shared._Utopia.Economy;
 using Content.Shared.CartridgeLoader;
 using Content.Shared.PDA;
 using Robust.Shared.Timing;
 
-namespace Content.Server._Utopia.Economy;
+namespace Content.Server.CartridgeLoader;
 
 public sealed class BankCartridgeSystem : EntitySystem
 {
@@ -39,15 +39,17 @@ public sealed class BankCartridgeSystem : EntitySystem
         if (!TryComp(args.Loader, out PdaComponent? pda) || pda.ContainedId is not { } id)
             return;
 
-        if (TryComp<BankCardComponent>(id, out var bankCardComp) && bankCartridge.Comp.AccountId == null)
-        {
-            if (bankCardComp.AccountId.HasValue
-            && _bankCardSystem.TryGetAccount(bankCardComp.AccountId.Value, out var bankAccount))
-            {
-                bankCartridge.Comp.AccountId = bankAccount.AccountId;
-                bankAccount.CartridgeUid = bankCartridge;
-            }
-        }
+        if (!TryComp<BankCardComponent>(id, out var bankCardComp) || bankCartridge.Comp.AccountId != null)
+            return;
+
+        if (!bankCardComp.AccountId.HasValue)
+            return;
+
+        if (!_bankCardSystem.TryGetAccount(bankCardComp.AccountId.Value, out var bankAccount))
+            return;
+
+        bankCartridge.Comp.AccountId = bankAccount.AccountId;
+        bankAccount.CartridgeUid = bankCartridge;
     }
 
     private void OnNotificationSet(Entity<BankCartridgeComponent> bankCartridge, SetNotificationMessage args)
@@ -71,16 +73,21 @@ public sealed class BankCartridgeSystem : EntitySystem
             if (bankCartridge.Comp.AccountId != null
             && _bankCardSystem.TryGetAccount(bankCartridge.Comp.AccountId.Value, out var oldAccount)
             && oldAccount.CartridgeUid == bankCartridge)
+            {
                 oldAccount.CartridgeUid = null;
+            }
 
             if (account.CartridgeUid != null)
+            {
                 Comp<BankCartridgeComponent>(account.CartridgeUid.Value).AccountId = null;
+            }
 
             account.CartridgeUid = bankCartridge;
             bankCartridge.Comp.AccountId = args.AccountId;
         }
 
-        if (!TryComp(GetEntity(args.LoaderUid), out PdaComponent? pda) || !pda.ContainedId.HasValue
+        if (!TryComp(GetEntity(args.LoaderUid), out PdaComponent? pda)
+        || !pda.ContainedId.HasValue
         || HasComp<BankCardComponent>(pda.ContainedId.Value))
             return;
 
@@ -115,13 +122,7 @@ public sealed class BankCartridgeSystem : EntitySystem
             return;
         }
 
-        if (args.Amount <= 0)
-        {
-            bankCartridge.Comp.TransferResult = Loc.GetString("bank-program-ui-transfer-error-funds");
-            return;
-        }
-
-        if (senderAccount.Balance < args.Amount)
+        if (args.Amount <= 0 || senderAccount.Balance < args.Amount)
         {
             bankCartridge.Comp.TransferResult = Loc.GetString("bank-program-ui-transfer-error-funds");
             return;
@@ -133,10 +134,12 @@ public sealed class BankCartridgeSystem : EntitySystem
         senderAccount.History ??= new List<TransactionsHistory>();
         targetAccount.History ??= new List<TransactionsHistory>();
 
+        var transferType = Loc.GetString("bank-transfer");
+
         senderAccount.History.Add(new TransactionsHistory(
             -args.Amount,
             _timing.CurTime,
-            Loc.GetString("bank-transfer"),
+            transferType,
             targetAccount.Name,
             targetAccount.AccountId.ToString()
         ));
@@ -144,7 +147,7 @@ public sealed class BankCartridgeSystem : EntitySystem
         targetAccount.History.Add(new TransactionsHistory(
             args.Amount,
             _timing.CurTime,
-            Loc.GetString("bank-transfer"),
+            transferType,
             senderAccount.Name,
             senderAccount.AccountId.ToString()
         ));
@@ -153,34 +156,42 @@ public sealed class BankCartridgeSystem : EntitySystem
         {
             UpdateUiState(senderAccount.CartridgeUid.Value, bankCartridge.Comp.Loader!.Value);
 
-            if (!bankCartridge.Comp.NotificationOn || senderAccount.IsBlocked)
-                return;
-
-            _cartridgeLoaderSystem.SendNotification(
-                bankCartridge.Comp.Loader!.Value,
-                Loc.GetString("bank-program-notification-header"),
-                Loc.GetString("bank-transfer"));
+            if (bankCartridge.Comp.NotificationOn && !senderAccount.IsBlocked)
+            {
+                _cartridgeLoaderSystem.SendNotification(
+                    bankCartridge.Comp.Loader!.Value,
+                    Loc.GetString("bank-program-notification-header"),
+                    transferType
+                );
+            }
         }
 
-        if (targetAccount.CartridgeUid != null && targetAccount.CartridgeUid != senderAccount.CartridgeUid)
+        if (targetAccount.CartridgeUid != null &&
+            targetAccount.CartridgeUid != senderAccount.CartridgeUid)
         {
-            if (Comp<CartridgeComponent>(targetAccount.CartridgeUid.Value).LoaderUid is not { } loaderUid
-            || !TryComp<BankCartridgeComponent>(targetAccount.CartridgeUid.Value, out var targetCartridge))
+            if (Comp<CartridgeComponent>(targetAccount.CartridgeUid.Value).LoaderUid is not { } loaderUid ||
+                !TryComp<BankCartridgeComponent>(targetAccount.CartridgeUid.Value, out var targetCartridge))
+            {
                 return;
+            }
 
             UpdateUiState(targetAccount.CartridgeUid.Value, loaderUid);
 
-            if (!targetCartridge.NotificationOn || targetAccount.IsBlocked)
-                return;
-
-            _cartridgeLoaderSystem.SendNotification(
-                loaderUid,
-                Loc.GetString("bank-program-notification-header"),
-                Loc.GetString("bank-transfer"));
+            if (targetCartridge.NotificationOn && !targetAccount.IsBlocked)
+            {
+                _cartridgeLoaderSystem.SendNotification(
+                    loaderUid,
+                    Loc.GetString("bank-program-notification-header"),
+                    transferType
+                );
+            }
         }
 
-        bankCartridge.Comp.TransferResult = Loc.GetString("bank-program-ui-transfer-success",
-            ("amount", args.Amount), ("target", targetAccount.Name));
+        bankCartridge.Comp.TransferResult = Loc.GetString(
+            "bank-program-ui-transfer-success",
+            ("amount", args.Amount),
+            ("target", targetAccount.Name)
+        );
     }
 
     private void OnBalanceChanged(Entity<BankCartridgeComponent> ent, ref EconomyBalanceChangedEvent args)
@@ -188,19 +199,23 @@ public sealed class BankCartridgeSystem : EntitySystem
         if (Comp<CartridgeComponent>(ent).LoaderUid is not { } loaderUid)
             return;
 
-        if (!ent.Comp.AccountId.HasValue || !_bankCardSystem.TryGetAccount(ent.Comp.AccountId.Value, out var account)
-        || account.IsBlocked)
+        if (!ent.Comp.AccountId.HasValue ||
+            !_bankCardSystem.TryGetAccount(ent.Comp.AccountId.Value, out var account) ||
+            account.IsBlocked)
+        {
             return;
+        }
 
         UpdateUiState(ent);
 
-        if (!ent.Comp.NotificationOn)
-            return;
-
-        _cartridgeLoaderSystem.SendNotification(
-            loaderUid,
-            Loc.GetString("bank-program-notification-header"),
-            args.OperationType);
+        if (ent.Comp.NotificationOn)
+        {
+            _cartridgeLoaderSystem.SendNotification(
+                loaderUid,
+                Loc.GetString("bank-program-notification-header"),
+                args.OperationType
+            );
+        }
     }
 
     private void OnUiReady(Entity<BankCartridgeComponent> bankCartridge, ref CartridgeUiReadyEvent args)
@@ -210,14 +225,18 @@ public sealed class BankCartridgeSystem : EntitySystem
 
     private void OnUiMessage(Entity<BankCartridgeComponent> bankCartridge, ref CartridgeMessageEvent args)
     {
-        if (args is BankAccountLinkMessage message)
-            OnAccountLink(bankCartridge, message);
-
-        if (args is BankTransferMessage transferMessage)
-            OnTransfer(bankCartridge, transferMessage);
-
-        if (args is SetNotificationMessage notificationMessage)
-            OnNotificationSet(bankCartridge, notificationMessage);
+        switch (args)
+        {
+            case BankAccountLinkMessage message:
+                OnAccountLink(bankCartridge, message);
+                break;
+            case BankTransferMessage transferMessage:
+                OnTransfer(bankCartridge, transferMessage);
+                break;
+            case SetNotificationMessage notificationMessage:
+                OnNotificationSet(bankCartridge, notificationMessage);
+                break;
+        }
 
         UpdateUiState(bankCartridge);
     }
@@ -228,6 +247,7 @@ public sealed class BankCartridgeSystem : EntitySystem
             return;
 
         var accountLinkMessage = Loc.GetString("bank-program-ui-link-program") + '\n';
+
         if (TryComp(loaderUid, out PdaComponent? pda) && pda.ContainedId.HasValue)
         {
             accountLinkMessage += TryComp(pda.ContainedId.Value, out BankCardComponent? bankCard)

@@ -10,9 +10,6 @@ using Robust.Shared.Player;
 
 namespace Content.Client._Utopia.Pulling.Systems;
 
-/// <summary>
-/// Allows one entity to pull another behind them via a physics distance joint.
-/// </summary>
 public sealed partial class ClientPullingSystem : PullingSystem
 {
     [Dependency] private readonly PopupSystem _popup = default!;
@@ -25,7 +22,7 @@ public sealed partial class ClientPullingSystem : PullingSystem
             return false;
 
         var targetStage = puller.Comp.Stage + 1;
-        // Switch the popup type based on the new grab stage
+
         var popupType = targetStage switch
         {
             GrabStage.Soft => PopupType.Small,
@@ -34,16 +31,19 @@ public sealed partial class ClientPullingSystem : PullingSystem
             _ => PopupType.Small,
         };
 
-        // Do grab stage change effects
+        var stageName = targetStage.ToString().ToLower();
+        var targetName = Identity.Entity(pullable, EntityManager);
+
         _popup.PopupPredicted(
-            Loc.GetString($"grab-increase-{targetStage.ToString().ToLower()}-popup-self",
-                            ("target", Identity.Entity(pullable, EntityManager))),
-            Loc.GetString($"grab-increase-{targetStage.ToString().ToLower()}-popup-others",
-                            ("target", Identity.Entity(pullable, EntityManager)),
-                            ("puller", Identity.Entity(pullable, EntityManager))),
-            pullable, puller, popupType);
+            Loc.GetString($"grab-increase-{stageName}-popup-self", ("target", targetName)),
+            Loc.GetString($"grab-increase-{stageName}-popup-others", ("target", targetName), ("puller", targetName)),
+            pullable,
+            puller,
+            popupType
+        );
+
         _audio.PlayPredicted(new SoundPathSpecifier("/Audio/Effects/thudswoosh.ogg"), pullable, puller);
-        _color.RaiseEffect(Color.Yellow, new List<EntityUid>() { pullable.Owner }, Filter.Pvs(pullable.Owner));
+        _color.RaiseEffect(Color.Yellow, new List<EntityUid> { pullable.Owner }, Filter.Pvs(pullable.Owner));
 
         return true;
     }
@@ -54,18 +54,22 @@ public sealed partial class ClientPullingSystem : PullingSystem
             return false;
 
         var targetStage = puller.Comp.Stage - 1;
-        // Do grab stage change effects
-        if (user != pullable.Owner)
-        {
-            _popup.PopupPredicted(
-                Loc.GetString($"grab-lower-{targetStage.ToString().ToLower()}-popup-self",
-                                ("target", Identity.Entity(pullable, EntityManager))),
-                Loc.GetString($"grab-lower-{targetStage.ToString().ToLower()}-popup-others",
-                                ("target", Identity.Entity(pullable, EntityManager)),
-                                ("puller", Identity.Entity(pullable, EntityManager))),
-                pullable, puller, PopupType.Small);
-            _audio.PlayPredicted(new SoundPathSpecifier("/Audio/Effects/thudswoosh.ogg"), pullable, puller);
-        }
+
+        if (user == pullable.Owner)
+            return true;
+
+        var stageName = targetStage.ToString().ToLower();
+        var targetName = Identity.Entity(pullable, EntityManager);
+
+        _popup.PopupPredicted(
+            Loc.GetString($"grab-lower-{stageName}-popup-self", ("target", targetName)),
+            Loc.GetString($"grab-lower-{stageName}-popup-others", ("target", targetName), ("puller", targetName)),
+            pullable,
+            puller,
+            PopupType.Small
+        );
+
+        _audio.PlayPredicted(new SoundPathSpecifier("/Audio/Effects/thudswoosh.ogg"), pullable, puller);
 
         return true;
     }

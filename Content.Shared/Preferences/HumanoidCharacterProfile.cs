@@ -707,13 +707,18 @@ namespace Content.Shared.Preferences
 
             // Utopia-Tweak : Language
             if (_languages.Count <= 0)
+            {
                 _languages = [.. speciesPrototype.DefaultLanguages];
+            }
 
             List<ProtoId<LanguagePrototype>> langsInvalid = [];
             foreach (var language in _languages)
             {
-                if (!prototypeManager.Index(language).Roundstart && !speciesPrototype.UniqueLanguages.Contains(language))
+                if (!prototypeManager.Index(language).Roundstart && !speciesPrototype.UniqueLanguages.Contains(language)
+                || _languages.Count > speciesPrototype.MaxLanguages && !speciesPrototype.DefaultLanguages.Contains(language))
+                {
                     langsInvalid.Add(language);
+                }
             }
 
             foreach (var lang in langsInvalid)

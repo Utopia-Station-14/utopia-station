@@ -154,7 +154,6 @@
         - state: eftpos
         - state: eftpos-screen
           shader: unshaded
-      netsync: false
     - type: Eftpos
     - type: ActivatableUI
       key: enum.EftposKey.Key

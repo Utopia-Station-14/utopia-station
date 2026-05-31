@@ -10,9 +10,7 @@ using Content.Server.Station.Systems;
 using Content.Shared._Utopia.CCVar;
 using Content.Shared._Utopia.Economy;
 using Content.Shared.Cargo.Components;
-using Content.Shared.Cargo.Prototypes;
 using Content.Shared.GameTicking;
-using Content.Shared.Inventory;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
 using Content.Shared.Mobs.Systems;
@@ -80,13 +78,16 @@ public sealed class BankCardSystem : SharedEconomySystem
             && TryComp(GetEntity(account.Mind.Value), out MindComponent? mindComp)
             && mindComp.UserId != null
             && mindComp.CurrentEntity != null
-            && _playerManager.TryGetSessionById(mindComp.UserId.Value, out _)
+            && _playerManager.ValidSessionId(mindComp.UserId.Value)
             && !_mobState.IsDead(mindComp.CurrentEntity.Value)))
         {
             if (account.Mind == null)
                 continue;
 
-            if (!TryGetSalaryEntry(GetEntity(account.Mind.Value), _protoMan.Index<SalaryPrototype>(Salaries), out var salary)
+            var mindUid = GetEntity(account.Mind.Value);
+            var salaryProto = _protoMan.Index<SalaryPrototype>(Salaries);
+
+            if (!TryGetSalaryEntry(mindUid, salaryProto, out var salary)
             || salary.Value.Salary == null)
                 continue;
 
@@ -94,7 +95,9 @@ public sealed class BankCardSystem : SharedEconomySystem
                 continue;
 
             if (salary.Value.Salary > 0)
+            {
                 TryChangeBalance(account.AccountId, salary.Value.Salary.Value);
+            }
         }
 
         _chatSystem.DispatchGlobalAnnouncement(Loc.GetString("salary-pay-announcement"),
@@ -111,9 +114,8 @@ public sealed class BankCardSystem : SharedEconomySystem
             var query = EntityQueryEnumerator<StationBankAccountComponent>();
             while (query.MoveNext(out var stationUid, out var stationBank))
             {
-                if (stationBank.Accounts.ContainsKey(account.AccountPrototype.Value))
+                if (stationBank.Accounts.TryGetValue(account.AccountPrototype.Value, out var currentBalance))
                 {
-                    var currentBalance = stationBank.Accounts[account.AccountPrototype.Value];
                     if (currentBalance + amount < 0)
                         return false;
 
@@ -127,7 +129,9 @@ public sealed class BankCardSystem : SharedEconomySystem
         if (account.Balance + amount < 0)
             return false;
 
-        var operationType = amount > 0 ? Loc.GetString("bank-deposit") : Loc.GetString("bank-withdrawal");
+        var operationType = amount > 0
+            ? Loc.GetString("bank-deposit")
+            : Loc.GetString("bank-withdrawal");
 
         account.Balance += amount;
         account.History ??= new List<TransactionsHistory>();
@@ -184,7 +188,11 @@ public sealed class BankCardSystem : SharedEconomySystem
                     return;
                 }
 
-                stationBank.BankAccounts.Add(ent.Comp.CommandBudgetType.Value, CreateBudgetAccount(ent.Comp.CommandBudgetType.Value));
+                stationBank.BankAccounts.Add(
+                    ent.Comp.CommandBudgetType.Value,
+                    CreateBudgetAccount(ent.Comp.CommandBudgetType.Value)
+                );
+
                 stationBank.BankAccounts.TryGetValue(ent.Comp.CommandBudgetType.Value, out var account);
 
                 if (account != null)
@@ -216,6 +224,7 @@ public sealed class BankCardSystem : SharedEconomySystem
         {
             var cardEntity = id.Owner;
             var bankCardComponent = EnsureComp<BankCardComponent>(cardEntity);
+            var salaryProto = _protoMan.Index<SalaryPrototype>(Salaries);
 
             if (!bankCardComponent.AccountId.HasValue
             || !TryGetAccount(bankCardComponent.AccountId.Value, out var bankAccount))
@@ -224,12 +233,15 @@ public sealed class BankCardSystem : SharedEconomySystem
             if (!TryComp(mind.Mind, out MindComponent? mindComponent))
                 return;
 
-            if (!TryGetSalaryEntry(mind.Mind, _protoMan.Index<SalaryPrototype>(Salaries), out var baseEntry))
+            if (!TryGetSalaryEntry(mind.Mind, salaryProto, out var baseEntry))
                 return;
 
             var roundtartBalance = baseEntry.Value.Roundstart ?? 0;
 
-            bankAccount.Balance = roundtartBalance > 0 ? roundtartBalance : FallbackBase;
+            bankAccount.Balance = roundtartBalance > 0
+                ? roundtartBalance
+                : FallbackBase;
+
             bankAccount.Mind = GetNetEntity(mind.Mind.Value);
             bankAccount.Name = Name(ev.Mob);
 
