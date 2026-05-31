@@ -13,12 +13,12 @@ public sealed class MutationPullStrengthModifierSystem : EntitySystem
         SubscribeLocalEvent<MutationPullStrengthModifierComponent, RefreshMovementSpeedModifiersEvent>(OnRefresh);
     }
 
-    private void OnRefresh(EntityUid uid, MutationPullStrengthModifierComponent comp, RefreshMovementSpeedModifiersEvent args)
+    private void OnRefresh(Entity<MutationPullStrengthModifierComponent> ent, ref RefreshMovementSpeedModifiersEvent args)
     {
-        if (!TryComp<PullerComponent>(uid, out var puller) || puller.Pulling == null)
+        if (!TryComp<PullerComponent>(ent, out var puller) || puller.Pulling == null)
             return;
 
-        args.ModifySpeed(args.WalkSpeedModifier * comp.PullSlowdownMultiplier,
-            args.SprintSpeedModifier * comp.PullSlowdownMultiplier);
+        args.ModifySpeed(args.WalkSpeedModifier * ent.Comp.PullSlowdownMultiplier,
+            args.SprintSpeedModifier * ent.Comp.PullSlowdownMultiplier);
     }
 }

@@ -16,11 +16,10 @@ public sealed class MutationBloodToxificationSystem : EntitySystem
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
 
-    private const string DamageType = "Poison";
-
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationBloodToxificationComponent, ComponentInit>(OnInit);
     }
 
@@ -34,7 +33,7 @@ public sealed class MutationBloodToxificationSystem : EntitySystem
         base.Update(frameTime);
 
         var query = EntityQueryEnumerator<MutationBloodToxificationComponent, DamageableComponent>();
-        while (query.MoveNext(out var uid, out var comp, out var damageable))
+        while (query.MoveNext(out var uid, out var comp, out var _))
         {
             if (_timing.CurTime < comp.NextTick)
                 continue;
@@ -44,7 +43,7 @@ public sealed class MutationBloodToxificationSystem : EntitySystem
             if (!_random.Prob(comp.Chance))
                 continue;
 
-            var damage = new DamageSpecifier(_prototypeManager.Index<DamageTypePrototype>(DamageType), comp.ToxinAmount);
+            var damage = new DamageSpecifier(_prototypeManager.Index<DamageTypePrototype>(comp.DamageType), comp.ToxinAmount);
             _damageable.TryChangeDamage(uid, damage, true);
         }
     }

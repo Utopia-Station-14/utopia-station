@@ -233,9 +233,6 @@ mutation-desc-cerebellar-dysmetria = У субъекта наблюдаются 
 mutation-name-bioluminescent-glands = Биолюминесцентные железы
 mutation-desc-bioluminescent-glands = Специализированные хроматофоры и фотофоры в коже субъекта производят устойчивое биолюминесцентное свечение.
 
-mutation-name-felinid-tail-mutation = Кошачий хвост
-mutation-desc-felinid-tail-mutation = Субъект обладает пушистым кошачьим хвостом.
-
 mutation-name-vulpkanin-tail-mutation = Волчий хвост
 mutation-desc-vulpkanin-tail-mutation = Субъект обладает волкообразным хвостом.
 
@@ -283,7 +280,7 @@ mutation-desc-flesh-jared-curse = Тело субъекта охвачено а�
 mutation-name-flesh-golem-curse = Плотяной голем
 mutation-desc-flesh-golem-curse = Тело субъекта раздулось в громоздкую массу плоти.
 
-mutation-name-flesh-clamp-curse = Плотяной зажим
+mutation-name-flesh-clamp-curse = Плотяная скоба
 mutation-desc-flesh-clamp-curse = Тело субъекта мутировало в гротескный хлопающий ужас.
 
 mutation-name-flesh-lover-curse = Плотяной возлюбленный

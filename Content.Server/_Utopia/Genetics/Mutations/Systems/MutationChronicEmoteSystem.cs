@@ -58,7 +58,7 @@ public sealed class MutationChronicCoughSystem : EntitySystem
 
             var handsItem = _hands.GetActiveItem((uid, hands));
 
-            if (handsItem is not { } held)
+            if (handsItem is not { } _)
                 continue;
 
             _hands.DoDrop((uid, hands), hands.ActiveHandId, false, false);

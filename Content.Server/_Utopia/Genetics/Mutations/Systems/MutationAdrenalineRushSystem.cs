@@ -11,12 +11,10 @@ public sealed class MutationAdrenalineRushSystem : EntitySystem
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solution = default!;
 
-    private const string ReagentId = "Epinephrine";
-    private const float Amount = 10f;
-
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<MutationAdrenalineRushComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<MutationAdrenalineRushComponent, ComponentShutdown>(OnShutdown);
         SubscribeLocalEvent<MutationAdrenalineRushComponent, AdrenalineRushActionEvent>(OnActionPerformed);
@@ -45,7 +43,7 @@ public sealed class MutationAdrenalineRushSystem : EntitySystem
         if (!_solution.TryGetInjectableSolution(ent.Owner, out var solution, out _))
             return;
 
-        var quantity = FixedPoint2.New(Amount);
-        _solution.TryAddReagent(solution.Value, ReagentId, quantity);
+        var quantity = FixedPoint2.New(ent.Comp.Amount);
+        _solution.TryAddReagent(solution.Value, ent.Comp.ReagentId, quantity);
     }
 }

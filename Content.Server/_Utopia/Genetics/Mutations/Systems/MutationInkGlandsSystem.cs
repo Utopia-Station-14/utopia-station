@@ -16,8 +16,6 @@ public sealed class MutationInkGlandsSystem : EntitySystem
     [Dependency] private readonly ForensicsSystem _forensics = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
 
-    private const string ReagentId = "Ink";
-
     public override void Initialize()
     {
         base.Initialize();
@@ -27,9 +25,9 @@ public sealed class MutationInkGlandsSystem : EntitySystem
         SubscribeLocalEvent<MutationInkGlandsComponent, InkSpurtActionEvent>(OnActionPerformed);
     }
 
-    private void OnInit(EntityUid uid, MutationInkGlandsComponent comp, ref ComponentInit args)
+    private void OnInit(Entity<MutationInkGlandsComponent> ent, ref ComponentInit args)
     {
-        _actions.AddAction(uid, ref comp.GrantedAction, comp.ActionId);
+        _actions.AddAction(ent, ref ent.Comp.GrantedAction, ent.Comp.ActionId);
     }
 
     private void OnShutdown(Entity<MutationInkGlandsComponent> uid, ref ComponentShutdown args)
@@ -40,32 +38,32 @@ public sealed class MutationInkGlandsSystem : EntitySystem
         }
     }
 
-    private void OnActionPerformed(EntityUid uid, MutationInkGlandsComponent comp, ref InkSpurtActionEvent args)
+    private void OnActionPerformed(Entity<MutationInkGlandsComponent> ent, ref InkSpurtActionEvent args)
     {
-        if (args.Handled || args.Performer != uid)
+        if (args.Handled || args.Performer != ent.Owner)
             return;
 
         args.Handled = true;
 
-        var amount = FixedPoint2.New(comp.Amount);
+        var amount = FixedPoint2.New(ent.Comp.Amount);
 
         var solution = new Solution();
-        solution.AddReagent(ReagentId, amount);
+        solution.AddReagent(ent.Comp.ReagentId, amount);
 
-        if (!TryComp(uid, out TransformComponent? xform))
+        if (!TryComp(ent.Owner, out TransformComponent? xform))
             return;
 
         var behindCoords = xform.Coordinates.Offset(xform.LocalRotation.GetCardinalDir().GetOpposite().ToVec());
 
         if (_puddle.TrySpillAt(behindCoords, solution, out var puddleUid))
         {
-            _forensics.TransferDna(puddleUid, uid, false);
+            _forensics.TransferDna(puddleUid, ent.Owner, false);
         }
         else
         {
             _puddle.TrySpillAt(xform.Coordinates, solution, out _);
         }
 
-        _audio.PlayPredicted(comp.SpillSound, uid, uid);
+        _audio.PlayPredicted(ent.Comp.SpillSound, ent.Owner, ent.Owner);
     }
 }

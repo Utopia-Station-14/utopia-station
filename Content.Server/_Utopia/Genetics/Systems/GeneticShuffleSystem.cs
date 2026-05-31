@@ -48,6 +48,11 @@ public sealed class GeneticShuffleSystem : EntitySystem
         return _currentMapping.TryGetValue(mutationId, out slot);
     }
 
+    public bool HasSlot(string mutationId)
+    {
+        return _currentMapping.TryGetValue(mutationId, out _);
+    }
+
     public GeneticBlock GetOrAssignSlot(string mutationId)
     {
         if (_currentMapping.TryGetValue(mutationId, out var existing))

@@ -31,9 +31,9 @@ public sealed class MutationRegenerationSystem : EntitySystem
         SubscribeLocalEvent<MutationRegenerationComponent, ComponentInit>(OnInit);
     }
 
-    private void OnInit(EntityUid uid, MutationRegenerationComponent comp, ComponentInit args)
+    private void OnInit(Entity<MutationRegenerationComponent> ent, ref ComponentInit args)
     {
-        comp.NextHeal = _timing.CurTime + TimeSpan.FromSeconds(comp.Interval);
+        ent.Comp.NextHeal = _timing.CurTime + TimeSpan.FromSeconds(ent.Comp.Interval);
     }
 
     public override void Update(float frameTime)

@@ -2,7 +2,7 @@
   id: UtopiaOrganPhoronLungs
   parent: OrganHumanLungs
   name: phoron lungs
-  description: Highly adapted lungs that metabolize phoron as a respiratory gas. Oxygen is toxic, and normal breathing gas mixtures are suffocating.
+  description: Highly adapted lungs that metabolize phoron as a respiratory gas.
   components:
   - type: Metabolizer
     metabolizerTypes: [ PhoronBreather ]

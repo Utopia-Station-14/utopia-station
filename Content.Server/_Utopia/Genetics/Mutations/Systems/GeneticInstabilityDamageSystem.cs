@@ -1,5 +1,5 @@
 using Content.Server._Utopia.Genetics.Components;
-using Robust.Shared.Timing;
+using Content.Server._Utopia.Genetics.Mutations.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
@@ -46,6 +46,3 @@ public sealed class GeneticsInstabilityDamageSystem : EntitySystem
         }
     }
 }
-
-[RegisterComponent]
-public sealed partial class GeneticsInstabilityDamageComponent : Component { }

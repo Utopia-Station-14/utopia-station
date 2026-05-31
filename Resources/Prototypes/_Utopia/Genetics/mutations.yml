@@ -1096,22 +1096,6 @@
     energy: 0.5
 
 - type: geneticMutation
-  id: FelinidTailMutation
-  name: mutation-name-felinid-tail-mutation
-  desc: mutation-desc-felinid-tail-mutation
-  popupText: mutation-popup-felinid-tail-mutation
-  instability: 5
-  researchPoints: 600
-  strictEntityWhitelist:
-    - BaseMobSpeciesOrganic
-  conflicts:
-    - VulpkaninTailMutation
-    - ReptilianTailMutation
-  components:
-  - type: MutationTailSwap
-    newTailMarking: CatTail
-
-- type: geneticMutation
   id: VulpkaninTailMutation
   name: mutation-name-vulpkanin-tail-mutation
   desc: mutation-desc-vulpkanin-tail-mutation
@@ -1121,7 +1105,6 @@
   strictEntityWhitelist:
     - BaseMobSpeciesOrganic
   conflicts:
-    - FelinidTailMutation
     - ReptilianTailMutation
   components:
   - type: MutationTailSwap
@@ -1137,7 +1120,6 @@
   strictEntityWhitelist:
     - BaseMobSpeciesOrganic
   conflicts:
-    - FelinidTailMutation
     - VulpkaninTailMutation
   components:
   - type: MutationTailSwap
@@ -1182,7 +1164,7 @@
   components:
   - type: EggLayer
     eggSpawn:
-    - proto: FoodEggMystery
+    - proto: UtopiaFoodEggMystery
       amount: 1
 
 - type: geneticMutation
@@ -1259,41 +1241,32 @@
     actionId: ActionTrichochromaticShift
 
 - type: geneticMutation
-  id: geneticMonkeyMorph
+  id: GeneticMonkeyMorph
   name: mutation-name-genetic-monkey-morph
   desc: mutation-desc-genetic-monkey-morph
   popupText: mutation-popup-genetic-monkey-morph
-  hidden: true
   researchPoints: 6000
-  instabilityMutation: true
-  mutadoneResistant: true
-  sequencerResistant: true
   scrambleResistant: true
-  printable: false
   instability: 20
   strictEntityWhitelist:
     - BaseMobHuman
   components:
-  - type: MutationInstabilityPolymorph
+  - type: MutationPolymorph
     polymorphId: GeneticMonkeyMorph
 
 - type: geneticMutation
-  id: geneticKoboldMorph
+  id: GeneticKoboldMorph
   name: mutation-name-genetic-kobold-morph
   desc: mutation-desc-genetic-kobold-morph
   popupText: mutation-popup-genetic-kobold-morph
   hidden: true
   researchPoints: 6000
-  instabilityMutation: true
-  mutadoneResistant: true
-  sequencerResistant: true
   scrambleResistant: true
-  printable: false
   instability: 20
   strictEntityWhitelist:
     - BaseMobReptilian
   components:
-  - type: MutationInstabilityPolymorph
+  - type: MutationPolymorph
     polymorphId: GeneticKoboldMorph
 
 - type: geneticMutation

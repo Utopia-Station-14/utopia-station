@@ -29,7 +29,7 @@
 - type: polymorph
   id: GeneticFleshJaredMorph
   configuration:
-    entity: PolyFleshJared
+    entity: UtopiaPolyFleshJared
     forced: true
     duration: null
     transferDamage: true
@@ -43,7 +43,7 @@
 - type: polymorph
   id: GeneticFleshGolemMorph
   configuration:
-    entity: PolyFleshGolem
+    entity: UtopiaPolyFleshGolem
     forced: true
     duration: null
     transferDamage: true
@@ -57,7 +57,7 @@
 - type: polymorph
   id: GeneticFleshClampMorph
   configuration:
-    entity: PolyFleshClamp
+    entity: UtopiaPolyFleshClamp
     forced: true
     duration: null
     transferDamage: true
@@ -71,7 +71,7 @@
 - type: polymorph
   id: GeneticFleshLoverMorph
   configuration:
-    entity: PolyFleshLover
+    entity: UtopiaPolyFleshLover
     forced: true
     duration: null
     transferDamage: true
@@ -81,47 +81,3 @@
     revertOnCrit: false
     revertOnDeath: false
     revertOnEat: false
-
-- type: entity
-  parent: MobFleshJared
-  id: PolyFleshJared
-  suffix: Polymorph
-  components:
-  - type: StutteringAccent
-    matchRandomProb: 0.1
-    fourRandomProb: 0
-    threeRandomProb: 0
-    cutRandomProb: 0
-
-- type: entity
-  parent: MobFleshClamp
-  id: PolyFleshClamp
-  suffix: Polymorph
-  components:
-  - type: StutteringAccent
-    matchRandomProb: 0.1
-    fourRandomProb: 0
-    threeRandomProb: 0
-    cutRandomProb: 0
-
-- type: entity
-  parent: MobFleshLover
-  id: PolyFleshLover
-  suffix: Polymorph
-  components:
-  - type: StutteringAccent
-    matchRandomProb: 0.1
-    fourRandomProb: 0
-    threeRandomProb: 0
-    cutRandomProb: 0
-
-- type: entity
-  parent: MobFleshGolem
-  id: PolyFleshGolem
-  suffix: Polymorph
-  components:
-  - type: StutteringAccent
-    matchRandomProb: 0.1
-    fourRandomProb: 0
-    threeRandomProb: 0
-    cutRandomProb: 0

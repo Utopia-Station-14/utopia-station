@@ -16,9 +16,9 @@ public sealed class MutationPassiveArmorProviderSystem : EntitySystem
         SubscribeLocalEvent<MutationPassiveArmorProviderComponent, DamageModifyEvent>(OnDamageModify);
     }
 
-    private void OnDamageModify(EntityUid uid, MutationPassiveArmorProviderComponent comp, ref DamageModifyEvent args)
+    private void OnDamageModify(Entity<MutationPassiveArmorProviderComponent> ent, ref DamageModifyEvent args)
     {
-        if (!_proto.TryIndex(comp.ModifierSetId, out var proto))
+        if (!_proto.TryIndex(ent.Comp.ModifierSetId, out var proto))
             return;
 
         DamageModifierSet modifiers = proto;

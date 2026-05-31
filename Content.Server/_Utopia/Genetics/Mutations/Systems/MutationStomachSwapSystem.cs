@@ -12,8 +12,6 @@ public sealed class MutationStomachSwapSystem : EntitySystem
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solution = default!;
 
-    private const string HiddenStorageContainerId = "mutation_hidden_stomach_storage";
-
     public override void Initialize()
     {
         base.Initialize();
@@ -24,7 +22,7 @@ public sealed class MutationStomachSwapSystem : EntitySystem
 
     private void OnStartup(Entity<MutationStomachSwapComponent> ent, ref ComponentStartup args)
     {
-        var hiddenContainer = _container.EnsureContainer<ContainerSlot>(ent.Owner, HiddenStorageContainerId);
+        var hiddenContainer = _container.EnsureContainer<ContainerSlot>(ent.Owner, ent.Comp.HiddenStorageContainerId);
 
         if (!TryGetStomachOrgan(ent.Owner, out var originalStomachNullable) || originalStomachNullable is not { } originalStomach)
         {
@@ -66,9 +64,9 @@ public sealed class MutationStomachSwapSystem : EntitySystem
             Del(current);
         }
 
-        if (_container.TryGetContainer(ent.Owner, HiddenStorageContainerId, out var baseHiddenContainer) &&
-            baseHiddenContainer is ContainerSlot hiddenContainer &&
-            hiddenContainer.ContainedEntity is { } storedStomach)
+        if (_container.TryGetContainer(ent.Owner, ent.Comp.HiddenStorageContainerId, out var baseHiddenContainer)
+        && baseHiddenContainer is ContainerSlot hiddenContainer
+        && hiddenContainer.ContainedEntity is { } storedStomach)
         {
             _container.Remove(storedStomach, hiddenContainer);
             _container.Insert(storedStomach, stomachSlot);

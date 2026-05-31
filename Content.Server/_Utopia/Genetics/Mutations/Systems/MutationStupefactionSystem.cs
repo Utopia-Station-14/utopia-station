@@ -19,9 +19,9 @@ public sealed class MutationStupefactionSystem : EntitySystem
         SubscribeLocalEvent<MutationStupefactionComponent, ComponentInit>(OnInit);
     }
 
-    private void OnInit(EntityUid uid, MutationStupefactionComponent comp, ComponentInit args)
+    private void OnInit(Entity<MutationStupefactionComponent> ent, ref ComponentInit args)
     {
-        ScheduleNextDrain(comp);
+        ScheduleNextDrain(ent.Comp);
     }
 
     private void ScheduleNextDrain(MutationStupefactionComponent comp)

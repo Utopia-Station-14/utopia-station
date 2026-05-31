@@ -316,7 +316,7 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
         if (!TryComp(uid, out TransformComponent? xform))
             return;
 
-        var protoId = activator ? "DNAInjectorGenericActivator" : "DNAInjectorGenericMutator";
+        var protoId = activator ? "UtopiaDNAInjectorGenericActivator" : "UtopiaDNAInjectorGenericMutator";
         var injector = Spawn(protoId, xform.Coordinates);
 
         if (TryComp<DnaSequenceInjectorComponent>(injector, out var injComp))

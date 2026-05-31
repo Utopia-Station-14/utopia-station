@@ -13,22 +13,22 @@ public sealed class MutationIncreaseStaminaCritThresholdSystem : EntitySystem
         SubscribeLocalEvent<MutationIncreaseStaminaCritThresholdComponent, ComponentRemove>(OnRemove);
     }
 
-    private void OnAdd(EntityUid uid, MutationIncreaseStaminaCritThresholdComponent comp, ComponentAdd args)
+    private void OnAdd(Entity<MutationIncreaseStaminaCritThresholdComponent> ent, ref ComponentAdd args)
     {
-        if (TryComp<StaminaComponent>(uid, out var stamina))
+        if (TryComp<StaminaComponent>(ent, out var stamina))
         {
-            stamina.CritThreshold += comp.ThresholdBonus;
-            Dirty(uid, stamina);
+            stamina.CritThreshold += ent.Comp.ThresholdBonus;
+            Dirty(ent.Owner, stamina);
         }
     }
 
-    private void OnRemove(EntityUid uid, MutationIncreaseStaminaCritThresholdComponent comp, ComponentRemove args)
+    private void OnRemove(Entity<MutationIncreaseStaminaCritThresholdComponent> ent, ref ComponentRemove args)
     {
-        if (TryComp<StaminaComponent>(uid, out var stamina))
+        if (TryComp<StaminaComponent>(ent, out var stamina))
         {
-            stamina.CritThreshold -= comp.ThresholdBonus;
+            stamina.CritThreshold -= ent.Comp.ThresholdBonus;
             stamina.CritThreshold = Math.Max(100f, stamina.CritThreshold);
-            Dirty(uid, stamina);
+            Dirty(ent.Owner, stamina);
         }
     }
 }

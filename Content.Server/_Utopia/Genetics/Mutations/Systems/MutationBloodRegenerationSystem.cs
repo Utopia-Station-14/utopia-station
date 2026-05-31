@@ -10,7 +10,7 @@ public sealed class MutationBloodRegenerationSystem : EntitySystem
 {
     [Dependency] private readonly BloodstreamSystem _bloodstream = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
+    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
 
     private float _accum = 0f;
 
@@ -41,7 +41,7 @@ public sealed class MutationBloodRegenerationSystem : EntitySystem
             if (currentPercentage >= targetPercentage)
                 continue;
 
-            if (!_solutionContainerSystem.ResolveSolution(uid, bloodstream.BloodSolutionName,
+            if (!_solutionContainer.ResolveSolution(uid, bloodstream.BloodSolutionName,
             ref bloodstream.BloodSolution, out var bloodSolution))
                 continue;
 

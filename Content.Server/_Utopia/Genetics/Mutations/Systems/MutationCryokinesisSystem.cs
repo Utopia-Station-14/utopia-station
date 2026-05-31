@@ -23,8 +23,6 @@ public sealed class MutationCryokinesisSystem : EntitySystem
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
 
-    private const string Action = "ActionGeneticIceball";
-
     public override void Initialize()
     {
         base.Initialize();
@@ -35,7 +33,7 @@ public sealed class MutationCryokinesisSystem : EntitySystem
 
     private void OnInit(EntityUid uid, MutationCryokinesisComponent comp, ComponentInit args)
     {
-        _actions.AddAction(uid, ref comp.GrantedAction, Action);
+        _actions.AddAction(uid, ref comp.GrantedAction, comp.ActionId);
     }
 
     private void OnShutdown(EntityUid uid, MutationCryokinesisComponent comp, ComponentShutdown args)

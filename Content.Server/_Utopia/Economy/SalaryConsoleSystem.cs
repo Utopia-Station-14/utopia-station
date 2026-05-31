@@ -39,6 +39,7 @@ public sealed class SalaryConsoleSystem : EntitySystem
             subs.Event<SalaryConsoleSendMoneyMessage>(OnSendMoney);
         });
     }
+
     private void OnSelectRecord(Entity<SalaryConsoleComponent> ent, ref SelectStationRecord msg)
     {
         ent.Comp.ActiveKey = msg.SelectedKey;

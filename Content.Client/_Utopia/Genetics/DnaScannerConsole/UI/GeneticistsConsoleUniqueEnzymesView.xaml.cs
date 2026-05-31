@@ -47,7 +47,6 @@ public sealed partial class GeneticistsConsoleUniqueEnzymesView : Control
 
         SetupSequencerButtons();
 
-        // Sequencer buttons
         for (var i = 0; i < _sequencerButtons.Length; i++)
         {
             var button = _sequencerButtons[i];
@@ -383,7 +382,7 @@ public sealed partial class GeneticistsConsoleUniqueEnzymesView : Control
     {
         var isDiscovered = ParentWindow?.DiscoveredMutationIds?.Contains(mutation.Id) ?? false;
         var isActive = mutation.Enabled;
-        var displayName = isDiscovered ? Loc.GetString(mutation.Name) : $"Mutation {mutation.Block:00}";
+        var displayName = isDiscovered ? Loc.GetString(mutation.Name) : Loc.GetString("dna-scanner-mutation-block", ("block", mutation.Block));
 
         if (isActive && !_isSelectedMutationStored)
         {
@@ -394,8 +393,8 @@ public sealed partial class GeneticistsConsoleUniqueEnzymesView : Control
             InfoNameLabel.Text = displayName;
         }
 
-        InfoDescLabel.Text = isDiscovered ? Loc.GetString(mutation.Description) : "Undiscovered mutation.";
-        InfoInstabilityLabel.Text = isDiscovered ? mutation.Instability.ToString() : "Unknown";
+        InfoDescLabel.Text = isDiscovered ? Loc.GetString(mutation.Description) : Loc.GetString("dna-scanner-undiscovered");
+        InfoInstabilityLabel.Text = isDiscovered ? mutation.Instability.ToString() : Loc.GetString("dna-scanner-console-unknown");
         UpdateConflictsDisplay(mutation);
         RefreshResearchLabel();
     }
@@ -446,13 +445,13 @@ public sealed partial class GeneticistsConsoleUniqueEnzymesView : Control
 
         if (!isDiscovered)
         {
-            InfoResearchLabel.Text = "Unknown";
+            InfoResearchLabel.Text = Loc.GetString("dna-scanner-console-unknown");
             return;
         }
 
         if (!IoCManager.Resolve<IPrototypeManager>().TryIndex<GeneticMutationPrototype>(_selectedMutationId, out var proto))
         {
-            InfoResearchLabel.Text = "Unknown";
+            InfoResearchLabel.Text = Loc.GetString("dna-scanner-console-unknown");
             return;
         }
 
@@ -476,7 +475,9 @@ public sealed partial class GeneticistsConsoleUniqueEnzymesView : Control
             completed = original - remaining;
         }
 
-        InfoResearchLabel.Text = completed >= total ? "Researched" : $"{completed} / {total}";
+        InfoResearchLabel.Text = completed >= total
+            ? Loc.GetString("dna-scanner-researched-mutations")
+            : $"{completed} / {total}";
     }
 
     public void RefreshMutationIcons()

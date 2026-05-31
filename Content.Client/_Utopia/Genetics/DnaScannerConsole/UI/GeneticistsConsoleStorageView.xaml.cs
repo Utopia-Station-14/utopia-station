@@ -140,17 +140,19 @@ public sealed partial class GeneticistsConsoleStorageView : Control
     private void UpdateMutationDetails(MutationEntry mutation)
     {
         var isDiscovered = ParentWindow?.DiscoveredMutationIds?.Contains(mutation.Id) ?? false;
-        var displayName = isDiscovered ? Loc.GetString(mutation.Name) : $"Mutation {mutation.Block:00}";
+        var displayName = isDiscovered
+            ? Loc.GetString(mutation.Name)
+            : Loc.GetString("dna-scanner-mutation-block", ("block", mutation.Block));
 
         StorageInfoNameLabel.Text = displayName;
 
         StorageInfoDescLabel.Text = isDiscovered
             ? Loc.GetString(mutation.Description)
-            : "Undiscovered mutation.";
+            : Loc.GetString("dna-scanner-undiscovered");
 
         StorageInfoInstabilityLabel.Text = isDiscovered
             ? mutation.Instability.ToString()
-            : "Unknown";
+            : Loc.GetString("dna-scanner-console-unknown");
 
         UpdateConflictsDisplay(mutation);
         RefreshResearchLabel();
@@ -202,13 +204,13 @@ public sealed partial class GeneticistsConsoleStorageView : Control
 
         if (!isDiscovered)
         {
-            StorageInfoResearchLabel.Text = "Unknown";
+            StorageInfoResearchLabel.Text = Loc.GetString("dna-scanner-console-unknown");
             return;
         }
 
         if (!IoCManager.Resolve<IPrototypeManager>().TryIndex<GeneticMutationPrototype>(_selectedMutationId, out var proto))
         {
-            StorageInfoResearchLabel.Text = "Unknown";
+            StorageInfoResearchLabel.Text = Loc.GetString("dna-scanner-console-unknown");
             return;
         }
 
@@ -230,7 +232,9 @@ public sealed partial class GeneticistsConsoleStorageView : Control
             completed = original - remaining;
         }
 
-        StorageInfoResearchLabel.Text = completed >= total ? "Researched" : $"{completed} / {total}";
+        StorageInfoResearchLabel.Text = completed >= total
+            ? Loc.GetString("dna-scanner-researched-mutations")
+            : $"{completed} / {total}";
     }
 
     private void UpdateActionButtonsState()

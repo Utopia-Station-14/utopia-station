@@ -12,6 +12,9 @@ public sealed partial class MutationInkGlandsComponent : Component
     public EntityUid? GrantedAction;
 
     [DataField]
+    public string ReagentId = "Ink";
+
+    [DataField]
     public int Amount = 10;
 
     [DataField]

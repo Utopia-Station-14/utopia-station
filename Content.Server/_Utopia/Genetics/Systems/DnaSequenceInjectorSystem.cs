@@ -25,34 +25,35 @@ public sealed class DNASequenceInjectorSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<DnaSequenceInjectorComponent, AfterInteractEvent>(OnAfterInteract);
         SubscribeLocalEvent<DnaSequenceInjectorComponent, UseInHandEvent>(OnUseInHand);
         SubscribeLocalEvent<DnaSequenceInjectorComponent, DNASequenceInjectorDoAfterEvent>(OnDoAfter);
         SubscribeLocalEvent<DnaSequenceInjectorComponent, ExaminedEvent>(OnExamined);
     }
 
-    private void OnExamined(EntityUid uid, DnaSequenceInjectorComponent comp, ExaminedEvent args)
+    private void OnExamined(Entity<DnaSequenceInjectorComponent> ent, ref ExaminedEvent args)
     {
-        if (comp.MutationId == null)
+        if (ent.Comp.MutationId == null)
         {
             args.PushMarkup(Loc.GetString("dna-injector-examine-empty"));
             return;
         }
 
-        var type = comp.IsMutator ? "mutator" : "activator";
-        var name = _prototype.TryIndex<GeneticMutationPrototype>(comp.MutationId, out var proto)
+        var type = ent.Comp.IsMutator ? "mutator" : "activator";
+        var name = _prototype.TryIndex<GeneticMutationPrototype>(ent.Comp.MutationId, out var proto)
             ? Loc.GetString(proto.Name)
-            : comp.MutationId;
+            : ent.Comp.MutationId;
 
         args.PushMarkup(Loc.GetString($"dna-injector-examine-{type}", ("mutation", name)));
     }
 
-    private void OnAfterInteract(EntityUid uid, DnaSequenceInjectorComponent comp, AfterInteractEvent args)
+    private void OnAfterInteract(Entity<DnaSequenceInjectorComponent> ent, ref AfterInteractEvent args)
     {
         if (args.Target is not { Valid: true } target || !args.CanReach || args.Handled)
             return;
 
-        if (comp.MutationId == null)
+        if (ent.Comp.MutationId == null)
         {
             args.Handled = true;
             return;
@@ -60,7 +61,7 @@ public sealed class DNASequenceInjectorSystem : EntitySystem
 
         var user = args.User;
 
-        var doAfterArgs = new DoAfterArgs(EntityManager, user, 2f, new DNASequenceInjectorDoAfterEvent(), uid, target)
+        var doAfterArgs = new DoAfterArgs(EntityManager, user, 2f, new DNASequenceInjectorDoAfterEvent(), ent, target)
         {
             BreakOnDamage = true,
             BreakOnMove = true,
@@ -83,12 +84,12 @@ public sealed class DNASequenceInjectorSystem : EntitySystem
         args.Handled = true;
     }
 
-    private void OnUseInHand(EntityUid uid, DnaSequenceInjectorComponent comp, UseInHandEvent args)
+    private void OnUseInHand(Entity<DnaSequenceInjectorComponent> ent, ref UseInHandEvent args)
     {
         if (args.Handled)
             return;
 
-        if (comp.MutationId == null)
+        if (ent.Comp.MutationId == null)
         {
             args.Handled = true;
             return;
@@ -97,7 +98,7 @@ public sealed class DNASequenceInjectorSystem : EntitySystem
         var user = args.User;
         var target = args.User;
 
-        var doAfterArgs = new DoAfterArgs(EntityManager, user, 2f, new DNASequenceInjectorDoAfterEvent(), uid, target)
+        var doAfterArgs = new DoAfterArgs(EntityManager, user, 2f, new DNASequenceInjectorDoAfterEvent(), ent, target)
         {
             BreakOnDamage = true,
             BreakOnMove = true,
@@ -112,12 +113,12 @@ public sealed class DNASequenceInjectorSystem : EntitySystem
         args.Handled = true;
     }
 
-    private void OnDoAfter(EntityUid uid, DnaSequenceInjectorComponent comp, DNASequenceInjectorDoAfterEvent args)
+    private void OnDoAfter(Entity<DnaSequenceInjectorComponent> ent, ref DNASequenceInjectorDoAfterEvent args)
     {
         if (args.Cancelled || args.Target is not { } target || args.Handled)
             return;
 
-        if (TryInject(uid, target, args.User, comp))
+        if (TryInject(ent, target, args.User, ent.Comp))
         {
             args.Handled = true;
         }
@@ -134,7 +135,7 @@ public sealed class DNASequenceInjectorSystem : EntitySystem
         if (!_prototype.HasIndex<GeneticMutationPrototype>(mutationId))
             return false;
 
-        if (!_shuffle.TryGetSlot(mutationId, out var slot))
+        if (!_shuffle.HasSlot(mutationId))
         {
             _popup.PopupEntity(Loc.GetString("dna-injector-no-effect"), targetUid, user);
             Del(injector);

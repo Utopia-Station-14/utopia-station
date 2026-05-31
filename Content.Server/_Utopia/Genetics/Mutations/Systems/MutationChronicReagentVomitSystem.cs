@@ -23,9 +23,9 @@ public sealed class MutationChronicReagentVomitSystem : EntitySystem
         SubscribeLocalEvent<MutationChronicReagentVomitComponent, ComponentInit>(OnInit);
     }
 
-    private void OnInit(EntityUid uid, MutationChronicReagentVomitComponent comp, ComponentInit args)
+    private void OnInit(Entity<MutationChronicReagentVomitComponent> ent, ref ComponentInit args)
     {
-        ScheduleNextVomit(uid, comp);
+        ScheduleNextVomit(ent);
     }
 
     public override void Update(float frameTime)
@@ -40,12 +40,12 @@ public sealed class MutationChronicReagentVomitSystem : EntitySystem
 
             if (!_random.Prob(comp.Chance))
             {
-                ScheduleNextVomit(uid, comp);
+                ScheduleNextVomit(comp);
                 continue;
             }
 
             PerformVomit(uid, comp);
-            ScheduleNextVomit(uid, comp);
+            ScheduleNextVomit(comp);
         }
     }
 
@@ -67,7 +67,7 @@ public sealed class MutationChronicReagentVomitSystem : EntitySystem
         }
     }
 
-    private void ScheduleNextVomit(EntityUid uid, MutationChronicReagentVomitComponent comp)
+    private void ScheduleNextVomit(MutationChronicReagentVomitComponent comp)
     {
         var delay = TimeSpan.FromSeconds(_random.NextFloat(comp.MinInterval, comp.MaxInterval));
         comp.NextVomitTime = _timing.CurTime + delay;

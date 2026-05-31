@@ -31,6 +31,12 @@ dna-scanner-sequence-info = Информация
 dna-scanner-unique-enzymes-tab = Последовательности
 dna-scanner-storage-tab = Хранилище
 dna-scanner-console-footer-flavor-left = ⚠ Внимание! Может привести к геномной нестабильности
+dna-scanner-console-unknown = Неизвестно
+dna-scanner-undiscovered = Неопознаная мутация.
+dna-scanner-mutation-block = Мутация: { $block }
+
+
+Loc.GetString("dna-scanner-unresearched-mutations")
 
 # Popup messages
 dna-scanner-empty-injector = Инжектор добавлен в консоль.

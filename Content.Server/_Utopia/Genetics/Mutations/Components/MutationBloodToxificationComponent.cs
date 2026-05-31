@@ -6,23 +6,17 @@ namespace Content.Server._Utopia.Genetics.Mutations.Components;
 [RegisterComponent]
 public sealed partial class MutationBloodToxificationComponent : Component
 {
-    /// <summary>
-    /// Interval between toxin damage checks, in seconds.
-    /// </summary>
     [DataField]
     public float Interval = 4.0f;
 
-    /// <summary>
-    /// Probability of applying toxin damage each interval.
-    /// </summary>
     [DataField]
     public float Chance = 0.25f;
 
-    /// <summary>
-    /// Amount of toxin damage to apply if the chance succeeds.
-    /// </summary>
     [DataField]
     public float ToxinAmount = 1.0f;
+
+    [DataField]
+    public string DamageType = "Poison";
 
     [ViewVariables]
     public TimeSpan NextTick;

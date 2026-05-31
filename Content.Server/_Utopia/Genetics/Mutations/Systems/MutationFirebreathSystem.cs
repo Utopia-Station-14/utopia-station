@@ -33,7 +33,7 @@ public sealed class MutationFirebreathSystem : EntitySystem
 
     private void OnInit(EntityUid uid, MutationFirebreathComponent comp, ComponentInit args)
     {
-        _actions.AddAction(uid, ref comp.GrantedAction, Action);
+        _actions.AddAction(uid, ref comp.GrantedAction, comp.ActionId);
     }
 
     private void OnShutdown(EntityUid uid, MutationFirebreathComponent comp, ComponentShutdown args)

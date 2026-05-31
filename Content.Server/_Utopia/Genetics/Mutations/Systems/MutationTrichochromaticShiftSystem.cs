@@ -24,11 +24,11 @@ public sealed class MutationTrichochromaticShiftSystem : EntitySystem
         SubscribeLocalEvent<MutationTrichochromaticShiftComponent, TrichochromaticShiftActionEvent>(OnActivate);
     }
 
-    private void OnStartup(EntityUid uid, MutationTrichochromaticShiftComponent comp, ref ComponentStartup args)
+    private void OnStartup(Entity<MutationTrichochromaticShiftComponent> ent, ref ComponentStartup args)
     {
-        _actions.AddAction(uid, ref comp.GrantedAction, comp.ActionId);
+        _actions.AddAction(ent.Owner, ref ent.Comp.GrantedAction, ent.Comp.ActionId);
 
-        if (!TryComp<HumanoidAppearanceComponent>(uid, out var humanoid))
+        if (!TryComp<HumanoidAppearanceComponent>(ent, out var humanoid))
             return;
 
         var originalHair = new List<(string, List<Color>)>();
@@ -50,66 +50,66 @@ public sealed class MutationTrichochromaticShiftSystem : EntitySystem
             }
         }
 
-        comp.OriginalHairMarkings = originalHair;
-        comp.OriginalFacialHairMarkings = originalFacial;
-        comp.UsesSinceOriginal = 0;
+        ent.Comp.OriginalHairMarkings = originalHair;
+        ent.Comp.OriginalFacialHairMarkings = originalFacial;
+        ent.Comp.UsesSinceOriginal = 0;
     }
 
-    private void OnShutdown(EntityUid uid, MutationTrichochromaticShiftComponent comp, ref ComponentShutdown args)
+    private void OnShutdown(Entity<MutationTrichochromaticShiftComponent> ent, ref ComponentShutdown args)
     {
-        if (comp.GrantedAction is { Valid: true } action)
+        if (ent.Comp.GrantedAction is { Valid: true } action)
         {
             _actions.RemoveAction(action);
         }
 
-        if (!TryComp<HumanoidAppearanceComponent>(uid, out var humanoid))
+        if (!TryComp<HumanoidAppearanceComponent>(ent, out var humanoid))
             return;
 
         humanoid.MarkingSet.RemoveCategory(MarkingCategories.Hair);
         humanoid.MarkingSet.RemoveCategory(MarkingCategories.FacialHair);
 
-        if (comp.OriginalHairMarkings is { } hair)
+        if (ent.Comp.OriginalHairMarkings is { } hair)
         {
             foreach (var (id, colors) in hair)
             {
-                _humanoid.AddMarking(uid, id, colors, forced: true);
+                _humanoid.AddMarking(ent.Owner, id, colors, forced: true);
             }
         }
 
-        if (comp.OriginalFacialHairMarkings is { } facial)
+        if (ent.Comp.OriginalFacialHairMarkings is { } facial)
         {
             foreach (var (id, colors) in facial)
             {
-                _humanoid.AddMarking(uid, id, colors, forced: true);
+                _humanoid.AddMarking(ent.Owner, id, colors, forced: true);
             }
         }
     }
 
-    private void OnActivate(EntityUid uid, MutationTrichochromaticShiftComponent comp, TrichochromaticShiftActionEvent args)
+    private void OnActivate(Entity<MutationTrichochromaticShiftComponent> ent, ref TrichochromaticShiftActionEvent args)
     {
-        if (!TryComp<HumanoidAppearanceComponent>(uid, out var humanoid))
+        if (!TryComp<HumanoidAppearanceComponent>(ent, out var humanoid))
             return;
 
-        comp.UsesSinceOriginal = (comp.UsesSinceOriginal + 1) % 4;
+        ent.Comp.UsesSinceOriginal = (ent.Comp.UsesSinceOriginal + 1) % 4;
 
-        if (comp.UsesSinceOriginal == 3)
+        if (ent.Comp.UsesSinceOriginal == 3)
         {
             humanoid.MarkingSet.RemoveCategory(MarkingCategories.Hair);
             humanoid.MarkingSet.RemoveCategory(MarkingCategories.FacialHair);
 
-            if (comp.OriginalHairMarkings is { } hair)
+            if (ent.Comp.OriginalHairMarkings is { } hair)
             {
                 foreach (var (id, colors) in hair)
                 {
-                    _humanoid.AddMarking(uid, id, colors, forced: true);
+                    _humanoid.AddMarking(ent.Owner, id, colors, forced: true);
                 }
             }
 
-            if (comp.OriginalFacialHairMarkings is { } facial)
+            if (ent.Comp.OriginalFacialHairMarkings is { } facial)
             {
                 foreach (var (id, colors) in facial)
                 {
-                    _humanoid.AddMarking(uid, id, colors, forced: true);
+                    _humanoid.AddMarking(ent.Owner, id, colors, forced: true);
                 }
             }
         }
@@ -124,7 +124,7 @@ public sealed class MutationTrichochromaticShiftSystem : EntitySystem
             {
                 for (var i = 0; i < hairMarkings.Count; i++)
                 {
-                    _humanoid.SetMarkingColor(uid, MarkingCategories.Hair, i, new List<Color> { randomColor });
+                    _humanoid.SetMarkingColor(ent.Owner, MarkingCategories.Hair, i, new List<Color> { randomColor });
                 }
             }
 
@@ -132,7 +132,7 @@ public sealed class MutationTrichochromaticShiftSystem : EntitySystem
             {
                 for (var i = 0; i < facialMarkings.Count; i++)
                 {
-                    _humanoid.SetMarkingColor(uid, MarkingCategories.FacialHair, i, new List<Color> { randomColor });
+                    _humanoid.SetMarkingColor(ent.Owner, MarkingCategories.FacialHair, i, new List<Color> { randomColor });
                 }
             }
         }

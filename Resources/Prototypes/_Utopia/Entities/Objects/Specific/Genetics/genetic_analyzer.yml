@@ -1,10 +1,10 @@
 - type: entity
-  id: HandheldGeneticAnalyzerUnpowered
+  abstract: true
   parent: BaseItem
+  id: UtopiaHandheldGeneticAnalyzerUnpowered
   name: genetic analyzer
   description: A hand-held body scanner capable of distinguishing genetic sequences of a subject.
-  suffix: empty
-  abstract: true
+  suffix: Always Powered
   components:
   - type: Sprite
     sprite: _Utopia/Objects/Specific/Medical/geneticanalyzer.rsi
@@ -42,9 +42,8 @@
     - Genetics
 
 - type: entity
-  id: HandheldGeneticAnalyzer
-  parent: [ HandheldGeneticAnalyzerUnpowered, PowerCellSlotSmallItem ]
-  suffix: Powered
+  parent: [ UtopiaHandheldGeneticAnalyzerUnpowered, PowerCellSlotSmallItem ]
+  id: UtopiaHandheldGeneticAnalyzer
   components:
   - type: PowerCellDraw
     drawRate: .5
@@ -53,8 +52,8 @@
   - type: BatteryVisuals
 
 - type: entity
-  id: HandheldGeneticAnalyzerEmpty
-  parent: HandheldGeneticAnalyzer
+  parent: UtopiaHandheldGeneticAnalyzer
+  id: UtopiaHandheldGeneticAnalyzerEmpty
   suffix: Empty
   components:
   - type: ItemSlots
@@ -69,20 +68,10 @@
       visible: false
       map: [ "enum.PowerDeviceVisualLayers.Powered" ]
 
-- type: latheRecipe
-  id: HandheldGeneticAnalyzer
-  result: HandheldGeneticAnalyzerEmpty
-  categories:
-  - Tools
-  completetime: 4
-  materials:
-    Glass: 200
-    Steel: 200
-
 - type: entity
-  name: genetic analysis report
   parent: Paper
-  id: GeneticAnalyzerReportPaper
+  id: UtopiaGeneticAnalyzerReportPaper
+  name: genetic analysis report
   description: A detailed genetic analysis of a scanned subject's structural enzymes sequences.
   components:
   - type: Sprite

@@ -1,2 +1,2 @@
 ent-UtopiaProjectileWeakFireball = { ent-ProjectileFireball }
-    .desc = Воплощение всей ярости мира.
+    .desc = Маленький, умеренно разрушительный огненный шар.

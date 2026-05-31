@@ -19,6 +19,7 @@ public sealed class InstabilityCountdownSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<PendingInstabilityMutationComponent, ComponentStartup>(OnStartup);
     }
 

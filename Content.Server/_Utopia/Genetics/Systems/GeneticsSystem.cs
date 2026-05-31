@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server._Utopia.Genetics.Components;
+using Content.Server._Utopia.Genetics.Mutations.Components;
 using Content.Server._Utopia.Genetics.Mutations.Systems;
 using Content.Server.Popups;
 using Content.Shared._Utopia.Genetics;

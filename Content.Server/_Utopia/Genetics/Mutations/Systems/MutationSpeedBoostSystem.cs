@@ -17,14 +17,14 @@ public sealed class MutationSpeedBoostSystem : EntitySystem
         SubscribeLocalEvent<MutationSpeedBoostComponent, RefreshMovementSpeedModifiersEvent>(OnRefreshMovement);
     }
 
-    private void OnInit(EntityUid uid, MutationSpeedBoostComponent ent, ComponentInit args)
+    private void OnInit(Entity<MutationSpeedBoostComponent> ent, ref ComponentInit args)
     {
-        _moveSpeedSystem.RefreshMovementSpeedModifiers(uid);
+        _moveSpeedSystem.RefreshMovementSpeedModifiers(ent.Owner);
     }
 
-    private void OnRemove(EntityUid uid, MutationSpeedBoostComponent ent, ComponentRemove args)
+    private void OnRemove(Entity<MutationSpeedBoostComponent> ent, ref ComponentRemove args)
     {
-        _moveSpeedSystem.RefreshMovementSpeedModifiers(uid);
+        _moveSpeedSystem.RefreshMovementSpeedModifiers(ent.Owner);
     }
 
     private void OnRefreshMovement(Entity<MutationSpeedBoostComponent> ent, ref RefreshMovementSpeedModifiersEvent args)

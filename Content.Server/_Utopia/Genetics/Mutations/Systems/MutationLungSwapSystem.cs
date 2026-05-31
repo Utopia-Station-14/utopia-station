@@ -10,8 +10,6 @@ public sealed class MutationLungSwapSystem : EntitySystem
     [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
 
-    private const string HiddenStorageContainerId = "mutation_hidden_lung_storage";
-
     public override void Initialize()
     {
         base.Initialize();
@@ -39,7 +37,7 @@ public sealed class MutationLungSwapSystem : EntitySystem
 
         _container.Remove(originalLung, lungSlot);
 
-        var hiddenContainer = _container.EnsureContainer<ContainerSlot>(ent.Owner, HiddenStorageContainerId);
+        var hiddenContainer = _container.EnsureContainer<ContainerSlot>(ent.Owner, ent.Comp.HiddenStorageContainerId);
         _container.Insert(originalLung, hiddenContainer);
 
         var newLung = Spawn(ent.Comp.NewLungPrototype, Transform(ent.Owner).Coordinates);
@@ -63,7 +61,7 @@ public sealed class MutationLungSwapSystem : EntitySystem
             Del(current);
         }
 
-        if (_container.TryGetContainer(ent.Owner, HiddenStorageContainerId, out var baseHiddenContainer)
+        if (_container.TryGetContainer(ent.Owner, ent.Comp.HiddenStorageContainerId, out var baseHiddenContainer)
         && baseHiddenContainer is ContainerSlot hiddenContainer
         && hiddenContainer.ContainedEntity is { } storedLung)
         {
@@ -74,7 +72,7 @@ public sealed class MutationLungSwapSystem : EntitySystem
         ent.Comp.OriginalLung = null;
         ent.Comp.SwappedLung = null;
 
-        if (_container.TryGetContainer(ent.Owner, HiddenStorageContainerId, out var cleanupBase)
+        if (_container.TryGetContainer(ent.Owner, ent.Comp.HiddenStorageContainerId, out var cleanupBase)
         && cleanupBase is ContainerSlot cleanupSlot
         && cleanupSlot.ContainedEntity is null)
         {

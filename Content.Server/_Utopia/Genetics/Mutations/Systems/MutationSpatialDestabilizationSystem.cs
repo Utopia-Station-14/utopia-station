@@ -18,9 +18,9 @@ public sealed class MutationSpatialDestabilizationSystem : EntitySystem
         SubscribeLocalEvent<MutationSpatialDestabilizationComponent, ComponentInit>(OnInit);
     }
 
-    private void OnInit(EntityUid uid, MutationSpatialDestabilizationComponent comp, ComponentInit args)
+    private void OnInit(Entity<MutationSpatialDestabilizationComponent> ent, ref ComponentInit args)
     {
-        ScheduleNextTeleport(comp);
+        ScheduleNextTeleport(ent.Comp);
     }
 
     private void ScheduleNextTeleport(MutationSpatialDestabilizationComponent comp)

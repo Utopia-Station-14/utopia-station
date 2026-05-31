@@ -14,23 +14,23 @@ public sealed class MutationThermalResistanceSystem : EntitySystem
         SubscribeLocalEvent<MutationThermalResistanceComponent, ModifyChangedTemperatureEvent>(OnModifyTemperature);
     }
 
-    private void OnGetInsulation(EntityUid uid, MutationThermalResistanceComponent component, ref GetThermalInsulationEvent args)
+    private void OnGetInsulation(Entity<MutationThermalResistanceComponent> ent, ref GetThermalInsulationEvent args)
     {
         var coefficient = args.TemperatureDelta < 0
-            ? component.CoolingCoefficient
-            : component.HeatingCoefficient;
+            ? ent.Comp.CoolingCoefficient
+            : ent.Comp.HeatingCoefficient;
 
         args.Coefficient *= coefficient;
     }
 
-    private void OnModifyTemperature(EntityUid uid, MutationThermalResistanceComponent component, ref ModifyChangedTemperatureEvent args)
+    private void OnModifyTemperature(Entity<MutationThermalResistanceComponent> ent, ref ModifyChangedTemperatureEvent args)
     {
         var ev = new GetThermalInsulationEvent(1f)
         {
             TemperatureDelta = args.TemperatureDelta
         };
 
-        RaiseLocalEvent(uid, ref ev);
+        RaiseLocalEvent(ent.Owner, ref ev);
         args.TemperatureDelta *= ev.Coefficient;
     }
 }

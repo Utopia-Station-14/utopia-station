@@ -1,4 +1,5 @@
 - type: entity
+  categories: [ HideSpawnMenu ]
   id: ActionGeneticFireball
   name: fire breath
   components:
@@ -19,6 +20,7 @@
       prototype: UtopiaProjectileWeakFireball
 
 - type: entity
+  categories: [ HideSpawnMenu ]
   id: ActionAdrenalineRush
   name: Adrenaline Rush
   description: Triggers a powerful surge of adrenaline.
@@ -32,6 +34,7 @@
     event: !type:AdrenalineRushActionEvent
 
 - type: entity
+  categories: [ HideSpawnMenu ]
   id: ActionGeneticIceball
   name: Cryokinesis
   description: Fire a bolt of ice from your fingertips.
@@ -53,6 +56,7 @@
       prototype: ProjectileIcicle
 
 - type: entity
+  categories: [ HideSpawnMenu ]
   id: ActionInkSpurt
   name: Ink Spurt
   description: Spurt a puddle of slippery black ink behind you.
@@ -66,6 +70,7 @@
     event: !type:InkSpurtActionEvent
 
 - type: entity
+  categories: [ HideSpawnMenu ]
   id: ActionOpticBlast
   name: Optic Blast
   components:
@@ -85,6 +90,7 @@
     event: !type:OpticBlastActionEvent
 
 - type: entity
+  categories: [ HideSpawnMenu ]
   id: ActionTrichochromaticShift
   name: Trichochromatic Shift
   description: Shift your hair to a random color.
@@ -92,7 +98,7 @@
   - type: Action
     useDelay: 5
     icon:
-      sprite: _Funkystation/Clothing/Head/Hats/pwig.rsi
-      state: icon
+      sprite: Objects/Misc/ParcelWrap/parcel_wrap_trash.rsi
+      state: brown
   - type: InstantAction
     event: !type:TrichochromaticShiftActionEvent

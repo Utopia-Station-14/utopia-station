@@ -74,14 +74,14 @@ public sealed class MutationTailSwapSystem : EntitySystem
         Dirty(ent, humanoid);
     }
 
-    private void OnShutdown(EntityUid ent, MutationTailSwapComponent comp, ref ComponentShutdown args)
+    private void OnShutdown(Entity<MutationTailSwapComponent> ent, ref ComponentShutdown args)
     {
         if (!TryComp<HumanoidAppearanceComponent>(ent, out var humanoid))
             return;
 
-        humanoid.MarkingSet.Remove(MarkingCategories.Tail, comp.NewTailMarking);
+        humanoid.MarkingSet.Remove(MarkingCategories.Tail, ent.Comp.NewTailMarking);
 
-        if (comp.OriginalTailMarkings is { } originals)
+        if (ent.Comp.OriginalTailMarkings is { } originals)
         {
             foreach (var (markingId, colors) in originals)
             {

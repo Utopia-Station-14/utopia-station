@@ -19,6 +19,9 @@ public sealed partial class GeneticAnalyzerComponent : Component
     public List<MutationEntry> Mutations = new();
 
     [DataField]
+    public string ReportEntity = "GeneticAnalyzerReportPaper";
+
+    [DataField]
     public SoundSpecifier ScanningEndSound = new SoundPathSpecifier("/Audio/Items/Medical/healthscanner.ogg");
 }
 

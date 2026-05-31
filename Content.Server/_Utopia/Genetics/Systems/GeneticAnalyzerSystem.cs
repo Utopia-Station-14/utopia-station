@@ -39,25 +39,26 @@ public sealed class GeneticAnalyzerSystem : SharedGeneticAnalyzerSystem
         SubscribeLocalEvent<GeneticAnalyzerComponent, GeneticAnalyzerPrintMessage>(OnPrint);
     }
 
-    private void OnPrint(EntityUid uid, GeneticAnalyzerComponent component, GeneticAnalyzerPrintMessage args)
+    private void OnPrint(Entity<GeneticAnalyzerComponent> ent, ref GeneticAnalyzerPrintMessage args)
     {
-        if (string.IsNullOrEmpty(component.PatientName) || !component.Mutations.Any())
+        if (string.IsNullOrEmpty(ent.Comp.PatientName) || ent.Comp.Mutations.Count == 0)
             return;
 
-        var discoveredIds = _mutationDiscovery.GetGridDiscovered(uid);
+        var discoveredIds = _mutationDiscovery.GetGridDiscovered(ent.Owner);
 
-        var printed = EntityManager.SpawnEntity("GeneticAnalyzerReportPaper", Transform(uid).Coordinates);
+        var printed = EntityManager.SpawnEntity(ent.Comp.ReportEntity, Transform(ent).Coordinates);
 
         _handsSystem.PickupOrDrop(args.Actor, printed, checkActionBlocker: false);
 
         var random = new Random();
         var reportNumber = random.Next(1, 1000);
         var title = Loc.GetString("genetic-analyzer-report-title", ("number", reportNumber.ToString("D3")));
+
         _metaData.SetEntityName(printed, title);
 
         var sb = new StringBuilder();
         sb.AppendLine();
-        var sorted = component.Mutations
+        var sorted = ent.Comp.Mutations
             .Where(m => m.Block > 0)
             .OrderBy(m => m.Block);
 
@@ -77,7 +78,7 @@ public sealed class GeneticAnalyzerSystem : SharedGeneticAnalyzerSystem
             _paperSystem.SetContent((printed, paper), sb.ToString().TrimEnd());
         }
 
-        _audio.PlayPvs(new SoundPathSpecifier("/Audio/Machines/short_print_and_rip.ogg"), uid,
+        _audio.PlayPvs(new SoundPathSpecifier("/Audio/Machines/short_print_and_rip.ogg"), ent.Owner,
             AudioParams.Default.WithVariation(0.25f).WithVolume(3f).WithRolloffFactor(2.8f).WithMaxDistance(4.5f));
     }
 
@@ -102,24 +103,24 @@ public sealed class GeneticAnalyzerSystem : SharedGeneticAnalyzerSystem
         return sb.ToString();
     }
 
-    private void OnAfterInteract(EntityUid uid, GeneticAnalyzerComponent component, AfterInteractEvent args)
+    private void OnAfterInteract(Entity<GeneticAnalyzerComponent> ent, ref AfterInteractEvent args)
     {
         if (args.Handled || args.Target is not { Valid: true } target || !args.CanReach)
             return;
 
-        if (!_cell.HasDrawCharge(uid, user: args.User))
+        if (!_cell.HasDrawCharge(ent.Owner, user: args.User))
         {
-            _popup.PopupEntity(Loc.GetString("health-analyzer-popup-no-power"), uid, args.User);
+            _popup.PopupEntity(Loc.GetString("health-analyzer-popup-no-power"), ent, args.User);
             return;
         }
 
-        if (!TryComp<GeneticsComponent>(target, out _))
+        if (!HasComp<GeneticsComponent>(target))
             return;
 
         args.Handled = true;
 
         var doAfter = new DoAfterArgs(EntityManager, args.User, TimeSpan.FromSeconds(1.5f),
-            new GeneticAnalyzerDoAfterEvent(), uid, target)
+            new GeneticAnalyzerDoAfterEvent(), ent.Owner, target)
         {
             BreakOnDamage = true,
             BreakOnMove = true,

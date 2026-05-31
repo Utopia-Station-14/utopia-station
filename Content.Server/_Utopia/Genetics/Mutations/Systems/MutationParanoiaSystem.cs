@@ -18,9 +18,9 @@ public sealed class MutationParanoiaSystem : EntitySystem
         SubscribeLocalEvent<MutationParanoiaComponent, ComponentInit>(OnInit);
     }
 
-    private void OnInit(EntityUid uid, MutationParanoiaComponent comp, ComponentInit args)
+    private void OnInit(Entity<MutationParanoiaComponent> ent, ref ComponentInit args)
     {
-        comp.NextCheck = _timing.CurTime + TimeSpan.FromSeconds(_random.NextFloat(0f, comp.Interval));
+        ent.Comp.NextCheck = _timing.CurTime + TimeSpan.FromSeconds(_random.NextFloat(0f, ent.Comp.Interval));
     }
 
     public override void Update(float frameTime)
@@ -33,11 +33,12 @@ public sealed class MutationParanoiaSystem : EntitySystem
             if (_timing.CurTime < comp.NextCheck)
                 continue;
 
-            comp.NextCheck = _timing.CurTime + TimeSpan.FromSeconds(_random.NextFloat(0.8f * comp.Interval, 1.2f * comp.Interval));
+            comp.NextCheck = _timing.CurTime + TimeSpan.FromSeconds(
+                _random.NextFloat(0.8f * comp.Interval, 1.2f * comp.Interval));
 
             if (_random.Prob(comp.EmoteChance))
             {
-                _chat.TryEmoteWithChat(uid, "Scream");
+                _chat.TryEmoteWithChat(uid, comp.EmotionId);
             }
         }
     }

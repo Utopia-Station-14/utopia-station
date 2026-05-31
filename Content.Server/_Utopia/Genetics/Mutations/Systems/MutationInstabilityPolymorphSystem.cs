@@ -2,6 +2,7 @@ using System.Linq;
 using Content.Server._Utopia.Genetics.Components;
 using Content.Server._Utopia.Genetics.Mutations.Components;
 using Content.Server._Utopia.Genetics.Systems;
+using Content.Server.Polymorph.Components;
 using Content.Server.Polymorph.Systems;
 using Content.Shared._Utopia.Genetics.Prototypes;
 using Content.Shared.Buckle.Components;
@@ -20,16 +21,17 @@ public sealed class MutationInstabilityPolymorphSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<MutationInstabilityPolymorphComponent, ComponentStartup>(OnStartup);
+        SubscribeLocalEvent<MutationInstabilityPolymorphComponent, ComponentRemove>(OnRemove);
     }
 
-    private void OnStartup(EntityUid oldUid, MutationInstabilityPolymorphComponent component, ComponentStartup args)
+    private void OnStartup(Entity<MutationInstabilityPolymorphComponent> ent, ref ComponentStartup args)
     {
-        if (!HasComp<BuckleComponent>(oldUid)) // Fails tests without this.
+        if (!HasComp<BuckleComponent>(ent.Owner)) // Fails tests without this.
             return;
 
-        if (!TryComp<GeneticsComponent>(oldUid, out var oldGenetics))
+        if (!TryComp<GeneticsComponent>(ent.Owner, out var oldGenetics))
         {
-            _polymorph.PolymorphEntity(oldUid, component.PolymorphId);
+            _polymorph.PolymorphEntity(ent.Owner, ent.Comp.PolymorphId);
             return;
         }
 
@@ -54,7 +56,7 @@ public sealed class MutationInstabilityPolymorphSystem : EntitySystem
 
         var instability = oldGenetics.GeneticInstability;
         var baseMutationIds = new HashSet<string>(oldGenetics.BaseMutationIds);
-        var newUid = _polymorph.PolymorphEntity(oldUid, component.PolymorphId);
+        var newUid = _polymorph.PolymorphEntity(ent.Owner, ent.Comp.PolymorphId);
 
         if (!newUid.HasValue)
             return;
@@ -78,5 +80,13 @@ public sealed class MutationInstabilityPolymorphSystem : EntitySystem
 
         RemCompDeferred<MutationInstabilityPolymorphComponent>(newUid.Value);
         Dirty(newUid.Value, newGenetics);
+    }
+
+    private void OnRemove(Entity<MutationInstabilityPolymorphComponent> ent, ref ComponentRemove args)
+    {
+        if (!TryComp<PolymorphedEntityComponent>(ent, out var poly))
+            return;
+
+        _polymorph.Revert((ent.Owner, poly));
     }
 }
