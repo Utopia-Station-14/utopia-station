@@ -162,13 +162,24 @@ public sealed partial class AtmosphereSystem
         var volume = GetVolumeForTiles(ent);
         TryComp(ent.Comp4.MapUid, out MapAtmosphereComponent? mapAtmos);
 
-        var enumerator = _map.GetAllTilesEnumerator(ent, ent);
-        while (enumerator.MoveNext(out var tileRef))
+        InvalidateAllTiles((ent.Owner, ent.Comp3, atmos));
+
+        foreach (var indices in atmos.InvalidatedCoords)
         {
-            var tile = GetOrNewTile(ent, ent, tileRef.Value.GridIndices);
+            var tile = GetOrNewTile(ent.Owner, atmos, indices, out _, invalidateNew: false);
             UpdateTileData(ent, mapAtmos, tile);
-            UpdateAdjacentTiles(ent, tile, activate: true);
+            atmos.CurrentRunInvalidatedTiles.Enqueue(tile);
+        }
+
+        atmos.InvalidatedCoords.Clear();
+
+        while (atmos.CurrentRunInvalidatedTiles.TryDequeue(out var tile))
+        {
+            UpdateAdjacentTiles(ent, tile, activate: true, mapAtmos, volume, atmos.CurrentRunInvalidatedTiles);
             UpdateTileAir(ent, tile, volume);
+
+            if (tile.Air != null)
+                AddActiveTile(atmos, tile);
         }
     }
 

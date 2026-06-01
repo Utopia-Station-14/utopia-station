@@ -71,7 +71,7 @@ public partial class AtmosphereSystem
             // And ideally some fast way to get the innermost airtight container.
         }
 
-        var position = _transformSystem.GetGridTilePositionOrDefault((ent, ent.Comp));
+        var position = _transformSystem.GetGridOrMapTilePosition(ent.Owner, ent.Comp);
         return GetTileMixture(grid, map, position, excite);
     }
 
@@ -149,8 +149,33 @@ public partial class AtmosphereSystem
     [PublicAPI]
     public void InvalidateTile(Entity<GridAtmosphereComponent?> entity, Vector2i tile)
     {
-        if (_atmosQuery.Resolve(entity.Owner, ref entity.Comp, false))
-            entity.Comp.InvalidatedCoords.Add(tile);
+        if (!_atmosQuery.Resolve(entity.Owner, ref entity.Comp, false))
+            return;
+
+        entity.Comp.InvalidatedCoords.Add(tile);
+
+        // Empty cells and not-yet-simulated coords need an immediate TileAtmosphere, not just a queued revalidate.
+        var needsImmediate = !entity.Comp.Tiles.ContainsKey(tile);
+
+        if (!needsImmediate &&
+            TryComp(entity.Owner, out MapGridComponent? grid) &&
+            _map.TryGetTile(grid, tile, out var mapTile))
+        {
+            needsImmediate = mapTile.IsEmpty;
+        }
+
+        if (!needsImmediate)
+            return;
+
+        if (!TryComp(entity.Owner, out MapGridComponent? mapGrid) ||
+            !TryComp(entity.Owner, out GasTileOverlayComponent? overlay) ||
+            !TryComp(entity.Owner, out TransformComponent? xform))
+        {
+            return;
+        }
+
+        TryComp(xform.MapUid, out MapAtmosphereComponent? mapAtmos);
+        SyncAtmosTile((entity.Owner, entity.Comp, overlay, mapGrid, xform), tile, mapAtmos);
     }
 
     /// <summary>
@@ -185,6 +210,25 @@ public partial class AtmosphereSystem
                 var tile = tiles[i];
                 if (!gridEnt.Comp1.Tiles.TryGetValue(tile, out var atmosTile))
                 {
+                    // If this is an empty/open tile that exists on the grid, ensure a simulated cell so
+                    // gas can persist there even for bulk queries that don't request excite.
+                    if (TryComp(gridEnt.Owner, out MapGridComponent? mg) &&
+                        _map.TryGetTile(mg, tile, out var mt) && mt.IsEmpty)
+                    {
+                        EnsureAtmosTileForIndices(gridEnt.Owner, tile, excite: true);
+                        if (gridEnt.Comp1.Tiles.TryGetValue(tile, out atmosTile))
+                        {
+                            mixtures[i] = atmosTile.Air;
+                            if (excite)
+                            {
+                                AddActiveTile(gridEnt.Comp1, atmosTile);
+                                InvalidateVisuals((gridEnt.Owner, gridEnt.Comp2), tile);
+                            }
+
+                            continue;
+                        }
+                    }
+
                     // need to get map atmosphere
                     handled = false;
                     continue;
@@ -210,7 +254,7 @@ public partial class AtmosphereSystem
             mixtures ??= new GasMixture?[tiles.Count];
             for (var i = 0; i < tiles.Count; i++)
             {
-                mixtures[i] ??= mapEnt.Comp.Mixture;
+                mixtures[i] ??= GetMapTileMixture(mapEnt.Owner, tiles[i], excite) ?? mapEnt.Comp.Mixture;
             }
 
             return mixtures;
@@ -241,7 +285,7 @@ public partial class AtmosphereSystem
         if (!Resolve(entity.Owner, ref entity.Comp))
             return null;
 
-        var indices = _transformSystem.GetGridTilePositionOrDefault(entity);
+        var indices = _transformSystem.GetGridOrMapTilePosition(entity);
         return GetTileMixture(entity.Comp.GridUid, entity.Comp.MapUid, indices, excite);
     }
 
@@ -262,20 +306,56 @@ public partial class AtmosphereSystem
     {
         // If we've been passed a grid, try to let it handle it.
         if (grid is { } gridEnt
-            && _atmosQuery.Resolve(gridEnt, ref gridEnt.Comp1, false)
-            && gridEnt.Comp1.Tiles.TryGetValue(gridTile, out var tile))
+            && _atmosQuery.Resolve(gridEnt, ref gridEnt.Comp1, false))
         {
-            if (excite)
+            var atmos = gridEnt.Comp1;
+            if (!atmos.Tiles.TryGetValue(gridTile, out var tile))
             {
-                AddActiveTile(gridEnt.Comp1, tile);
-                InvalidateVisuals((grid.Value.Owner, grid.Value.Comp2), gridTile);
-            }
+                // If the tile exists on the grid but is "empty" (open/space),
+                // we still want a real mutable mixture so gas can persist there.
+                // Otherwise, callers that don't set excite will always see map default (SpaceGas).
+                if (!excite && TryComp(gridEnt.Owner, out MapGridComponent? mg) &&
+                    _map.TryGetTile(mg, gridTile, out var mt) && mt.IsEmpty)
+                {
+                    excite = true;
+                }
 
-            return tile.Air;
+                if (excite)
+                {
+                    tile = GetOrNewTile(gridEnt.Owner, atmos, gridTile, out _, invalidateNew: true);
+                    TryComp(gridEnt.Owner, out MapGridComponent? mapGrid);
+                    EnsureTileHasAir(atmos, mapGrid, tile);
+                    AddActiveTile(atmos, tile);
+                    if (TryComp(gridEnt.Owner, out GasTileOverlayComponent? overlay))
+                        InvalidateVisuals((gridEnt.Owner, overlay), gridTile);
+                    return tile.Air;
+                }
+
+                if (map is { } mapEntity
+                    && TryComp(gridEnt.Owner, out MapGridComponent? gridComp))
+                {
+                    var worldTile = GridTileToWorldTile(gridEnt.Owner, gridComp, gridTile);
+                    return GetMapTileMixture(mapEntity.Owner, worldTile, excite);
+                }
+            }
+            else
+            {
+                TryComp(gridEnt.Owner, out MapGridComponent? mapGrid);
+                EnsureTileHasAir(atmos, mapGrid, tile);
+
+                if (excite)
+                {
+                    AddActiveTile(atmos, tile);
+                    if (TryComp(gridEnt.Owner, out GasTileOverlayComponent? overlay))
+                        InvalidateVisuals((gridEnt.Owner, overlay), gridTile);
+                }
+
+                return tile.Air;
+            }
         }
 
         if (map is { } mapEnt && _mapAtmosQuery.Resolve(mapEnt, ref mapEnt.Comp, false))
-            return mapEnt.Comp.Mixture;
+            return GetMapTileMixture(mapEnt.Owner, gridTile, excite) ?? mapEnt.Comp.Mixture;
 
         // Default to a space mixture... This is a space game, after all!
         return GasMixture.SpaceGas;

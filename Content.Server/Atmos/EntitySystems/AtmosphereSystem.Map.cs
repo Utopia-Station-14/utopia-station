@@ -19,6 +19,7 @@ public partial class AtmosphereSystem
 
     private void OnMapStartup(EntityUid uid, MapAtmosphereComponent component, ComponentInit args)
     {
+        EnsureComp<MapAtmosphereSimulationComponent>(uid);
         component.Mixture.MarkImmutable();
         component.Overlay = _gasTileOverlaySystem.GetOverlayData(component.Mixture);
     }

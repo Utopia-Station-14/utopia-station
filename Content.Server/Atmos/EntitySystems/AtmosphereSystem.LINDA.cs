@@ -1,5 +1,4 @@
 using Content.Server.Atmos.Components;
-using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Robust.Shared.Map.Components;
@@ -14,7 +13,9 @@ namespace Content.Server.Atmos.EntitySystems
             TileAtmosphere tile, int fireCount)
         {
             var gridAtmosphere = ent.Comp1;
-            // Can't process a tile without air
+            if (tile.Air == null)
+                EnsureTileHasAir(gridAtmosphere, ent.Comp3, tile);
+
             if (tile.Air == null)
             {
                 RemoveActiveTile(gridAtmosphere, tile);
@@ -40,6 +41,9 @@ namespace Content.Server.Atmos.EntitySystems
                 if (!tile.AdjacentBits.IsFlagSet(direction)) continue;
                 var enemyTile = tile.AdjacentTiles[i];
 
+                if (enemyTile != null && enemyTile.Air == null)
+                    EnsureTileHasAir(gridAtmosphere, ent.Comp3, enemyTile);
+
                 // If the tile is null or has no air, we don't do anything for it.
                 if(enemyTile?.Air == null) continue;
                 if (fireCount <= enemyTile.CurrentCycle) continue;
@@ -49,7 +53,7 @@ namespace Content.Server.Atmos.EntitySystems
 
                 if (ExcitedGroups && tile.ExcitedGroup != null && enemyTile.ExcitedGroup != null)
                 {
-                    if (tile.ExcitedGroup != enemyTile.ExcitedGroup)
+                    if (tile.ExcitedGroup != enemyTile.ExcitedGroup && !enemyTile.NoGridTile)
                     {
                         ExcitedGroupMerge(gridAtmosphere, tile.ExcitedGroup, enemyTile.ExcitedGroup);
                     }
@@ -58,7 +62,13 @@ namespace Content.Server.Atmos.EntitySystems
                 } else if (CompareExchange(tile, enemyTile) != GasCompareResult.NoExchange)
                 {
                     AddActiveTile(gridAtmosphere, enemyTile);
-                    if (ExcitedGroups)
+                    if (enemyTile.NoGridTile && ent.Comp4.MapUid != null
+                        && TryComp<MapAtmosphereSimulationComponent>(ent.Comp4.MapUid, out var mapSim))
+                    {
+                        AddMapActiveTile(mapSim, enemyTile);
+                    }
+
+                    if (ExcitedGroups && !enemyTile.NoGridTile)
                     {
                         var excitedGroup = tile.ExcitedGroup;
                         excitedGroup ??= enemyTile.ExcitedGroup;
@@ -100,17 +110,11 @@ namespace Content.Server.Atmos.EntitySystems
                 }
             }
 
-            // Utopia-Tweak : ZLevels
-            //if(tile.Air != null)
-            if (ProcessZAtmos(ent, tile, tile.GridIndices, fireCount))
-            {
-                if (tile.Air != null)
-                    React(tile.Air, tile);
+            if(tile.Air != null)
+                React(tile.Air, tile);
 
-                InvalidateVisuals(ent, tile);
-                return;
-            }
-            // Utopia-Tweak : ZLevels
+            InvalidateVisuals(ent, tile);
+
             var remove = true;
 
             if(tile.Air!.Temperature > Atmospherics.MinimumTemperatureStartSuperConduction)
