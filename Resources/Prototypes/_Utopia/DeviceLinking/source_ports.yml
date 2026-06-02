@@ -1,0 +1,5 @@
+- type: sourcePort
+  id: ExplosionBeaconConsoleSender
+  name: signal-port-name-explosion-beacon-console-sender
+  description: signal-port-description-explosion-beacon-console-sender
+  defaultLinks: [ ExplosionBeaconReceiver ]

@@ -1,31 +1,35 @@
 using Content.Shared._Utopia.Explosion.Events;
-using Robust.Shared.GameObjects;
+using Content.Shared._Utopia.Toxicology.Components;
 using Robust.Shared.Random;
 
 namespace Content.Server._Utopia.Toxicology.Systems;
 
 /// <summary>
 /// Система маяка, который отслеживает параметры взрывов.
-/// Чем ближе игроку получается достичь необходимых параметров - тем больше очков он получает.
-/// 
-/// TODO:
-/// Реализовать вывод информации в отдельную консоль.
-/// Добавить связывание консоль-маяк мультитулом.
-/// Передача очков на сервера РнД.
-/// 
-/// Отдельно, хочу сделать вывод оповещений в научный канал, если данная функция не отключена в консоли.
 /// </summary>
 public sealed class ExplosionBeaconSystem : EntitySystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly ExplosionBeaconConsoleSystem _console = default!;
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<ExplosionBeaconComponent, ExplosionHitEvent>(OnExplosionHit);
+        base.Initialize();
+
+        SubscribeLocalEvent<ExplosionBeaconComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<ExplosionBeaconComponent, ExplosionPowerEvent>(OnExplosionHit);
     }
 
-    private void OnExplosionHit(Entity<ExplosionBeaconComponent> beacon, ref ExplosionHitEvent args)
-       => Process(beacon, args.Slope, args.TotalIntensity, args.CurrentIntensity);
+    private void OnMapInit(Entity<ExplosionBeaconComponent> ent, ref MapInitEvent args)
+    {
+        RandomTargetNumbers(ent);
+    }
+
+    private void OnExplosionHit(Entity<ExplosionBeaconComponent> beacon, ref ExplosionPowerEvent args)
+    {
+        Process(beacon, args.Slope, args.TotalIntensity, args.CurrentIntensity);
+        _console.UpdateConsolesForBeacon(beacon);
+    }
 
     private void Process(Entity<ExplosionBeaconComponent> beacon, float slope, float totalIntensity, float currentIntensity)
     {
@@ -33,61 +37,60 @@ public sealed class ExplosionBeaconSystem : EntitySystem
         var intensityPoints = GetPoints(totalIntensity, beacon.Comp.TargetIntensity);
         var currentPoints = GetPoints(currentIntensity, beacon.Comp.TargetCurrentIntensity);
 
-        var points = (slopePoints + intensityPoints + currentPoints);
-        // Кроме получения очков, нужно будет сделать вывод координат взрыва (arg.Epicenter) в консоль/интерком?
+        var points = slopePoints + intensityPoints + currentPoints;
+
+        beacon.Comp.LastSlope = slope;
+        beacon.Comp.LastTotalIntensity = totalIntensity;
+        beacon.Comp.LastCurrentIntensity = currentIntensity;
+        beacon.Comp.LastPoints = points;
+
         TransferPoints(beacon, points);
     }
 
-    private float GetPoints(float value, float target)
+    private int GetPoints(float value, float target)
     {
-        // Каким раком у тебя 0 вышло ирод.
         if (value <= 0 || target <= 0)
             return 0;
 
-        // Чем ближе у игрока получается попасть к необходимому случайному значению - тем больше очков он получает.
-        var points = MathF.Min(value, target) / MathF.Max(value, target);
-        points = MathF.Max(points, 0.1f) * 10;
+        var ratio = MathF.Min(value, target) / MathF.Max(value, target);
+        ratio = MathF.Max(ratio, 0.1f) * 10;
 
-        return (int)points;
+        return (int) ratio;
     }
 
     private void TransferPoints(Entity<ExplosionBeaconComponent> beacon, int points)
     {
-        // Собственно, у игрока есть 3 попытки, чтобы выполнить текущий таск по взрыву.
-        // Если игрок не уложился в 3 попытки, то маяк изменяет необходимые ему параметры взрыва.
         if (beacon.Comp.CurrentAttempt > beacon.Comp.MaxAttempts)
         {
-            RandomTargetNumbers();
+            RandomTargetNumbers(beacon);
             beacon.Comp.CurrentAttempt = 0;
+            _console.UpdateConsolesForBeacon(beacon);
             return;
         }
-        
-        // Не уверен, стоит ли оставлять, но небольшая поблажка игрокам.
-        // Если значение очков не меньше минимума, то засчитывать как успешную попытку.
+
         if (points < beacon.Comp.MinPoints)
             beacon.Comp.CurrentAttempt += 1;
 
-        // Множитель для особо робастных игроков. Если получается закрыть таск с < 1 попытки, то игрок получает небольшую прибавку.
-        var multiplier = 1;
+        var multiplier = 1f;
         switch (beacon.Comp.CurrentAttempt)
         {
-            case 0: 
+            case 0:
                 multiplier += 2f;
                 break;
-            case 1: 
+            case 1:
                 multiplier += 1.5f;
                 break;
-            default: break;
         }
-        points = points * multiplier;
-        // Реализовать передачу очков.. куда-нить??
+
+        points = (int) (points * multiplier);
+        beacon.Comp.LastPoints = points;
+        // TODO: передача очков на сервер РнД
     }
 
-    private void RandomTargetNumbers()
+    public void RandomTargetNumbers(Entity<ExplosionBeaconComponent> beacon)
     {
-        // Надо потестить параметры взрывов от газов, вынести мин/макс в компонент.
-        beacon.Comp.TargetSlope = _random.Next(100, 500); 
-        beacon.Comp.TargetIntensity = _random.Next(100, 500);
-        beacon.Comp.TargetCurrentIntensity = _random.Next(100, 500);
+        beacon.Comp.TargetSlope = _random.Next(beacon.Comp.TargetSlopeMin, beacon.Comp.TargetSlopeMax);
+        beacon.Comp.TargetIntensity = _random.Next(beacon.Comp.TargetIntensityMin, beacon.Comp.TargetIntensityMax);
+        beacon.Comp.TargetCurrentIntensity = _random.Next(beacon.Comp.TargetIntensityMin, beacon.Comp.TargetIntensityMax);
     }
 }

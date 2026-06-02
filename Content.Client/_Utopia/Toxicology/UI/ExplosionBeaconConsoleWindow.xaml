@@ -1,0 +1,33 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+            xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+            Title="{Loc explosion-beacon-console-window-title}"
+            MinSize="420 360">
+    <BoxContainer Orientation="Vertical" Margin="8">
+        <Label Name="StatusLabel" StyleClasses="LabelKeyText"/>
+        <Control MinHeight="8"/>
+        <Label Text="{Loc explosion-beacon-console-targets-header}" StyleClasses="LabelBig"/>
+        <GridContainer Columns="2" Margin="0 4 0 0">
+            <Label Text="{Loc explosion-beacon-console-target-slope}"/>
+            <Label Name="TargetSlopeLabel"/>
+            <Label Text="{Loc explosion-beacon-console-target-intensity}"/>
+            <Label Name="TargetIntensityLabel"/>
+            <Label Text="{Loc explosion-beacon-console-target-current-intensity}"/>
+            <Label Name="TargetCurrentIntensityLabel"/>
+        </GridContainer>
+        <Control MinHeight="12"/>
+        <Label Text="{Loc explosion-beacon-console-attempts-header}" StyleClasses="LabelBig"/>
+        <Label Name="AttemptsLabel"/>
+        <Control MinHeight="12"/>
+        <Label Text="{Loc explosion-beacon-console-last-header}" StyleClasses="LabelBig"/>
+        <GridContainer Columns="2" Margin="0 4 0 0">
+            <Label Text="{Loc explosion-beacon-console-last-slope}"/>
+            <Label Name="LastSlopeLabel"/>
+            <Label Text="{Loc explosion-beacon-console-last-intensity}"/>
+            <Label Name="LastIntensityLabel"/>
+            <Label Text="{Loc explosion-beacon-console-last-current-intensity}"/>
+            <Label Name="LastCurrentIntensityLabel"/>
+            <Label Text="{Loc explosion-beacon-console-last-points}"/>
+            <Label Name="LastPointsLabel"/>
+        </GridContainer>
+    </BoxContainer>
+</controls:FancyWindow>
