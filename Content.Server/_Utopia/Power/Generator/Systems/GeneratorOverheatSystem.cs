@@ -21,6 +21,9 @@ public sealed class GeneratorOverheatSystem : EntitySystem
     [Dependency] private readonly ExplosionSystem _explosion = default!;
     [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
 
+    private const float UpdateInterval = 1f;
+    private float _accumulator;
+
     public override void Initialize()
     {
         UpdatesAfter.Add(typeof(GeneratorSystem));
@@ -28,27 +31,38 @@ public sealed class GeneratorOverheatSystem : EntitySystem
 
     public override void Update(float frameTime)
     {
-        var query = EntityQueryEnumerator<FuelGeneratorComponent, GeneratorOverheatComponent>();
+        _accumulator += frameTime;
 
-        while (query.MoveNext(out var uid, out var gen, out var overheat))
+        if (_accumulator < UpdateInterval)
+            return;
+
+        while (_accumulator >= UpdateInterval)
         {
-            if (gen.On)
-                HeatGenerator(uid, gen, overheat, frameTime);
+            _accumulator -= UpdateInterval;
 
-            if (overheat.CurrentTemperature >= overheat.CriticalTemperature)
-                HandleCritical(uid, gen, overheat);
-            else
-                overheat.CriticalTriggered = false;
+            var query = EntityQueryEnumerator<FuelGeneratorComponent, GeneratorOverheatComponent>();
 
-            CoolGenerator(uid, overheat, frameTime);
+            while (query.MoveNext(out var uid, out var gen, out var overheat))
+            {
+                if (gen.On)
+                    HeatGenerator(uid, gen, overheat);
 
-            Dirty(uid, overheat);
+                if (overheat.CurrentTemperature >= overheat.CriticalTemperature)
+                    HandleCritical(uid, gen, overheat);
+                else
+                    overheat.CriticalTriggered = false;
+
+                CoolGenerator(uid, overheat);
+
+                Dirty(uid, overheat);
+            }
         }
     }
 
-    private void HeatGenerator(EntityUid uid, FuelGeneratorComponent gen, GeneratorOverheatComponent overheat, float frameTime)
+    private void HeatGenerator(EntityUid uid, FuelGeneratorComponent gen, GeneratorOverheatComponent overheat)
     {
-        var zeroCelcius = 273.15f;
+        var dt = UpdateInterval;
+
         var targetKw = gen.TargetPower / 1000f;
         var averageKw = gen.OptimalPower / 1000f;
 
@@ -56,7 +70,10 @@ public sealed class GeneratorOverheatSystem : EntitySystem
         {
             var heatRate = (targetKw - averageKw) * overheat.HeatRatePerKw;
 
-            overheat.CurrentTemperature = Math.Min(overheat.CurrentTemperature + heatRate * frameTime, overheat.CriticalTemperature);
+            overheat.CurrentTemperature = Math.Min(
+                overheat.CurrentTemperature + heatRate * dt,
+                overheat.CriticalTemperature);
+
             return;
         }
 
@@ -65,18 +82,21 @@ public sealed class GeneratorOverheatSystem : EntitySystem
             ? Math.Clamp((targetKw - minKw) / (averageKw - minKw), 0f, 1f)
             : 1f;
 
-        var equilibrium = MathHelper.Lerp(zeroCelcius, overheat.OperatingTemperature, fraction);
-        var factor = 1f - MathF.Exp(-overheat.BaseHeatRate * frameTime);
+        var equilibrium = MathHelper.Lerp(Atmospherics.T0C, overheat.OperatingTemperature, fraction);
+        var factor = 1f - MathF.Exp(-overheat.BaseHeatRate * dt);
 
         overheat.CurrentTemperature += (equilibrium - overheat.CurrentTemperature) * factor;
     }
 
-    private void CoolGenerator(EntityUid uid, GeneratorOverheatComponent overheat, float frameTime)
+    private void CoolGenerator(EntityUid uid, GeneratorOverheatComponent overheat)
     {
         var env = _atmosphere.GetContainingMixture(uid, excite: true);
 
         if (env == null || env.TotalMoles <= 0f)
+        {
+            CoolInSpace(uid, overheat);
             return;
+        }
 
         var dT = overheat.CurrentTemperature - env.Temperature;
 
@@ -89,14 +109,30 @@ public sealed class GeneratorOverheatSystem : EntitySystem
         if (cGen < Atmospherics.MinimumHeatCapacity || cEnv < Atmospherics.MinimumHeatCapacity)
             return;
 
+        var dt = UpdateInterval;
+
         var tDivQ = (1f / cGen) + (1f / cEnv);
         var k = overheat.ThermalConductance * tDivQ;
 
-        var dT2 = dT * MathF.Exp(-k * frameTime);
+        var dT2 = dT * MathF.Exp(-k * dt);
         var dE = (dT - dT2) / tDivQ;
 
-        overheat.CurrentTemperature -= (dE / cGen) * 2;
+        overheat.CurrentTemperature -= (dE / cGen) * 2f;
         _atmosphere.AddHeat(env, dE);
+    }
+
+    private void CoolInSpace(EntityUid uid, GeneratorOverheatComponent overheat)
+    {
+        var dt = UpdateInterval;
+        var coolingRate = (overheat.BaseHeatRate / 4);
+
+        var delta = overheat.CurrentTemperature - Atmospherics.T0C;
+
+        if (delta <= 0f)
+            return;
+
+        var factor = MathF.Exp(-coolingRate * dt);
+        overheat.CurrentTemperature -= factor;
     }
 
     private void HandleCritical(EntityUid uid, FuelGeneratorComponent gen, GeneratorOverheatComponent overheat)
@@ -105,16 +141,21 @@ public sealed class GeneratorOverheatSystem : EntitySystem
             return;
 
         overheat.CriticalTriggered = true;
-        _generator.SetFuelGeneratorOn(uid, false, gen);
-        _popup.PopupEntity(Loc.GetString("generator-overheat-shutdown", ("generator", uid)), uid, PopupType.MediumCaution);
 
-        if (overheat.ExplodeChance <= 1 || _random.Next(1, overheat.ExplodeChance) != overheat.ExplodeChance)
+        _generator.SetFuelGeneratorOn(uid, false, gen);
+
+        _popup.PopupEntity(
+            Loc.GetString("generator-overheat-shutdown", ("generator", uid)),
+            uid,
+            PopupType.MediumCaution);
+
+        if (overheat.ExplodeChance <= 1 ||
+            _random.Next(1, overheat.ExplodeChance) != overheat.ExplodeChance)
             return;
 
-        if(TryComp<ExplosiveComponent>(uid, out var explosive))
+        if (TryComp<ExplosiveComponent>(uid, out var explosive))
             _explosion.TriggerExplosive(uid, explosive);
     }
-
 
     public float GetTemperatureCelsius(GeneratorOverheatComponent overheat)
         => overheat.CurrentTemperature - Atmospherics.T0C;

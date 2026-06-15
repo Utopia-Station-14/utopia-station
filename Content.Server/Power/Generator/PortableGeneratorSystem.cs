@@ -1,5 +1,7 @@
 ﻿using Content.Server._Utopia.Power.Generator;
 using Content.Shared._Utopia.Power.Generator;
+using Content.Server.Atmos.EntitySystems;
+using Content.Shared.Atmos;
 using Content.Server.DoAfter;
 using Content.Server.Popups;
 using Content.Server.Power.Components;
@@ -30,6 +32,7 @@ public sealed class PortableGeneratorSystem : SharedPortableGeneratorSystem
     [Dependency] private readonly PowerSwitchableSystem _switchable = default!;
     [Dependency] private readonly ActiveGeneratorRevvingSystem _revving = default!;
     [Dependency] private readonly GeneratorOverheatSystem _overheat = default!; //Utopia-Tweak : PACMAN-updt
+    [Dependency] private readonly AtmosphereSystem _atmosphere = default!; // Utopia-Tweak : PACMAN-updt
 
     public override void Initialize()
     {
@@ -105,6 +108,18 @@ public sealed class PortableGeneratorSystem : SharedPortableGeneratorSystem
             args.Started = true;
     }
 
+    // Utopia-Tweak : PACMAN-updt
+    private bool AtmosHasOxygen(EntityUid uid)
+    {
+        var env = _atmosphere.GetContainingMixture(uid, false, true);
+        
+        if (env != null && env.GetMoles(Gas.Oxygen) > 0)
+            return true;
+
+        return false;
+    }
+    // Utopia-Tweak : PACMAN-updt
+
     private void GeneratorTugged(EntityUid uid, PortableGeneratorComponent component, EntityUid? user, out bool repeat)
     {
         repeat = false;
@@ -116,11 +131,12 @@ public sealed class PortableGeneratorSystem : SharedPortableGeneratorSystem
 
         var empty = _generator.GetFuel(uid) == 0;
         var clogged = _generator.GetIsClogged(uid);
+        var atmos = AtmosHasOxygen(uid);
 
         var sound = empty ? component.StartSoundEmpty : component.StartSound;
         _audio.PlayPvs(sound, uid);
 
-        if (!clogged && !empty && _random.Prob(component.StartChance))
+        if (!clogged && !empty && atmos && _random.Prob(component.StartChance)) // Utopia-Tweak : PACMAN-updt. 
         {
             _generator.SetFuelGeneratorOn(uid, true, fuelGenerator);
 
