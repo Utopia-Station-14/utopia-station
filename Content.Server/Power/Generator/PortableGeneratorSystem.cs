@@ -1,4 +1,6 @@
-﻿using Content.Server.DoAfter;
+﻿using Content.Server._Utopia.Power.Generator;
+using Content.Shared._Utopia.Power.Generator;
+using Content.Server.DoAfter;
 using Content.Server.Popups;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
@@ -27,6 +29,7 @@ public sealed class PortableGeneratorSystem : SharedPortableGeneratorSystem
     [Dependency] private readonly GeneratorSystem _generator = default!;
     [Dependency] private readonly PowerSwitchableSystem _switchable = default!;
     [Dependency] private readonly ActiveGeneratorRevvingSystem _revving = default!;
+    [Dependency] private readonly GeneratorOverheatSystem _overheat = default!; //Utopia-Tweak : PACMAN-updt
 
     public override void Initialize()
     {
@@ -219,9 +222,15 @@ public sealed class PortableGeneratorSystem : SharedPortableGeneratorSystem
         if (powerSupplier.Net is { IsConnectedNetwork: true } net)
             networkStats = (net.NetworkNode.LastCombinedLoad, net.NetworkNode.LastCombinedSupply);
 
+        // Utopia-Tweak : PACMAN-updt
+        float? temperature = null;
+        if (TryComp<GeneratorOverheatComponent>(uid, out var overheat))
+            temperature = _overheat.GetTemperatureCelsius(overheat);
+        // Utopia-Tweak : PACMAN-updt
+
         _uiSystem.SetUiState(
             uid,
             GeneratorComponentUiKey.Key,
-            new PortableGeneratorComponentBuiState(fuelComp, fuel, clogged, networkStats));
+            new PortableGeneratorComponentBuiState(fuelComp, fuel, clogged, networkStats, temperature)); // Utopia-Tweak : PACMAN-updt
     }
 }

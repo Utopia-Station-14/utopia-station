@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using Content.Server._Utopia.Power.Components;
+using Content.Server.Atmos.EntitySystems;
+using Content.Shared.Atmos;
 using Content.Server.Audio;
 using Content.Server.Fluids.EntitySystems;
 using Content.Server.Materials;
@@ -20,6 +22,7 @@ namespace Content.Server.Power.Generator;
 /// <seealso cref="SolidFuelGeneratorAdapterComponent"/>
 public sealed class GeneratorSystem : SharedGeneratorSystem
 {
+    [Dependency] private readonly AtmosphereSystem _atmosphere = default!; // Utopia-Tweak : PACMAN-updt
     [Dependency] private readonly AppearanceSystem _appearance = default!;
     [Dependency] private readonly AmbientSoundSystem _ambientSound = default!;
     [Dependency] private readonly MaterialStorageSystem _materialStorage = default!;
@@ -189,12 +192,24 @@ public sealed class GeneratorSystem : SharedGeneratorSystem
             component.MaxTargetPower / 1000) * 1000;
     }
 
+    // Utopia-Tweak : PACMAN-updt
+    private bool AtmosHasOxygen(EntityUid uid)
+    {
+        var env = _atmosphere.GetContainingMixture(uid, false, true);
+
+        if(env != null && env.GetMoles(Gas.Oxygen) > 0)
+            return true;
+
+        return false;
+    }
+    // Utopia-Tweak : PACMAN-updt
+
     public void SetFuelGeneratorOn(EntityUid uid, bool on, FuelGeneratorComponent? generator = null)
     {
         if (!Resolve(uid, ref generator))
             return;
 
-        if (on && !Transform(uid).Anchored)
+        if (on && !Transform(uid).Anchored && AtmosHasOxygen(uid)) // Utopia-Tweak : PACMAN-updt. Generator need oxygen in atmos now.
         {
             // Generator must be anchored to start.
             return;
