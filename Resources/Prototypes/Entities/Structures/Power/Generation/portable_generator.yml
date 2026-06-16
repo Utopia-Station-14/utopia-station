@@ -168,10 +168,6 @@
       optimalBurnRate: 0.0333333
       # a decent curve that goes up to about an hour at 5 kW.
       fuelEfficiencyConstant: 0.75
-    - type: Explosive
-      explosionType: Default
-      totalIntensity: 100
-      tileBreakScale: 0.5
     - type: SolidFuelGeneratorAdapter
       fuelMaterial: Plasma
       multiplier: 0.01
@@ -203,6 +199,10 @@
     - type: GeneratorOverheat
       explodeOnCritical: 6
       operatingTemperature: 348.15 # Согласовать с Лором??
+    - type: Explosive
+      explosionType: Default
+      totalIntensity: 100
+      tileBreakScale: 0.5
     # Utopia-Tweak : PACMAN-updt
 
 - type: entity
