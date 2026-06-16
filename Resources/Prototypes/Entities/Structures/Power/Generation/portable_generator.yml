@@ -168,10 +168,6 @@
       optimalBurnRate: 0.0333333
       # a decent curve that goes up to about an hour at 5 kW.
       fuelEfficiencyConstant: 0.75
-      #Utopia-Tweak : PACMAN-updt
-    - type: GeneratorOverheat
-      explodeOnCritical: 10
-      #Utopia-Tweak : PACMAN-updt
     - type: Explosive
       explosionType: Default
       totalIntensity: 100
@@ -203,6 +199,11 @@
       powerSupplyMultiplier: 1.25
       scaling: Exponential
     # Utopia-Tweak : Machine Part
+    # Utopia-Tweak : PACMAN-updt
+    - type: GeneratorOverheat
+      explodeOnCritical: 6
+      operatingTemperature: 348.15 # Согласовать с Лором??
+    # Utopia-Tweak : PACMAN-updt
 
 - type: entity
   name: S.U.P.E.R.P.A.C.M.A.N.-type portable generator
@@ -267,10 +268,11 @@
     # Utopia-Tweak : Machine Part
     # Utopia-Tweak : PACMAN-updt
     - type: GeneratorOverheat
-      explodeOnCritical: 5
+      explodeOnCritical: 3
+      operatingTemperature: 348.15 # Изменить в будущем?
     - type: GeneratorRadiation
       radiationMultiplier: 4
-      radiationReduceAmmount: 0.2
+      radiationReduceAmount: 0.2
     - type: RadiationSource
       intensity: 0
     # Utopia-Tweak : PACMAN-updt
@@ -332,7 +334,7 @@
       fuelEfficiencyConstant: 0.3
       #Utopia-Tweak : PACMAN-updt
     - type: GeneratorOverheat
-      explodeOnCritical: 0
+      explodeChance: 0
       operatingTemperature: 348.15
       #Utopia-Tweak : PACMAN-updt
     - type: ChemicalFuelGeneratorAdapter
