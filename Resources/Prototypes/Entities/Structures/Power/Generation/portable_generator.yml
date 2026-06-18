@@ -197,7 +197,7 @@
     # Utopia-Tweak : Machine Part
     # Utopia-Tweak : PACMAN-updt
     - type: GeneratorOverheat
-      explodeOnCritical: 6
+      explodeChance: 6
       operatingTemperature: 348.15 # Согласовать с Лором??
     - type: Explosive
       explosionType: Default
@@ -268,7 +268,7 @@
     # Utopia-Tweak : Machine Part
     # Utopia-Tweak : PACMAN-updt
     - type: GeneratorOverheat
-      explodeOnCritical: 3
+      explodeChance: 3
       operatingTemperature: 348.15 # Изменить в будущем?
     - type: GeneratorRadiation
       radiationMultiplier: 4
