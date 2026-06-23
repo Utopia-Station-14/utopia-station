@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Drawn by KashRas on DELUZ sprite base",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+        "name": "error",
+        "delays":[
+        [
+            0.1,
+            0.1,
+            0.1,
+            0.1
+        ]
+        ]
+    }]
+}

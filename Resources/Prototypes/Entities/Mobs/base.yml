@@ -54,6 +54,7 @@
   - type: MobMover
   - type: MovementSpeedModifier
   - type: LagCompensation
+  - type: SpeechBarks # Utopia-Tweak : Barks
 
 - type: entity
   save: false

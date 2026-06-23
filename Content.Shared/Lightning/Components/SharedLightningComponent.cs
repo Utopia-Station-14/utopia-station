@@ -21,7 +21,7 @@ public abstract partial class SharedLightningComponent : Component
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite)]
     [DataField("maxTotalArc")]
-    public int MaxTotalArcs = 50;
+    public int MaxTotalArcs = 5; // Utopia-Tweak : Lightning-Update
 
     /// <summary>
     /// The prototype ID used for arcing bolts. Usually will be the same name as the main proto but it could be flexible.
@@ -54,4 +54,9 @@ public abstract partial class SharedLightningComponent : Component
     /// </summary>
     [DataField("collisionMask")]
     public int CollisionMask = (int) (CollisionGroup.MobMask | CollisionGroup.MachineMask);
+
+    // Utopia-Tweak : Lightning-Update
+    [DataField]
+    public float Energy {get; set;}
+    // Utopia-Tweak : Lightning-Update
 }

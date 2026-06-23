@@ -1,0 +1,114 @@
+- type: entity
+  parent: BaseComputer
+  id: UtopiaSalaryConsole
+  name: salary console
+  description: Used to pay salaries to station employees.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerKeys"]
+      state: generic_keys
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+    - map: ["computerLayerScreen"]
+      sprite: _Utopia/Structures/Machines/computers.rsi
+      state: salary
+  - type: ActivatableUI
+    key: enum.SalaryConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.SalaryConsoleUiKey.Key:
+        type: SalaryConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: SalaryConsole
+  - type: ItemSlots
+    slots:
+      BankCardSlot:
+        whitelist:
+          tags:
+          - UtopiaDepartamentCard
+  - type: ContainerContainer
+    containers:
+      BankCardSlot: !type:ContainerSlot
+      board: !type:Container
+
+- type: entity
+  parent: BaseComputerAiAccess
+  id: UtopiaEconomicRecordsConsole
+  name: economic records computer
+  description: Shows crew economic records.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerKeys"]
+      state: generic_keys
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+    - map: ["computerLayerScreen"]
+      sprite: _Utopia/Structures/Machines/computers.rsi
+      state: accounts
+  - type: ActivatableUI
+    key: enum.EconomicRecordsConsoleKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.EconomicRecordsConsoleKey.Key:
+        type: EconomicRecordsConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: EconomicRecordsConsole
+  - type: AccessReader
+    access: [ [ "Captain" ], [ "HeadOfPersonnel" ] ]
+
+- type: entity
+  parent: BaseComputerAiAccess
+  id: UtopiaComputerDnaManipulator
+  name: geneticists console
+  description: A console used with the medical scanner for DNA research.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: dna
+    - map: ["computerLayerKeys"]
+      state: med_key
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: Computer
+    board: UtopiaDnaManipulatorConsoleCircuitboard
+  - type: ActivatableUI
+    singleUser: true
+    key: enum.DnaScannerConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.DnaScannerConsoleUiKey.Key:
+        type: GeneticistsConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: DeviceLinkSource
+    range: 4
+    ports:
+      - DnaConsole
+  - type: ResearchPointSource
+    pointspersecond: 0
+    active: true
+  - type: ResearchClient
+  - type: DnaScannerConsole
+  # - type: GuideHelp
+  #   guides:
+  #   - Genetics
+  - type: Tag
+    tags:
+    - AccessBreakerImmune

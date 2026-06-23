@@ -1,4 +1,5 @@
 using Content.Shared.Alert;
+using Content.Shared.DoAfter;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -40,7 +41,16 @@ public sealed partial class PullableComponent : Component
     public bool PrevFixedRotation;
 
     [DataField]
-    public ProtoId<AlertPrototype> PulledAlert = "Pulled";
+    public ProtoId<AlertPrototype> PulledAlert = "UtopiaPulled"; // Utopia-Tweak : Grab
+
+    // Utopia-Tweak : Grab
+    [ViewVariables]
+    public TimeSpan LastEscapeAttempt = TimeSpan.Zero;
+
+    public int EscapeAttemptCounter = 1;
+
+    public DoAfterId? EscapeAttemptDoAfter;
+    // Utopia-Tweak : Grab
 }
 
 public sealed partial class StopBeingPulledAlertEvent : BaseAlertEvent;

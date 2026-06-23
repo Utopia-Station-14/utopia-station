@@ -1,0 +1,24 @@
+- type: entity
+  id: UtopiaUniversalPipeDispenser
+  parent: BaseLatheLube
+  name: universal pipe dispenser
+  description: Prints pipes for all kinds of situations. However, the kit does not include advanced atmospheric technologies.
+  components:
+    - type: Sprite
+      sprite: _Utopia/Structures/Machines/pipedispenser.rsi
+      layers:
+      - state: icon
+        map: ["enum.LatheVisualLayers.IsRunning"]
+      - state: panel
+        map: ["enum.WiresVisualLayers.MaintenancePanel"]
+    - type: Machine
+      board: UtopiaUniversalPipeDispenserCircuitboard
+    - type: Lathe
+      idleState: icon
+      runningState: printing
+      staticPacks:
+      - UtopiaDisposalPack
+    - type: MaterialStorage
+      whitelist:
+        tags:
+          - UtopiaSteelSheet

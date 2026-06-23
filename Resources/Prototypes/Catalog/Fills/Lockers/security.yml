@@ -46,6 +46,9 @@
       amount: 2
     - id: NetworkConfigurator
     - id: Binoculars
+    # Utopia-Tweak : Combat
+    - id: UtopiaClothingHandsGlovesKravMaga
+    # Utopia-Tweak : Combat
 
 - type: entityTable
   id: FillLockerWardenHarduit

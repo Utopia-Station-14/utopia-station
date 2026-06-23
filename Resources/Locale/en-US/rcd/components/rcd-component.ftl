@@ -8,12 +8,12 @@ rcd-component-examine-build-details = It's currently set to build {MAKEPLURAL($n
 ### Interaction Messages
 
 # Mode change
-rcd-component-change-mode = The RCD is now set to '{$mode}' mode.
-rcd-component-change-build-mode = The RCD is now set to build {MAKEPLURAL($name)}.
+rcd-component-change-mode = The { $owner } is now set to '{$mode}' mode.
+rcd-component-change-build-mode = The { $owner } is now set to build {MAKEPLURAL($name)}.
 
 # Ammo count
-rcd-component-no-ammo-message = The RCD has run out of charges!
-rcd-component-insufficient-ammo-message = The RCD doesn't have enough charges left!
+rcd-component-no-ammo-message = The { $owner } has run out of charges!
+rcd-component-insufficient-ammo-message = The { $owner } doesn't have enough charges left!
 
 # Deconstruction
 rcd-component-tile-indestructible-message = That tile can't be destructed!

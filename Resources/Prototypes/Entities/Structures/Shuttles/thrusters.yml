@@ -226,6 +226,7 @@
     requireSpace: false
     thrust: 2000
     machinePartThrust: Manipulator
+    thrustPerPartLevel: [2000, 2500, 3000, 3500] # Utopia-Tweak : Machine Part
   - type: Sprite
     # Listen I'm not the biggest fan of the sprite but it was the most appropriate thing I could find.
     sprite: Structures/Shuttles/gyroscope.rsi
@@ -278,6 +279,11 @@
     damageModifierSet: Electronic
   - type: StaticPrice
     price: 2000
+  # Utopia-Tweak : Machine Part
+  - type: UpgradePowerDraw
+    powerDrawMultiplier: 0.75
+    scaling: Exponential
+  # Utopia-Tweak : Machine Part
 
 - type: entity
   id: GyroscopeUnanchored

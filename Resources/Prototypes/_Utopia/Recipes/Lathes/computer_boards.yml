@@ -1,0 +1,14 @@
+- type: latheRecipe
+  parent: [ BaseGoldCircuitboardRecipe, BaseMedicalComputerRecipeCategory ]
+  id: MedicalScannerMachineCircuitboard
+  result: MedicalScannerMachineCircuitboard
+
+- type: latheRecipe
+  parent: [ BaseGoldCircuitboardRecipe, BaseMedicalComputerRecipeCategory ]
+  id: CloningConsoleComputerCircuitboard
+  result: CloningConsoleComputerCircuitboard
+
+- type: latheRecipe
+  parent: [BaseCircuitboardRecipe, BaseMedicalComputerRecipeCategory]
+  id: DnaManipulatorConsoleCircuitboard
+  result: UtopiaDnaManipulatorConsoleCircuitboard

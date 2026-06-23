@@ -1,4 +1,7 @@
 using Content.Shared.Administration.Logs;
+using Content.Shared.Atmos;
+using Content.Shared.Atmos.EntitySystems;
+using Content.Shared.Atmos.Components;
 using Content.Shared.Charges.Systems;
 using Content.Shared.Construction;
 using Content.Shared.Database;
@@ -7,11 +10,13 @@ using Content.Shared.Examine;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Maps;
+using Content.Shared.NodeContainer;
 using Content.Shared.Physics;
 using Content.Shared.Popups;
 using Content.Shared.RCD.Components;
 using Content.Shared.Tag;
 using Content.Shared.Tiles;
+using Content.Shared.Verbs;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -22,10 +27,11 @@ using Robust.Shared.Physics.Dynamics;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using System.Linq;
+using System.Numerics;
 
 namespace Content.Shared.RCD.Systems;
 
-public sealed class RCDSystem : EntitySystem
+public sealed partial class RCDSystem : EntitySystem // Utopia-Tweak : RPD
 {
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
@@ -51,6 +57,7 @@ public sealed class RCDSystem : EntitySystem
     private static readonly ProtoId<TagPrototype> CatwalkTag = "Catwalk";
 
     private HashSet<EntityUid> _intersectingEntities = new();
+    private AtmosPipeLayer _currentLayer = AtmosPipeLayer.Primary;
 
     public override void Initialize()
     {
@@ -63,6 +70,14 @@ public sealed class RCDSystem : EntitySystem
         SubscribeLocalEvent<RCDComponent, DoAfterAttemptEvent<RCDDoAfterEvent>>(OnDoAfterAttempt);
         SubscribeLocalEvent<RCDComponent, RCDSystemMessage>(OnRCDSystemMessage);
         SubscribeNetworkEvent<RCDConstructionGhostRotationEvent>(OnRCDconstructionGhostRotationEvent);
+
+        // Utopia-Tweak : RPD
+        SubscribeLocalEvent<RCDComponent, ComponentStartup>(OnStartup);
+        SubscribeNetworkEvent<RCDConstructionGhostFlipEvent>(OnRCDConstructionGhostFlipEvent);
+        SubscribeNetworkEvent<RPDEyeRotationEvent>(OnRPDEyeRotationEvent);
+        SubscribeLocalEvent<RCDComponent, GetVerbsEvent<UtilityVerb>>(OnGetUtilityVerb);
+        SubscribeLocalEvent<RCDComponent, GetVerbsEvent<AlternativeVerb>>(OnGetAlternativeVerb);
+        // Utopia-Tweak : RPD
     }
 
     #region Event handling
@@ -72,7 +87,18 @@ public sealed class RCDSystem : EntitySystem
         // On init, set the RCD to its first available recipe
         if (component.AvailablePrototypes.Count > 0)
         {
-            component.ProtoId = component.AvailablePrototypes.ElementAt(0);
+            // Utopia-Tweak : RPD
+            if (component.IsRpd)
+            {
+                component.ProtoId = "PipeStraight";
+            }
+
+            else
+            {
+                component.ProtoId = component.AvailablePrototypes.ElementAt(0);
+            }
+            // Utopia-Tweak : RPD
+
             Dirty(uid, component);
 
             return;
@@ -93,6 +119,7 @@ public sealed class RCDSystem : EntitySystem
 
         // Set the current RCD prototype to the one supplied
         component.ProtoId = args.ProtoId;
+        UpdateCachedPrototype(uid, component); // Utopia-Tweak : RPD
 
         _adminLogger.Add(LogType.RCD, LogImpact.Low, $"{args.Actor} set RCD mode to: {prototype.Mode} : {prototype.Prototype}");
 
@@ -104,7 +131,10 @@ public sealed class RCDSystem : EntitySystem
         if (!args.IsInDetailsRange)
             return;
 
-        var prototype = _protoManager.Index(component.ProtoId);
+        // Utopia-Tweak : RPD
+        UpdateCachedPrototype(uid, component);
+        var prototype = component.CachedPrototype;
+        // Utopia-Tweak : RPD
 
         var msg = Loc.GetString("rcd-component-examine-mode-details", ("mode", Loc.GetString(prototype.SetName)));
 
@@ -120,6 +150,14 @@ public sealed class RCDSystem : EntitySystem
         }
 
         args.PushMarkup(msg);
+
+        // Utopia-Tweak : RPD
+        if (component.IsRpd)
+        {
+            var modeLoc = $"rcd-rpd-mode-{component.CurrentMode.ToString().ToLowerInvariant()}";
+            args.PushMarkup(Loc.GetString("rcd-component-examine-rpd-mode", ("mode", Loc.GetString(modeLoc))));
+        }
+        // Utopia-Tweak : RPD
     }
 
     private void OnAfterInteract(EntityUid uid, RCDComponent component, AfterInteractEvent args)
@@ -129,7 +167,7 @@ public sealed class RCDSystem : EntitySystem
 
         var user = args.User;
         var location = args.ClickLocation;
-        var prototype = _protoManager.Index(component.ProtoId);
+        var prototype = component.CachedPrototype; // Utopia-Tweak : RPD
 
         // Initial validity checks
         if (!location.IsValid(EntityManager))
@@ -144,6 +182,47 @@ public sealed class RCDSystem : EntitySystem
         }
         var tile = _mapSystem.GetTileRef(gridUid.Value, mapGrid, location);
         var position = _mapSystem.TileIndicesFor(gridUid.Value, mapGrid, location);
+
+        // Utopia-Tweak : RPD
+        if (component.IsRpd && prototype.HasLayers)
+        {
+            var tileSize = mapGrid.TileSize;
+            var tileCenter = new Vector2(tile.X + tileSize / 2, tile.Y + tileSize / 2);
+            var mouseCoordsDiff = args.ClickLocation.Position - tileCenter - new Vector2(0.5f, 0.5f);
+            var mouseDeadzoneRadius = 0.25f;
+
+            _currentLayer = AtmosPipeLayer.Primary;
+
+            switch (component.CurrentMode)
+            {
+                case RpdMode.Primary:
+                    _currentLayer = AtmosPipeLayer.Primary;
+                    break;
+
+                case RpdMode.Secondary:
+                    _currentLayer = AtmosPipeLayer.Secondary;
+                    break;
+
+                case RpdMode.Tertiary:
+                    _currentLayer = AtmosPipeLayer.Tertiary;
+                    break;
+
+                case RpdMode.Free:
+                    if (mouseCoordsDiff.Length() > mouseDeadzoneRadius && component.LastKnownEyeRotation.HasValue)
+                    {
+                        var gridRotation = _transform.GetWorldRotation(gridUid.Value);
+                        var angle = new Angle(mouseCoordsDiff);
+                        var eyeRotation = new Angle(component.LastKnownEyeRotation.Value);
+                        var direction = (angle + eyeRotation + gridRotation + Math.PI / 2).GetCardinalDir();
+
+                        _currentLayer = (direction == Direction.North || direction == Direction.East)
+                            ? AtmosPipeLayer.Secondary
+                            : AtmosPipeLayer.Tertiary;
+                    }
+                    break;
+            }
+        }
+        // Utopia-Tweak : RPD
 
         if (!IsRCDOperationStillValid(uid, component, gridUid.Value, mapGrid, tile, position, args.Target, args.User))
             return;
@@ -319,7 +398,10 @@ public sealed class RCDSystem : EntitySystem
 
     public bool IsRCDOperationStillValid(EntityUid uid, RCDComponent component, EntityUid gridUid, MapGridComponent mapGrid, TileRef tile, Vector2i position, EntityUid? target, EntityUid user, bool popMsgs = true)
     {
-        var prototype = _protoManager.Index(component.ProtoId);
+        // Utopia-Tweak : RPD
+        UpdateCachedPrototype(uid, component);
+        var prototype = component.CachedPrototype;
+        // Utopia-Tweak : RPD
 
         // Check that the RCD has enough ammo to get the job done
         var charges = _sharedCharges.GetCurrentCharges(uid);
@@ -328,7 +410,7 @@ public sealed class RCDSystem : EntitySystem
         if (charges == 0)
         {
             if (popMsgs)
-                _popup.PopupClient(Loc.GetString("rcd-component-no-ammo-message"), uid, user);
+                _popup.PopupClient(Loc.GetString("rcd-component-no-ammo-message", ("owner", uid)), uid, user); // Utopia-Tweak : RPD
 
             return false;
         }
@@ -336,7 +418,7 @@ public sealed class RCDSystem : EntitySystem
         if (prototype.Cost > charges)
         {
             if (popMsgs)
-                _popup.PopupClient(Loc.GetString("rcd-component-insufficient-ammo-message"), uid, user);
+                _popup.PopupClient(Loc.GetString("rcd-component-insufficient-ammo-message", ("owner", uid)), uid, user); // Utopia-Tweak : RPD
 
             return false;
         }
@@ -356,7 +438,7 @@ public sealed class RCDSystem : EntitySystem
             case RcdMode.ConstructObject:
                 return IsConstructionLocationValid(uid, component, gridUid, mapGrid, tile, position, user, popMsgs);
             case RcdMode.Deconstruct:
-                return IsDeconstructionStillValid(uid, tile, target, user, popMsgs);
+                return IsDeconstructionStillValid(uid, component, tile, target, user, popMsgs); // Utopia-Tweak : RPD
         }
 
         return false;
@@ -364,7 +446,10 @@ public sealed class RCDSystem : EntitySystem
 
     private bool IsConstructionLocationValid(EntityUid uid, RCDComponent component, EntityUid gridUid, MapGridComponent mapGrid, TileRef tile, Vector2i position, EntityUid user, bool popMsgs = true)
     {
-        var prototype = _protoManager.Index(component.ProtoId);
+        // Utopia-Tweak : RPD
+        UpdateCachedPrototype(uid, component);
+        var prototype = component.CachedPrototype;
+        // Utopia-Tweak : RPD
 
         // Check rule: Must build on empty tile
         if (prototype.ConstructionRules.Contains(RcdConstructionRule.MustBuildOnEmptyTile) && !tile.Tile.IsEmpty)
@@ -465,11 +550,21 @@ public sealed class RCDSystem : EntitySystem
         return true;
     }
 
-    private bool IsDeconstructionStillValid(EntityUid uid, TileRef tile, EntityUid? target, EntityUid user, bool popMsgs = true)
+    private bool IsDeconstructionStillValid(EntityUid uid, RCDComponent component, TileRef tile, EntityUid? target, EntityUid user, bool popMsgs = true) // Utopia-Tweak : RPD
     {
         // Attempt to deconstruct a floor tile
         if (target == null)
         {
+            // Utopia-Tweak : RPD
+            if (component.IsRpd)
+            {
+                if (popMsgs)
+                    _popup.PopupClient(Loc.GetString("rcd-component-deconstruct-target-not-on-whitelist-message"), uid, user);
+
+                return false;
+            }
+            // Utopia-Tweak : RPD
+
             // The tile is empty
             if (tile.Tile.IsEmpty)
             {
@@ -503,8 +598,18 @@ public sealed class RCDSystem : EntitySystem
         // Attempt to deconstruct an object
         else
         {
+            // Utopia-Tweak : RPD
+            if (!TryComp<RCDDeconstructableComponent>(target, out var deconstructible) || !deconstructible.RpdDeconstructable && component.IsRpd)
+            {
+                if (popMsgs)
+                    _popup.PopupClient(Loc.GetString("rcd-component-deconstruct-target-not-on-whitelist-message"), uid, user);
+
+                return false;
+            }
+            // Utopia-Tweak : RPD
+
             // The object is not in the whitelist
-            if (!TryComp<RCDDeconstructableComponent>(target, out var deconstructible) || !deconstructible.Deconstructable)
+            if (!deconstructible.Deconstructable) // Utopia-Tweak : RPD
             {
                 if (popMsgs)
                     _popup.PopupClient(Loc.GetString("rcd-component-deconstruct-target-not-on-whitelist-message"), uid, user);
@@ -525,7 +630,7 @@ public sealed class RCDSystem : EntitySystem
         if (!_net.IsServer)
             return;
 
-        var prototype = _protoManager.Index(component.ProtoId);
+        var prototype = component.CachedPrototype; // Utopia-Tweak : RPD
 
         if (prototype.Prototype == null)
             return;
@@ -538,7 +643,63 @@ public sealed class RCDSystem : EntitySystem
                 break;
 
             case RcdMode.ConstructObject:
-                var ent = Spawn(prototype.Prototype, _mapSystem.GridTileToLocal(gridUid, mapGrid, position));
+                // Utopia-Tweak : RPD
+                var proto = (component.UseMirrorPrototype && !string.IsNullOrEmpty(prototype.MirrorPrototype))
+                    ? prototype.MirrorPrototype
+                    : prototype.Prototype;
+
+                if (component.IsRpd && prototype.HasLayers)
+                {
+                    if (_protoManager.TryIndex<EntityPrototype>(proto, out var entityProto) &&
+                        entityProto.TryGetComponent<AtmosPipeLayersComponent>(out var atmosPipeLayers, _entityManager.ComponentFactory) &&
+                        _pipeLayersSystem.TryGetAlternativePrototype(atmosPipeLayers, _currentLayer, out var newProtoId))
+                    {
+                        proto = newProtoId;
+                    }
+                }
+
+                var rotation = prototype.Rotation switch
+                {
+                    RcdRotation.Fixed => Angle.Zero,
+                    RcdRotation.Camera => Transform(uid).LocalRotation,
+                    RcdRotation.User => direction.ToAngle(),
+                    _ => Angle.Zero
+                };
+
+                if (component.IsRpd)
+                {
+                    if (_protoManager.TryIndex<EntityPrototype>(proto, out var pipeProto) &&
+                        pipeProto.TryGetComponent<NodeContainerComponent>(out var nodeContainer, _entityManager.ComponentFactory))
+                    {
+                        foreach (var node in nodeContainer.Nodes.Values)
+                        {
+                            if (node is IPipeNode pipeNode)
+                            {
+                                var proposed = new PipeRestrictOverlapSystem.ProposedPipe(
+                                    pipeNode.Direction,
+                                    _currentLayer,
+                                    rotation
+                                );
+
+                                var conflict = _pipeOverlap.CheckIfWouldConflict(gridUid, position, proposed);
+                                if (Exists(conflict) && HasComp<RCDDeconstructableComponent>(conflict))
+                                {
+                                    _adminLogger.Add(LogType.RCD, LogImpact.Medium,
+                                        $"{ToPrettyString(user):user} RPD replaced {ToPrettyString(conflict.Value)} at {position}");
+                                    Del(conflict.Value);
+                                    _audio.PlayPvs(component.SuccessSound, uid);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                var entityCoords = _mapSystem.GridTileToLocal(gridUid, mapGrid, position);
+                var mapCoords = new MapCoordinates(_transform.ToMapCoordinates(entityCoords).Position,
+                    _transform.GetMapId(entityCoords));
+
+                var ent = Spawn(proto, mapCoords, rotation: rotation);
+                // Utopia-Tweak : RPD
 
                 switch (prototype.Rotation)
                 {

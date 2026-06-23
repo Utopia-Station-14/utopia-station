@@ -1,0 +1,78 @@
+# Copper and Lead port
+
+- type: entity
+  parent: OreBase
+  id: UtopiaCopperOre
+  name: copper ore
+  suffix: Full
+  components:
+  - type: Stack
+    stackType: CopperOre
+  - type: Sprite
+    sprite: _Utopia/Objects/Materials/ore.rsi
+    layers:
+    - state: copper
+  - type: Material
+  - type: PhysicalComposition
+    materialComposition:
+      RawCopper: 300
+  - type: Item
+    heldPrefix: copper
+  - type: Extractable
+    grindableSolutionName: copper
+  - type: SolutionContainerManager
+    solutions:
+      copper:
+        reagents:
+        - ReagentId: Copper
+          Quantity: 20
+  - type: Tag
+    tags:
+    - Ore
+    - UtopiaCopperOre
+
+- type: entity
+  parent: UtopiaCopperOre
+  id: UtopiaCopperOre1
+  suffix: Single
+  components:
+  - type: Stack
+    count: 1
+
+- type: entity
+  parent: OreBase
+  id: UtopiaLeadOre
+  name: lead ore
+  suffix: Full
+  components:
+  - type: Stack
+    stackType: LeadOre
+  - type: Sprite
+    sprite: _Utopia/Objects/Materials/ore.rsi
+    state: lead
+  - type: Material
+  - type: PhysicalComposition
+    materialComposition:
+      RawLead: 300
+  - type: Item
+    heldPrefix: lead
+  - type: Extractable
+    grindableSolutionName: lead
+  - type: SolutionContainerManager
+    solutions:
+      lead:
+        reagents:
+        - ReagentId: Lead
+          Quantity: 20
+  - type: Tag
+    tags:
+    - Ore
+    - UtopiaLeadOre
+
+- type: entity
+  parent: UtopiaLeadOre
+  id: UtopiaLeadOre1
+  suffix: Single
+  components:
+  - type: Stack
+    count: 1

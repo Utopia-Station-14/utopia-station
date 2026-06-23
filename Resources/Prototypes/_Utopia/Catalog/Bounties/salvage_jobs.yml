@@ -1,0 +1,29 @@
+- type: cargoBounty
+  id: BountySalvageOreCopper
+  reward: 7500
+  description: bounty-description-salvage-ore-copper
+  group: SalvageJobTier1
+  sprite:
+    sprite: _Utopia/Objects/Materials/ore.rsi
+    state: copper
+  entries:
+  - name: bounty-item-ore-copper
+    amount: 45
+    whitelist:
+      tags:
+      - UtopiaCopperOre
+
+- type: cargoBounty
+  id: BountySalvageOreLead
+  reward: 8000
+  description: bounty-description-salvage-ore-lead
+  group: SalvageJobTier2
+  sprite:
+    sprite: _Utopia/Objects/Materials/ore.rsi
+    state: lead
+  entries:
+  - name: bounty-item-ore-lead
+    amount: 30
+    whitelist:
+      tags:
+      - UtopiaLeadOre

@@ -1,3 +1,4 @@
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.DeviceLinking;
 using Content.Shared.Materials;
 using Robust.Shared.Audio;
@@ -60,6 +61,53 @@ public sealed partial class CloningPodComponent : Component
 
     [ViewVariables]
     public EntityUid? ConnectedConsole;
+
+    // Utopia-Tweak : Machine Parts
+    /// <summary>
+    /// The machine part that affects how much biomass is needed to clone a body.
+    /// </summary>
+    [DataField]
+    public float PartRatingMaterialMultiplier = 0.85f;
+
+    /// <summary>
+    /// The base multiplier on the body weight, which determines the
+    /// amount of biomass needed to clone, and is affected by part upgrades.
+    /// </summary>
+    [DataField]
+    public float BaseBiomassRequirementMultiplier = 1;
+
+    // Frontier: machine part upgrades
+    /// <summary>
+    /// The current multiplier on the body weight, which determines the
+    /// amount of biomass needed to clone.
+    /// </summary>
+    [DataField]
+    public float BiomassRequirementMultiplier = 1;
+
+    /// <summary>
+    /// The machine part that decreases the amount of material needed for cloning
+    /// </summary>
+    [DataField]
+    public ProtoId<MachinePartPrototype> MachinePartMaterialUse = "MatterBin";
+
+    /// <summary>
+    /// The base amount of time it takes to clone a body
+    /// </summary>
+    [DataField]
+    public float BaseCloningTime = 30f;
+
+    /// <summary>
+    /// The multiplier for cloning duration
+    /// </summary>
+    [DataField]
+    public float PartRatingSpeedMultiplier = 0.75f;
+
+    /// <summary>
+    /// The machine part that affects cloning speed
+    /// </summary>
+    [DataField]
+    public ProtoId<MachinePartPrototype> MachinePartCloningSpeed = "ScanningModule";
+    // Utopia-Tweak : Machine Parts
 }
 
 [Serializable, NetSerializable]

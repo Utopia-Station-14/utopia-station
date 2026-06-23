@@ -1,0 +1,169 @@
+- type: entity
+  parent: BaseItem
+  id: UtopiaBaseDepartmentBudgetCard
+  categories: [ HideSpawnMenu ]
+  components:
+    - type: BankCard
+      commandBudgetCard: true
+    - type: Sprite
+      sprite: _Utopia/Objects/Devices/economy_cards.rsi
+      scale: 0.8, 0.8
+      state: budgetcard
+    - type: Item
+      storedRotation: 90
+    - type: Tag
+      tags:
+      - UtopiaDepartamentCard
+
+- type: entity
+  parent: UtopiaBaseDepartmentBudgetCard
+  id: UtopiaCargoBudgetCard
+  name: budget card
+  suffix: Cargo
+  components:
+    - type: Sprite
+      state: budgetcard
+    - type: BankCard
+      commandBudgetType: Cargo
+
+- type: entity
+  parent: Paper
+  id: UtopiaCargoBudgetPinPaper
+  name: budget pin
+  suffix: Cargo
+  components:
+  - type: CommandBudgetPinPaper
+    commandBudgetType: Cargo
+  - type: Paper
+
+- type: entity
+  parent: UtopiaBaseDepartmentBudgetCard
+  id: UtopiaServiceBudgetCard
+  name: budget card
+  suffix: Service
+  components:
+    - type: Sprite
+      state: srv_budget
+    - type: BankCard
+      commandBudgetType: Service
+
+- type: entity
+  parent: Paper
+  id: UtopiaServiceBudgetPinPaper
+  name: budget pin
+  suffix: Service
+  components:
+  - type: CommandBudgetPinPaper
+    commandBudgetType: Service
+  - type: Paper
+
+- type: entity
+  parent: UtopiaBaseDepartmentBudgetCard
+  id: UtopiaEngineeringBudgetCard
+  name: budget card
+  suffix: Engineering
+  components:
+    - type: Sprite
+      state: eng_budget
+    - type: BankCard
+      commandBudgetType: Engineering
+
+- type: entity
+  parent: Paper
+  id: UtopiaEngineeringBudgetPinPaper
+  name: budget pin
+  suffix: Engineering
+  components:
+  - type: CommandBudgetPinPaper
+    commandBudgetType: Engineering
+  - type: Paper
+
+- type: entity
+  parent: UtopiaBaseDepartmentBudgetCard
+  id: UtopiaMedicalBudgetCard
+  name: budget card
+  suffix: Medical
+  components:
+    - type: Sprite
+      state: med_budget
+    - type: BankCard
+      commandBudgetType: Medical
+
+- type: entity
+  parent: Paper
+  id: UtopiaMedicalBudgetPinPaper
+  name: budget pin
+  suffix: Medical
+  components:
+  - type: CommandBudgetPinPaper
+    commandBudgetType: Medical
+  - type: Paper
+
+- type: entity
+  parent: UtopiaBaseDepartmentBudgetCard
+  id: UtopiaScienceBudgetCard
+  name: budget card
+  suffix: Science
+  components:
+    - type: Sprite
+      state: sci_budget
+    - type: BankCard
+      commandBudgetType: Science
+
+- type: entity
+  parent: Paper
+  id: UtopiaScienceBudgetPinPaper
+  name: budget pin
+  suffix: Science
+  components:
+  - type: CommandBudgetPinPaper
+    commandBudgetType: Science
+  - type: Paper
+
+- type: entity
+  parent: UtopiaBaseDepartmentBudgetCard
+  id: UtopiaSecurityBudgetCard
+  name: budget card
+  suffix: Security
+  components:
+    - type: Sprite
+      state: sec_budget
+    - type: BankCard
+      commandBudgetType: Security
+
+- type: entity
+  parent: Paper
+  id: UtopiaSecurityBudgetPinPaper
+  name: budget pin
+  suffix: Security
+  components:
+  - type: CommandBudgetPinPaper
+    commandBudgetType: Security
+  - type: Paper
+
+- type: entity
+  parent: BaseItem
+  id: UtopiaEftpos
+  name: EFTPOS
+  description: Swipe your ID card to make purchases electronically.
+  components:
+    - type: Sprite
+      sprite: _Utopia/Objects/Devices/eftpos.rsi
+      state:
+      layers:
+        - state: eftpos
+        - state: eftpos-screen
+          shader: unshaded
+    - type: Eftpos
+    - type: ActivatableUI
+      key: enum.EftposKey.Key
+      singleUser: true
+    - type: UserInterface
+      interfaces:
+        enum.EftposKey.Key:
+          type: EftposBoundUserInterface
+    - type: Anchorable
+    - type: Clothing
+      quickEquip: false
+      slots:
+      - Belt

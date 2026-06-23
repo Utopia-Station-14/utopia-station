@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.StationRecords;
@@ -78,4 +79,30 @@ public sealed class StationRecordKeyStorageSystem : EntitySystem
 
         return keyStorage.Key != null;
     }
+
+    // Utopia-Tweak : Economy
+    public bool TryGetEntityWithKey(StationRecordKey key, [NotNullWhen(true)] out EntityUid? idCard)
+    {
+        idCard = null;
+
+        if (!key.IsValid())
+            return false;
+
+        var query = EntityQueryEnumerator<StationRecordKeyStorageComponent>();
+        while (query.MoveNext(out var uid, out var keyStorage))
+        {
+            if (keyStorage.Key is not { } storedKey)
+                continue;
+
+            if (storedKey.Id != key.Id
+            || storedKey.OriginStation != key.OriginStation)
+                continue;
+
+            idCard = uid;
+            return true;
+        }
+
+        return false;
+    }
+    // Utopia-Tweak : Economy
 }

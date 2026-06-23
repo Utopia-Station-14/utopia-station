@@ -1,6 +1,8 @@
 using Content.Shared.Actions;
+using Content.Shared.Stacks;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
@@ -198,6 +200,30 @@ namespace Content.Shared.VendingMachines
         [DataField("loopDeny")]
         public bool LoopDenyAnimation = true;
         #endregion
+
+        // Utopia-Tweak : Economy
+        [DataField, ViewVariables(VVAccess.ReadWrite)]
+        public double PriceMultiplier = 0.75;
+
+        public ProtoId<StackPrototype> CreditStackPrototype = "Credit";
+
+        [DataField]
+        public string CurrencyType = "SpaceCash";
+
+        [DataField]
+        public SoundSpecifier SoundInsertCurrency =
+            new SoundPathSpecifier("/Audio/_Utopia/Machines/polaroid2.ogg");
+
+        [DataField]
+        public SoundSpecifier SoundWithdrawCurrency =
+            new SoundPathSpecifier("/Audio/_Utopia/Machines/polaroid1.ogg");
+
+        [ViewVariables]
+        public int Credits;
+
+        [DataField]
+        public bool AllForFree;
+        // Utopia-Tweak : Economy
     }
 
     [Serializable, NetSerializable, DataDefinition]
@@ -212,11 +238,17 @@ namespace Content.Shared.VendingMachines
         [DataField]
         public uint Amount;
 
-        public VendingMachineInventoryEntry(InventoryType type, string id, uint amount)
+        //ADT-Economy
+        [DataField]
+        public int Price;
+        //ADT-Economy
+
+        public VendingMachineInventoryEntry(InventoryType type, string id, uint amount, int price) // Utopia-Tweak : Economy
         {
             Type = type;
             ID = id;
             Amount = amount;
+            Price = price; // Utopia-Tweak : Economy
         }
 
         public VendingMachineInventoryEntry(VendingMachineInventoryEntry entry)
@@ -224,6 +256,7 @@ namespace Content.Shared.VendingMachines
             Type = entry.Type;
             ID = entry.ID;
             Amount = entry.Amount;
+            Price = entry.Price; // Utopia-Tweak : Economy
         }
     }
 
@@ -303,5 +336,6 @@ namespace Content.Shared.VendingMachines
         public TimeSpan? DispenseOnHitEnd;
 
         public bool Broken;
+        public int Credits; // Utopia-Tweak : Economy
     }
 }

@@ -1,6 +1,8 @@
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.Kitchen.EntitySystems;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Shared.Kitchen.Components;
 
@@ -36,6 +38,23 @@ public sealed partial class ReagentGrinderComponent : Component
     public GrinderAutoMode AutoMode = GrinderAutoMode.Off;
 
     public EntityUid? AudioStream;
+
+    // Utopia-Tweak : Machine Parts
+    [DataField]
+    public int BaseStorageMaxEntities = 4;
+
+    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+    public string MachinePartStorageMax = "MatterBin";
+
+    [DataField]
+    public int StoragePerPartTier = 4;
+
+    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+    public string MachinePartWorkTime = "Manipulator";
+
+    [DataField]
+    public float PartTierWorkTimerMulitplier = 0.6f;
+    // Utopia-Tweak : Machine Parts
 }
 
 [RegisterComponent, NetworkedComponent]

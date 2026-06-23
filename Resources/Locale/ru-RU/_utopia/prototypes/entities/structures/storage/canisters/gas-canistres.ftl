@@ -1,0 +1,47 @@
+ent-UtopiaBZCanister = канистра бз
+    .desc = Канистра, в которой может содержаться газ любого вида. В этой, предположительно, содержится бз. Можно прикрепить к порту коннектора с помощью гаечного ключа.
+ent-UtopiaPluoxiumCanister = канистра плюоксиума
+    .desc = Канистра, в которой может содержаться газ любого вида. В этой, предположительно, содержится плюоксиум. Можно прикрепить к порту коннектора с помощью гаечного ключа.
+ent-UtopiaHydrogenCanister = канистра водорода
+    .desc = Канистра, в которой может содержаться газ любого вида. В этой, предположительно, содержится водород. Можно прикрепить к порту коннектора с помощью гаечного ключа.
+ent-UtopiaNitriumCanister = канистра нитриума
+    .desc = Канистра, в которой может содержаться газ любого вида. В этой, предположительно, содержится нитриум. Можно прикрепить к порту коннектора с помощью гаечного ключа.
+ent-UtopiaHealiumCanister = канистра хилиума
+    .desc = Канистра, в которой может содержаться газ любого вида. В этой, предположительно, содержится хилиум. Можно прикрепить к порту коннектора с помощью гаечного ключа.
+ent-UtopiaHyperNobliumCanister = канистра гипер-ноблия
+    .desc = Канистра, в которой может содержаться газ любого вида. В этой, предположительно, содержится гипер-ноблий. Можно прикрепить к порту коннектора с помощью гаечного ключа.
+ent-UtopiaProtoNitrateCanister = канистра прото-нитрата
+    .desc = Канистра, в которой может содержаться газ любого вида. В этой, предположительно, содержится прото-нитрат. Можно прикрепить к порту коннектора с помощью гаечного ключа.
+ent-UtopiaZaukerCanister = канистра заукера
+    .desc = Канистра, в которой может содержаться газ любого вида. В этой, предположительно, содержится заукер. Можно прикрепить к порту коннектора с помощью гаечного ключа.
+ent-UtopiaHalonCanister = канистра галона
+    .desc = Канистра, в которой может содержаться газ любого вида. В этой, предположительно, содержится галон. Можно прикрепить к порту коннектора с помощью гаечного ключа.
+ent-UtopiaHeliumCanister = канистра гелия
+    .desc = Канистра, в которой может содержаться газ любого вида. В этой, предположительно, содержится гелий. Можно прикрепить к порту коннектора с помощью гаечного ключа.
+ent-UtopiaAntiNobliumCanister = канистра анти-ноблия
+    .desc = Канистра, в которой может содержаться газ любого вида. В этой, предположительно, содержится анти-ноблий. Можно прикрепить к порту коннектора с помощью гаечного ключа.
+
+# Сломанные
+
+ent-UtopiaBZCanisterBroken = { ent-GasCanisterBrokenBase }
+    .desc = { ent-GasCanisterBrokenBase.desc }
+ent-UtopiaPluoxiumCanisterBroken = { ent-GasCanisterBrokenBase }
+    .desc = { ent-GasCanisterBrokenBase.desc }
+ent-UtopiaHydrogenCanisterBroken = { ent-GasCanisterBrokenBase }
+    .desc = { ent-GasCanisterBrokenBase.desc }
+ent-UtopiaNitriumCanisterBroken = { ent-GasCanisterBrokenBase }
+    .desc = { ent-GasCanisterBrokenBase.desc }
+ent-UtopiaHealiumCanisterBroken = { ent-GasCanisterBrokenBase }
+    .desc = { ent-GasCanisterBrokenBase.desc }
+ent-UtopiaHyperNobliumCanisterBroken = { ent-GasCanisterBrokenBase }
+    .desc = { ent-GasCanisterBrokenBase.desc }
+ent-UtopiaProtoNitrateCanisterBroken = { ent-GasCanisterBrokenBase }
+    .desc = { ent-GasCanisterBrokenBase.desc }
+ent-UtopiaZaukerCanisterBroken = { ent-GasCanisterBrokenBase }
+    .desc = { ent-GasCanisterBrokenBase.desc }
+ent-UtopiaHalonCanisterBroken = { ent-GasCanisterBrokenBase }
+    .desc = { ent-GasCanisterBrokenBase.desc }
+ent-UtopiaHeliumCanisterBroken = { ent-GasCanisterBrokenBase }
+    .desc = { ent-GasCanisterBrokenBase.desc }
+ent-UtopiaAntiNobliumCanisterBroken = { ent-GasCanisterBrokenBase }
+    .desc = { ent-GasCanisterBrokenBase.desc }

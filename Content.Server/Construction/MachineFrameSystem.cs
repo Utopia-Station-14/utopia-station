@@ -1,6 +1,7 @@
 using Content.Server.Construction.Components;
 using Content.Server.Stack;
 using Content.Shared.Construction.Components;
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
 using Content.Shared.Stacks;
@@ -225,13 +226,22 @@ public sealed class MachineFrameSystem : EntitySystem
 
     public void ResetProgressAndRequirements(MachineFrameComponent component, MachineBoardComponent machineBoard)
     {
+        component.Requirements = new Dictionary<ProtoId<MachinePartPrototype>, int>(machineBoard.Requirements); // Utopia-Tweak : Machine Parts
         component.MaterialRequirements = new Dictionary<ProtoId<StackPrototype>, int>(machineBoard.StackRequirements);
         component.ComponentRequirements = new Dictionary<string, GenericPartInfo>(machineBoard.ComponentRequirements);
         component.TagRequirements = new Dictionary<ProtoId<TagPrototype>, GenericPartInfo>(machineBoard.TagRequirements);
 
+        component.Progress.Clear(); // Utopia-Tweak : Machine Parts
         component.MaterialProgress.Clear();
         component.ComponentProgress.Clear();
         component.TagProgress.Clear();
+
+        // Utopia-Tweak : Machine Parts
+        foreach (var (partType, _) in component.Requirements)
+        {
+            component.Progress[partType] = 0;
+        }
+        // Utopia-Tweak : Machine Parts
 
         foreach (var (stackType, _) in component.MaterialRequirements)
         {
@@ -253,6 +263,8 @@ public sealed class MachineFrameSystem : EntitySystem
     {
         if (!component.HasBoard)
         {
+            component.Requirements.Clear();
+            component.Progress.Clear();
             component.TagRequirements.Clear();
             component.MaterialRequirements.Clear();
             component.ComponentRequirements.Clear();
@@ -275,6 +287,26 @@ public sealed class MachineFrameSystem : EntitySystem
 
         foreach (var part in component.PartContainer.ContainedEntities)
         {
+            // Utopia-Tweak : Machine Parts
+            if (TryComp<MachinePartComponent>(part, out var machinePart))
+            {
+                var type = machinePart.PartType;
+                if (!component.Requirements.ContainsKey(type))
+                    continue;
+
+                int quantity = 1;
+                if (TryComp<StackComponent>(part, out var partStack))
+                    quantity = partStack.Count;
+
+                if (!component.Progress.ContainsKey(type))
+                    component.Progress[type] = quantity;
+                else
+                    component.Progress[type] += quantity;
+
+                continue;
+            }
+            // Utopia-Tweak : Machine Parts
+
             if (TryComp<StackComponent>(part, out var stack))
             {
                 var type = stack.StackTypeId;

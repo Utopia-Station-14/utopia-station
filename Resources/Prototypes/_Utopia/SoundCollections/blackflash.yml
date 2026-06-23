@@ -1,0 +1,6 @@
+- type: soundCollection
+  id: BlackFlashSound
+  files:
+  - /Audio/_Utopia/Effects/blackflash1.ogg
+  - /Audio/_Utopia/Effects/blackflash2.ogg
+  - /Audio/_Utopia/Effects/blackflash3.ogg

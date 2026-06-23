@@ -145,10 +145,16 @@
     - /Audio/Ambience/ambimaint4.ogg
     - /Audio/Ambience/ambimaint5.ogg
     - /Audio/Ambience/ambitech2.ogg
-    - /Audio/Voice/Misc/lowHiss1.ogg
-    - /Audio/Voice/Misc/lowHiss2.ogg
-    - /Audio/Voice/Misc/lowHiss3.ogg
-    - /Audio/Voice/Misc/lowHiss4.ogg
+    # Utopia-Tweak : Ambience
+    - /Audio/_Utopia/Ambience/ambimaint6.ogg
+    - /Audio/_Utopia/Ambience/ambimaint7.ogg
+    - /Audio/_Utopia/Ambience/ambimaint8.ogg
+    - /Audio/_Utopia/Ambience/ambimaint9.ogg
+    - /Audio/_Utopia/Ambience/ambimaint10.ogg
+    - /Audio/_Utopia/Ambience/ambimaint11.ogg
+    - /Audio/_Utopia/Ambience/ambimaint12.ogg
+    - /Audio/_Utopia/Ambience/ambimaint13.ogg
+    # Utopia-Tweak : Ambience
     - /Audio/Ambience/maintambience.ogg
 
 - type: soundCollection

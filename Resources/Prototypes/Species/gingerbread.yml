@@ -8,6 +8,10 @@
   dollPrototype: MobGingerbreadDummy
   skinColoration: HumanToned
   defaultSkinTone: "#9a7c5a"
+  # Utopia-Tweak : Language
+  defaultLanguages:
+  - GalacticCommon
+  # Utopia-Tweak : Language
 
 - type: speciesBaseSprites
   id: MobGingerbreadSprites

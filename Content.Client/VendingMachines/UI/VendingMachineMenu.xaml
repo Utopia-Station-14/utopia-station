@@ -3,10 +3,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
     xmlns:co="clr-namespace:Content.Client.UserInterface.Controls"
-    MinHeight="210">
+    MinHeight="210"
+    MinWidth="90">
     <BoxContainer Name="MainContainer" Orientation="Vertical">
         <LineEdit Name="SearchBar" PlaceHolder="{Loc 'vending-machine-component-search-filter'}" HorizontalExpand="True"  Margin ="4 4"/>
         <co:SearchListContainer Name="VendingContents" VerticalExpand="True" Margin="4 4"/>
+        <!-- Utopia-Tweak : Economy -->
+        <BoxContainer Name="Credits" Orientation="Vertical">
+            <PanelContainer StyleClasses="LowDivider" />
+            <BoxContainer Orientation="Horizontal" Margin="10 10 0 10" VerticalAlignment="Bottom">
+                <Label Name="CreditsLabel" HorizontalExpand="True"/>
+                <Button Name="WithdrawButton" Text="{Loc 'store-ui-default-withdraw-text'}" Margin="0 0 10 0" HorizontalAlignment="Right" StyleClasses="OpenBoth"/>
+            </BoxContainer>
+        </BoxContainer>
+        <!-- Utopia-Tweak : Economy -->
          <!-- Footer -->
         <BoxContainer Orientation="Vertical">
             <PanelContainer StyleClasses="LowDivider" />

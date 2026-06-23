@@ -17,6 +17,8 @@ using Content.Shared.Preferences;
 using Content.Shared.Preferences.Loadouts;
 using Content.Shared.Roles;
 using Content.Shared.Traits;
+using Content.Shared._Utopia.Language;
+using Content.Shared._Utopia.SpeechBarks;
 using Microsoft.EntityFrameworkCore;
 using Robust.Shared.Enums;
 using Robust.Shared.Network;
@@ -48,6 +50,7 @@ namespace Content.Server.Database
                 .Include(p => p.Profiles).ThenInclude(h => h.Jobs)
                 .Include(p => p.Profiles).ThenInclude(h => h.Antags)
                 .Include(p => p.Profiles).ThenInclude(h => h.Traits)
+                .Include(p => p.Profiles).ThenInclude(h => h.Languages) // Utopia-Tweak : Language
                 .Include(p => p.Profiles)
                     .ThenInclude(h => h.Loadouts)
                     .ThenInclude(l => l.Groups)
@@ -104,6 +107,7 @@ namespace Content.Server.Database
                 .Include(p => p.Jobs)
                 .Include(p => p.Antags)
                 .Include(p => p.Traits)
+                .Include(p => p.Languages) // Utopia-Tweak : Language
                 .Include(p => p.Loadouts)
                     .ThenInclude(l => l.Groups)
                     .ThenInclude(group => group.Loadouts)
@@ -207,6 +211,7 @@ namespace Content.Server.Database
             var jobs = profile.Jobs.ToDictionary(j => new ProtoId<JobPrototype>(j.JobName), j => (JobPriority) j.Priority);
             var antags = profile.Antags.Select(a => new ProtoId<AntagPrototype>(a.AntagName));
             var traits = profile.Traits.Select(t => new ProtoId<TraitPrototype>(t.TraitName));
+            var languages = profile.Languages.Select(t => new ProtoId<LanguagePrototype>(t.LanguageName)); // Utopia-Tweak : Language
 
             var sex = Sex.Male;
             if (Enum.TryParse<Sex>(profile.Sex, true, out var sexVal))
@@ -280,7 +285,9 @@ namespace Content.Server.Database
                 (PreferenceUnavailableMode) profile.PreferenceUnavailable,
                 antags.ToHashSet(),
                 traits.ToHashSet(),
-                loadouts
+                loadouts,
+                languages.ToHashSet(), // Utopia-Tweak : Language
+                new BarkData(profile.BarkProto, profile.BarkPitch, profile.LowBarkVar, profile.HighBarkVar) // Utopia-Tweak : Barks
             );
         }
 
@@ -361,6 +368,21 @@ namespace Content.Server.Database
 
                 profile.Loadouts.Add(dz);
             }
+
+            // Utopia-Tweak : Language
+            profile.Languages.Clear();
+            profile.Languages.AddRange(
+                humanoid.Languages
+                        .Select(l => new Language { LanguageName = l.ToString() })
+            );
+            // Utopia-Tweak : Language
+
+            // Utopia-Tweak : Barks
+            profile.BarkProto = humanoid.Bark.Proto;
+            profile.BarkPitch = humanoid.Bark.Pitch;
+            profile.LowBarkVar = humanoid.Bark.MinVar;
+            profile.HighBarkVar = humanoid.Bark.MaxVar;
+            // Utopia-Tweak : Barks
 
             return profile;
         }

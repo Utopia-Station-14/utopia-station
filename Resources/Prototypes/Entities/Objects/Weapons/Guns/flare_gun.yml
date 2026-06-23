@@ -49,6 +49,7 @@
       - SemiAuto
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/flaregun.ogg
+    showGunEffect: true # Utopia-Tweak : Gun Shoot Effect
 
 
 - type: entity

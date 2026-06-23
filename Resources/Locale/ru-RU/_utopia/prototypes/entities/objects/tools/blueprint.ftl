@@ -1,0 +1,2 @@
+ent-UtopiaWeaponTonfaBlueprint = чертёж тонфы
+    .desc = Чертеж со схемой тонфы. Его можно вставить в автолат.

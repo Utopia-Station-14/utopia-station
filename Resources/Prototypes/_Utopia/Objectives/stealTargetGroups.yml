@@ -1,0 +1,6 @@
+- type: stealTargetGroup
+  id: UtopiaClothingHandsGlovesKravMaga
+  name: steal-target-groups-krav-maga
+  sprite:
+    sprite: _Utopia/Clothing/Hands/Gloves/kravgloves.rsi
+    state: icon

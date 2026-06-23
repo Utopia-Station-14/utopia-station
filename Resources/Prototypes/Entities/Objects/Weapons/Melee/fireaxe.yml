@@ -41,6 +41,7 @@
   - type: Tool
     qualities:
       - Prying
+      - AdvancedPrying # Utopia-Tweak : Atmos
   - type: ToolTileCompatible
   - type: Prying
   - type: UseDelay

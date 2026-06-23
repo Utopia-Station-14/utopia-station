@@ -145,6 +145,14 @@
     requirePower: true
     highVoltageNode: input
     mediumVoltageNode: output
+  # Utopia-Tweak : Machine Part
+  - type: UpgradeBattery
+    maxChargeMultiplier: 2
+    baseMaxCharge: 2500000
+  - type: UpgradePowerSupplyRamping
+    scaling: Linear
+    supplyRampingMultiplier: 1
+  # Utopia-Tweak : Machine Part
 
 # Compact Wall Substation Base
 - type: entity
@@ -250,12 +258,12 @@
   - type: ContainerFill
     containers:
       board: [ WallmountSubstationElectronics ]
-      manipulator: [ MicroManipulatorStockPart ]
+      capacitor: [ CapacitorStockPart ] # Utopia-Tweak : Machine Part
       powercell: [ PowerCellSmall ]
   - type: ContainerContainer
     containers:
       board: !type:Container
-      manipulator: !type:Container
+      capacitor: !type:Container # Utopia-Tweak : Machine Part
       powercell: !type:Container
 
       # Construction Frame

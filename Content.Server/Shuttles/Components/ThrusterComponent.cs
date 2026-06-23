@@ -1,7 +1,9 @@
 using System.Numerics;
 using Content.Server.Shuttles.Systems;
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.Damage;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Server.Shuttles.Components
@@ -67,6 +69,17 @@ namespace Content.Server.Shuttles.Components
         /// </summary>
         [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoPausedField]
         public TimeSpan NextFire = TimeSpan.Zero;
+
+        // Utopia-Tweak : Machine Parts
+        [DataField]
+        public float BaseThrust = 100f;
+
+        [DataField]
+        public ProtoId<MachinePartPrototype> MachinePartThrust = "Laser";
+
+        [DataField]
+        public float[] ThrustPerPartLevel = [130, 170, 210, 250];
+        // Utopia-Tweak : Machine Parts
     }
 
     public enum ThrusterType

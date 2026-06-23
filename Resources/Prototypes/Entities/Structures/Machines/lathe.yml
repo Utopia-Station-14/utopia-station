@@ -133,6 +133,11 @@
     - ServiceStatic
     - PowerCellsStatic
     - ElectronicsStatic
+    # Utopia-Tweak : Research
+    dynamicPacks:
+    - AdvancedMachineParts
+    - SuperMachineParts
+    # Utopia-Tweak : Research
   - type: EmagLatheRecipes
     emagStaticPacks:
     - SecurityAmmoStatic
@@ -192,7 +197,7 @@
     unlitRunningState: unlit-building
     staticPacks:
     - ChemistryStatic
-    - SurgeryStatic
+    # - SurgeryStatic # Utopia-Tweak : Research
     dynamicPacks:
     - AdvancedTools
     - ScienceEquipment
@@ -207,6 +212,10 @@
     - Janitor
     - Instruments
     - Equipment
+    # Utopia-Tweak : Research
+    - MedicalDynamic
+    - SurgeryStatic
+    # Utopia-Tweak : Research
   - type: EmagLatheRecipes
     emagDynamicPacks:
     - SecurityAmmo
@@ -263,6 +272,9 @@
     - CameraBoards
     - MechBoards
     - ShuttleBoards
+    # Utopia-Tweak-Research
+    - MedicalBoardsDynamic
+    # Utopia-Tweak-Research
   - type: EmagLatheRecipes
     emagDynamicPacks:
     - SecurityBoards

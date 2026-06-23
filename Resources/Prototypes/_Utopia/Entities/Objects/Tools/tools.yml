@@ -1,0 +1,59 @@
+- type: entity
+  id: UtopiaRPD
+  parent: RCD
+  name: RPD
+  description: A device used to rapidly pipe things.
+  components:
+  - type: Sprite
+    sprite: _Utopia/Objects/Tools/rpd.rsi
+  - type: RCD
+    isRpd: true
+    availablePrototypes:
+    - PipeFourway
+    - PipeStraight
+    - PipeBend
+    - PipeTJunction
+    - PipeHalf
+    - ManifoldGas
+    - OutletInjector
+    - ManualValve
+    - VolumetricPump
+    - PressurePump
+    - VentScrubber
+    - PressureValve
+    - PressureRegulator
+    - DualPortVent
+    - VentGas
+    - VentPassive
+    - MixerGas
+    - Radiator
+    - RadiatorBend
+    - SignalValve
+    - CanisterPort
+    - FilterGas
+    - Alarm
+    - Sensor
+    - SensorPipe
+    - Deconstruct
+  - type: LimitedCharges
+    maxCharges: 40
+
+- type: entity
+  id: UtopiaRPDEmpty
+  parent: UtopiaRPD
+  suffix: Empty
+  components:
+  - type: LimitedCharges
+    lastCharges: -1
+
+- type: entity
+  id: UtopiaRPDRecharging
+  parent: UtopiaRPD
+  name: experimental RPD
+  description: Cyborg-mounted Rapid Construction Device which creates compressed matter on the fly using an internal fabricator.
+  suffix: AutoRecharge
+  components:
+  - type: LimitedCharges
+    maxCharges: 30
+  - type: AutoRecharge
+    rechargeDuration: 10

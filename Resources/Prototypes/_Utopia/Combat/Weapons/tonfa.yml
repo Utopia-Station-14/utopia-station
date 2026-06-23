@@ -1,0 +1,80 @@
+- type: combatWeaponMove
+  id: TonfaHandsDrop
+  actionsNeeds:
+    - OffensiveWideHit
+    - OffensiveWideHit
+    - OffensiveHit
+  comboEvent:
+    - !type:ComboDamageEffect
+      damage:
+        types:
+          Blunt: 5
+    - !type:ComboDropFromHandsEffect
+    - !type:ComboAudioTargetEffect
+      sound:
+        collection: GenericHit
+
+- type: combatWeaponMove
+  id: TonfaDownedBeat
+  actionsNeeds:
+    - ProtectiveWideHit
+    - ProtectiveWideHit
+    - OffensiveHit
+  comboEvent:
+    - !type:ComboEffectToDowned
+      comboEvents:
+      - !type:ComboSlowdownEffect
+        time: 10
+      - !type:ComboAudioTargetEffect
+        sound:
+          collection: GenericHit
+    - !type:ComboFallEffect
+      dropItems: false
+
+- type: combatWeaponMove
+  id: TonfaGrabEscape
+  actionsNeeds:
+   - OffensiveWideHit
+   - OffensiveWideHit
+   - ProtectiveHit
+  comboEvent:
+    - !type:ComboEffectByUserPuller
+      comboEvents:
+      - !type:ComboDamageToUserEffect
+        damage:
+          types:
+            Blunt: 10
+      - !type:ComboStopGrabEffect
+      - !type:ComboAudioTargetEffect
+        sound:
+          collection: GenericHit
+      - !type:ComboFallEffect
+        dropItems: false
+      - !type:ComboThrowTargetEffect
+        thrownSpeed: 7
+
+- type: combatWeaponMove
+  id: TonfaStaminaDamage
+  actionsNeeds:
+    - ProtectiveWideHit
+    - OffensiveWideHit
+  comboEvent:
+    - !type:ComboStaminaDamageEffect
+      staminaDamage: 40
+    - !type:ComboAudioTargetEffect
+      sound:
+        collection: GenericHit
+
+- type: combatWeaponMove
+  id: TonfaSlam
+  actionsNeeds:
+    - ProtectiveHit
+    - OffensiveHit
+  comboEvent:
+    - !type:ComboDamageEffect
+      damage:
+        types:
+          Blunt: 10
+    - !type:ComboAudioTargetEffect
+      sound:
+        collection: GenericHit

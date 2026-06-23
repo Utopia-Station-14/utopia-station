@@ -1,0 +1,22 @@
+- type: entity
+  parent: BaseItem
+  id: UtopiaBlackflashManual
+  name: blackflash manual
+  description: A one-off manual teaching the user blackflash techniques.
+  components:
+    - type: Sprite
+      sprite: _Utopia/Objects/Specific/MaterialArts/blackflash-manual.rsi
+      state: icon
+    - type: SpawnItemsOnUse
+      items:
+      - id: Ash
+      sound:
+        path: /Audio/Items/Lighters/lighter3.ogg
+    - type: AddComponentsOnUse
+      components:
+        - type: ComboCounter
+          maxCombo: 3
+        - type: Combo
+          availableMoves:
+          - BlackFlash
+          - FinalBlackFlash

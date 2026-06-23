@@ -1,5 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
+using Content.Shared._Utopia.Language;
+using Content.Shared._Utopia.SpeechBarks;
 using Content.Shared.CCVar;
 using Content.Shared.GameTicking;
 using Content.Shared.Humanoid;
@@ -25,7 +27,7 @@ namespace Content.Shared.Preferences
     [Serializable, NetSerializable]
     public sealed partial class HumanoidCharacterProfile : ICharacterProfile
     {
-        private static readonly Regex RestrictedNameRegex = new(@"[^A-Za-z0-9 '\-]");
+        private static readonly Regex RestrictedNameRegex = new("[^A-Za-zА-Яа-яёЁ0-9' _.<>^%~ -]"); // Utopia-Tweak
         private static readonly Regex ICNameCaseRegex = new(@"^(?<word>\w)|\b(?<word>\w)(?=\w*$)");
 
         /// <summary>
@@ -115,6 +117,18 @@ namespace Content.Shared.Preferences
         /// </summary>
         public IReadOnlySet<ProtoId<TraitPrototype>> TraitPreferences => _traitPreferences;
 
+        // Utopia-Tweak : Language
+        [DataField]
+        private HashSet<ProtoId<LanguagePrototype>> _languages = new();
+
+        public IReadOnlySet<ProtoId<LanguagePrototype>> Languages => _languages;
+        // Utopia-Tweak : Language
+
+        // Utopia-Tweak : Barks
+        [DataField]
+        public BarkData Bark = new();
+        // Utopia-Tweak : Barks
+
         /// <summary>
         /// If we're unable to get one of our preferred jobs do we spawn as a fallback job or do we stay in lobby.
         /// </summary>
@@ -135,7 +149,9 @@ namespace Content.Shared.Preferences
             PreferenceUnavailableMode preferenceUnavailable,
             HashSet<ProtoId<AntagPrototype>> antagPreferences,
             HashSet<ProtoId<TraitPrototype>> traitPreferences,
-            Dictionary<string, RoleLoadout> loadouts)
+            Dictionary<string, RoleLoadout> loadouts,
+            HashSet<ProtoId<LanguagePrototype>> languages, // Utopia-Tweak : Language
+            BarkData bark) // Utopia-Tweak : Barks
         {
             Name = name;
             FlavorText = flavortext;
@@ -150,6 +166,9 @@ namespace Content.Shared.Preferences
             _antagPreferences = antagPreferences;
             _traitPreferences = traitPreferences;
             _loadouts = loadouts;
+            _languages = languages; // Utopia-Tweak : Language
+            Bark = bark; // Utopia-Tweak : Barks
+
 
             var hasHighPrority = false;
             foreach (var (key, value) in _jobPriorities)
@@ -180,7 +199,9 @@ namespace Content.Shared.Preferences
                 other.PreferenceUnavailable,
                 new HashSet<ProtoId<AntagPrototype>>(other.AntagPreferences),
                 new HashSet<ProtoId<TraitPrototype>>(other.TraitPreferences),
-                new Dictionary<string, RoleLoadout>(other.Loadouts))
+                new Dictionary<string, RoleLoadout>(other.Loadouts),
+                other._languages, // Utopia-Tweak : Language
+                other.Bark) // Utopia-Tweak : Barks
         {
         }
 
@@ -202,10 +223,12 @@ namespace Content.Shared.Preferences
         {
             species ??= SharedHumanoidAppearanceSystem.DefaultSpecies;
 
+            var proto = IoCManager.Resolve<IPrototypeManager>(); // Utopia-Tweak : Language
             return new()
             {
                 Species = species,
                 Appearance = HumanoidCharacterAppearance.DefaultWithSpecies(species),
+                _languages = proto.Index<SpeciesPrototype>(species).DefaultLanguages.ToHashSet() // Utopia-Tweak : Language
             };
         }
 
@@ -233,10 +256,12 @@ namespace Content.Shared.Preferences
 
             var sex = Sex.Unsexed;
             var age = 18;
+            HashSet<ProtoId<LanguagePrototype>> languages = new(); // Utopia-Tweak : Language
             if (prototypeManager.TryIndex<SpeciesPrototype>(species, out var speciesPrototype))
             {
                 sex = random.Pick(speciesPrototype.Sexes);
                 age = random.Next(speciesPrototype.MinAge, speciesPrototype.OldAge); // people don't look and keep making 119 year old characters with zero rp, cap it at middle aged
+                languages = speciesPrototype.DefaultLanguages.ToHashSet(); // Utopia-Tweak : Language
             }
 
             var gender = Gender.Epicene;
@@ -261,6 +286,7 @@ namespace Content.Shared.Preferences
                 Gender = gender,
                 Species = species,
                 Appearance = HumanoidCharacterAppearance.Random(species, sex),
+                _languages = languages, // Utopia-Tweak : Language
             };
         }
 
@@ -448,6 +474,40 @@ namespace Content.Shared.Preferences
             };
         }
 
+        // Utopia-Tweak : Barks
+        public HumanoidCharacterProfile WithBarkProto(string bark)
+        {
+            return new(this)
+            {
+                Bark = Bark.WithProto(bark),
+            };
+        }
+
+        public HumanoidCharacterProfile WithBarkPitch(float pitch)
+        {
+            return new(this)
+            {
+                Bark = Bark.WithPitch(pitch),
+            };
+        }
+
+        public HumanoidCharacterProfile WithBarkMinVariation(float variation)
+        {
+            return new(this)
+            {
+                Bark = Bark.WithMinVar(variation),
+            };
+        }
+
+        public HumanoidCharacterProfile WithBarkMaxVariation(float variation)
+        {
+            return new(this)
+            {
+                Bark = Bark.WithMaxVar(variation),
+            };
+        }
+        // Utopia-Tweak : Barks
+
         public string Summary =>
             Loc.GetString(
                 "humanoid-character-profile-summary",
@@ -471,6 +531,8 @@ namespace Content.Shared.Preferences
             if (!_traitPreferences.SequenceEqual(other._traitPreferences)) return false;
             if (!Loadouts.SequenceEqual(other.Loadouts)) return false;
             if (FlavorText != other.FlavorText) return false;
+            if (!_languages.SequenceEqual(other._languages)) return false; // Utopia-Tweak : Language
+            if (!Bark.MemberwiseEquals(other.Bark)) return false; // Utopia-Tweak : Language
             return Appearance.MemberwiseEquals(other.Appearance);
         }
 
@@ -642,6 +704,28 @@ namespace Content.Shared.Preferences
             {
                 _loadouts.Remove(value);
             }
+
+            // Utopia-Tweak : Language
+            if (_languages.Count <= 0)
+            {
+                _languages = [.. speciesPrototype.DefaultLanguages];
+            }
+
+            List<ProtoId<LanguagePrototype>> langsInvalid = [];
+            foreach (var language in _languages)
+            {
+                if (!prototypeManager.Index(language).Roundstart && !speciesPrototype.UniqueLanguages.Contains(language)
+                || _languages.Count > speciesPrototype.MaxLanguages && !speciesPrototype.DefaultLanguages.Contains(language))
+                {
+                    langsInvalid.Add(language);
+                }
+            }
+
+            foreach (var lang in langsInvalid)
+            {
+                _languages.Remove(lang);
+            }
+            // Utopia-Tweak : Language
         }
 
         /// <summary>
@@ -769,5 +853,47 @@ namespace Content.Shared.Preferences
         {
             return new HumanoidCharacterProfile(this);
         }
+
+        // Utopia-Tweak : Language
+        public HumanoidCharacterProfile WithLanguage(ProtoId<LanguagePrototype> language)
+        {
+            var proto = IoCManager.Resolve<IPrototypeManager>();
+            var species = proto.Index(Species);
+            if (!proto.Index(language).Roundstart && !species.UniqueLanguages.Contains(language))
+                return new(this);
+            if (_languages.Contains(language))
+                return new(this);
+            if (_languages.Count >= species.MaxLanguages)
+                return new(this);
+
+            HashSet<ProtoId<LanguagePrototype>> list = new(_languages);
+            list.Add(language);
+
+            return new(this)
+            {
+                _languages = list,
+            };
+        }
+
+        public HumanoidCharacterProfile WithoutLanguage(ProtoId<LanguagePrototype> language)
+        {
+            var proto = IoCManager.Resolve<IPrototypeManager>();
+            var species = proto.Index(Species);
+            if (!proto.Index(language).Roundstart && !species.UniqueLanguages.Contains(language))
+                return new(this);
+            if (!_languages.Contains(language))
+                return new(this);
+            if (_languages.Count <= 1)
+                return new(this);
+
+            HashSet<ProtoId<LanguagePrototype>> list = new(_languages);
+            list.Remove(language);
+
+            return new(this)
+            {
+                _languages = list,
+            };
+        }
+        // Utopia-Tweak : Language
     }
 }

@@ -70,6 +70,18 @@
           Quantity: 9
         - ReagentId: Carbon
           Quantity: 1
+  # Utopia-Add: URT start
+  - type: Tag
+    tags:
+    - UtopiaSteelSheet
+    - Sheet
+    - Metal
+    - ConstructionMaterial
+  # Utopia-Add: URT end
+  # Utopia-Add: RPD
+  - type: RCDAmmo
+    charges: 1
+  # Utopia-Add: RPD
 
 - type: entity
   parent: SheetSteel

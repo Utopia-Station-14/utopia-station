@@ -425,7 +425,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
         DirtyField(weaponUid, weapon, nameof(MeleeWeaponComponent.NextAttack));
 
         // Do this AFTER attack so it doesn't spam every tick
-        var ev = new AttemptMeleeEvent();
+        var ev = new AttemptMeleeEvent(user); // Utopia-Tweak : Grab
         RaiseLocalEvent(weaponUid, ref ev);
 
         if (weapon.SwingBeverage)
@@ -664,7 +664,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
         // Sawmill.Debug($"Melee damage is {damage.Total} out of {component.Damage.Total}");
 
         // Raise event before doing damage so we can cancel damage if the event is handled
-        var hitEvent = new MeleeHitEvent(targets, user, meleeUid, damage, direction);
+        var hitEvent = new MeleeHitEvent(targets, user, meleeUid, damage, direction, iswide: true); // Utopia-Tweak : Combat
         RaiseLocalEvent(meleeUid, hitEvent);
 
         if (hitEvent.Handled)
@@ -893,6 +893,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
         }
 
         RaiseLocalEvent(target.Value, ref attemptEvent);
+        RaiseLocalEvent(user, ref attemptEvent); // Utopia-Tweak : Grab
 
         if (attemptEvent.Cancelled)
             return false;
@@ -914,6 +915,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
 
         var eventArgs = new DisarmedEvent(target.Value, user, 1 - chance);
         RaiseLocalEvent(target.Value, ref eventArgs);
+        RaiseLocalEvent(user, ref eventArgs); // Utopia-Tweak : Combat
 
         // Nothing handled it so abort.
         if (!eventArgs.Handled)

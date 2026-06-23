@@ -30,6 +30,7 @@
     soundGunshot:
       collection: BulletMiss
     soundEmpty: null
+    showGunEffect: true # Utopia-Tweak : Gun Shoot Effect
   - type: ItemSlots
     slots:
       projectiles:

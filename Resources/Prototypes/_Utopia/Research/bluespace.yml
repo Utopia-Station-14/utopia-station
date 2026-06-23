@@ -1,0 +1,49 @@
+
+- type: technology
+  id: BluespaceChemistry
+  name: research-technology-bluespace-chemistry
+  icon:
+    sprite: Objects/Specific/Chemistry/beaker_bluespace.rsi
+    state: beakerbluespace
+  discipline: Bluespace
+  tier: 3
+  cost: 10000
+  recipeUnlocks:
+  - BluespaceBeaker
+  - SyringeBluespace
+  position: 3,-1
+  technologyPrerequisites:
+  - ChemicalDispensary
+
+- type: technology
+  id: BluespaceCargoTransport
+  name: research-technology-bluespace-cargo-transport
+  icon:
+    sprite: Structures/cargo_telepad.rsi
+    state: display
+  discipline: Bluespace
+  tier: 3
+  cost: 15000
+  recipeUnlocks:
+  - CargoTelepadMachineCircuitboard
+  position: 2,-1
+  technologyPrerequisites:
+  - BluespaceStorage
+  - BluespaceChemistry
+
+- type: technology
+  id: BluespaceStorage
+  name: research-technology-bluespace-storage
+  icon:
+    sprite: Clothing/Back/Backpacks/holding.rsi
+    state: holding
+  discipline: Bluespace
+  tier: 3
+  cost: 15000
+  recipeUnlocks:
+  - ClothingBackpackHolding
+  - ClothingBackpackSatchelHolding
+  - ClothingBackpackDuffelHolding
+  position: 2,0
+  technologyPrerequisites:
+  - OptimizedMicrogalvanism

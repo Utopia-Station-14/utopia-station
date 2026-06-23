@@ -25,10 +25,30 @@
       Ammonia: stationAmmonia
       NitrousOxide: stationNO
       Frezon: danger
+      # Utopia-Tweak : Gases
+      BZ: stationBZ
+      Pluoxium: stationPluoxium
+      Hydrogen: danger
+      Nitrium: voxNitrium
+      Healium: stationHealium
+      HyperNoblium: stationHyperNoblium
+      ProtoNitrate: danger
+      Zauker: danger
+      Halon: danger
+      Helium: unwanted
+      AntiNoblium: danger
+      # Utopia-Tweak : Gases
   - type: GuideHelp
     guides:
     - DeviceMonitoringAndControl
     - AtmosphericsSystems
+  # Utopia-Add: RPD
+  - type: RCDDeconstructable
+    cost: 10
+    delay: 2
+    fx: EffectRCDDeconstruct2
+    rpdDeconstructable: true
+  # Utopia-Add: RPD
 
 - type: entity
   id: AirSensor

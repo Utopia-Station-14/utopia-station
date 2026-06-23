@@ -1,0 +1,25 @@
+- type: entity
+  parent: MobStatusEffectDebuff
+  id: StatusEffectBreathingBlocked
+  components:
+  - type: StatusEffect
+    whitelist:
+      components:
+        - Respirator
+        - MobState
+      requireAll: true
+  - type: BreathBlockStatusEffect
+
+- type: entity
+  parent: MobStatusEffectDebuff
+  id: StatusEffectMuted
+  components:
+    - type: StatusEffect
+      whitelist:
+        components:
+          - MobState
+          - Blindable
+        requireAll: true
+    - type: Muted
+    - type: StatusEffectAlert
+      alert: Muted

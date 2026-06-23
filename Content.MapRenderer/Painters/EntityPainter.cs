@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Robust.Client.GameObjects;
@@ -32,7 +32,7 @@ public sealed class EntityPainter
         _sprite = client.ResolveDependency<IEntityManager>().System<SpriteSystem>();
 
         _images = new Dictionary<(string path, string state), Image>();
-        _errorImage = Image.Load<Rgba32>(_resManager.ContentFileRead("/Textures/error.rsi/error.png"));
+        _errorImage = Image.Load<Rgba32>(_resManager.ContentFileRead("/Textures/_Utopia/error.rsi/error.png")); // Utopia-Tweak
     }
 
     public void Run(Image canvas, List<EntityData> entities, Vector2 customOffset = default)

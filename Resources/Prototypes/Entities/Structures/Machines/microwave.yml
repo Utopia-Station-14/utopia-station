@@ -28,6 +28,13 @@
         bloodyunshaded:
           Idle: { visible: false }
           Broken: { visible: false }
+        # Utopia-Tweak : Microwave
+        enum.MicrowaveVisualizerLayers.Opened:
+          Opened: { visible: true }
+          Closed: { visible: false }
+          Cooking: { visible: false }
+          Broken: { visible: false }
+        # Utopia-Tweak : Microwave
       enum.PowerDeviceVisuals.Powered:
         enum.MicrowaveVisualizerLayers.BaseUnlit:
           True: { visible: true }
@@ -69,6 +76,11 @@
     - state: mw_unlit
       shader: unshaded
       map: ["enum.MicrowaveVisualizerLayers.BaseUnlit"]
+    # Utopia-Tweak : Microwave
+    - state: mwo
+      map: [enum.MicrowaveVisualizerLayers.Opened]
+      visible: false
+    # Utopia-Tweak : Microwave
     - state: mwbloody0
       map: ["bloody"]
       visible: false

@@ -1,0 +1,189 @@
+# Tier 1
+
+- type: technology
+  id: Chemistry
+  name: research-technology-chemistry
+  icon:
+    sprite: Objects/Specific/Chemistry/beaker_large.rsi
+    state: beakerlarge
+  discipline: Biochemical
+  tier: 1
+  cost: 5000
+  recipeUnlocks:
+  - LargeBeaker
+  - Dropper
+  - ChemicalPayload
+  - ClothingEyesGlassesChemical
+  - Jug
+  position: 2,-1
+
+- type: technology
+  id: SurgicalTools
+  name: research-technology-surgical-tools
+  icon:
+    sprite: Objects/Specific/Medical/Surgery/saw.rsi
+    state: saw
+  discipline: Biochemical
+  tier: 1
+  cost: 2500
+  recipeUnlocks:
+  - Scalpel
+  - Retractor
+  - Cautery
+  - Drill
+  - Saw
+  - Hemostat
+  position: 2,0
+  technologyPrerequisites:
+  - Chemistry
+
+- type: technology
+  id: BiochemicalStasis
+  name: research-technology-biochemical-stasis
+  icon:
+    sprite: Structures/Machines/stasis_bed.rsi
+    state: icon
+  discipline: Biochemical
+  tier: 1
+  cost: 7500
+  recipeUnlocks:
+  - CryostasisBeaker
+  - StasisBedMachineCircuitboard
+  - SyringeCryostasis
+  position: 3,0
+  technologyPrerequisites:
+  - SurgicalTools
+
+- type: technology
+  id: MechanizedTreatment
+  name: research-technology-mechanized-treatment
+  icon:
+    sprite: Mobs/Silicon/chassis.rsi
+    state: medical
+  discipline: Biochemical
+  tier: 1
+  cost: 7500
+  recipeUnlocks:
+  - BorgModuleAdvancedChemical
+  - AdvancedJetInjector
+  position: 3,1
+  technologyPrerequisites:
+  - BiochemicalStasis
+
+- type: technology
+  id: Virology
+  name: research-technology-virology
+  icon:
+    sprite: Structures/Machines/diagnoser.rsi
+    state: icon
+  discipline: Biochemical
+  tier: 1
+  cost: 5000
+  recipeUnlocks:
+  - VaccinatorMachineCircuitboard
+  - DiagnoserMachineCircuitboard
+  position: 1,-1
+  technologyPrerequisites:
+  - Chemistry
+
+# Tier 2
+
+- type: technology
+  id: Cryopod
+  name: research-technology-cryogenics
+  icon:
+    sprite: Structures/Machines/Medical/cryopod.rsi
+    state: pod-on
+  discipline: Biochemical
+  tier: 2
+  cost: 7500
+  recipeUnlocks:
+  - CryoPodMachineCircuitboard
+  position: 3,2
+  technologyPrerequisites:
+  - BiochemicalStasis
+
+- type: technology
+  id: SeparationUnits
+  name: research-technology-separation-units
+  icon:
+    sprite: Structures/Machines/Medical/centrifuge.rsi
+    state: base
+  discipline: Biochemical
+  tier: 2
+  cost: 10000
+  recipeUnlocks:
+  - ElectrolysisUnitMachineCircuitboard
+  - CentrifugeMachineCircuitboard
+  position: 1,1
+  technologyPrerequisites:
+  - Virology
+
+- type: technology
+  id: Biofabrication
+  name: research-technology-biofabrication
+  icon:
+    sprite: Structures/Machines/biofabricator.rsi
+    state: icon
+  discipline: Biochemical
+  tier: 2
+  cost: 10000
+  recipeUnlocks:
+  - BiofabricatorMachineCircuitboard
+  - BiomassReclaimerMachineCircuitboard
+  position: 1,2
+  technologyPrerequisites:
+  - SeparationUnits
+
+- type: technology
+  id: ChemicalDispensary
+  name: research-technology-chemical-dispensary
+  icon:
+    sprite: Structures/dispensers.rsi
+    state: industrial-working
+  discipline: Biochemical
+  tier: 2
+  cost: 10000
+  recipeUnlocks:
+  - ChemMasterMachineCircuitboard
+  - ChemDispenserMachineCircuitboard
+  position: 2,1
+  technologyPrerequisites:
+  - SurgicalTools
+
+# Tier 3
+
+- type: technology
+  id: LauncherSyringe
+  name: research-technology-launcher-syringe
+  icon:
+    sprite: Objects/Weapons/Guns/Cannons/syringe_gun.rsi
+    state: syringe_gun
+  discipline: Biochemical
+  tier: 3
+  cost: 15000
+  recipeUnlocks:
+  - LauncherSyringe
+  - MiniSyringe
+  position: 2,2
+  technologyPrerequisites:
+  - ChemicalDispensary
+
+- type: technology
+  id: Cloning
+  name: research-technology-cloning
+  icon:
+    sprite: Structures/Machines/cloning.rsi
+    state: pod_0
+  discipline: Biochemical
+  tier: 3
+  cost: 35000
+  recipeUnlocks:
+  - CloningPodMachineCircuitboard
+  - MedicalScannerMachineCircuitboard
+  - CloningConsoleComputerCircuitboard
+  position: 2,3
+  technologyPrerequisites:
+  - Cryopod
+  - Biofabrication
+  - LauncherSyringe

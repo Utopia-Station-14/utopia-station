@@ -49,6 +49,10 @@
     solutions:
       glass:
         canReact: false
+  # Utopia-Add: RPD
+  - type: RCDAmmo
+    charges: 1
+  # Utopia-Add: RPD
 
 - type: entity
   parent: SheetGlassBase

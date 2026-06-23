@@ -65,6 +65,13 @@
     bodyType: static
   - type: StaticPrice
     price: 30
+  # Utopia-Add: RPD
+  - type: RCDDeconstructable
+    cost: 5
+    delay: 2
+    fx: EffectRCDDeconstruct2
+    rpdDeconstructable: true
+  # Utopia-Add: RPD
 
 - type: entity
   abstract: true

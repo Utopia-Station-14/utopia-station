@@ -14,15 +14,25 @@
     - type: Tag
       tags:
       - ConstructionMaterial
+    # Utopia-Tweak : Machine Parts
+    - type: GuideHelp
+      guides:
+      - MachineUpgrading
+    # Utopia-Tweak : Machine Parts
 
 - type: entity
   id: MicroManipulatorStockPart
   name: modular machine part
   parent: BaseStockPart
   description: A basic machine part used in the construction of a variety of devices.
-  suffix: Rating 1
+  # suffix: Rating 1 # Utopia-Tweak : Machine Parts
   components:
     - type: Sprite
       state: micro_mani
+    # Utopia-Tweak : Machine Parts
+    - type: MachinePart
+      partType: Manipulator
+      tier: 1
+    # Utopia-Tweak : Machine Parts
     - type: Stack
       stackType: Manipulator

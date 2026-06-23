@@ -6,9 +6,11 @@ using Content.Shared.Body.Part;
 using Content.Shared.CombatMode;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Explosion;
+using Content.Shared.Hands;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Input;
+using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Stacks;
@@ -91,6 +93,11 @@ namespace Content.Server.Hands.Systems
 
         private void OnDisarmed(EntityUid uid, HandsComponent component, ref DisarmedEvent args)
         {
+            // Utopia-Tweak : Combat
+            if (args.Source == uid)
+                return;
+            // Utopia-Tweak : Combat
+
             if (args.Handled)
                 return;
 
@@ -157,6 +164,20 @@ namespace Content.Server.Hands.Systems
             if (_timing.CurTime < hands.NextThrowTime)
                 return false;
             hands.NextThrowTime = _timing.CurTime + hands.ThrowCooldown;
+
+            // Utopia-Tweak : Grab
+            if (TryComp<VirtualItemComponent>(throwEnt, out var virtualItem))
+            {
+                var userEv = new BeforeVirtualItemThrownEvent(virtualItem.BlockingEntity, player, coordinates);
+                RaiseLocalEvent(player, userEv);
+
+                var targEv = new BeforeVirtualItemThrownEvent(virtualItem.BlockingEntity, player, coordinates);
+                RaiseLocalEvent(virtualItem.BlockingEntity, targEv);
+
+                if (userEv.Cancelled || targEv.Cancelled)
+                    return false;
+            }
+            // Utopia-Tweak : Grab
 
             if (TryComp(throwEnt, out StackComponent? stack) && stack.Count > 1 && stack.ThrowIndividually)
             {

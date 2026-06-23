@@ -34,6 +34,15 @@ public sealed class ResearchConsoleBoundUserInterface : BoundUserInterface
         {
             SendMessage(new ConsoleServerSelectionMessage());
         };
+
+        // Utopia-Tweak : Research
+        _consoleMenu?.OnDisciplineButtonPressed += protoId =>
+        {
+            SendPredictedMessage(new ResearchConsoleSelectDisciplineMessage(protoId));
+        };
+
+        _consoleMenu?.OpenCentered();
+        // Utopia-Tweak : Research
     }
 
     public override void OnProtoReload(PrototypesReloadedEventArgs args)

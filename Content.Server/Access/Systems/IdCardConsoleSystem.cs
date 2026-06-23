@@ -1,8 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Content.Server._Utopia.Economy;
 using Content.Server.Chat.Systems;
 using Content.Server.Containers;
+using Content.Server.Roles;
+using Content.Server.Roles.Jobs;
 using Content.Server.StationRecords.Systems;
+using Content.Shared._Utopia.Economy;
 using Content.Shared.Access.Components;
 using static Content.Shared.Access.Components.IdCardConsoleComponent;
 using Content.Shared.Access.Systems;
@@ -39,7 +43,11 @@ public sealed class IdCardConsoleSystem : SharedIdCardConsoleSystem
     [Dependency] private readonly ThrowingSystem _throwing = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
-
+    // Utopia-Tweak : Economy
+    [Dependency] private readonly RoleSystem _roles = default!;
+    [Dependency] private readonly JobSystem _job = default!;
+    [Dependency] private readonly BankCardSystem _bankCard = default!;
+    // Utopia-Tweak : Economy
     public override void Initialize()
     {
         base.Initialize();
@@ -186,6 +194,27 @@ public sealed class IdCardConsoleSystem : SharedIdCardConsoleSystem
         var addedTags = newAccessList.Except(oldTags).Select(tag => "+" + tag).ToList();
         var removedTags = oldTags.Except(newAccessList).Select(tag => "-" + tag).ToList();
         _access.TrySetTags(targetId, newAccessList);
+
+        // Utopia-Tweak : Economy
+        if (newJobProto.Id != string.Empty
+        && TryComp<BankCardComponent>(targetId, out var bankCard)
+        && bankCard.AccountId.HasValue
+        && _bankCard.TryGetAccount(bankCard.AccountId.Value, out var account)
+        && account.Mind != null)
+        {
+            var mindId = GetEntity(account.Mind.Value);
+
+            if (_prototype.TryIndex(newJobProto, out var jobPrototype))
+            {
+                if (_job.MindTryGetJob(mindId, out var oldJob))
+                {
+                    _roles.MindRemoveRole(mindId, oldJob.ID);
+                }
+
+                _job.MindAddJob(mindId, jobPrototype.ID);
+            }
+        }
+        // Utopia-Tweak : Economy
 
         /*TODO: ECS SharedIdCardConsoleComponent and then log on card ejection, together with the save.
         This current implementation is pretty shit as it logs 27 entries (27 lines) if someone decides to give themselves AA*/

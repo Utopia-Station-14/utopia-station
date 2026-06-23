@@ -27,7 +27,16 @@ namespace Content.Client.VendingMachines
             _menu.Title = EntMan.GetComponent<MetaDataComponent>(Owner).EntityName;
             _menu.OnItemSelected += OnItemSelected;
             Refresh();
+
+            _menu.OnWithdraw += OnWithdrawPressed; // Utopia-Tweak : Economy
         }
+
+        // Utopia-Tweak : Economy
+        private void OnWithdrawPressed(VendingMachineWithdrawMessage message)
+        {
+            SendPredictedMessage(new VendingMachineWithdrawMessage());
+        }
+        // Utopia-Tweak : Economy
 
         public void Refresh()
         {
@@ -36,7 +45,24 @@ namespace Content.Client.VendingMachines
             var system = EntMan.System<VendingMachineSystem>();
             _cachedInventory = system.GetAllInventory(Owner);
 
-            _menu?.Populate(_cachedInventory, enabled);
+            // Utopia-Tweak : Economy
+            if (bendy == null)
+                return;
+
+            var multiplier = bendy.PriceMultiplier;
+
+            if (bendy.AllForFree)
+                multiplier = 0;
+            // Utopia-Tweak : Economy
+
+            _menu?.Populate(_cachedInventory, enabled, multiplier); // Utopia-Tweak : Economy
+
+            // Utopia-Tweak : Economy
+            if (bendy.Credits != 0 && !bendy.AllForFree)
+                _menu?.SetCreditsVisible(true);
+
+            _menu?.SetCredits(bendy.Credits);
+            // Utopia-Tweak : Economy
         }
 
         public void UpdateAmounts()
@@ -46,6 +72,13 @@ namespace Content.Client.VendingMachines
             var system = EntMan.System<VendingMachineSystem>();
             _cachedInventory = system.GetAllInventory(Owner);
             _menu?.UpdateAmounts(_cachedInventory, enabled);
+
+            // Utopia-Tweak : Economy
+            if (bendy == null)
+                return;
+
+            _menu?.SetCredits(bendy.Credits);
+            // Utopia-Tweak : Economy
         }
 
         private void OnItemSelected(GUIBoundKeyEventArgs args, ListData data)
@@ -75,6 +108,8 @@ namespace Content.Client.VendingMachines
 
             if (_menu == null)
                 return;
+
+            _menu.OnWithdraw -= OnWithdrawPressed; // Utopia-Tweak : Economy
 
             _menu.OnItemSelected -= OnItemSelected;
             _menu.OnClose -= Close;

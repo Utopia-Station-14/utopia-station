@@ -102,6 +102,14 @@
       - PowerStorage
       - VoltageNetworks
       - Power
+    # Utopia-Tweak : Machine Part
+    - type: UpgradeBattery
+      maxChargeMultiplier: 2
+      baseMaxCharge: 8000000
+    - type: UpgradePowerSupplyRamping
+      scaling: Linear
+      supplyRampingMultiplier: 1
+    # Utopia-Tweak : Machine Part
 
     # Interface
     - type: BatteryInterface
@@ -171,6 +179,10 @@
     collectionName: smes
     sprite: Structures/Power/smes.rsi
     state: advancedsmes-static
+  # Utopia-Tweak : Machine Part
+  - type: UpgradeBattery
+    baseMaxCharge: 16000000
+  # Utopia-Tweak : Machine Part
 
 - type: entity
   parent: SMESAdvanced

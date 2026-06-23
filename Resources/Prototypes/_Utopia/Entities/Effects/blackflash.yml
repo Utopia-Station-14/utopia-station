@@ -1,0 +1,26 @@
+- type: entity
+  id: UtopiaBlackFlashEffect
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    noRot: true
+    drawdepth: Effects
+    sprite: _Utopia/Effects/blackflash.rsi
+    state: blackflash
+  - type: AnimationPlayer
+  - type: TimedDespawn
+    lifetime: 0.7
+  - type: Tag
+    tags:
+      - HideContextMenu
+
+- type: entity
+  parent: UtopiaBlackFlashEffect
+  id: UtopiaFinalBlackFlashEffect
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    noRot: true
+    drawdepth: Effects
+    sprite: _Utopia/Effects/blackflash.rsi
+    state: blackflash-final

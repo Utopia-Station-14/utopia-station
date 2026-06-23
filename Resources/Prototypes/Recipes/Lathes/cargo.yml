@@ -5,6 +5,7 @@
   materials:
     Steel: 250
     Plastic: 50
+    Copper: 10 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   id: AppraisalTool
@@ -12,6 +13,7 @@
   completetime: 4
   materials:
     Steel: 500
+    Copper: 100 # Utopia-Tweak : Ores
 
 - type: latheRecipe
   id: UtilityKnife

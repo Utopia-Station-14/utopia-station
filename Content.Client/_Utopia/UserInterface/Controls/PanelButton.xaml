@@ -1,0 +1,7 @@
+﻿<controls:PanelButton
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client._Utopia.UserInterface.Controls">
+    <BoxContainer Orientation="Horizontal">
+        <Label Name="Label" Access="Public" Align="Left" />
+    </BoxContainer>
+</controls:PanelButton>

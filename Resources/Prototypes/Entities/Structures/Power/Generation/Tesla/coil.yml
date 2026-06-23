@@ -65,7 +65,7 @@
     startingCharge: 0
   - type: BatteryDischarger
   - type: TeslaCoil
-    chargeFromLightning: 5000000
+    chargingMultiplier: 1 ## Utopia-Tweak : Lightning-Update
   - type: LightningTarget
     priority: 4
     hitProbability: 0.5

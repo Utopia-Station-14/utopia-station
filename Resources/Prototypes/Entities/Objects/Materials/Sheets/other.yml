@@ -108,6 +108,10 @@
         - ReagentId: Plasma
           Quantity: 10
         canReact: false
+  # Utopia-Add: RPD
+  - type: RCDAmmo
+    charges: 1
+  # Utopia-Add: RPD
 
 - type: entity
   parent: SheetPlasma
@@ -171,6 +175,10 @@
         - ReagentId: Phosphorus
           Quantity: 5
         canReact: false
+  # Utopia-Add: RPD
+  - type: RCDAmmo
+    charges: 1
+  # Utopia-Add: RPD
 
 - type: entity
   parent: SheetPlastic

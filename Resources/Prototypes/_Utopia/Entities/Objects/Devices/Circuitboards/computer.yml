@@ -1,0 +1,10 @@
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: UtopiaDnaManipulatorConsoleCircuitboard
+  name: dna scanner console board
+  description: A computer printed circuit board for the dna scanner console.
+  components:
+    - type: Sprite
+      state: cpu_medical
+    - type: ComputerBoard
+      prototype: UtopiaComputerDnaManipulator

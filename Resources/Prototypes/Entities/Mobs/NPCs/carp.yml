@@ -86,6 +86,11 @@
       interactFailureString: petting-failure-carp
       interactFailureSound:
         path: /Audio/Effects/bite.ogg
+    # Utopia-Tweak : Language
+    - type: LanguageSpeaker
+      languages:
+        GalacticCommon: Understand
+    # Utopia-Tweak : Language
 
 - type: entity
   parent: BaseMobCarp
@@ -257,6 +262,11 @@
         types:
           Slash: 10
           Bloodloss: 5
+    # Utopia-Tweak : Language
+    - type: LanguageSpeaker
+      languages:
+        GalacticCommon: Speak
+    # Utopia-Tweak : Language
 
 - type: entity
   id: MobSharkSalvage

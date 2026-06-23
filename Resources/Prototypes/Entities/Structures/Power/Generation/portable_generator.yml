@@ -84,6 +84,9 @@
       startSoundEmpty: { collection: GeneratorTugEmpty }
       startSound: { collection: GeneratorTug }
     - type: FuelGenerator
+    #Utopia-Tweak : PACMAN-updt
+    - type: GeneratorOverheat
+    #Utopia-Tweak : PACMAN-updt
     - type: PowerSupplier
       supplyRate: 3000
       supplyRampRate: 500
@@ -131,10 +134,10 @@
   name: P.A.C.M.A.N.-type portable generator
   description: |-
     A flexible backup generator for powering a variety of equipment.
-    Runs off solid plasma sheets and is rated for up to 30 kW.
+    Runs off solid plasma sheets and is rated for up to 60 kW.
   parent: PortableGeneratorSwitchableBase
   id: PortableGeneratorPacman
-  suffix: Plasma, 30 kW
+  suffix: Plasma, 60 kW
   components:
     - type: Sprite
       layers:
@@ -158,10 +161,10 @@
       board: PortableGeneratorPacmanMachineCircuitboard
     - type: FuelGenerator
       minTargetPower: 5000
-      maxTargetPower: 30000
+      maxTargetPower: 60000
       targetPower: 30000
       optimalPower: 30000
-      # 15 minutes at max output
+      # 15 minutes at average output
       optimalBurnRate: 0.0333333
       # a decent curve that goes up to about an hour at 5 kW.
       fuelEfficiencyConstant: 0.75
@@ -187,15 +190,29 @@
     - type: PowerSupplier
       supplyRampRate: 5000
       supplyRampTolerance: 1500
+    # Utopia-Tweak : Machine Part
+    - type: UpgradePowerSupplier
+      powerSupplyMultiplier: 1.25
+      scaling: Exponential
+    # Utopia-Tweak : Machine Part
+    # Utopia-Tweak : PACMAN-updt
+    - type: GeneratorOverheat
+      explodeChance: 6
+      operatingTemperature: 348.15 # Согласовать с Лором??
+    - type: Explosive
+      explosionType: Default
+      totalIntensity: 100
+      tileBreakScale: 0.5
+    # Utopia-Tweak : PACMAN-updt
 
 - type: entity
   name: S.U.P.E.R.P.A.C.M.A.N.-type portable generator
   description: |-
     An advanced generator for powering departments.
-    Runs off uranium sheets and is rated for up to 50 kW.
+    Runs off uranium sheets and is rated for up to 100 kW.
   parent: PortableGeneratorSwitchableBase
   id: PortableGeneratorSuperPacman
-  suffix: Uranium, 50 kW
+  suffix: Uranium, 100 kW
   components:
     - type: Sprite
       layers:
@@ -208,9 +225,6 @@
     - type: GenericVisualizer
       visuals:
         enum.GeneratorVisuals.Running:
-          enum.GeneratorVisualLayers.Body:
-            True: { state: portgen1on }
-            False: { state: portgen1 }
           enum.GeneratorVisualLayers.Unlit:
             True: { visible: true }
             False: { visible: false }
@@ -219,13 +233,17 @@
       board: PortableGeneratorSuperPacmanMachineCircuitboard
     - type: FuelGenerator
       minTargetPower: 10000
-      maxTargetPower: 50000
+      maxTargetPower: 100000
       targetPower: 50000
       optimalPower: 50000
-      # 30 minutes at full power
+      # 30 minutes at average output
       optimalBurnRate: 0.016666666
       # Barely save any fuel from reducing power output
       fuelEfficiencyConstant: 0.1
+    - type: Explosive
+      explosionType: Default
+      totalIntensity: 150
+      tileBreakScale: 0.5
     - type: SolidFuelGeneratorAdapter
       fuelMaterial: Uranium
       multiplier: 0.01
@@ -243,16 +261,31 @@
     - type: PowerSupplier
       supplyRampRate: 7500
       supplyRampTolerance: 2500
+    # Utopia-Tweak : Machine Part
+    - type: UpgradePowerSupplier
+      powerSupplyMultiplier: 1.25
+      scaling: Exponential
+    # Utopia-Tweak : Machine Part
+    # Utopia-Tweak : PACMAN-updt
+    - type: GeneratorOverheat
+      explodeChance: 3
+      operatingTemperature: 348.15 # Изменить в будущем?
+    - type: GeneratorRadiation
+      radiationMultiplier: 4
+      radiationReduceAmount: 0.2
+    - type: RadiationSource
+      intensity: 0
+    # Utopia-Tweak : PACMAN-updt
 
 - type: entity
   name: J.R.P.A.C.M.A.N.-type portable generator
   description: |-
     A small generator capable of powering individual rooms, in case of emergencies.
-    Runs off welding fuel and is rated for up to 8 kW.
+    Runs off welding fuel and is rated for up to 16 kW.
     Rated ages 3 and up.
   parent: PortableGeneratorBase
   id: PortableGeneratorJrPacman
-  suffix: Welding Fuel, 8 kW
+  suffix: Welding Fuel, 16 kW
   components:
     - type: AmbientSound
       range: 4
@@ -291,14 +324,19 @@
     - type: Machine
       board: PortableGeneratorJrPacmanMachineCircuitboard
     - type: FuelGenerator
-      targetPower: 5000
+      targetPower: 8000
       minTargetPower: 4000
       optimalPower: 8000
-      maxTargetPower: 8000
-      # 7.5 minutes at full tank.
+      maxTargetPower: 16000
+      # 7.5 minutes at average output.
       optimalBurnRate: 0.11111111
       # Shallow curve that allows you to just barely eek out 12 minutes at lowest.
       fuelEfficiencyConstant: 0.3
+      #Utopia-Tweak : PACMAN-updt
+    - type: GeneratorOverheat
+      explodeChance: 0
+      operatingTemperature: 348.15
+      #Utopia-Tweak : PACMAN-updt
     - type: ChemicalFuelGeneratorAdapter
       solution: tank
       reagents:

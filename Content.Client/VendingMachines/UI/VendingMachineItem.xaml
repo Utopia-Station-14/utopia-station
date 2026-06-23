@@ -13,4 +13,10 @@
             SizeFlagsStretchRatio="3"
             HorizontalExpand="True"
             ClipText="True"/>
+    <Label Name="Price"
+        Access="Public"
+        MinSize="32 32"
+        Margin="0 -1 0 -4.5"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Bottom"/>
 </BoxContainer>

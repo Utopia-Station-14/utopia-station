@@ -1,0 +1,48 @@
+- type: combatMove
+  id: BlackFlash
+  actionsNeeds:
+    - Disarm
+    - Hit
+  comboEvent:
+    - !type:ComboDamageEffect
+      damage:
+        types:
+          Blunt: 10
+    - !type:ComboAudioTargetEffect
+      sound:
+        collection: BlackFlashSound
+    - !type:ComboSpawnEffect
+      spawnOnTarget: UtopiaBlackFlashEffect
+    - !type:ComboEffectAddToCounter
+      amount: 1
+
+- type: combatMove
+  id: FinalBlackFlash
+  actionsNeeds:
+    - Hit
+    - Hit
+  comboEvent:
+    - !type:ComboEffectOnCounterDoCombo
+      amount: 3
+      comboEvents:
+      - !type:ComboDamageEffect
+        damage:
+          types:
+            Blunt: 15
+      - !type:ComboSpawnEffect
+        spawnOnTarget: UtopiaFinalBlackFlashEffect
+      - !type:ComboAudioTargetEffect
+        sound:
+          collection: BlackFlashSound
+      - !type:ComboAudioEffect
+        sound:
+          path: /Audio/_Utopia/Effects/blackflashfinal.ogg
+      - !type:ComboEffectClearCounter
+      - !type:ComboDelayedEffect
+        delay: 0.7
+        comboEvents:
+        - !type:ComboStopGrabEffect
+        - !type:ComboThrowTargetEffect
+          thrownSpeed: 65
+        - !type:ComboFallEffect
+          dropItems: true

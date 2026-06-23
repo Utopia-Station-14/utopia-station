@@ -19,6 +19,10 @@
     containers:
       ballistic-ammo: !type:Container
         ents: []
+  # Utopia-Tweak : Gun Shoot Effect
+  - type: Gun
+    showGunEffect: true
+  # Utopia-Tweak : Gun Shoot Effect
 
 - type: entity
   name: china lake

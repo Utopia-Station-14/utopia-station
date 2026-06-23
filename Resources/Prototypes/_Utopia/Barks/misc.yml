@@ -1,0 +1,63 @@
+- type: speechBark
+  id: GhostRadio
+  sound: /Audio/_Utopia/Voice/Vocal-Barks/noise-bark.ogg
+  roundStart: false
+
+- type: speechBark
+  id: SkeletonBarkOne
+  sound:
+    collection: UtopiaSkeletonBark
+  roundStart: false
+
+- type: speechBark
+  id: CanineVoice
+  sound: /Audio/_Utopia/Voice/Vocal-Barks/bark-bark.ogg
+  roundStart: false
+
+- type: speechBark
+  id: FelineVoice
+  sound: /Audio/_Utopia/Voice/Vocal-Barks/bark-meow.ogg
+  roundStart: false
+
+- type: speechBark
+  id: StatisticSound
+  sound: /Audio/_Utopia/Voice/Vocal-Barks/undertale-stats.ogg
+  roundStart: false
+
+- type: speechBark
+  id: DefaultBarkSound
+  sound: /Audio/_Utopia/Voice/Vocal-Barks/undertale-default.ogg
+  roundStart: false
+
+- type: speechBark
+  id: YetAnotherDefaultBarkSound
+  sound: /Audio/_Utopia/Voice/Vocal-Barks/oneshot-text.ogg
+  roundStart: false
+
+- type: speechBark
+  id: AngryFlowey
+  sound: /Audio/_Utopia/Voice/Vocal-Barks/undertale-flowey-angry.ogg
+  roundStart: false
+
+- type: speechBark
+  id: OneshotRobot
+  sound: /Audio/_Utopia/Voice/Vocal-Barks/oneshot-robot.ogg
+  roundStart: false
+
+- type: speechBark
+  id: FatalErrorSans
+  sound:
+    collection: UtopiaFatalErrorSans
+  roundStart: false
+
+- type: speechBark
+  id: Gaster
+  sound:
+    collection: UtopiaGaster
+  roundStart: false
+
+- type: speechBark
+  id: Sam
+  sound:
+    collection: UtopiaSam
+  roundStart: false

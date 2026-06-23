@@ -1,0 +1,32 @@
+- type: entity
+  id: UtopiaWallSpawnAsteroidCopper
+  parent: WallSpawnAsteroid
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SpawnOnDespawn
+    prototype: UtopiaAsteroidRockCopper
+
+- type: entity
+  id: UtopiaWallSpawnAsteroidCopperCrab
+  parent: WallSpawnAsteroid
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SpawnOnDespawn
+    prototype: UtopiaMobCopperCrab
+
+- type: entity
+  id: UtopiaWallSpawnAsteroidLead
+  parent: WallSpawnAsteroid
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SpawnOnDespawn
+    prototype: UtopiaAsteroidRockLead
+
+- type: entity
+  id: UtopiaWallSpawnAsteroidLeadCrab
+  parent: WallSpawnAsteroid
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SpawnOnDespawn
+    prototype: UtopiaMobLeadCrab
+

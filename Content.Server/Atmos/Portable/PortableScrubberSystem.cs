@@ -1,6 +1,7 @@
 using Content.Server.Atmos.Piping.Unary.EntitySystems;
 using Content.Shared.Atmos.Piping.Unary.Components;
 using Content.Shared.Atmos.Visuals;
+using Content.Shared.Construction.Components;
 using Content.Shared.Examine;
 using Content.Shared.Destructible;
 using Content.Server.Atmos.Piping.Components;
@@ -40,6 +41,10 @@ namespace Content.Server.Atmos.Portable
             SubscribeLocalEvent<PortableScrubberComponent, ExaminedEvent>(OnExamined);
             SubscribeLocalEvent<PortableScrubberComponent, DestructionEventArgs>(OnDestroyed);
             SubscribeLocalEvent<PortableScrubberComponent, GasAnalyzerScanEvent>(OnScrubberAnalyzed);
+            // Utopia-Tweak : Machine Parts
+            SubscribeLocalEvent<PortableScrubberComponent, RefreshPartsEvent>(OnRefreshParts);
+            SubscribeLocalEvent<PortableScrubberComponent, UpgradeExamineEvent>(OnUpgradeExamine);
+            // Utopia-Tweak : Machine Parts
         }
 
         private bool IsFull(PortableScrubberComponent component)
@@ -156,5 +161,22 @@ namespace Content.Server.Atmos.Portable
             args.GasMixtures ??= new List<(string, GasMixture?)>();
             args.GasMixtures.Add((Name(uid), component.Air));
         }
+
+        // Utopia-Tweak : Machine Parts
+        private void OnRefreshParts(EntityUid uid, PortableScrubberComponent component, RefreshPartsEvent args)
+        {
+            var pressureTier = args.PartTiers[component.MachinePartMaxPressure];
+            var transferTier = args.PartTiers[component.MachinePartTransferRate];
+
+            component.MaxPressure = component.BaseMaxPressure * MathF.Pow(component.PartTierMaxPressureModifier, pressureTier - 1);
+            component.TransferRate = component.BaseTransferRate * MathF.Pow(component.PartTierTransferRateModifier, transferTier - 1);
+        }
+
+        private void OnUpgradeExamine(EntityUid uid, PortableScrubberComponent component, UpgradeExamineEvent args)
+        {
+            args.AddPercentageUpgrade("portable-scrubber-component-upgrade-max-pressure", component.MaxPressure / component.BaseMaxPressure);
+            args.AddPercentageUpgrade("portable-scrubber-component-upgrade-transfer-rate", component.TransferRate / component.BaseTransferRate);
+        }
+        // Utopia-Tweak : Machine Parts
     }
 }

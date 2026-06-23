@@ -13,6 +13,10 @@
   lastNames: NamesArachnidLast
   sexes:
   - Unsexed
+  # Utopia-Tweak : Language
+  defaultLanguages:
+  - GalacticCommon
+  # Utopia-Tweak : Language
 
 - type: speciesBaseSprites
   id: MobArachnidSprites

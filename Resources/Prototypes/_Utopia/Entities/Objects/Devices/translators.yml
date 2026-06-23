@@ -1,0 +1,46 @@
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: UtopiaTranslatorBase
+  name: translator
+  description: Translates speech.
+  components:
+  - type: Sprite
+    sprite: _Utopia/Objects/Devices/translator.rsi
+    state: icon
+    layers:
+      - state: icon
+      - state: translator
+        shader: unshaded
+        visible: false
+        map: ["enum.ToggleableVisuals.Layer"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleableVisuals.Enabled:
+        enum.ToggleableVisuals.Layer:
+          True: { visible: true }
+          False: { visible: false }
+  - type: HandheldTranslator
+    enabled: false
+  - type: ItemToggle
+
+- type: entity
+  abstract: true
+  parent: [ UtopiaTranslatorBase, PowerCellSlotMediumItem ]
+  id: UtopiaTranslator
+  suffix: Powered
+  components:
+  - type: PowerCellDraw
+    drawRate: 0.5
+
+- type: entity
+  abstract: true
+  parent: UtopiaTranslator
+  id: UtopiaTranslatorEmpty
+  suffix: Empty
+  components:
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
