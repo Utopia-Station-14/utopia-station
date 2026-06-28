@@ -15,7 +15,6 @@ using Robust.Server.Player;
 using Robust.Shared;
 using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
-using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
@@ -33,7 +32,6 @@ namespace Content.Server.Atmos.EntitySystems
         [Robust.Shared.IoC.Dependency] private readonly IGameTiming _gameTiming = default!;
         [Robust.Shared.IoC.Dependency] private readonly IPlayerManager _playerManager = default!;
         [Robust.Shared.IoC.Dependency] private readonly IMapManager _mapManager = default!;
-        [Robust.Shared.IoC.Dependency] private readonly SharedMapSystem _map = default!;
         [Robust.Shared.IoC.Dependency] private readonly IConfigurationManager _confMan = default!;
         [Robust.Shared.IoC.Dependency] private readonly IParallelManager _parMan = default!;
         [Robust.Shared.IoC.Dependency] private readonly AtmosphereSystem _atmosphereSystem = default!;
@@ -203,28 +201,17 @@ namespace Content.Server.Atmos.EntitySystems
         /// <summary>
         ///     Updates the visuals for a tile on some grid chunk. Returns true if the visuals have changed.
         /// </summary>
-        private bool UpdateChunkTile(EntityUid gridUid, GridAtmosphereComponent gridAtmosphere, GasOverlayChunk chunk, Vector2i index)
+        private bool UpdateChunkTile(GridAtmosphereComponent gridAtmosphere, GasOverlayChunk chunk, Vector2i index)
         {
             ref var oldData = ref chunk.TileData[chunk.GetDataIndex(index)];
             if (!gridAtmosphere.Tiles.TryGetValue(index, out var tile))
             {
-                // Empty map tiles have no TileAtmosphere until we create one (lattice has a real turf id).
-                if (_gridQuery.TryGetComponent(gridUid, out var mapGrid) &&
-                    _map.TryGetTile(mapGrid, index, out _))
-                {
-                    _atmosphereSystem.EnsureAtmosTileForIndices(gridUid, index);
-                    gridAtmosphere.Tiles.TryGetValue(index, out tile);
-                }
+                if (oldData.Equals(default))
+                    return false;
 
-                if (tile == null)
-                {
-                    if (oldData.Equals(default))
-                        return false;
-
-                    chunk.LastUpdate = _gameTiming.CurTick;
-                    oldData = default;
-                    return true;
-                }
+                chunk.LastUpdate = _gameTiming.CurTick;
+                oldData = default;
+                return true;
             }
 
             var changed = false;
@@ -239,7 +226,7 @@ namespace Content.Server.Atmos.EntitySystems
                 oldData = new GasOverlayData(tile.Hotspot.State, oldData.Opacity);
             }
 
-            if (tile.Air != null)
+            if (tile is {Air: not null, NoGridTile: false})
             {
                 for (var i = 0; i < VisibleGasId.Length; i++)
                 {
@@ -298,7 +285,7 @@ namespace Content.Server.Atmos.EntitySystems
                     if (!overlay.Chunks.TryGetValue(chunkIndex, out var chunk))
                         overlay.Chunks[chunkIndex] = chunk = new GasOverlayChunk(chunkIndex);
 
-                    changed |= UpdateChunkTile(uid, gam, chunk, index);
+                    changed |= UpdateChunkTile(gam, chunk, index);
                 }
 
                 if (changed)

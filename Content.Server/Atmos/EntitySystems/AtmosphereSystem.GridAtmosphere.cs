@@ -163,94 +163,54 @@ public sealed partial class AtmosphereSystem
     private void UpdateAdjacentTiles(
         Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent,
         TileAtmosphere tile,
-        bool activate = false,
-        MapAtmosphereComponent? mapAtmos = null,
-        float volume = 0,
-        Queue<TileAtmosphere>? revalidateQueue = null)
+        bool activate = false)
     {
         var uid = ent.Owner;
         var atmos = ent.Comp1;
+        var blockedDirs = tile.AirtightData.BlockedDirections;
         if (activate)
             AddActiveTile(atmos, tile);
 
         tile.AdjacentBits = AtmosDirection.Invalid;
-        var mapUid = ent.Comp4.MapUid;
         for (var i = 0; i < Atmospherics.Directions; i++)
         {
             var direction = (AtmosDirection)(1 << i);
             var adjacentIndices = tile.GridIndices.Offset(direction);
-            var adjacentWorld = GridTileToWorldTile(uid, ent.Comp3, tile.GridIndices).Offset(direction);
 
             TileAtmosphere? adjacent;
-            var existed = false;
-
-            // Prefer same-grid cells when the grid still owns that tile coordinate.
-            if (_map.TryGetTile(ent.Comp3, adjacentIndices, out _) || atmos.Tiles.ContainsKey(adjacentIndices))
+            if (!tile.NoGridTile)
             {
-                adjacent = GetOrNewTile(uid, atmos, adjacentIndices, out existed, invalidateNew: revalidateQueue == null);
-
-                if (!existed)
-                {
-                    if (revalidateQueue != null)
-                    {
-                        UpdateTileData(ent, mapAtmos, adjacent);
-                        revalidateQueue.Enqueue(adjacent);
-                    }
-                    else
-                    {
-                        SyncAtmosTile(ent, adjacentIndices, mapAtmos);
-                        adjacent = atmos.Tiles.GetValueOrDefault(adjacentIndices);
-                    }
-                }
+                adjacent = GetOrNewTile(uid, atmos, adjacentIndices);
             }
-            else if (mapUid != null
-                     && TryResolveAtmosTileAtWorld(mapUid.Value, adjacentWorld, create: true, out adjacent, out var ownerUid, out var onMapSim)
-                     && adjacent != null)
+            else if (!atmos.Tiles.TryGetValue(adjacentIndices, out adjacent))
             {
-                if (onMapSim && TryComp<MapAtmosphereSimulationComponent>(ownerUid, out var mapSim))
-                {
-                    mapSim.InvalidatedCoords.Add(adjacentWorld);
-                    EnsureMapTileHasAir(adjacent);
-                }
-                else if (!onMapSim && TryComp<GridAtmosphereComponent>(ownerUid, out var otherAtmos)
-                         && TryComp<MapGridComponent>(ownerUid, out var otherGrid)
-                         && TryComp<GasTileOverlayComponent>(ownerUid, out var otherOverlay)
-                         && TryComp<TransformComponent>(ownerUid, out var otherXform))
-                {
-                    var otherEnt = (ownerUid, otherAtmos, otherOverlay, otherGrid, otherXform);
-                    UpdateTileData(otherEnt, mapAtmos, adjacent);
-                    EnsureTileHasAir(otherAtmos, otherGrid, adjacent);
-                }
-            }
-            else
-            {
+                tile.AdjacentBits &= ~direction;
+                tile.AdjacentTiles[i] = null;
                 continue;
             }
 
-            if (adjacent == null)
-                continue;
-
+            var adjBlockDirs = adjacent.AirtightData.BlockedDirections;
             if (activate)
                 AddActiveTile(atmos, adjacent);
 
             var oppositeIndex = i.ToOppositeIndex();
             var oppositeDirection = (AtmosDirection)(1 << oppositeIndex);
 
-            if (IsAdjacentBlocked(tile, direction, adjacent, oppositeDirection))
+            if (adjBlockDirs.IsFlagSet(oppositeDirection) || blockedDirs.IsFlagSet(direction))
             {
-                UnlinkAdjacentTiles(tile, adjacent, i, oppositeIndex, direction, oppositeDirection);
+                // Adjacency is blocked by some airtight entity.
+                tile.AdjacentBits &= ~direction;
+                adjacent.AdjacentBits &= ~oppositeDirection;
+                tile.AdjacentTiles[i] = null;
+                adjacent.AdjacentTiles[oppositeIndex] = null;
             }
             else
             {
-                LinkAdjacentTiles(tile, adjacent, i, oppositeIndex, direction, oppositeDirection);
-
-                if (activate)
-                {
-                    if (adjacent.NoGridTile && mapUid != null && TryComp<MapAtmosphereSimulationComponent>(mapUid, out var mapSim))
-                        AddMapActiveTile(mapSim, adjacent);
-                    else if (TryComp<GridAtmosphereComponent>(adjacent.GridIndex, out var adjAtmos))
-                        AddActiveTile(adjAtmos, adjacent);
-                }
+                // No airtight entity in the way.
+                tile.AdjacentBits |= direction;
+                adjacent.AdjacentBits |= oppositeDirection;
+                tile.AdjacentTiles[i] = adjacent;
+                adjacent.AdjacentTiles[oppositeIndex] = tile;
             }
 
             DebugTools.Assert(!(tile.AdjacentBits.IsFlagSet(direction) ^
@@ -272,19 +232,6 @@ public sealed partial class AtmosphereSystem
         var air = map.Mixture;
         DebugTools.Assert(air.Immutable);
         return (air, map.Space);
-    }
-
-    /// <summary>
-    ///     Mutable copy of the map atmosphere for an <c>isSpace</c> / <see cref="Content.Shared.Maps.ContentTileDefinition.MapAtmosphere"/> tile.
-    ///     Map-level mixtures stay immutable; per-tile copies participate in LINDA.
-    /// </summary>
-    private GasMixture CreateMutableMapAtmosphere(MapAtmosphereComponent? map, float volume)
-    {
-        var template = map?.Mixture ?? GasMixture.SpaceGas;
-        if (volume <= 0)
-            volume = template.Volume > 0 ? template.Volume : Atmospherics.CellVolume;
-
-        return new GasMixture(template) { Volume = volume };
     }
 
     private void GridHotspotExtinguish(EntityUid uid, GridAtmosphereComponent component,
@@ -377,7 +324,7 @@ public sealed partial class AtmosphereSystem
             atmos.InvalidatedCoords.Add(indices);
         }
 
-        var enumerator = _map.GetAllTilesEnumerator(uid, grid, ignoreEmpty: false);
+        var enumerator = _map.GetAllTilesEnumerator(uid, grid);
         while (enumerator.MoveNext(out var tile))
         {
             atmos.InvalidatedCoords.Add(tile.Value.GridIndices);

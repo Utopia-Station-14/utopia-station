@@ -1,7 +1,6 @@
 using Content.Server.Atmos.Components;
 using Content.Server.Atmos.Piping.Components;
 using Content.Shared.Atmos;
-using JetBrains.Annotations;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Maps;
 using Robust.Shared.Map;
@@ -31,14 +30,9 @@ namespace Content.Server.Atmos.EntitySystems
         private int _currentRunAtmosphereIndex;
         private bool _simulationPaused;
 
-        private TileAtmosphere GetOrNewTile(
-            EntityUid owner,
-            GridAtmosphereComponent atmosphere,
-            Vector2i index,
-            out bool existing,
-            bool invalidateNew = true)
+        private TileAtmosphere GetOrNewTile(EntityUid owner, GridAtmosphereComponent atmosphere, Vector2i index, bool invalidateNew = true)
         {
-            var tile = atmosphere.Tiles.GetOrNew(index, out existing);
+            var tile = atmosphere.Tiles.GetOrNew(index, out var existing);
             if (existing)
                 return tile;
 
@@ -76,7 +70,7 @@ namespace Content.Server.Atmos.EntitySystems
                 atmosphere.CurrentRunInvalidatedTiles.EnsureCapacity(atmosphere.InvalidatedCoords.Count);
                 foreach (var indices in atmosphere.InvalidatedCoords)
                 {
-                    var tile = GetOrNewTile(uid, atmosphere, indices, out _, invalidateNew: false);
+                    var tile = GetOrNewTile(uid, atmosphere, indices, invalidateNew: false);
                     atmosphere.CurrentRunInvalidatedTiles.Enqueue(tile);
 
                     // Update tile.IsSpace and tile.MapAtmosphere, and tile.AirtightData.
@@ -92,12 +86,8 @@ namespace Content.Server.Atmos.EntitySystems
             while (atmosphere.CurrentRunInvalidatedTiles.TryDequeue(out var tile))
             {
                 DebugTools.Assert(atmosphere.Tiles.GetValueOrDefault(tile.GridIndices) == tile);
-                UpdateAdjacentTiles(ent, tile, activate: true, mapAtmos, volume, atmosphere.CurrentRunInvalidatedTiles);
+                UpdateAdjacentTiles(ent, tile, activate: true);
                 UpdateTileAir(ent, tile, volume);
-
-                if (tile.Air != null)
-                    AddActiveTile(atmosphere, tile);
-
                 InvalidateVisuals(ent, tile);
 
                 if (number++ < InvalidCoordinatesLagCheckIterations)
@@ -146,8 +136,33 @@ namespace Content.Server.Atmos.EntitySystems
         private void TrimDisconnectedMapTiles(
             Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent)
         {
-            // Do not delete off-grid atmos cells; gas must be able to exist and spread everywhere.
-            ent.Comp1.PossiblyDisconnectedTiles.Clear();
+            var atmos = ent.Comp1;
+
+            foreach (var tile in atmos.PossiblyDisconnectedTiles)
+            {
+                tile.TrimQueued = false;
+                if (!tile.NoGridTile)
+                    continue;
+
+                var connected = false;
+                for (var i = 0; i < Atmospherics.Directions; i++)
+                {
+                    var indices = tile.GridIndices.Offset((AtmosDirection) (1 << i));
+                    if (_map.TryGetTile(ent.Comp3, indices, out var gridTile) && !gridTile.IsEmpty)
+                    {
+                        connected = true;
+                        break;
+                    }
+                }
+
+                if (!connected)
+                {
+                    RemoveActiveTile(atmos, tile);
+                    atmos.Tiles.Remove(tile.GridIndices);
+                }
+            }
+
+            atmos.PossiblyDisconnectedTiles.Clear();
         }
 
         /// <summary>
@@ -160,77 +175,59 @@ namespace Content.Server.Atmos.EntitySystems
             TileAtmosphere tile)
         {
             var idx = tile.GridIndices;
-            var spaceDef = (ContentTileDefinition) _tileDefinitionManager[ContentTileDefinition.SpaceID];
-
+            bool mapAtmosphere;
             if (_map.TryGetTile(ent.Comp3, idx, out var gTile) && !gTile.IsEmpty)
             {
                 var contentDef = (ContentTileDefinition) _tileDefinitionManager[gTile.TypeId];
+                mapAtmosphere = contentDef.MapAtmosphere;
                 tile.ThermalConductivity = contentDef.ThermalConductivity;
                 tile.HeatCapacity = contentDef.HeatCapacity;
+                tile.NoGridTile = false;
             }
             else
             {
-                tile.ThermalConductivity = spaceDef.ThermalConductivity;
-                tile.HeatCapacity = spaceDef.HeatCapacity;
-            }
+                mapAtmosphere = true;
+                tile.ThermalConductivity =  0.5f;
+                tile.HeatCapacity = float.PositiveInfinity;
 
-            // Every atmos cell is a normal gas cell (floor, empty, space turf, off-grid void).
-            tile.NoGridTile = false;
-            tile.Space = false;
+                if (!tile.NoGridTile)
+                {
+                    tile.NoGridTile = true;
+
+                    // This tile just became a non-grid atmos tile.
+                    // It, or one of its neighbours, might now be completely disconnected from the grid.
+                    QueueTileTrim(ent.Comp1, tile);
+                }
+            }
 
             UpdateAirtightData(ent.Owner, ent.Comp1, ent.Comp3, tile);
 
-            if (tile.MapAtmosphere)
-                RemoveMapAtmos(ent.Comp1, tile);
-            else if (tile.Air?.Immutable == true)
+            if (mapAtmosphere)
             {
-                tile.Air = null;
-                tile.AirArchived = null;
-                tile.ArchivedCycle = 0;
-                tile.LastShare = 0f;
-            }
-        }
+                if (!tile.MapAtmosphere)
+                {
+                    (tile.Air, tile.Space) = GetDefaultMapAtmosphere(mapAtmos);
+                    tile.MapAtmosphere = true;
+                    ent.Comp1.MapTiles.Add(tile);
+                }
 
-        /// <summary>
-        /// Ensures a tile has a mutable gas mixture. Empty and space tiles are not special-cased.
-        /// </summary>
-        private void EnsureTileHasAir(
-            GridAtmosphereComponent atmos,
-            MapGridComponent? grid,
-            TileAtmosphere tile,
-            float volume = 0)
-        {
-            if (tile.MapAtmosphere)
-                RemoveMapAtmos(atmos, tile);
-
-            if (tile.Air is { Immutable: false })
-            {
-                tile.Space = false;
+                DebugTools.AssertNotNull(tile.Air);
+                DebugTools.Assert(tile.Air?.Immutable ?? false);
                 return;
             }
 
-            if (tile.Air?.Immutable == true)
-            {
-                tile.Air = null;
-                tile.AirArchived = null;
-                tile.ArchivedCycle = 0;
-                tile.LastShare = 0f;
-            }
+            if (!tile.MapAtmosphere)
+                return;
 
-            if (volume <= 0)
-            {
-                volume = grid != null
-                    ? GetVolumeForTiles(grid)
-                    : Atmospherics.CellVolume;
-            }
-
-            tile.Air ??= new GasMixture(volume) { Temperature = Atmospherics.T20C };
-            tile.Space = false;
+            // Tile used to be exposed to the map's atmosphere, but isn't anymore.
+            RemoveMapAtmos(ent.Comp1, tile);
         }
 
         private void RemoveMapAtmos(GridAtmosphereComponent atmos, TileAtmosphere tile)
         {
             DebugTools.Assert(tile.MapAtmosphere);
+            DebugTools.AssertNotNull(tile.Air);
+            DebugTools.Assert(tile.Air?.Immutable ?? false);
             tile.MapAtmosphere = false;
             atmos.MapTiles.Remove(tile);
             tile.Air = null;
@@ -248,63 +245,41 @@ namespace Content.Server.Atmos.EntitySystems
             TileAtmosphere tile,
             float volume)
         {
-            var hadAir = tile.Air != null;
-            EnsureTileHasAir(ent.Comp1, ent.Comp3, tile, volume);
-
-            if (tile.AirtightData.FixVacuum)
-                GridFixTileVacuum(tile);
-
-            if (!hadAir && tile.Air != null)
-                NotifyDeviceTileChanged((ent.Owner, ent.Comp1, ent.Comp3), tile.GridIndices);
-        }
-
-        /// <summary>
-        /// Creates or refreshes a simulated atmos cell immediately.
-        /// Required for empty grid tiles (open space) which otherwise have no <see cref="TileAtmosphere"/> entry.
-        /// </summary>
-        private void SyncAtmosTile(
-            Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent,
-            Vector2i indices,
-            MapAtmosphereComponent? mapAtmos = null)
-        {
-            var (uid, atmos, _, grid, xform) = ent;
-
-            if (mapAtmos == null && xform.MapUid != null)
-                TryComp(xform.MapUid, out mapAtmos);
-
-            var tile = GetOrNewTile(uid, atmos, indices, out _, invalidateNew: false);
-            UpdateTileData(ent, mapAtmos, tile);
-
-            var volume = GetVolumeForTiles(grid);
-            UpdateAdjacentTiles(ent, tile, activate: true, mapAtmos, volume, null);
-            UpdateTileAir(ent, tile, volume);
-
-            if (tile.Air != null)
-                AddActiveTile(atmos, tile);
-
-            InvalidateVisuals((ent.Owner, ent.Comp2), indices);
-        }
-
-        /// <summary>
-        /// Public entry for other systems (overlay, vents) to force an atmos cell on empty/open tiles.
-        /// </summary>
-        [PublicAPI]
-        public void EnsureAtmosTileForIndices(EntityUid gridUid, Vector2i indices, bool excite = true)
-        {
-            if (!TryComp(gridUid, out GridAtmosphereComponent? atmos) ||
-                !TryComp(gridUid, out MapGridComponent? grid) ||
-                !TryComp(gridUid, out GasTileOverlayComponent? overlay) ||
-                !TryComp(gridUid, out TransformComponent? xform))
+            if (tile.MapAtmosphere)
             {
+                DebugTools.AssertNotNull(tile.Air);
+                DebugTools.Assert(tile.Air?.Immutable ?? false);
                 return;
             }
 
-            SyncAtmosTile((gridUid, atmos, overlay, grid, xform), indices);
+            var data = tile.AirtightData;
+            var fullyBlocked = data.BlockedDirections == AtmosDirection.All;
 
-            if (!excite || !atmos.Tiles.TryGetValue(indices, out var tile) || tile.Air == null)
+            if (fullyBlocked && data.NoAirWhenBlocked)
+            {
+                if (tile.Air == null)
+                    return;
+
+                tile.Air = null;
+                tile.AirArchived = null;
+                tile.ArchivedCycle = 0;
+                tile.LastShare = 0f;
+                tile.Hotspot = new Hotspot();
+                NotifyDeviceTileChanged((ent.Owner, ent.Comp1, ent.Comp3), tile.GridIndices);
+                return;
+            }
+
+            if (tile.Air != null)
                 return;
 
-            AddActiveTile(atmos, tile);
+            tile.Air = new GasMixture(volume){Temperature = Atmospherics.T20C};
+
+            if (data.FixVacuum)
+                GridFixTileVacuum(tile);
+
+            // Since we assigned the tile a new GasMixture we need to tell any devices
+            // on this tile that the reference has changed.
+            NotifyDeviceTileChanged((ent.Owner, ent.Comp1, ent.Comp3), tile.GridIndices);
         }
 
         private void QueueRunTiles(

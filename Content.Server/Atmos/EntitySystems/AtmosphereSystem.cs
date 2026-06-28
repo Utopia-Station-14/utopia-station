@@ -2,10 +2,7 @@ using Content.Server.Administration.Logs;
 using Content.Server.Atmos.Components;
 using Content.Server.Fluids.EntitySystems;
 using Content.Server.NodeContainer.EntitySystems;
-using Content.Shared.Atmos;
-using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.EntitySystems;
-using Robust.Shared.Map.Components;
 using Content.Shared.Decals;
 using Content.Shared.Doors.Components;
 using Content.Shared.Maps;
@@ -66,7 +63,6 @@ public sealed partial class AtmosphereSystem : SharedAtmosphereSystem
         InitializeCVars();
         InitializeGridAtmosphere();
         InitializeMap();
-        InitializeMapTiles();
 
         _atmosQuery = GetEntityQuery<GridAtmosphereComponent>();
         _mapAtmosQuery = GetEntityQuery<MapAtmosphereComponent>();
@@ -88,31 +84,9 @@ public sealed partial class AtmosphereSystem : SharedAtmosphereSystem
 
     private void OnTileChanged(ref TileChangedEvent ev)
     {
-        if (!TryComp(ev.Entity.Owner, out GridAtmosphereComponent? atmos) ||
-            !TryComp(ev.Entity.Owner, out MapGridComponent? grid) ||
-            !TryComp(ev.Entity.Owner, out GasTileOverlayComponent? overlay) ||
-            !TryComp(ev.Entity.Owner, out TransformComponent? xform))
-        {
-            foreach (var change in ev.Changes)
-                InvalidateTile(ev.Entity.Owner, change.GridIndices);
-
-            return;
-        }
-
-        TryComp(xform.MapUid, out MapAtmosphereComponent? mapAtmos);
-        var ent = new Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent>(
-            ev.Entity.Owner, atmos, overlay, grid, xform);
-
         foreach (var change in ev.Changes)
         {
-            // Empty/open tiles are not in Tiles until we create them; lattice works because it has a real turf id.
-            SyncAtmosTile(ent, change.GridIndices, mapAtmos);
-
-            for (var i = 0; i < Atmospherics.Directions; i++)
-            {
-                var neighbor = change.GridIndices.Offset((AtmosDirection) (1 << i));
-                SyncAtmosTile(ent, neighbor, mapAtmos);
-            }
+            InvalidateTile(ev.Entity.Owner, change.GridIndices);
         }
     }
 
@@ -127,7 +101,6 @@ public sealed partial class AtmosphereSystem : SharedAtmosphereSystem
         base.Update(frameTime);
 
         UpdateProcessing(frameTime);
-        UpdateMapProcessing(frameTime);
         UpdateHighPressure(frameTime);
 
         _exposedTimer += frameTime;
