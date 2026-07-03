@@ -6,13 +6,13 @@ using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Physics;
 using Content.Shared.Stacks;
+using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Random;
-using Robust.Server.GameObjects;
 
 namespace Content.Server.Teleportation;
 
@@ -46,29 +46,31 @@ public sealed class TeleportSystem : EntitySystem
         if (!TryComp<RandomTeleportComponent>(uid, out var teleport))
             return;
 
+        RandomTeleport(args.User, teleport);
+
         _adminLogger.Add(LogType.Action, LogImpact.Low,
             $"{ToPrettyString(args.User):actor} teleported with {ToPrettyString(uid)}");
 
-        RandomTeleport(args.User, teleport);
+        args.Handled = true;
 
-        if (!component.ConsumeOnUse)
-            return;
-
-        if (TryComp<StackComponent>(uid, out var stack))
+        if (component.ConsumeOnUse)
         {
-            _stack.SetCount((uid, stack), stack.Count - 1);
-            return;
-        }
+            if (TryComp<StackComponent>(uid, out var stack))
+            {
+                _stack.SetCount((uid, stack), stack.Count - 1);
+                return;
+            }
 
-        QueueDel(uid);
+            QueueDel(uid);
+        }
     }
 
     public void RandomTeleport(EntityUid uid, RandomTeleportComponent component)
     {
-        RandomTeleport(uid, component.TeleportRadius, component.TeleportSound, component.TeleportAttempts);
+        RandomTeleport(uid, component.TeleportRadius, component.ArrivalSound, component.TeleportAttempts);
     }
 
-    public void RandomTeleport(EntityUid uid, float radius, SoundSpecifier sound, int attempts)
+    public void RandomTeleport(EntityUid uid, float radius, SoundSpecifier audio, int attempts)
     {
         if (TryComp<PullableComponent>(uid, out var pull) && _pullingSystem.IsPulled(uid, pull))
         {
@@ -106,6 +108,6 @@ public sealed class TeleportSystem : EntitySystem
         }
 
         _xform.SetWorldPosition(uid, targetCoords.Position);
-        _audio.PlayPvs(sound, uid);
+        _audio.PlayPvs(audio, uid);
     }
 }

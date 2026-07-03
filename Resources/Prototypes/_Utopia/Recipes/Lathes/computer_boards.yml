@@ -9,6 +9,16 @@
   result: CloningConsoleComputerCircuitboard
 
 - type: latheRecipe
+  parent: [BaseCircuitboardRecipe, BaseGeneralComputerRecipeCategory]
+  id: SalaryConsoleCircuitboard
+  result: UtopiaSalaryConsoleCircuitboard
+
+- type: latheRecipe
+  parent: [BaseCircuitboardRecipe, BaseGeneralComputerRecipeCategory]
+  id: EconomicRecordsConsoleCircuitboard
+  result: UtopiaEconomicRecordsConsoleCircuitboard
+
+- type: latheRecipe
   parent: [BaseCircuitboardRecipe, BaseMedicalComputerRecipeCategory]
   id: DnaManipulatorConsoleCircuitboard
   result: UtopiaDnaManipulatorConsoleCircuitboard
