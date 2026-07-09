@@ -79,7 +79,6 @@
   - type: IconSmooth
     key: walls
     base: window
-  - type: WindowSprite
   # Utopia-tweak : SpriteUpdate
   - type: InteractionPopup
     interactSuccessString: comp-window-knock

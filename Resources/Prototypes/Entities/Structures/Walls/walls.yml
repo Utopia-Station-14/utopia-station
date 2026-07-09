@@ -265,13 +265,18 @@
   name: debug wall
   suffix: DEBUG
   components:
+  - type: Appearance
   - type: Tag
     tags:
       - Wall
   - type: Sprite
-    sprite: Structures/Walls/debug.rsi
+    sprite: Structures/Walls/debugwall.rsi
+    layers:
+    - state: wall-0
   - type: Icon
-    sprite: Structures/Walls/debug.rsi
+    sprite: Structures/Walls/debugwall.rsi
+    layers:
+    - state: wall-0
   - type: Destructible
     thresholds:
     - trigger:
@@ -285,9 +290,7 @@
             max: 1
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
-  - type: IconSmooth
-    key: walls
-    base: debug
+  - type: WallConnect
 
 - type: entity
   parent: BaseWall
@@ -980,14 +983,17 @@
   id: WallSolid
   name: solid wall
   components:
+  - type: Appearance
   - type: Sprite
     sprite: Structures/Walls/solid.rsi
+    state: wall-0
   - type: WallReplacementMarker
   - type: Construction
     graph: Girder
     node: wall
   - type: Icon
     sprite: Structures/Walls/solid.rsi
+    state: wall-0
   - type: RCDDeconstructable
     cost: 6
     delay: 8
@@ -1014,9 +1020,7 @@
         node: girder
       - !type:DoActsBehavior
         acts: ["Destruction"]
-  - type: IconSmooth
-    key: walls
-    base: solid
+  - type: WallConnect
 
 - type: entity
   parent: WallDiagonalBase
