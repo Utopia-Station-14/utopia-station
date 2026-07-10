@@ -25,9 +25,10 @@
   - type: Sprite
     drawdepth: WallTops
     sprite: Structures/Windows/window.rsi
+    state: wall-0
   - type: Icon
     sprite: Structures/Windows/window.rsi
-    state: full
+    state: wall-0
   - type: Physics
     bodyType: Static
   - type: Fixtures
@@ -76,9 +77,7 @@
         acts: [ "Destruction" ]
   - type: Airtight
   # Utopia-tweak : SpriteUpdate
-  - type: IconSmooth
-    key: walls
-    base: window
+  - type: WallConnect
   # Utopia-tweak : SpriteUpdate
   - type: InteractionPopup
     interactSuccessString: comp-window-knock
