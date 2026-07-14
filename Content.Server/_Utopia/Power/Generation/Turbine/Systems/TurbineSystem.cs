@@ -300,6 +300,7 @@ public sealed class TurbineSystem : EntitySystem
             _ => TurbineStatusType.Nominal
         };
     }
+
     private void OnSelectTurbine(Entity<TurbineConsoleComponent> ent, ref TurbineConsoleFocusChangeMessage msg)
     {
         ent.Comp.FocusTurbine = msg.FocusTurbine;
@@ -317,6 +318,9 @@ public sealed class TurbineSystem : EntitySystem
         }
     }
 
+    /// <summary>
+    /// Обновляем состояние консолей напрямую в UI
+    /// </summary>
     private void UpdateConsoleState(EntityUid consoleUid, TurbineConsoleComponent comp)
     {
         var turbines = new List<TurbineConsoleEntry>();
@@ -354,7 +358,11 @@ public sealed class TurbineSystem : EntitySystem
         comp.Turbines = turbines.ToArray();
         comp.FocusData = focusData;
 
-        var state = new TurbineConsoleBoundInterfaceState(comp.Turbines, comp.FocusData);
+        var state = new TurbineConsoleBoundInterfaceState(
+            comp.Turbines,
+            comp.FocusData
+        );
+
         _ui.SetUiState(consoleUid, TurbineConsoleUiKey.Key, state);
     }
 }

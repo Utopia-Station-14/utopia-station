@@ -53,10 +53,5 @@ public sealed class TurbineConsoleBoundUserInterface : BoundUserInterface
             _window.OnTurbineToggled -= OnTurbineToggled;
             _window.Dispose();
         }
-
-    protected override void Dispose(bool disposing)
-    {
-        base.Dispose(disposing);
-        _window?.Dispose();
     }
 }

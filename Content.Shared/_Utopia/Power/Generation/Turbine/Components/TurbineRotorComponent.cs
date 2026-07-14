@@ -25,8 +25,13 @@ namespace Content.Shared.Power.Turbines.Components
         public float MaxPressure = 16101f;
 
         [DataField] 
-        public float MinPressure = 20f;
+        public float MinPressure = 500f;
 
+        [DataField] 
+        public float CurrentPressure;
+        
+        [DataField] 
+        public float MaxPressure = 16101f;
         /// <summary>
         /// Модификатор оборотов в минуту. Чем меньше значение - тем больше оборотов в минуту будет делать турбина.
         /// </summary>
@@ -80,6 +85,5 @@ namespace Content.Shared.Power.Turbines.Components
         Heat,
         EMP,
         BIGSHOT
-
     }
 }
