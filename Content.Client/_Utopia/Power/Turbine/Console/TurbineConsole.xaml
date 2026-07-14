@@ -2,52 +2,141 @@
     xmlns="https://spacestation14.io"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="clr-namespace:Content.Client.UserInterface.Controls"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
     x:Class="Content.Client.Power.Turbines.TurbineConsoleWindow"
-    Title="Turbine Console"
-    SetSize="640 420"
-    MinSize="640 420">
+    SetSize="740 540"
+    MinSize="740 540">
 
-    <BoxContainer Orientation="Horizontal" Margin="8">
+    <PanelContainer>
+        <PanelContainer.PanelOverride>
+            <gfx:StyleBoxFlat BackgroundColor="#181A20"/>
+        </PanelContainer.PanelOverride>
 
-        <BoxContainer Orientation="Vertical" MinWidth="200">
-            <Label Text="Turbines"/>
-            <ScrollContainer VerticalExpand="True">
-                <ItemList Name="TurbineList"/>
-            </ScrollContainer>
-        </BoxContainer>
+        <BoxContainer Orientation="Vertical" Margin="12">
+            <PanelContainer Margin="0 0 0 8" HorizontalExpand="True">
+                <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 0, 0, 15">
+                    <TextureRect TexturePath="/Textures/_Utopia/Interface/turbine/StationEngineer.png"
+                        SetWidth="24" 
+                        SetHeight="24" 
+                        VerticalAlignment="Center" 
+                        Margin="0, 0, 16, 0"/>
+                                
+                    <Label Name="TitleLabel" VerticalAlignment="Center"/>
+                                
+                    <TextureRect TexturePath="/Textures/_Utopia/Interface/turbine/StationEngineer.png" 
+                        SetWidth="24" 
+                        SetHeight="24" 
+                        VerticalAlignment="Center" 
+                        Margin="16, 0, 0, 0"/>
+                </BoxContainer>
+            </PanelContainer>
 
-        <Control MinWidth="8"/>
+            <PanelContainer MinHeight="1" HorizontalExpand="True" Margin="0 0 0 10">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#2C3038"/>
+                </PanelContainer.PanelOverride>
+            </PanelContainer>
 
-        <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+            <BoxContainer Orientation="Horizontal" VerticalExpand="True">
+                <BoxContainer Orientation="Vertical" MinWidth="220" MaxWidth="220">
+                    <Label Name="TurbinesHeaderLabel" Margin="0 0 0 4"/>
 
-            <Label Name="FocusName" Text="No turbine selected"/>
+                    <PanelContainer VerticalExpand="True">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#12141A" BorderColor="#2C3038" BorderThickness="1"/>
+                        </PanelContainer.PanelOverride>
+                        <ScrollContainer VerticalExpand="True">
+                            <ItemList Name="TurbineList"/>
+                        </ScrollContainer>
+                    </PanelContainer>
 
-            <BoxContainer Orientation="Horizontal">
-                <Label Text="Current RPM:" HorizontalExpand="True"/>
-                <Label Name="CurrentRpmLabel"/>
-            </BoxContainer>
+                </BoxContainer>
 
-            <BoxContainer Orientation="Horizontal">
-                <Label Text="Max RPM:" HorizontalExpand="True"/>
-                <Label Name="MaxRpmLabel"/>
-            </BoxContainer>
+                <Control MinWidth="12"/>
 
-            <BoxContainer Orientation="Horizontal">
-                <Label Text="Max Temperature:" HorizontalExpand="True"/>
-                <Label Name="MaxTempLabel"/>
-            </BoxContainer>
-
-            <BoxContainer Orientation="Vertical" Margin="0 12 0 0">
-                <Label Text="Integrity"/>
-                <PanelContainer Name="IntegrityBorder">
-                    <ProgressBar Name="IntegrityBar" MinValue="0" MaxValue="100">
-                        <Label Name="IntegrityLabel"
-                               HorizontalAlignment="Right"
-                               Margin="0 0 4 0"/>
-                    </ProgressBar>
+                <PanelContainer MinWidth="1" VerticalExpand="True">
+                    <PanelContainer.PanelOverride>
+                        <gfx:StyleBoxFlat BackgroundColor="#2C3038"/>
+                    </PanelContainer.PanelOverride>
                 </PanelContainer>
-            </BoxContainer>
 
+                <Control MinWidth="12"/>
+
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                    <BoxContainer Orientation="Horizontal" Margin="0 0 0 6">
+                        <Label Name="FocusName" HorizontalExpand="True"/>
+
+                        <PanelContainer Name="StatusBadge">
+                            <Label Name="StatusLabel"/>
+                        </PanelContainer>
+
+                    </BoxContainer>
+
+                    <PanelContainer MinHeight="1" HorizontalExpand="True" Margin="0 0 0 12">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#2C3038"/>
+                        </PanelContainer.PanelOverride>
+                    </PanelContainer>
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                        <Label Name="RpmLabel" MinWidth="140" HorizontalExpand="True"/>
+                        <Label Name="RpmValueLabel"/>
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                        <Label Name="PressureLabel" MinWidth="140" HorizontalExpand="True"/>
+                        <Label Name="PressureValueLabel"/>
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                        <Label Name="TempLabel" MinWidth="140" HorizontalExpand="True"/>
+                        <Label Name="TempValueLabel"/>
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                        <Label Name="EnergyLabel" MinWidth="140" HorizontalExpand="True"/>
+                        <Label Name="EnergyValueLabel"/>
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Vertical" Margin="0 16 0 0">
+                        <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                            <Label Name="IntegrityLabel" HorizontalExpand="True"/>
+                            <Label Name="IntegrityPercentLabel"/>
+                        </BoxContainer>
+                        <PanelContainer Name="IntegrityBorder">
+                            <PanelContainer.PanelOverride>
+                                <gfx:StyleBoxFlat BackgroundColor="#12141A" BorderColor="#2C3038" BorderThickness="2"/>
+                            </PanelContainer.PanelOverride>
+                            <ProgressBar Name="IntegrityBar" MinValue="0" MaxValue="100" MinHeight="24"/>
+                        </PanelContainer>
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" HorizontalExpand="True" Margin="0, 15, 0, 15">
+                        <TextureRect Name="TurbineSprite" 
+                                     TexturePath="/Textures/_Utopia/Interface/turbine/turbine.png" 
+                                     SetWidth="192" 
+                                     SetHeight="64" 
+                                     Stretch="KeepAspectCentered"
+                                     HorizontalAlignment="Center"/>
+                    </BoxContainer>
+                    
+                    <Control VerticalExpand="True"/>
+                    <BoxContainer Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 4">
+                        <Button Name="ToggleActiveButton" MinWidth="140" MinHeight="32"/>
+                    </BoxContainer>
+
+                </BoxContainer>
+            </BoxContainer>
+            <BoxContainer Orientation="Vertical">
+                <PanelContainer StyleClasses="LowDivider" />
+                <BoxContainer Orientation="Horizontal" Margin="10 2 5 0" VerticalAlignment="Bottom">
+                    <Label Text="{Loc 'turbine-monitoring-window-flavor-left'}" StyleClasses="WindowFooterText" />
+                    <Label Text="{Loc 'turbine-monitoring-window-flavor-right'}" StyleClasses="WindowFooterText"
+                            HorizontalAlignment="Right" HorizontalExpand="True"  Margin="0 0 5 0" />
+                    <TextureRect StyleClasses="NTLogoDark" Stretch="KeepAspectCentered"
+                            VerticalAlignment="Center" HorizontalAlignment="Right" SetSize="19 19"/>
+                </BoxContainer>
+            </BoxContainer>
         </BoxContainer>
-    </BoxContainer>
+    </PanelContainer>
 </ui:FancyWindow>

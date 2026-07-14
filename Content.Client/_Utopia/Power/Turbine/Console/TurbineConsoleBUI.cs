@@ -19,6 +19,8 @@ public sealed class TurbineConsoleBoundUserInterface : BoundUserInterface
         _window = new TurbineConsoleWindow();
         _window.OnClose += Close;
         _window.OnTurbineSelected += OnTurbineSelected;
+        _window.OnTurbineToggled += OnTurbineToggled; 
+        
         _window.OpenCentered();
     }
 
@@ -35,9 +37,21 @@ public sealed class TurbineConsoleBoundUserInterface : BoundUserInterface
         SendMessage(new TurbineConsoleFocusChangeMessage(turbine));
     }
 
+    private void OnTurbineToggled(NetEntity turbine, bool isActive)
+    {
+        SendMessage(new TurbineConsoleToggleMessage(turbine, isActive));
+    }
+
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
-        _window?.Dispose();
+        
+        if (_window != null)
+        {
+            _window.OnClose -= Close;
+            _window.OnTurbineSelected -= OnTurbineSelected;
+            _window.OnTurbineToggled -= OnTurbineToggled;
+            _window.Dispose();
+        }
     }
 }

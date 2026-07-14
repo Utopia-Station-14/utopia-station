@@ -9,6 +9,6 @@ namespace Content.Shared.Power.Turbines.Components
         /// Количество газа, которое компрессор собирает за 1 раз.
         /// </summary>
         [DataField]
-        public float GasIntake = 0;
+        public float GasIntake = 0.5f;
     }
 }

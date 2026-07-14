@@ -8,19 +8,19 @@ namespace Content.Shared.Power.Turbines.Components;
 public sealed partial class TurbineConsoleComponent : Component
 {
     /// <summary>
-    /// Текущая турбина, выбранная в UI
+    /// Текущая турбина, выбранная в UI.
     /// </summary>
     [ViewVariables, AutoNetworkedField]
     public NetEntity? FocusTurbine;
 
     /// <summary>
-    /// Все турбины, видимые консоли (только на сервере)
+    /// Все турбины, видимые консоли.
     /// </summary>
     [ViewVariables]
     public TurbineConsoleEntry[] Turbines = Array.Empty<TurbineConsoleEntry>();
 
     /// <summary>
-    /// Данные выбранной турбины (только на сервере)
+    /// Данные выбранной турбины.
     /// </summary>
     [ViewVariables]
     public TurbineFocusData? FocusData;
@@ -29,16 +29,28 @@ public sealed partial class TurbineConsoleComponent : Component
 [Serializable, NetSerializable]
 public struct TurbineFocusData(
     NetEntity netEntity,
+    TurbineStatusType status,
     float currentRpm,
     float maxRpm,
+    float currentPressure,
+    float maxPressure,
+    float currentTemperature,
     float maxTemperature,
-    float integrity)
+    float integrity,
+    float energy,
+    bool isActive)
 {
     public NetEntity NetEntity = netEntity;
+    public TurbineStatusType Status = status;
     public float CurrentRPM = currentRpm;
     public float MaxRPM = maxRpm;
+    public float CurrentPressure = currentPressure;
+    public float MaxPressure = maxPressure;
+    public float CurrentTemperature = currentTemperature;
     public float MaxTemperature = maxTemperature;
     public float Integrity = integrity;
+    public float Energy = energy;
+    public bool IsActive = isActive;
 }
 
 [Serializable, NetSerializable]
@@ -75,6 +87,16 @@ public sealed class TurbineConsoleFocusChangeMessage(NetEntity? focusTurbine) : 
     public NetEntity? FocusTurbine = focusTurbine;
 }
 
+/// <summary>
+/// Сообщение, отправляемое клиентом при переключении активности турбины.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class TurbineConsoleToggleMessage(NetEntity turbine, bool isActive) : BoundUserInterfaceMessage
+{
+    public NetEntity Turbine = turbine;
+    public bool IsActive = isActive;
+}
+
 [NetSerializable, Serializable]
 public enum TurbineConsoleVisuals
 {
@@ -90,7 +112,7 @@ public enum TurbineConsoleUiKey
 [Serializable, NetSerializable]
 public enum TurbineStatusType
 {
-    Offline,
+    Off,
     Nominal,
     Warning,
     Critical
