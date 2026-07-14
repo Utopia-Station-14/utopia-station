@@ -32,9 +32,6 @@
     - type: Rotatable
     - type: AtmosDevice
     - type: TurbineRotor
-    - type: DeviceLinkSource
-      networkId: TurbineDevices
-      deviceType: Turbine
     - type: DeviceNetwork
       deviceNetId: AtmosDevices
       receiveFrequencyId: AtmosMonitor

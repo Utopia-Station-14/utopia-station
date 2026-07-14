@@ -40,13 +40,13 @@ namespace Content.Shared.Power.Turbines.Components
         /// Максимальное количество оборотов, после которого ротор начнет получать урон.
         /// </summary>
         [DataField] 
-        public float MaxRPM = 4000f;
+        public float MaxRPM = 1200f;
 
         /// <summary>
         /// Максимальная температура газа, после которой ротор начнет получать урон.
         /// </summary>
         [DataField] 
-        public float MaxTemperature = 1200f;
+        public float MaxTemperature = 1984f;
 
         /// <summary>
         /// Вывод оборотов в минуту.
@@ -72,7 +72,7 @@ namespace Content.Shared.Power.Turbines.Components
         public float DamageArchived;
 
         [DataField]
-        public float TalkingTimer = 60;
+        public float TalkingTimer = 0;
 
         [ViewVariables]
         public bool IsSpinning = false;

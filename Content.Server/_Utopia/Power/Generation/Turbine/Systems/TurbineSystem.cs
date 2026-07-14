@@ -67,18 +67,15 @@ public sealed class TurbineSystem : EntitySystem
             {
                 ProcessTurbine(uid, rotor, group);
 
-                rotor.TalkingTimer += frameTime;
-                if (rotor.TalkingTimer < UpdateInterval)
-                    continue;
-                
-                rotor.TalkingTimer -= UpdateInterval;
-
-                ProcessTalking(uid, rotor);
+                rotor.TalkingTimer += UpdateInterval;
+                if (rotor.TalkingTimer >= 60f) 
+                {
+                    rotor.TalkingTimer = 0f;
+                    ProcessTalking(uid, rotor);
+                }
             }
             else
-            {
                 ResetRotor(uid, rotor);
-            }
         }
 
         var consoleQuery = EntityQueryEnumerator<TurbineConsoleComponent>();
@@ -296,7 +293,7 @@ public sealed class TurbineSystem : EntitySystem
 
         string message;
         
-        if (!_random.Prob(0.02f))
+        if (_random.Prob(0.02f))
             message = Loc.GetString("turbine-pashalka-damage", ("turbine-console-window-label-integrity", rotor.Integrity));
         else if (rotor.PressureDamage > rotor.EnergyDamage && rotor.PressureDamage > rotor.TemperatureDamage)
             message = Loc.GetString("turbine-pressure-damage", ("turbine-console-window-label-integrity", rotor.Integrity));
