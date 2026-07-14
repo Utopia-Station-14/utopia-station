@@ -10,7 +10,7 @@ namespace Content.Shared.Power.Turbines.Components
         /// Включатель турбины.
         /// </summary>
         [DataField]
-        public bool IsActive = true;
+        public bool IsActive = false;
 
         /// <summary>
         /// Модификатор для выработки электропитания
@@ -73,6 +73,9 @@ namespace Content.Shared.Power.Turbines.Components
 
         [DataField]
         public float TalkingTimer = 60;
+
+        [ViewVariables]
+        public bool IsSpinning = false;
     }
 
     public enum ExplosionType

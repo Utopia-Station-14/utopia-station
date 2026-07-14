@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Numerics;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.NodeContainer;
 using Content.Server.Power.Components;
@@ -10,6 +7,7 @@ using Content.Shared.Radio;
 using Content.Server.Radio.EntitySystems;
 using Content.Server.Explosion.EntitySystems;
 using Content.Shared.NodeContainer;
+using Content.Shared.Power.Turbines;
 using Content.Shared.Power.Turbines.Components;
 using Robust.Shared.GameObjects;
 using Robust.Server.GameObjects;
@@ -17,6 +15,7 @@ using Robust.Shared.IoC;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Random;
 
 namespace Content.Server.Power.Turbines;
 
@@ -25,11 +24,13 @@ public sealed class TurbineSystem : EntitySystem
     private const string NodeNameTurbine = "turbine";
     private const float UpdateInterval = 1f;
 
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly TransformSystem _transformSystem = default!;
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly ExplosionSystem _explosion = default!;
     [Dependency] private readonly RadioSystem _radioSystem = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
 
     private float _accumulator;
     private EntityQuery<NodeContainerComponent> _nodeContainerQuery;
@@ -96,16 +97,6 @@ public sealed class TurbineSystem : EntitySystem
         }
     }
 
-    private void ResetRotor(EntityUid uid, TurbineRotorComponent rotor)
-    {
-        rotor.CurrentRPM = 0f;
-        rotor.CurrentPressure = 0f;
-        rotor.CurrentTemperature = 0f;
-
-        if (TryComp<PowerSupplierComponent>(uid, out var supplier))
-            supplier.MaxSupply = 0f;
-    }
-
     private TurbineNodeGroup? GetNodeGroup(EntityUid uid)
     {
         if (!_nodeContainerQuery.TryGetComponent(uid, out var container))
@@ -120,7 +111,10 @@ public sealed class TurbineSystem : EntitySystem
     private void ProcessTurbine(EntityUid uid, TurbineRotorComponent rotor, TurbineNodeGroup group)
     {
         if (!rotor.IsActive || group.Inlet == null || group.Outlet == null)
+        {
+            UpdateRotorSpinningState(rotor, group, false);
             return;
+        }
 
         var inletNode = group.Inlet.Owner;
         var outletNode = group.Outlet.Owner;
@@ -134,6 +128,7 @@ public sealed class TurbineSystem : EntitySystem
         if (inGas.TotalMoles <= 0f)
         {
             ResetRotor(uid, rotor);
+            UpdateRotorSpinningState(rotor, group, false);
             return;
         }
 
@@ -145,6 +140,38 @@ public sealed class TurbineSystem : EntitySystem
 
         if (TryComp<PowerSupplierComponent>(uid, out var supplier))
             supplier.MaxSupply = energy * 1000f;
+
+        bool isSpinning = rpm > 0f;
+        UpdateRotorSpinningState(rotor, group, isSpinning);
+    }
+
+    private void ResetRotor(EntityUid uid, TurbineRotorComponent rotor)
+    {
+        rotor.CurrentRPM = 0f;
+        rotor.CurrentPressure = 0f;
+        rotor.CurrentTemperature = 0f;
+
+        if (TryComp<PowerSupplierComponent>(uid, out var supplier))
+            supplier.MaxSupply = 0f;
+
+        var group = GetNodeGroup(uid);
+        if (group != null)
+        {
+            UpdateRotorSpinningState(rotor, group, false);
+        }
+    }
+
+    private void UpdateRotorSpinningState(TurbineRotorComponent rotor, TurbineNodeGroup group, bool isSpinning)
+    {
+        if (rotor.IsSpinning == isSpinning)
+            return;
+
+        rotor.IsSpinning = isSpinning;
+
+        if (group.Outlet != null)
+        {
+            _appearance.SetData(group.Outlet.Owner, TurbineVisuals.Spinning, isSpinning);
+        }
     }
 
     private (GasMixture gas, float sourcePressure) CollectGas(EntityUid inletUid, TurbineInletComponent comp)
@@ -269,12 +296,14 @@ public sealed class TurbineSystem : EntitySystem
 
         string message;
         
-        if (rotor.PressureDamage > rotor.EnergyDamage && rotor.PressureDamage > rotor.TemperatureDamage)
-            message = Loc.GetString("turbine-pressure-damage", ("integrity", rotor.Integrity));
+        if (!_random.Prob(0.02f))
+            message = Loc.GetString("turbine-pashalka-damage", ("turbine-console-window-label-integrity", rotor.Integrity));
+        else if (rotor.PressureDamage > rotor.EnergyDamage && rotor.PressureDamage > rotor.TemperatureDamage)
+            message = Loc.GetString("turbine-pressure-damage", ("turbine-console-window-label-integrity", rotor.Integrity));
         else if (rotor.EnergyDamage > rotor.PressureDamage && rotor.EnergyDamage > rotor.TemperatureDamage)
-            message = Loc.GetString("turbine-energy-damage", ("integrity", rotor.Integrity));
+            message = Loc.GetString("turbine-energy-damage", ("turbine-console-window-label-integrity", rotor.Integrity));
         else
-            message = Loc.GetString("turbine-heat-damage", ("integrity", rotor.Integrity));
+            message = Loc.GetString("turbine-heat-damage", ("turbine-console-window-label-integrity", rotor.Integrity));
 
         _radioSystem.SendRadioMessage(uid, message, Channel, uid);
     }
@@ -318,9 +347,6 @@ public sealed class TurbineSystem : EntitySystem
         }
     }
 
-    /// <summary>
-    /// Обновляем состояние консолей напрямую в UI
-    /// </summary>
     private void UpdateConsoleState(EntityUid consoleUid, TurbineConsoleComponent comp)
     {
         var turbines = new List<TurbineConsoleEntry>();
@@ -333,7 +359,7 @@ public sealed class TurbineSystem : EntitySystem
             turbines.Add(new TurbineConsoleEntry(netEntity, $"Turbine {rotorUid}", status));
         }
 
-        TurbineFocusData? focusData = null;
+        var focusData = (TurbineFocusData?) null;
         if (comp.FocusTurbine != null)
         {
             var entity = GetEntity(comp.FocusTurbine.Value);

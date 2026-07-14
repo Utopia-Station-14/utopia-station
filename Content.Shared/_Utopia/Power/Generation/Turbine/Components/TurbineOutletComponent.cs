@@ -1,4 +1,5 @@
 using Robust.Shared.GameObjects;
+ using Robust.Shared.Serialization;
 
 namespace Content.Shared.Power.Turbines.Components
 {
@@ -7,9 +8,14 @@ namespace Content.Shared.Power.Turbines.Components
     {
         /// <summary>
         /// Модификатор для количества выходного газа.
-        /// <seealso cref = "TurbineSystem">
         /// </summary>
         [DataField]
         public float GasOutletModificator = 2;
+    }
+    
+    [Serializable, NetSerializable]
+    public enum TurbineVisuals : byte
+    {
+        Spinning
     }
 }

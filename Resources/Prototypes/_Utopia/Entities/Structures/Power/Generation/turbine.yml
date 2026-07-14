@@ -6,6 +6,7 @@
   placement:
     mode: SnapgridCenter
   components:
+    - type: Airtight
     - type: Transform
       noRot: false
     - type: Sprite
@@ -72,12 +73,15 @@
   placement:
     mode: SnapgridCenter
   components:
+    - type: Airtight
     - type: Transform
       noRot: false
     - type: Sprite
       layers:
         - sprite: _Utopia/Structures/Power/turbine.rsi 
           state: outlet
+        - sprite: _Utopia/Structures/Power/turbine.rsi 
+          state: fan_stoped
     - type: Appearance
     - type: PointLight
       enabled: false
@@ -111,6 +115,7 @@
   placement:
     mode: SnapgridCenter
   components:
+    - type: Airtight
     - type: Transform
       noRot: false
     - type: Sprite

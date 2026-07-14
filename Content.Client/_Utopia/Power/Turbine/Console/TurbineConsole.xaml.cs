@@ -1,4 +1,3 @@
-using System;
 using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Controls;
 using Content.Shared.Power.Turbines.Components;
