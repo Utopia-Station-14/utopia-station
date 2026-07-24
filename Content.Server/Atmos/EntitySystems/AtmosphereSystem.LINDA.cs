@@ -99,18 +99,8 @@ namespace Content.Server.Atmos.EntitySystems
                     LastShareCheck(tile);
                 }
             }
+            ShareZLevelAtmos(ent, tile, fireCount); // Utopia-Tweak : Z-Levels
 
-            // Utopia-Tweak : ZLevels
-            //if(tile.Air != null)
-            if (ProcessZAtmos(ent, tile, tile.GridIndices, fireCount))
-            {
-                if (tile.Air != null)
-                    React(tile.Air, tile);
-
-                InvalidateVisuals(ent, tile);
-                return;
-            }
-            // Utopia-Tweak : ZLevels
             var remove = true;
 
             if(tile.Air!.Temperature > Atmospherics.MinimumTemperatureStartSuperConduction)
@@ -161,6 +151,11 @@ namespace Content.Server.Atmos.EntitySystems
         {
             if (tile.Air == null || tile.Excited)
                 return;
+
+            // Utopia-Tweak : Z-Levels
+            if (tile.GridIndex != gridAtmosphere.Owner)
+                    return;
+            // Utopia-Tweak : Z-Levels
 
             tile.Excited = true;
             gridAtmosphere.ActiveTiles.Add(tile);
