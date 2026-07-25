@@ -49,7 +49,7 @@ public sealed class CEZLevelBlurOverlay : Overlay
         if (ScreenTexture == null || args.Viewport.Eye == null)
             return;
 
-        var ambientColor = new Vector3(0, 0, 1); //Default blue
+        var ambientColor = new Vector3(1f, 0f, 1f); //Default blue // Purple. Because it`s PHORON TIME BITCH.
 
         if (_entity.TryGetComponent<MapLightComponent>(args.MapUid, out var mapLight))
         {

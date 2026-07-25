@@ -18,7 +18,7 @@ public sealed partial class AtmosphereSystem
     [Dependency] private readonly CESharedZLevelsSystem _zLevels = default!;
     [Dependency] private readonly TurfSystem _turf = default!;
 
-    private const float TransferAmount = 0.25f;
+    private const float TransferAmount = 1f;
 
     private void InitializeZAtmos()
     {

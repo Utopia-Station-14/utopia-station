@@ -33,7 +33,7 @@ public sealed partial class CEZLevelsSystem
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
         SubscribeLocalEvent<PlayerDetachedEvent>(OnPlayerDetached);
 
-        SubscribeLocalEvent<CEZLevelViewerComponent, MapInitEvent>(OnViewerInit);
+        SubscribeLocalEvent<CEZLevelViewerComponent, ComponentStartup>(OnViewerInit);
         SubscribeLocalEvent<CEZLevelViewerComponent, ComponentRemove>(OnCompRemove);
 
         SubscribeLocalEvent<CEZLevelViewerComponent, MapUidChangedEvent>(OnViewerMapUidChanged);
@@ -56,8 +56,11 @@ public sealed partial class CEZLevelsSystem
         }
     }
 
-    private void OnViewerInit(Entity<CEZLevelViewerComponent> ent, ref MapInitEvent args)
+    private void OnViewerInit(Entity<CEZLevelViewerComponent> ent, ref ComponentStartup args)
     {
+        ent.Comp.LookUp = false;
+        DirtyField(ent, ent.Comp, nameof(CEZLevelViewerComponent.LookUp));
+
         _actions.AddAction(ent, ref ent.Comp.ZLevelActionEntity, ent.Comp.ActionProto);
         _meta.AddFlag(ent, MetaDataFlags.ExtraTransformEvents);
     }

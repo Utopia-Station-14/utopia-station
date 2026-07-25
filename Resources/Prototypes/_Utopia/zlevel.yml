@@ -1,18 +1,4 @@
 - type: entity
-  id: UtopiaZLevelGasTransfer
-  parent: BaseStructure
-  name:
-  description:
-  components:
-  - type: Sprite
-    sprite: Structures/Holo/holofan.rsi
-    state: icon
-  - type: ZLevelEntityLink
-  - type: ZLevelTransmitter
-  - type: ZLevelAtmosTransmission
-  - type: AtmosDevice
-
-- type: entity
   id: UtopiaZLevelLadder
   parent: BaseStructure
   name: Ladder
