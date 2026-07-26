@@ -1,6 +1,10 @@
+using System.Collections.Generic;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.Gravity;
+using Content.Shared._CE.ZLevels.Core.EntitySystems;
+using Content.Shared._Utopia.ZLevels.Components;
+using Robust.Shared.Map.Components;
 
 namespace Content.Server.Gravity;
 
@@ -8,6 +12,7 @@ public sealed class GravityGeneratorSystem : SharedGravityGeneratorSystem
 {
     [Dependency] private readonly GravitySystem _gravitySystem = default!;
     [Dependency] private readonly SharedPointLightSystem _lights = default!;
+    [Dependency] private readonly CESharedZLevelsSystem _zLevels = default!; // Utopia-Tweak : ZLevels
 
     public override void Initialize()
     {
@@ -40,10 +45,15 @@ public sealed class GravityGeneratorSystem : SharedGravityGeneratorSystem
 
         var xform = Transform(ent);
 
-        if (TryComp(xform.ParentUid, out GravityComponent? gravity))
+        // Utopia-Tweak : ZLevels
+        foreach (var gridUid in GetTargetGrids(xform.ParentUid))
         {
-            _gravitySystem.EnableGravity(xform.ParentUid, gravity);
+            if (TryComp(gridUid, out GravityComponent? gravity))
+            {
+                _gravitySystem.EnableGravity(gridUid, gravity);
+            }
         }
+        // Utopia-Tweak : ZLevels
     }
 
     private void OnDeactivated(Entity<GravityGeneratorComponent> ent, ref ChargedMachineDeactivatedEvent args)
@@ -53,17 +63,67 @@ public sealed class GravityGeneratorSystem : SharedGravityGeneratorSystem
 
         var xform = Transform(ent);
 
-        if (TryComp(xform.ParentUid, out GravityComponent? gravity))
+        // Utopia-Tweak : ZLevels
+        foreach (var gridUid in GetTargetGrids(xform.ParentUid))
         {
-            _gravitySystem.RefreshGravity(xform.ParentUid, gravity);
+            if (TryComp(gridUid, out GravityComponent? gravity))
+            {
+                _gravitySystem.RefreshGravity(gridUid, gravity);
+            }
         }
+        // Utopia-Tweak : ZLevels
     }
 
     private void OnParentChanged(EntityUid uid, GravityGeneratorComponent component, ref EntParentChangedMessage args)
     {
-        if (component.GravityActive && TryComp(args.OldParent, out GravityComponent? gravity))
+        // Utopia-Tweak : ZLevels
+        if (component.GravityActive && args.OldParent.HasValue)
         {
-            _gravitySystem.RefreshGravity(args.OldParent.Value, gravity);
+            foreach (var gridUid in GetTargetGrids(args.OldParent.Value))
+            {
+                if (TryComp(gridUid, out GravityComponent? gravity))
+                {
+                    _gravitySystem.RefreshGravity(gridUid, gravity);
+                }
+            }
         }
+        // Utopia-Tweak : ZLevels
     }
+
+    // Utopia-Tweak : ZLevels
+    private HashSet<EntityUid> GetTargetGrids(EntityUid parentUid)
+    {
+        var grids = new HashSet<EntityUid> { parentUid };
+        if (!TryComp<GridMotionLinkComponent>(parentUid, out var motionLink))
+            return grids;
+
+        var targetGroupId = motionLink.GroupId;
+
+        if (!TryComp<TransformComponent>(parentUid, out var parentXform) || parentXform.MapUid == null)
+            return grids;
+
+        if (!_zLevels.TryGetZNetwork(parentXform.MapUid.Value, out var net) || net == null)
+            return grids;
+
+        var validMaps = new HashSet<EntityUid>();
+        foreach (var level in net.Value.Comp.ZLevels)
+        {
+            if (level.Value is { Valid: true } map)
+            {
+                validMaps.Add(map);
+            }
+        }
+
+        var query = EntityQueryEnumerator<MapGridComponent, TransformComponent, GridMotionLinkComponent>();
+        while (query.MoveNext(out var gridUid, out var gridComp, out var gridXform, out var linkComp))
+        {
+            if (linkComp.GroupId == targetGroupId && gridXform.MapUid != null && validMaps.Contains(gridXform.MapUid.Value))
+            {
+                grids.Add(gridUid);
+            }
+        }
+
+        return grids;
+    }
+    // Utopia-Tweak : ZLevels
 }
