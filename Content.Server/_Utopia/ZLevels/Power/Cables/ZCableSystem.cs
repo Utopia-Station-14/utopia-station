@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.Nodes;
+using Content.Server.NodeContainer.EntitySystems;
 using Content.Server._Utopia.ZLevels.Nodes;
 using Content.Shared.NodeContainer;
 using Robust.Shared.GameObjects;
@@ -9,6 +10,8 @@ namespace Content.Server._Utopia.ZLevels.Power;
 
 public sealed class ZCableSystem : EntitySystem
 {
+    [Dependency] private readonly NodeGroupSystem _nodeGroup = default!;
+
     private readonly Dictionary<ZCableNode, HashSet<ZCableNode>> _connections = new();
 
     public IEnumerable<Node> GetZReachable(ZCableNode node)
@@ -21,8 +24,11 @@ public sealed class ZCableSystem : EntitySystem
     
     public void AddZConnection(ZCableNode a, ZCableNode b)
     {
-        GetOrAdd(a).Add(b);
-        GetOrAdd(b).Add(a);
+        if (!GetOrAdd(a).Add(b) || !GetOrAdd(b).Add(a))
+            return;
+
+        _nodeGroup.QueueReflood(a);
+        _nodeGroup.QueueReflood(b);
     }
 
     public void ClearConnections(ZCableNode node)
@@ -30,10 +36,14 @@ public sealed class ZCableSystem : EntitySystem
         if (!_connections.Remove(node, out var set))
             return;
 
+        _nodeGroup.QueueReflood(node);
+
         foreach (var other in set)
         {
             if (_connections.TryGetValue(other, out var otherSet))
                 otherSet.Remove(node);
+
+            _nodeGroup.QueueReflood(other);
         }
     }
 

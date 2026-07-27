@@ -1,9 +1,79 @@
 - type: entity
-  parent: CableHV
-  id: UtopiaZCableHVUp
+  abstract: true
+  parent: CablePhysBase
+  id: ZCableBase
+  components:
+  - type: Visibility
+    layer: 1
+  - type: Sprite
+    drawdepth: ThinWire
+    visible: false
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: SubFloorHide
+  - type: Electrified
+    onHandInteract: false
+    onInteractUsing: false
+    onBump: false
+    requirePower: true
+    highVoltageNode: power
+    mediumVoltageNode: power
+    lowVoltageNode: power
+  - type: RCDDeconstructable
+    cost: 2
+    delay: 0
+    fx: EffectRCDConstruct0
+    
+- type: entity
+  parent: ZCableBase
+  id: ZCableHVUp
   name: HV power cable
   description: An orange high voltage power cable.
   components:
+  - type: Sprite
+    sprite: Structures/Power/Cables/hv_cable.rsi
+    state: hvcable_17
+    drawdepth: ThickWire
+  - type: Icon
+    sprite: Structures/Power/Cables/hv_cable.rsi
+    state: hvcable_16
+  - type: Cable
+    cableDroppedOnCutPrototype: CableHVStack1
+    cableType: HighVoltage
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          CableHVStack1:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: AmbientSound
+    enabled: false
+    volume: -14
+    range: 2
+    sound:
+      path: /Audio/Ambience/Objects/emf_buzz.ogg
   - type: NodeContainer
     nodes:
       power:
@@ -12,16 +82,51 @@
         zDirection: Up
   - type: ZCable
   - type: ZLevelTransmitter
-    range: 0.08
+    range: 0.9
     allowUp: true
   - type: ZLevelEntityLink
 
 - type: entity
-  parent: CableHV
-  id: UtopiaZCableHVDown
+  parent: ZCableBase # Исправлено наследование!
+  id: ZCableHVDown
   name: HV power cable
   description: An orange high voltage power cable.
   components:
+  - type: Sprite
+    sprite: Structures/Power/Cables/hv_cable.rsi
+    state: hvcable_16
+    drawdepth: ThickWire
+  - type: Icon
+    sprite: Structures/Power/Cables/hv_cable.rsi
+    state: hvcable_15
+  - type: Cable
+    cableDroppedOnCutPrototype: CableHVStack1
+    cableType: HighVoltage
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          CableHVStack1:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: AmbientSound
+    enabled: false
+    volume: -14
+    range: 2
+    sound:
+      path: /Audio/Ambience/Objects/emf_buzz.ogg
   - type: NodeContainer
     nodes:
       power:
@@ -30,6 +135,6 @@
         zDirection: Down
   - type: ZCable
   - type: ZLevelTransmitter
-    range: 0.08
+    range: 0.9
     allowDown: true
   - type: ZLevelEntityLink

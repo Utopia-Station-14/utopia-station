@@ -26,6 +26,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly ZCableSystem _zCables = default!;
     [Dependency] private readonly ZLevelAtmosTransmissionSystem _zAtmos = default!;
+    [Dependency] private readonly SharedMapSystem _map = default!;
 
     public override void Initialize()
     {
@@ -230,11 +231,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
     #endregion
 
     #region Helpers
-    private bool TryGetAnchoredGrid(
-        EntityUid uid,
-        out TransformComponent xform,
-        out EntityUid gridUid,
-        out MapGridComponent grid)
+    private bool TryGetAnchoredGrid(EntityUid uid, out TransformComponent xform, out EntityUid gridUid, out MapGridComponent grid)
     {
         xform = default!;
         gridUid = default;
@@ -259,9 +256,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         return true;
     }
 
-    private (EntityUid?, ZNodeDirection) ResolveDirection(
-        ZLevelEntityLinkComponent link,
-        ZNodeDirection dir)
+    private (EntityUid?, ZNodeDirection) ResolveDirection(ZLevelEntityLinkComponent link, ZNodeDirection dir)
     {
         return dir switch
         {
@@ -271,38 +266,30 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         };
     }
 
-    private Box2 GetTileBox(
-        EntityUid gridUid,
-        MapGridComponent grid,
-        TransformComponent xform)
+    private Box2 GetTileBox(EntityUid gridUid, MapGridComponent grid, TransformComponent xform)
     {
-        var tile = grid.TileIndicesFor(xform.Coordinates);
+        var tile = _map.LocalToTile(gridUid, grid, xform.Coordinates);
         var tileSize = grid.TileSize;
+        var localCenter = new Vector2(tile.X + 0.5f, tile.Y + 0.5f) * tileSize;
+        
+        var worldMatrix = _transform.GetWorldMatrix(gridUid);
+        var worldCenter = Vector2.Transform(localCenter, worldMatrix);
 
-        var world =
-            _transform.GetWorldPosition(gridUid) +
-            new Vector2(tile.X * tileSize, tile.Y * tileSize);
-
-        return new Box2(world, world + new Vector2(tileSize, tileSize));
+        var half = new Vector2(tileSize / 2f, tileSize / 2f);
+        return new Box2(worldCenter - half, worldCenter + half);
     }
 
-    private Box2 GetTileRangeBox(
-        EntityUid gridUid,
-        MapGridComponent grid,
-        TransformComponent xform,
-        float range)
+    private Box2 GetTileRangeBox(EntityUid gridUid, MapGridComponent grid, TransformComponent xform, float range)
     {
-        var tile = grid.TileIndicesFor(xform.Coordinates);
+        var tile = _map.LocalToTile(gridUid, grid, xform.Coordinates);
         var tileSize = grid.TileSize;
-
-        var origin =
-            _transform.GetWorldPosition(gridUid) +
-            new Vector2(tile.X * tileSize, tile.Y * tileSize);
-
-        var center = origin + new Vector2(tileSize / 2f, tileSize / 2f);
+        var localCenter = new Vector2(tile.X + 0.5f, tile.Y + 0.5f) * tileSize;
+        
+        var worldMatrix = _transform.GetWorldMatrix(gridUid);
+        var worldCenter = Vector2.Transform(localCenter, worldMatrix);
 
         var half = new Vector2(range / 2f, range / 2f);
-        return new Box2(center - half, center + half);
+        return new Box2(worldCenter - half, worldCenter + half);
     }
 
     private bool TryGetContext(EntityUid uid, out ZLevelContext ctx)
