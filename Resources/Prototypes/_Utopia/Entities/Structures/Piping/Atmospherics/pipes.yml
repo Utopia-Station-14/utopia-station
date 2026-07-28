@@ -1,6 +1,7 @@
+
 - type: entity
-  parent: GasPipeBase
-  id: UtopiaGasZPipeStraightUp
+  parent: GasPipeSansLayers
+  id: UtopiaGasZPipeUp
   name: UP
   suffix: Straight
   placement:
@@ -21,10 +22,17 @@
     allowUp: true
   - type: ZLevelEntityLink
   - type: AtmosDevice
+  - type: Sprite
+    sprite: Structures/Piping/Atmospherics/pipe.rsi
+    drawdepth: ThinPipe
+    visible: false
+    layers:
+    - state: pipeUp
+      map: [ "enum.PipeVisualLayers.Pipe" ]
 
 - type: entity
-  parent: GasPipeBase
-  id: UtopiaGasZPipeStraightDown
+  parent: GasPipeSansLayers
+  id: UtopiaGasZPipeDown
   name: DOWN
   suffix: Straight
   placement:
@@ -45,3 +53,10 @@
     allowDown: true
   - type: ZLevelEntityLink
   - type: AtmosDevice
+  - type: Sprite
+    sprite: Structures/Piping/Atmospherics/pipe.rsi
+    drawdepth: ThinPipe
+    visible: false
+    layers:
+    - state: pipeDown
+      map: [ "enum.PipeVisualLayers.Pipe" ]

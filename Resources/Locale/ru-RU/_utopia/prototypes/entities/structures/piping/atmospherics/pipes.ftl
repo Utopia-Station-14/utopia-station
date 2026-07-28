@@ -13,3 +13,10 @@ ent-UtopiaGasPipeTJunction = { ent-GasPipeBase }
 ent-UtopiaGasPipeFourway = { ent-GasPipeBase }
     .suffix = Четверная, Utopia
     .desc = { ent-GasPipeBase.desc }
+
+
+ent-UtopiaGasZPipeUp = вертикальная труба вверх
+    .desc = Специальное соединение труб для переноса газа на верхние этажи.
+
+ent-UtopiaGasZPipeDown = вертикальная труба вниз
+    .desc = Специальное соединение труб для переноса газа на нижние этажи.

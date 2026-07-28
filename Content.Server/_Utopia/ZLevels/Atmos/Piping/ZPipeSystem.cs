@@ -76,14 +76,18 @@ public sealed class ZPipeSystem : EntitySystem
 
         var T = src.Temperature;
         var V = src.Volume;
-        if (T <= 0f || V <= 0f)
+        var dstV = dst.Volume;
+        
+        if (T <= 0f || V <= 0f || dstV <= 0f)
             return;
 
+        var dp = MathF.Abs(deltaP) * dstV / (V + dstV);
+
         var dn = MathF.Min(
-            (MathF.Abs(deltaP) * V) / (Atmospherics.R * T),
+            (dp * V) / (Atmospherics.R * T),
             src.TotalMoles);
 
-        if (dn <= 0f)
+        if (dn <= 0.0001f)
             return;
 
         var removed = src.Remove(dn);

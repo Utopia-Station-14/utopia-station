@@ -32,6 +32,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
     {
         SubscribeLocalEvent<ZLevelTransmitterComponent, ComponentStartup>(OnRefresh);
         SubscribeLocalEvent<ZLevelTransmitterComponent, MoveEvent>(OnMove);
+        SubscribeLocalEvent<ZLevelTransmitterComponent, ComponentShutdown>(OnShutdown);
     }
 
     private void OnRefresh(EntityUid uid, ZLevelTransmitterComponent comp, ComponentStartup args)
@@ -39,6 +40,15 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
 
     private void OnMove(EntityUid uid, ZLevelTransmitterComponent comp, ref MoveEvent args)
         => Refresh(uid, comp);
+
+    private void OnShutdown(EntityUid uid, ZLevelTransmitterComponent comp, ComponentShutdown args)
+    {
+        if (TryComp(uid, out NodeContainerComponent? container))
+        {
+            _zPipes.ClearAll(container);
+            _zCables.ClearAll(container);
+        }
+    }
 
     #region Refresh
     private void Refresh(EntityUid uid, ZLevelTransmitterComponent transmitter)
@@ -75,7 +85,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
 
         _zPipes.ClearAll(container);
 
-        var worldBox = GetTileRangeBox(gridUid, grid, xform, transmitter.Range);
+        var worldBox = GetTileBox(gridUid, grid, xform);
 
         foreach (var node in container.Nodes.Values)
         {

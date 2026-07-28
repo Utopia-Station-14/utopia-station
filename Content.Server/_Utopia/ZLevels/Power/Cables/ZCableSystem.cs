@@ -24,7 +24,10 @@ public sealed class ZCableSystem : EntitySystem
     
     public void AddZConnection(ZCableNode a, ZCableNode b)
     {
-        if (!GetOrAdd(a).Add(b) || !GetOrAdd(b).Add(a))
+        var addedToA = GetOrAdd(a).Add(b);
+        var addedToB = GetOrAdd(b).Add(a);
+        
+        if (!addedToA && !addedToB)
             return;
 
         _nodeGroup.QueueReflood(a);

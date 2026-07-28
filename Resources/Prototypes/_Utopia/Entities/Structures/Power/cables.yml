@@ -25,9 +25,9 @@
     onInteractUsing: false
     onBump: false
     requirePower: true
-    highVoltageNode: power
-    mediumVoltageNode: power
-    lowVoltageNode: power
+    highVoltageNode: cable
+    mediumVoltageNode: cable
+    lowVoltageNode: cable
   - type: RCDDeconstructable
     cost: 2
     delay: 0
@@ -35,7 +35,7 @@
     
 - type: entity
   parent: ZCableBase
-  id: ZCableHVUp
+  id: UtopiaZCableHVUp
   name: HV power cable
   description: An orange high voltage power cable.
   components:
@@ -76,7 +76,7 @@
       path: /Audio/Ambience/Objects/emf_buzz.ogg
   - type: NodeContainer
     nodes:
-      power:
+      cable:
         !type:ZCableNode
         nodeGroupID: HVPower
         zDirection: Up
@@ -87,8 +87,8 @@
   - type: ZLevelEntityLink
 
 - type: entity
-  parent: ZCableBase # Исправлено наследование!
-  id: ZCableHVDown
+  parent: ZCableBase 
+  id: UtopiaZCableHVDown
   name: HV power cable
   description: An orange high voltage power cable.
   components:
@@ -129,7 +129,7 @@
       path: /Audio/Ambience/Objects/emf_buzz.ogg
   - type: NodeContainer
     nodes:
-      power:
+      cable:
         !type:ZCableNode
         nodeGroupID: HVPower
         zDirection: Down
