@@ -10,7 +10,6 @@ using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared._Utopia.ZLevels.Pipes.Components;
 using Content.Shared._Utopia.ZLevels.Transmission.Components;
-using Content.Server._Utopia.ZLevels.Atmos;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -25,7 +24,6 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly ZCableSystem _zCables = default!;
-    [Dependency] private readonly ZLevelAtmosTransmissionSystem _zAtmos = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
 
     public override void Initialize()
@@ -196,9 +194,6 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
             }
         }
     }
-    #endregion
-
-    #region Atmos
     #endregion
 
     #region Disposal
