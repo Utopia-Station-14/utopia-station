@@ -30,14 +30,3 @@
       state: cpu_medical
     - type: ComputerBoard
       prototype: UtopiaComputerDnaManipulator
-
-- type: entity
-  parent: BaseComputerCircuitboard
-  id: UtopiaTelescienceComputerCircuitboard
-  name: telepad computer board
-  description: A computer printed circuit board for an Teleportation console.
-  components:
-  - type: Sprite
-    state: cpu_science
-  - type: ComputerBoard
-    prototype: UtopiaComputerTelescienceConsole

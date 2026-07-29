@@ -1,9 +1,7 @@
 using Content.Server.Administration.Logs;
 using Content.Server.Stack;
-using Content.Shared_Utopia.Effects;
 using Content.Shared.Database;
 using Content.Shared.Interaction.Events;
-using Content.Shared.Throwing;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Physics;
@@ -16,7 +14,7 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Random;
 
-namespace Content.Server._Utopia.Teleportation;
+namespace Content.Server.Teleportation;
 
 public sealed class TeleportSystem : EntitySystem
 {
@@ -109,7 +107,6 @@ public sealed class TeleportSystem : EntitySystem
                 break;
         }
 
-        _audio.PlayPvs(audio, uid);
         _xform.SetWorldPosition(uid, targetCoords.Position);
         _audio.PlayPvs(audio, uid);
     }

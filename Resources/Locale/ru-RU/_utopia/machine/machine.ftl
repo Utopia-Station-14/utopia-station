@@ -45,5 +45,3 @@ thruster-comp-upgrade-thrust = cила тяги
 emitter-component-upgrade-fire-rate = скорострельность
 
 stasis-bed-component-upgrade-stasis = эффект стазиса
-
-telepad-max-distance-upgrade = дальность телепортации

@@ -219,9 +219,9 @@
 
 # region tier 4
 - type: entity
-  parent: CapacitorStockPart
   id: QuadraticCapacitorStockPart
   name: bluespace capacitor
+  parent: CapacitorStockPart
   description: A bluespace capacitor used in the construction of a variety of devices.
   components:
     - type: Sprite
@@ -235,9 +235,9 @@
       price: 500
 
 - type: entity
-  parent: MicroManipulatorStockPart
   id: FemtoManipulatorStockPart
   name: femto manipulator
+  parent: MicroManipulatorStockPart
   description: A bluespace manipulator used in the construction of a variety of devices.
   components:
     - type: Sprite
@@ -251,9 +251,9 @@
       price: 500
 
 - type: entity
-  parent: MatterBinStockPart
   id: BluespaceMatterBinStockPart
   name: bluespace matter bin
+  parent: MatterBinStockPart
   description: A bluespace matter bin used in the construction of a variety of devices.
   components:
     - type: Sprite
@@ -267,9 +267,9 @@
       price: 500
 
 - type: entity
-  parent: ScanningModuleStockPart
   id: TriphasicScanningModuleStockPart
   name: triphasic scanning module
+  parent: ScanningModuleStockPart
   description: A compact, ultra resolution triphasic scanning module used in the construction of certain devices.
   components:
     - type: Sprite
@@ -283,9 +283,9 @@
       price: 500
 
 - type: entity
-  parent: MicroLaserStockPart
   id: QuadUltraMicroLaserStockPart
   name: quad-ultra micro-laser
+  parent: MicroLaserStockPart
   description: A tiny laser used in certain devices.
   components:
     - type: Sprite

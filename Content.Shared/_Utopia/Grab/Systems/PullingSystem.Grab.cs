@@ -411,21 +411,6 @@ public abstract partial class PullingSystem
     #endregion
 
     #region Pulic functions
-
-    public void StopAllPulls(EntityUid uid, bool stopPullable = true, bool stopPuller = true)
-    {
-        if (stopPullable && TryComp<PullableComponent>(uid, out var pullable) && IsPulled(uid, pullable))
-        {
-            TryStopPull(uid, pullable);
-        }
-
-        if (stopPuller && TryComp<PullerComponent>(uid, out var puller)
-        && TryComp(puller.Pulling, out PullableComponent? pullableEnt))
-        {
-            TryStopPull(puller.Pulling.Value, pullableEnt);
-        }
-    }
-
     public bool TryStartPullingOrGrab(Entity<PullerComponent> puller, Entity<PullableComponent> pullable)
     {
         if (puller.Comp.Pulling == pullable.Owner)

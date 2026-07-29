@@ -2,6 +2,8 @@ using Content.Server.Chat.Systems;
 using Content.Shared._Utopia.Combat;
 using Content.Shared.Chat;
 using Content.Shared.StatusEffectNew;
+using Robust.Shared.Audio;
+using Robust.Shared.Audio.Systems;
 
 namespace Content.Server._Utopia.Combat;
 

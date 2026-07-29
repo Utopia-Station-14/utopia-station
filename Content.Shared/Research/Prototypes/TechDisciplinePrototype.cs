@@ -44,5 +44,5 @@ public sealed partial class TechDisciplinePrototype : IPrototype
     /// Purchasing this tier of technology causes a server to become "locked" to this discipline.
     /// </summary>
     [DataField("lockoutTier")]
-    public int LockoutTier = 4; // Utopia-Tweak : Research
+    public int LockoutTier = 3;
 }

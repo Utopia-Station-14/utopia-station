@@ -1,4 +1,4 @@
-namespace Content.Server._Utopia.Teleportation;
+namespace Content.Server.Teleportation;
 
 [RegisterComponent]
 public sealed partial class RandomTeleportOnUseComponent : Component

@@ -1,5 +1,5 @@
 using Content.Server._Utopia.Genetics.Mutations.Components;
-using Content.Server._Utopia.Teleportation;
+using Content.Server.Teleportation;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 
