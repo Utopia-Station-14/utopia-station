@@ -19,6 +19,11 @@
   result: UtopiaEconomicRecordsConsoleCircuitboard
 
 - type: latheRecipe
-  parent: [BaseCircuitboardRecipe, BaseMedicalComputerRecipeCategory]
+  parent: [BaseCircuitboardRecipe, BaseMedicalComputerRecipeCategory, BaseResearchComputerRecipeCategory]
   id: DnaManipulatorConsoleCircuitboard
   result: UtopiaDnaManipulatorConsoleCircuitboard
+
+- type: latheRecipe
+  parent: [BaseCircuitboardRecipe, BaseMedicalComputerRecipeCategory]
+  id: TelescienceComputerCircuitboard
+  result: UtopiaTelescienceComputerCircuitboard

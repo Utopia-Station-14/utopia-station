@@ -26,8 +26,9 @@
     - crystal_2
     - crystal_3
     count: 3
+  - type: RandomTeleport
   - type: RandomTeleportOnUse
-  - type: BluespaceCrystal
+  - type: TeleportCrystal
   - type: Item
     size: Tiny
     sprite: _Utopia/Objects/Materials/crystal.rsi

@@ -140,7 +140,7 @@
     Silver: 750
     Plasma: 1500
     Uranium: 150
-    BluespaceCrystal: 3 # Utopia-Tweak : Materials
+    BluespaceCrystal: 25 # Utopia-Tweak : Materials
 
 - type: latheRecipe
   parent: ClothingBackpackHolding

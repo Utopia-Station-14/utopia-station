@@ -137,6 +137,7 @@
     dynamicPacks:
     - AdvancedMachineParts
     - SuperMachineParts
+    - BluespaceMachineParts
     # Utopia-Tweak : Research
   - type: EmagLatheRecipes
     emagStaticPacks:
@@ -277,6 +278,7 @@
     - ShuttleBoards
     # Utopia-Tweak : Research
     - MedicalBoardsDynamic
+    - BluespaceBoardsDynamic
     # Utopia-Tweak : Research
   - type: EmagLatheRecipes
     emagDynamicPacks:

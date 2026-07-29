@@ -1,6 +1,6 @@
 using Robust.Shared.Audio;
 
-namespace Content.Server.Teleportation;
+namespace Content.Server._Utopia.Teleportation;
 
 [RegisterComponent]
 public sealed partial class RandomTeleportComponent : Component
