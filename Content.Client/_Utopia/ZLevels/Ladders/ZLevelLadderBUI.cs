@@ -25,4 +25,14 @@ public sealed class ZLevelLadderBoundUserInterface : BoundUserInterface
             Close();
         };
     }
+
+    protected override void UpdateState(BoundUserInterfaceState state)
+    {
+        base.UpdateState(state);
+
+        if (state is ZLevelLadderBuiState castState)
+        {
+            _menu?.UpdateMenu(castState.Directions);
+        }
+    }
 }

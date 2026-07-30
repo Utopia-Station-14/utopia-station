@@ -84,6 +84,7 @@
   itemDrop: PartRodMetal1
   heatCapacity: 10000
   mass: 200
+  transparent: true # Utopia-Tweak : ZLevels
 
 - type: tile
   id: TrainLattice
@@ -100,3 +101,4 @@
   itemDrop: PartRodMetal1
   heatCapacity: 10000
   mass: 200
+  transparent: true # Utopia-Tweak : ZLevels

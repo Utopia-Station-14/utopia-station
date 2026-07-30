@@ -13,6 +13,8 @@ namespace Content.Shared._CE.ZLevels.Core.EntitySystems;
 public abstract partial class CESharedZLevelsSystem
 {
     [Dependency] protected readonly ITileDefinitionManager TilDefMan = default!;
+    [Dependency] protected readonly IMapManager _mapManager = default!;
+
     private void InitView()
     {
         SubscribeLocalEvent<CEZLevelViewerComponent, MoveEvent>(OnViewerMove);
@@ -58,10 +60,12 @@ public abstract partial class CESharedZLevelsSystem
         if (!TryMapUp(currentMapUid.Value, out var mapAboveUid))
             return false;
 
-        if (!GridQuery.TryComp(mapAboveUid.Value, out var mapAboveGrid))
+        var worldPos = _transform.GetWorldPosition(ent);
+
+        if (!_mapManager.TryFindGridAt(mapAboveUid.Value.Owner, worldPos, out var gridAboveUid, out var gridAboveComp))
             return false;
 
-        if (!MapSys.TryGetTileRef(mapAboveUid.Value, mapAboveGrid, _transform.GetWorldPosition(ent), out var tileRef))
+        if (!MapSys.TryGetTileRef(gridAboveUid, gridAboveComp, worldPos, out var tileRef))
             return false;
 
         var tileDef = (ContentTileDefinition)TilDefMan[tileRef.Tile.TypeId];

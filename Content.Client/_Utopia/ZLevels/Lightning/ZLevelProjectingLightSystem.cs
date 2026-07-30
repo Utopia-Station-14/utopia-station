@@ -5,12 +5,12 @@
 // centers on the viewer's map, attenuated by depth and distance. Purely cosmetic.
 
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using Content.Client._Utopia.ZLevels.Lighting;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared._Utopia.CCVar;
 using Content.Shared.Physics;
+using Content.Shared.Maps;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
@@ -21,6 +21,7 @@ using Robust.Shared.Maths;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Timing;
+using Robust.Shared.GameObjects;
 using DependencyAttribute = Robust.Shared.IoC.DependencyAttribute;
 
 namespace Content.Client._Utopia.ZLevels.Lighting;
@@ -40,6 +41,9 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
     private const int PartialSelectionSortMultiplier = 4;
     private const float ViewBoundsLightPadding = 2f;
 
+    private float _updateAccumulator = 0f;
+    private const float UpdateRate = 1f;
+
     [Dependency] private readonly IConfigurationManager _config = default!;
     [Dependency] private readonly IEyeManager _eyeManager = default!;
     [Dependency] private readonly IPlayerManager _player = default!;
@@ -52,6 +56,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
     [Dependency] private readonly ITileDefinitionManager _tileDefinition = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly CEZLevelOpeningCache _zCache = default!;
+    [Dependency] private readonly EntityLookupSystem _lookup = default!;
 
     private readonly Dictionary<ProjectedLightKey, EntityUid> _projectedLights = new();
     private readonly Dictionary<MergedProjectedLightKey, EntityUid> _mergedProjectedLights = new();
@@ -66,6 +71,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
     private readonly List<ProjectedLightKey> _toRemove = new();
     private readonly List<MergedProjectedLightKey> _mergedToRemove = new();
     private readonly List<(Vector2 Center, float Distance)> _tempOpenings = new();
+    private readonly List<(Vector2 Center, float Distance)> _tempIntermediateOpenings = new();
     private readonly Dictionary<MapId, List<SourceLight>> _sourceLightBuckets = new();
     private readonly Dictionary<OpeningCandidateBucketKey, List<int>> _openingCandidateBuckets = new();
     private readonly List<List<int>> _openingCandidateBucketPool = new();
@@ -98,6 +104,12 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
             return;
         }
 
+        _updateAccumulator += frameTime;
+        if (_updateAccumulator < UpdateRate)
+            return;
+        
+        _updateAccumulator = 0f;
+
         if (_player.LocalEntity is not { } playerUid ||
             !TryComp<CEZLevelViewerComponent>(playerUid, out _) ||
             !_xformQuery.TryComp(playerUid, out var playerXform) ||
@@ -127,15 +139,27 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         _activeThisFrame.Clear();
 
         var viewBounds = _eyeManager.GetWorldViewbounds();
-        BuildSourceLightBuckets(viewBounds, minEnergy);
-
         Entity<CEZLevelMapComponent?> playerZLevelMap = (playerMapUid, playerZMap);
 
-        // Pass 1: lights on adjacent layers project onto the player's map. Accumulate every source
-        // layer into one candidate set so the cap is enforced on the receiving (player) level as a
-        // whole, not once per source layer.
+        var activeMaps = new HashSet<MapId> { playerMapComp.MapId };
+        
+        for (var depthOffset = -maxDepth; depthOffset <= maxDepth; depthOffset++)
+        {
+            if (depthOffset == 0) continue;
+            
+            if (_zLevels.TryMapOffset(playerZLevelMap, depthOffset, out var adjacentMap) &&
+                adjacentMap is { } adj &&
+                _mapQuery.TryComp(adj.Owner, out var adjacentMapComp) &&
+                adjacentMapComp.MapId != MapId.Nullspace)
+            {
+                activeMaps.Add(adjacentMapComp.MapId);
+            }
+        }
+
+        BuildSourceLightBuckets(viewBounds, minEnergy, activeMaps);
+
         _candidates.Clear();
-        for (var depthOffset = -maxDepth; depthOffset <= 1; depthOffset++)
+        for (var depthOffset = -maxDepth; depthOffset <= maxDepth; depthOffset++)
         {
             if (depthOffset == 0)
                 continue;
@@ -165,13 +189,15 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
                 attenuationPerTile,
                 radiusScale,
                 maxRadius,
-                minEnergy);
+                minEnergy,
+                playerZLevelMap,
+                0,
+                depthOffset);
         }
 
         ApplyLevelCap(maxPerLevel, currentFrame);
 
-        // Pass 2: cascade — light from the layer above a deeper layer also paints that deeper
-        // layer (two-deep leakage through stacked holes).
+        // Pass 2: Каскад для слоев под игроком — проецирует свет со ВСЕХ верхних слоев на нижние.
         for (var receivingDepth = -1; receivingDepth >= -maxDepth; receivingDepth--)
         {
             if (!_zLevels.TryMapOffset(playerZLevelMap, receivingDepth, out var receivingMap) ||
@@ -182,85 +208,106 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
                 continue;
             }
 
-            var sourceDepth = receivingDepth + 1;
-            Entity<CEZLevelMapComponent> sourceMap;
-            MapComponent sourceMapComp;
-            if (sourceDepth == 0)
+            for (var sourceDepth = receivingDepth + 1; sourceDepth <= maxDepth; sourceDepth++)
             {
-                sourceMap = (playerMapUid, playerZMap);
-                sourceMapComp = playerMapComp;
-            }
-            else if (!_zLevels.TryMapOffset(playerZLevelMap, sourceDepth, out var offsetSourceMap) ||
-                     offsetSourceMap is not { } offsetSource ||
-                     !_mapQuery.TryComp(offsetSource.Owner, out var offsetSourceMapComp))
-            {
-                continue;
-            }
-            else
-            {
-                sourceMap = offsetSource;
-                sourceMapComp = offsetSourceMapComp;
-            }
+                if (sourceDepth == receivingDepth) continue;
 
-            if (sourceMapComp.MapId == MapId.Nullspace)
-                continue;
+                Entity<CEZLevelMapComponent> sourceMap;
+                MapComponent sourceMapComp;
+                if (sourceDepth == 0)
+                {
+                    sourceMap = (playerMapUid, playerZMap);
+                    sourceMapComp = playerMapComp;
+                }
+                else if (!_zLevels.TryMapOffset(playerZLevelMap, sourceDepth, out var offsetSourceMap) ||
+                         offsetSourceMap is not { } offsetSource ||
+                         !_mapQuery.TryComp(offsetSource.Owner, out var offsetSourceMapComp))
+                {
+                    continue;
+                }
+                else
+                {
+                    sourceMap = offsetSource;
+                    sourceMapComp = offsetSourceMapComp;
+                }
 
-            _candidates.Clear();
-            if (!_sourceLightBuckets.TryGetValue(sourceMapComp.MapId, out var sourceLights) ||
-                sourceLights.Count == 0)
-            {
-                continue;
+                if (sourceMapComp.MapId == MapId.Nullspace)
+                    continue;
+
+                _candidates.Clear();
+                if (!_sourceLightBuckets.TryGetValue(sourceMapComp.MapId, out var sourceLights) ||
+                    sourceLights.Count == 0)
+                {
+                    continue;
+                }
+
+                var relativeDepthOffset = sourceDepth - receivingDepth;
+
+                CollectCandidates(
+                    sourceLights,
+                    sourceMap,
+                    sourceMapComp.MapId,
+                    receiving.Owner,
+                    receivingMapComp.MapId,
+                    relativeDepthOffset,
+                    attenuationPerDepth,
+                    attenuationPerTile,
+                    radiusScale,
+                    maxRadius,
+                    minEnergy,
+                    playerZLevelMap,
+                    receivingDepth,
+                    sourceDepth);
+
+                ApplyLevelCap(maxPerLevel, currentFrame);
             }
-
-            CollectCandidates(
-                sourceLights,
-                sourceMap,
-                sourceMapComp.MapId,
-                receiving.Owner,
-                receivingMapComp.MapId,
-                1,
-                attenuationPerDepth,
-                attenuationPerTile,
-                radiusScale,
-                maxRadius,
-                minEnergy);
-
-            ApplyLevelCap(maxPerLevel, currentFrame);
         }
 
         CleanupStaleProjectedLights();
     }
 
-    private void BuildSourceLightBuckets(Box2Rotated viewBounds, float minEnergy)
+    private void BuildSourceLightBuckets(Box2Rotated viewBounds, float minEnergy, HashSet<MapId> activeMaps)
     {
         ClearSourceLightBuckets();
+        
+        var aabb = viewBounds.CalcBoundingBox(); 
+        var maxRadius = Math.Max(0f, _config.GetCVar(UCCVars.CEZProjectedLightMaxRadius));
+        var lookupBounds = aabb.Enlarged(maxRadius + ViewBoundsLightPadding);
 
-        var lightQuery = EntityQueryEnumerator<PointLightComponent, TransformComponent>();
-        while (lightQuery.MoveNext(out var lightUid, out var light, out var lightXform))
+        foreach (var mapId in activeMaps)
         {
-            // Skip our own projections + disabled/dark lights + lights outside the view AABB.
-            if (_projectedQuery.HasComp(lightUid) ||
-                lightXform.MapID == MapId.Nullspace ||
-                !light.Enabled ||
-                light.Radius <= 0f ||
-                light.Energy <= 0f ||
-                light.Energy < minEnergy)
+            if (mapId == MapId.Nullspace) 
+                continue;
+
+            var bucket = GetSourceLightBucket(mapId);
+
+            foreach (var ent in _lookup.GetEntitiesIntersecting(mapId, lookupBounds))
             {
-                continue;
+                if (!_pointLightQuery.TryComp(ent, out var light) ||
+                    _projectedQuery.HasComp(ent) ||
+                    !light.Enabled ||
+                    light.Radius <= 0f ||
+                    light.Energy <= 0f ||
+                    light.Energy < minEnergy)
+                {
+                    continue;
+                }
+
+                var lightXform = _xformQuery.GetComponent(ent);
+                var lightWorldPos = _transform.GetWorldPosition(lightXform);
+
+                var expandedBounds = viewBounds.Enlarged(light.Radius + ViewBoundsLightPadding);
+                if (!expandedBounds.Contains(lightWorldPos))
+                    continue;
+
+                bucket.Add(new SourceLight(
+                    ent,
+                    lightWorldPos,
+                    light.Radius,
+                    light.Energy,
+                    light.Color,
+                    light.Softness));
             }
-
-            var lightWorldPos = _transform.GetWorldPosition(lightXform);
-            var expandedBounds = viewBounds.Enlarged(light.Radius + ViewBoundsLightPadding);
-            if (!expandedBounds.Contains(lightWorldPos))
-                continue;
-
-            GetSourceLightBucket(lightXform.MapID).Add(new SourceLight(
-                lightUid,
-                lightWorldPos,
-                light.Radius,
-                light.Energy,
-                light.Color,
-                light.Softness));
         }
     }
 
@@ -305,7 +352,6 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         }
         else if (directCount > 0)
         {
-            // Full sort is cheaper when the direct keep count is close to the total candidate count.
             _candidates.Sort(CompareProjectedEnergyDescending);
         }
 
@@ -394,7 +440,10 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         float attenuationPerTile,
         float radiusScale,
         float maxRadius,
-        float minEnergy)
+        float minEnergy,
+        Entity<CEZLevelMapComponent?> playerZLevelMap,
+        int startDepth,
+        int endDepth)
     {
         var openingMap = GetOpeningMapForProjection(adjacentMap, playerMapUid, depthOffset);
         if (!_mapQuery.TryComp(openingMap, out var openingMapComp) ||
@@ -406,6 +455,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         foreach (var sourceLight in sourceLights)
         {
             _tempOpenings.Clear();
+
             _zCache.FindOpeningCentersNear(
                 openingMapComp.MapId,
                 sourceLight.WorldPosition,
@@ -422,9 +472,15 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
                 continue;
 
             _sourceCandidates.Clear();
+
             foreach (var (openingCenter, sourceToOpeningDistance) in _tempOpenings)
             {
-                // Top-down occlusion: walls between source and opening kill the leak.
+                if (Math.Abs(endDepth - startDepth) > 1 &&
+                    !AreIntermediateLevelsOpen(playerZLevelMap, startDepth, endDepth, openingCenter))
+                {
+                    continue;
+                }
+
                 var rayDirection = openingCenter - sourceLight.WorldPosition;
                 var rayLength = rayDirection.Length();
                 if (rayLength > 0.01f)
@@ -441,8 +497,6 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
                         continue;
                 }
 
-                // Smooth attenuation: (1 - s²)² / (1 + depth*ad + dist*at). Keeps the projection
-                // from being brighter than the source.
                 var depth = Math.Abs(depthOffset);
                 var s = Math.Clamp(sourceToOpeningDistance / sourceLight.Radius, 0f, 1f);
                 var s2 = s * s;
@@ -458,7 +512,6 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
                 if (remainingDistance <= 0f)
                     continue;
 
-                // Remaining-radius scaled outward so the leak fades naturally.
                 var projectedRadius = Math.Min(remainingDistance * radiusScale, maxRadius);
                 if (projectedRadius <= 0f)
                     continue;
@@ -487,13 +540,81 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         }
     }
 
+    public bool IsTileTransparent(MapId mapId, Vector2 worldPos)
+    {
+        if (!_mapManager.TryFindGridAt(mapId, worldPos, out var gridUid, out var gridComp))
+            return false;
+
+        if (!_map.TryGetTileRef(gridUid, gridComp, worldPos, out var tileRef))
+            return false;
+
+        var tileDef = (ContentTileDefinition) _tileDefinition[tileRef.Tile.TypeId];
+        return tileDef.Transparent;
+    }
+
+    private bool AreIntermediateLevelsOpen(
+        Entity<CEZLevelMapComponent?> playerZLevelMap,
+        int startDepth,
+        int endDepth,
+        Vector2 openingCenter)
+    {
+        if (Math.Abs(endDepth - startDepth) <= 1)
+            return true;
+
+        var step = endDepth > startDepth ? 1 : -1;
+
+        for (var d = startDepth + step; d != endDepth; d += step)
+        {
+            EntityUid interOwner;
+            CEZLevelMapComponent? interComp;
+
+            if (d == 0)
+            {
+                interOwner = playerZLevelMap.Owner;
+                interComp = playerZLevelMap.Comp;
+            }
+            else if (!_zLevels.TryMapOffset(playerZLevelMap, d, out var offsetInterMap) || offsetInterMap is not { } offsetInter)
+            {
+                return false;
+            }
+            else
+            {
+                interOwner = offsetInter.Owner;
+                interComp = offsetInter.Comp;
+            }
+
+            if (interComp == null ||
+                !_mapQuery.TryComp(interOwner, out var interMapComp) ||
+                interMapComp.MapId == MapId.Nullspace)
+            {
+                return false;
+            }
+
+            _tempIntermediateOpenings.Clear();
+            _zCache.FindOpeningCentersNear(
+                interMapComp.MapId,
+                openingCenter,
+                0.8f,
+                _tempIntermediateOpenings,
+                _openingGrids,
+                _mapManager,
+                _map,
+                _transform,
+                _tileDefinition,
+                true);
+
+            if (_tempIntermediateOpenings.Count == 0)
+                return false;
+        }
+
+        return true;
+    }
+
     private static EntityUid GetOpeningMapForProjection(
         Entity<CEZLevelMapComponent> sourceMap,
         EntityUid receivingMap,
         int depthOffset)
     {
-        // Holes are floor apertures on the higher level: source map when source is above, else
-        // the receiver map.
         return depthOffset > 0 ? sourceMap.Owner : receivingMap;
     }
 
@@ -537,8 +658,6 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
 
     private void AddSourceCandidates()
     {
-        // Cluster candidates by adjacency (chained openings = one strip), then sample the strip
-        // linearly or place them individually with overlap rejection.
         RebuildOpeningCandidateBuckets();
 
         _visitedSourceCandidates.Clear();
@@ -686,7 +805,6 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
             yy += delta.Y * delta.Y;
         }
 
-        // Principal axis via 2-D covariance matrix eigenvector.
         var angle = 0.5f * MathF.Atan2(2f * xy, xx - yy);
         axis = new Vector2(MathF.Cos(angle), MathF.Sin(angle));
         var perpendicular = new Vector2(-axis.Y, axis.X);
@@ -754,12 +872,23 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
 
         if (_pointLightQuery.TryComp(projectedUid, out var light))
         {
-            _lights.SetRadius(projectedUid, candidate.ProjectedRadius, light);
-            _lights.SetEnergy(projectedUid, candidate.ProjectedEnergy, light);
-            _lights.SetColor(projectedUid, candidate.Color, light);
-            _lights.SetSoftness(projectedUid, candidate.Softness, light);
-            _lights.SetCastShadows(projectedUid, false, light);
-            _lights.SetEnabled(projectedUid, true, light);
+            if (!MathHelper.CloseTo(light.Radius, candidate.ProjectedRadius))
+                _lights.SetRadius(projectedUid, candidate.ProjectedRadius, light);
+                
+            if (!MathHelper.CloseTo(light.Energy, candidate.ProjectedEnergy))
+                _lights.SetEnergy(projectedUid, candidate.ProjectedEnergy, light);
+                
+            if (light.Color != candidate.Color)
+                _lights.SetColor(projectedUid, candidate.Color, light);
+                
+            if (!MathHelper.CloseTo(light.Softness, candidate.Softness))
+                _lights.SetSoftness(projectedUid, candidate.Softness, light);
+
+            if (light.CastShadows)
+                _lights.SetCastShadows(projectedUid, false, light);
+                
+            if (!light.Enabled)
+                _lights.SetEnabled(projectedUid, true, light);
         }
         else
         {
@@ -774,7 +903,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         if (_projectedQuery.TryComp(projectedUid, out var projected))
         {
             if (projected.LastAppliedMapId != candidate.ReceivingMapId ||
-                projected.LastAppliedCenter != candidate.ProjectedCenter)
+                !projected.LastAppliedCenter.EqualsApprox(candidate.ProjectedCenter))
             {
                 _transform.SetMapCoordinates(projectedUid, new MapCoordinates(candidate.ProjectedCenter, candidate.ReceivingMapId));
                 projected.LastAppliedMapId = candidate.ReceivingMapId;

@@ -5,15 +5,18 @@ using Content.Shared._Utopia.ZLevels.Components;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Maths;
+using System.Numerics;
 
 namespace Content.Server._Utopia.ZLevels.Systems;
 
 public sealed class ZLevelLadderSystem : EntitySystem
 {
     [Dependency] private readonly CESharedZLevelsSystem _zLevels = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly MapSystem _map = default!;
+    [Dependency] private readonly IMapManager _mapManager = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
 
     public override void Initialize()
@@ -33,8 +36,7 @@ public sealed class ZLevelLadderSystem : EntitySystem
             return;
         }
 
-        comp.Directions = dirs;
-        Dirty(uid, comp);
+        _ui.SetUiState(uid, args.UiKey, new ZLevelLadderBuiState(dirs));
     }
 
     private void OnSelect(EntityUid uid, ZLevelLadderComponent comp, ZLevelLadderMessage msg)
@@ -51,12 +53,12 @@ public sealed class ZLevelLadderSystem : EntitySystem
         {
             case ZMoveDirection.Up:
                 if (comp.AllowUp)
-                    targetMap = TryGetNeighbor(ctx, 1);
+                    targetMap = GetNeighborMap(ctx, 1);
                 break;
 
             case ZMoveDirection.Down:
                 if (comp.AllowDown)
-                    targetMap = TryGetNeighbor(ctx, -1);
+                    targetMap = GetNeighborMap(ctx, -1);
                 break;
         }
 
@@ -66,7 +68,7 @@ public sealed class ZLevelLadderSystem : EntitySystem
             return;
         }
 
-        if (!HasValidTile(uid, targetMap.Value))
+        if (!IsValidDestination(uid, targetMap.Value, msg.Direction))
         {
             _popup.PopupEntity("Blocked", uid, user);
             return;
@@ -82,37 +84,95 @@ public sealed class ZLevelLadderSystem : EntitySystem
         if (!TryGetContext(uid, out var ctx))
             return result;
 
-        if (comp.AllowUp && TryGetNeighbor(ctx, 1) is { } up && HasValidTile(uid, up))
+        if (comp.AllowUp && GetNeighborMap(ctx, 1) is { } up && IsValidDestination(uid, up, ZMoveDirection.Up))
             result.Add(ZMoveDirection.Up);
 
-        if (comp.AllowDown && TryGetNeighbor(ctx, -1) is { } down && HasValidTile(uid, down))
+        if (comp.AllowDown && GetNeighborMap(ctx, -1) is { } down && IsValidDestination(uid, down, ZMoveDirection.Down))
             result.Add(ZMoveDirection.Down);
 
         return result;
     }
 
-    private bool HasValidTile(EntityUid source, EntityUid targetMap)
+    private bool IsValidDestination(EntityUid source, EntityUid targetMap, ZMoveDirection direction)
     {
-        var coords = Transform(source).Coordinates;
+        var hasTile = HasTileAt(source, targetMap);
 
-        if (coords.EntityId == EntityUid.Invalid)
+        return direction switch
+        {
+            ZMoveDirection.Down => hasTile,
+            ZMoveDirection.Up => !hasTile,
+            _ => false
+        };
+    }
+
+    private bool HasTileAt(EntityUid source, EntityUid targetMap)
+    {
+        if (!TryGetAnchoredGrid(source, out var xform, out var gridUid, out var grid))
             return false;
 
-        if (!TryComp<MapGridComponent>(coords.EntityId, out var grid))
+        var worldBox = GetTileBox(gridUid, grid, xform);
+
+        if (!TryComp(targetMap, out TransformComponent? mapXform))
             return false;
 
-        if (Transform(coords.EntityId).MapUid != targetMap)
+        var targetCoords = new MapCoordinates(worldBox.Center, mapXform.MapID);
+
+        if (!_mapManager.TryFindGridAt(targetCoords, out var targetGridUid, out var targetGridComp))
             return false;
 
-        var tile = _map.GetTileRef(coords.EntityId, grid, coords);
+        var invMatrix = _transform.GetInvWorldMatrix(targetGridUid);
+        var localPos = Vector2.Transform(worldBox.Center, invMatrix);
+        var targetEntityCoords = new EntityCoordinates(targetGridUid, localPos);
 
-        return tile.Tile.IsEmpty;
+        var tile = _map.GetTileRef(targetGridUid, targetGridComp, targetEntityCoords);
+
+        return !tile.Tile.IsEmpty;
     }
 
     private void Teleport(EntityUid user, EntityUid targetMap)
     {
-        var pos = _xform.GetMapCoordinates(user).Position;
-        _xform.SetCoordinates(user, new EntityCoordinates(targetMap, pos));
+        var pos = _transform.GetWorldPosition(user);
+        _transform.SetCoordinates(user, new EntityCoordinates(targetMap, pos));
+    }
+
+    #region Helpers
+
+    private bool TryGetAnchoredGrid(EntityUid uid, out TransformComponent xform, out EntityUid gridUid, out MapGridComponent grid)
+    {
+        xform = default!;
+        gridUid = default;
+        grid = default!;
+
+        if (!TryComp(uid, out TransformComponent? comp))
+            return false;
+
+        xform = comp;
+
+        if (!xform.Anchored)
+            return false;
+
+        if (xform.GridUid is not { } g)
+            return false;
+
+        if (!TryComp(g, out MapGridComponent? mapGrid))
+            return false;
+
+        grid = mapGrid;
+        gridUid = g;
+        return true;
+    }
+
+    private Box2 GetTileBox(EntityUid gridUid, MapGridComponent grid, TransformComponent xform)
+    {
+        var tile = _map.LocalToTile(gridUid, grid, xform.Coordinates);
+        var tileSize = grid.TileSize;
+        var localCenter = new Vector2(tile.X + 0.5f, tile.Y + 0.5f) * tileSize;
+
+        var worldMatrix = _transform.GetWorldMatrix(gridUid);
+        var worldCenter = Vector2.Transform(localCenter, worldMatrix);
+
+        var half = new Vector2(tileSize / 2f, tileSize / 2f);
+        return new Box2(worldCenter - half, worldCenter + half);
     }
 
     private bool TryGetContext(EntityUid uid, out ZLevelContext ctx)
@@ -131,30 +191,39 @@ public sealed class ZLevelLadderSystem : EntitySystem
         if (!_zLevels.TryGetZNetwork(mapUid, out var net) || net == null)
             return false;
 
-        ctx = new ZLevelContext(mapUid, zMap, net.Value.Owner);
+        ctx = new ZLevelContext(xform, mapUid, zMap, net.Value.Owner);
         return true;
     }
 
-    private EntityUid? TryGetNeighbor(ZLevelContext ctx, int offset)
+    private EntityUid? GetNeighborMap(ZLevelContext ctx, int offset)
     {
         var mapEntity = new Entity<CEZLevelMapComponent?>(ctx.MapUid, ctx.ZMap);
 
-        return _zLevels.TryMapOffset(mapEntity, offset, out var target) && target != null
-            ? target.Value.Owner
-            : null;
+        if (!_zLevels.TryMapOffset(mapEntity, offset, out var target) || target == null)
+            return null;
+
+        return target.Value.Owner;
     }
 
     private readonly struct ZLevelContext
     {
+        public readonly TransformComponent Transform;
         public readonly EntityUid MapUid;
         public readonly CEZLevelMapComponent ZMap;
-        public readonly EntityUid Network;
+        public readonly EntityUid ZNetwork;
 
-        public ZLevelContext(EntityUid mapUid, CEZLevelMapComponent zMap, EntityUid network)
+        public ZLevelContext(
+            TransformComponent transform,
+            EntityUid mapUid,
+            CEZLevelMapComponent zMap,
+            EntityUid zNetwork)
         {
+            Transform = transform;
             MapUid = mapUid;
             ZMap = zMap;
-            Network = network;
+            ZNetwork = zNetwork;
         }
     }
+
+    #endregion
 }

@@ -5,7 +5,7 @@
   description: womp womp
   components:
   - type: Sprite
-    sprite: Structures/Holo/holofan.rsi
+    sprite: _Utopia/Structures/ladders.rsi
     state: icon
   - type: ZLevelLadder
   - type: ActivatableUI
