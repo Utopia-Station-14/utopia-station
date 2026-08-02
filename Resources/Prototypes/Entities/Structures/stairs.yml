@@ -50,7 +50,6 @@
   - type: Physics
     bodyType: Static
   - type: CEZLevelHighGround
-    corner: true
     heightCurve:
     - 1.05
     - 1.05
