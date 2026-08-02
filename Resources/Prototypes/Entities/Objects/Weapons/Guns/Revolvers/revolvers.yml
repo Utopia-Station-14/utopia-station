@@ -30,6 +30,7 @@
     - SemiAuto
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/revolver.ogg
+    showGunEffect: true # Utopia-Tweak : Gun Shoot Effect
   - type: UseDelay
     delay: 0.66
   - type: ContainerContainer

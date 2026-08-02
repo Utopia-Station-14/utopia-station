@@ -25,14 +25,14 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
 {
     [Dependency] protected readonly IGameTiming Timing = default!;
     [Dependency] protected readonly IPrototypeManager PrototypeManager = default!;
-    [Dependency] private   readonly AccessReaderSystem _accessReader = default!;
+    [Dependency] private readonly AccessReaderSystem _accessReader = default!;
     [Dependency] private   readonly SharedAppearanceSystem _appearanceSystem = default!;
     [Dependency] protected readonly SharedAudioSystem Audio = default!;
     [Dependency] private   readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] protected readonly SharedPointLightSystem Light = default!;
-    [Dependency] private   readonly SharedPowerReceiverSystem _receiver = default!;
+    [Dependency] protected readonly SharedPowerReceiverSystem Receiver = default!; // Utopia-Tweak : Economy
     [Dependency] protected readonly SharedPopupSystem Popup = default!;
-    [Dependency] private   readonly SharedSpeakOnUIClosedSystem _speakOn = default!;
+    [Dependency] protected readonly SharedSpeakOnUIClosedSystem SpeakOn = default!; // Utopia-Tweak : Economy
     [Dependency] protected readonly SharedUserInterfaceSystem UISystem = default!;
     [Dependency] protected readonly IRobustRandom Randomizer = default!;
     [Dependency] private readonly EmagSystem _emag = default!;
@@ -89,6 +89,7 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
             DenyEnd = component.DenyEnd,
             DispenseOnHitEnd = component.DispenseOnHitEnd,
             Broken = component.Broken,
+            Credits = component.Credits, // Utopia-Tweak : Economy
         };
     }
 
@@ -137,7 +138,7 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
 
     private void OnInventoryEjectMessage(Entity<VendingMachineComponent> entity, ref VendingMachineEjectMessage args)
     {
-        if (!_receiver.IsPowered(entity.Owner) || Deleted(entity))
+        if (!Receiver.IsPowered(entity.Owner) || Deleted(entity) || entity.Comp.Ejecting)
             return;
 
         if (args.Actor is not { Valid: true } actor)
@@ -153,7 +154,7 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
 
     private void OnEmpPulse(Entity<VendingMachineComponent> ent, ref EmpPulseEvent args)
     {
-        if (!ent.Comp.Broken && _receiver.IsPowered(ent.Owner))
+        if (!ent.Comp.Broken && Receiver.IsPowered(ent.Owner))
         {
             args.Affected = true;
             args.Disabled = true;
@@ -180,7 +181,7 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
         if (_accessReader.IsAllowed(sender, uid, accessReader) || HasComp<EmaggedComponent>(uid))
             return true;
 
-        Popup.PopupClient(Loc.GetString("vending-machine-component-try-eject-access-denied"), uid, sender);
+        Popup.PopupPredicted(Loc.GetString("vending-machine-component-try-eject-access-denied"), uid, sender);
         Deny((uid, vendComponent), sender);
         return false;
     }
@@ -208,46 +209,7 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
     /// <param name="itemId">The prototype ID of the item</param>
     /// <param name="throwItem">Whether the item should be thrown in a random direction after ejection</param>
     /// <param name="vendComponent"></param>
-    public void TryEjectVendorItem(EntityUid uid, InventoryType type, string itemId, bool throwItem, EntityUid? user = null, VendingMachineComponent? vendComponent = null)
-    {
-        if (!Resolve(uid, ref vendComponent))
-            return;
-
-        if (vendComponent.Ejecting || vendComponent.Broken || !_receiver.IsPowered(uid))
-        {
-            return;
-        }
-
-        var entry = GetEntry(uid, itemId, type, vendComponent);
-
-        if (string.IsNullOrEmpty(entry?.ID))
-        {
-            Popup.PopupClient(Loc.GetString("vending-machine-component-try-eject-invalid-item"), uid);
-            Deny((uid, vendComponent));
-            return;
-        }
-
-        if (entry.Amount <= 0)
-        {
-            Popup.PopupClient(Loc.GetString("vending-machine-component-try-eject-out-of-stock"), uid);
-            Deny((uid, vendComponent));
-            return;
-        }
-
-        // Start Ejecting, and prevent users from ordering while anim playing
-        vendComponent.EjectEnd = Timing.CurTime + vendComponent.EjectDelay;
-        vendComponent.NextItemToEject = entry.ID;
-        vendComponent.ThrowNextItem = throwItem;
-
-        if (TryComp(uid, out SpeakOnUIClosedComponent? speakComponent))
-            _speakOn.TrySetFlag((uid, speakComponent));
-
-        entry.Amount--;
-        Dirty(uid, vendComponent);
-        UpdateUI((uid, vendComponent));
-        TryUpdateVisualState((uid, vendComponent));
-        Audio.PlayPredicted(vendComponent.SoundVend, uid, user);
-    }
+    public virtual void TryEjectVendorItem(EntityUid uid, InventoryType type, string itemId, bool throwItem, EntityUid? user = null, VendingMachineComponent? vendComponent = null) { } // Utopia-Tweak : Economy (Content.Server/_Utopia/VendingMachines/VendingMachineSystem.Economy.cs)
 
     public void Deny(Entity<VendingMachineComponent?> entity, EntityUid? user = null)
     {
@@ -286,7 +248,7 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
         {
             finalState = VendingMachineVisualState.Deny;
         }
-        else if (!_receiver.IsPowered(entity.Owner))
+        else if (!Receiver.IsPowered(entity.Owner))
         {
             finalState = VendingMachineVisualState.Off;
         }
@@ -309,13 +271,7 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
     /// <param name="type">The type of inventory the item is from</param>
     /// <param name="itemId">The prototype ID of the item</param>
     /// <param name="component"></param>
-    public void AuthorizedVend(EntityUid uid, EntityUid sender, InventoryType type, string itemId, VendingMachineComponent component)
-    {
-        if (IsAuthorized(uid, sender, component))
-        {
-            TryEjectVendorItem(uid, type, itemId, component.CanShoot, sender, component);
-        }
-    }
+    public virtual void AuthorizedVend(EntityUid uid, EntityUid sender, InventoryType type, string itemId, VendingMachineComponent component) { } // Utopia-Tweak : Economy (Content.Server/_Utopia/VendingMachines/VendingMachineSystem.Economy.cs)
 
     public void RestockInventoryFromPrototype(EntityUid uid,
         VendingMachineComponent? component = null, float restockQuality = 1f)
@@ -405,7 +361,7 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
 
         foreach (var (id, amount) in entries)
         {
-            if (PrototypeManager.HasIndex<EntityPrototype>(id))
+            if (PrototypeManager.TryIndex<EntityPrototype>(id, out var proto))
             {
                 var restock = amount;
                 var chanceOfMissingStock = 1 - restockQuality;
@@ -425,7 +381,10 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
                     // losing the rest of the restock.
                     entry.Amount = Math.Min(entry.Amount + amount, 3 * restock);
                 else
-                    inventory.Add(id, new VendingMachineInventoryEntry(type, id, restock));
+                {
+                    var price = GetEntryPrice(proto);
+                    inventory.Add(id, new VendingMachineInventoryEntry(type, id, amount, price));
+                }
             }
         }
     }
@@ -444,4 +403,19 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
 
         UISystem.CloseUi(uid, VendingMachineUiKey.Key);
     }
+
+    // Utopia-Tweak : Economy
+    protected virtual int GetEntryPrice(EntityPrototype proto)
+    {
+        return 25;
+    }
+
+    protected int GetPrice(VendingMachineInventoryEntry entry, VendingMachineComponent comp)
+    {
+        if (comp.AllForFree)
+            return 0;
+
+        return (int)(entry.Price * comp.PriceMultiplier);
+    }
+    // Utopia-Tweak : Economy
 }

@@ -14,7 +14,7 @@ namespace Content.Client.UserInterface.Systems.Language;
 public sealed class LanguageMenuUIController : UIController, IOnStateEntered<GameplayState>, IOnStateExited<GameplayState>
 {
     public LanguageMenuWindow? LangMenu;
-    private MenuButton? LanguagesButton => UIManager.GetActiveUIWidgetOrNull<Content.Client.UserInterface.Systems.MenuBar.Widgets.GameTopMenuBar>()?.LanguageButton;
+    private MenuButton? LanguagesButton => UIManager.GetActiveUIWidgetOrNull<MenuBar.Widgets.GameTopMenuBar>()?.LanguageButton;
 
     [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly IEntityManager _entMan = default!;
@@ -55,7 +55,8 @@ public sealed class LanguageMenuUIController : UIController, IOnStateEntered<Gam
         if (LangMenu == null)
         {
             var lang = _entMan.System<LanguageSystem>();
-            if (!lang.GetLanguages(player, out _, out var translator, out var current) || !lang.GetLanguagesKnowledged(player, LanguageKnowledge.Understand, out var langs, out _))
+            if (!lang.GetLanguages(player, out _, out var translator, out var current)
+            || !lang.GetLanguagesKnowledged(player, LanguageKnowledge.Understand, out var langs))
                 return;
 
             // setup window
@@ -66,8 +67,7 @@ public sealed class LanguageMenuUIController : UIController, IOnStateEntered<Gam
             LangMenu.OnOpen += OnWindowOpen;
             LangMenu.OnLanguageSelected += OnLanguageSelected;
 
-            if (LanguagesButton != null)
-                LanguagesButton.SetClickPressed(true);
+            LanguagesButton?.SetClickPressed(true);
 
             LangMenu.OpenCentered();
         }
@@ -77,8 +77,7 @@ public sealed class LanguageMenuUIController : UIController, IOnStateEntered<Gam
             LangMenu.OnOpen -= OnWindowOpen;
             LangMenu.OnLanguageSelected -= OnLanguageSelected;
 
-            if (LanguagesButton != null)
-                LanguagesButton.SetClickPressed(false);
+            LanguagesButton?.SetClickPressed(false);
 
             CloseMenu();
         }
@@ -117,16 +116,14 @@ public sealed class LanguageMenuUIController : UIController, IOnStateEntered<Gam
 
     private void OnWindowClosed()
     {
-        if (LanguagesButton != null)
-            LanguagesButton.Pressed = false;
+        LanguagesButton?.Pressed = false;
 
         CloseMenu();
     }
 
     private void OnWindowOpen()
     {
-        if (LanguagesButton != null)
-            LanguagesButton.Pressed = true;
+        LanguagesButton?.Pressed = true;
     }
 
     private void CloseMenu()
@@ -134,7 +131,6 @@ public sealed class LanguageMenuUIController : UIController, IOnStateEntered<Gam
         if (LangMenu == null)
             return;
 
-        LangMenu.Dispose();
         LangMenu = null;
     }
 }

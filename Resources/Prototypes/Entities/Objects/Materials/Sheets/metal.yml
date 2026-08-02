@@ -78,6 +78,10 @@
     - Metal
     - ConstructionMaterial
   # Utopia-Add: URT end
+  # Utopia-Add: RPD
+  - type: RCDAmmo
+    charges: 1
+  # Utopia-Add: RPD
 
 - type: entity
   parent: SheetSteel

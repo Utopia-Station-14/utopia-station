@@ -4,6 +4,7 @@ using Content.Shared.Examine;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
 using Content.Shared.RCD.Components;
+using Content.Shared.Stacks;
 using Robust.Shared.Timing;
 
 namespace Content.Shared.RCD.Systems;
@@ -50,6 +51,11 @@ public sealed class RCDAmmoSystem : EntitySystem
             _popup.PopupClient(Loc.GetString("rcd-ammo-component-after-interact-full"), target, user);
             return;
         }
+
+        // Utopia-Tweak : RPD
+        if (TryComp<StackComponent>(uid, out var stack))
+            count *= stack.Count;
+        // Utopia-Tweak : RPD
 
         _popup.PopupClient(Loc.GetString("rcd-ammo-component-after-interact-refilled"), target, user);
         _sharedCharges.AddCharges(target, count);

@@ -33,6 +33,7 @@ public sealed class CharacterInfoSystem : EntitySystem
         var objectives = new Dictionary<string, List<ObjectiveInfo>>();
         var jobTitle = Loc.GetString("character-info-no-profession");
         string? briefing = null;
+        var memories = new Dictionary<string, string>(); // Utopia-Tweak : Economy
         if (_minds.TryGetMind(entity, out var mindId, out var mind))
         {
             // Get objectives
@@ -54,8 +55,15 @@ public sealed class CharacterInfoSystem : EntitySystem
 
             // Get briefing
             briefing = _roles.MindGetBriefing(mindId);
+
+            // Utopia-Tweak : Economy
+            foreach (var memory in mind.AllMemories)
+            {
+                memories[memory.Name] = memory.Value;
+            }
+            // Utopia-Tweak : Economy
         }
 
-        RaiseNetworkEvent(new CharacterInfoEvent(GetNetEntity(entity), jobTitle, objectives, briefing), args.SenderSession);
+        RaiseNetworkEvent(new CharacterInfoEvent(GetNetEntity(entity), jobTitle, objectives, briefing, memories), args.SenderSession); // Utopia-Tweak : Economy
     }
 }

@@ -1,4 +1,5 @@
 using Content.Server._Utopia.Construction.Components;
+using Content.Server.Beam;
 using Content.Server.Construction;
 using Content.Server.Construction.Components;
 using Content.Server.Stack;
@@ -29,6 +30,7 @@ public sealed class PartExchangerSystem : EntitySystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly StorageSystem _storage = default!;
     [Dependency] private readonly StackSystem _stack = default!;
+    [Dependency] private readonly BeamSystem _beam = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -326,10 +328,17 @@ public sealed class PartExchangerSystem : EntitySystem
         if (!HasComp<MachineComponent>(args.Target) && !HasComp<MachineFrameComponent>(args.Target))
             return;
 
-        if (TryComp<WiresPanelComponent>(args.Target, out var panel) && !panel.Open)
+        if (TryComp<WiresPanelComponent>(args.Target, out var panel) && !panel.Open && component.RequireOpenPanel)
         {
             _popup.PopupEntity(Loc.GetString("construction-step-condition-wire-panel-open"), args.Target.Value);
             return;
+        }
+
+        args.Handled = true;
+
+        if (component.ExchangeBeamPrototype is { } beamPrototype)
+        {
+            _beam.TryCreateBeam(uid, args.Target.Value, beamPrototype, accumulateIndex: false);
         }
 
         var audioStream = _audio.PlayPvs(component.ExchangeSound, uid);
@@ -342,7 +351,11 @@ public sealed class PartExchangerSystem : EntitySystem
             new ExchangerDoAfterEvent(), uid, target: args.Target, used: uid)
         {
             BreakOnDamage = true,
-            BreakOnMove = true
+            BreakOnMove = true,
+            DistanceThreshold = component.DoDistanceCheck
+                ? 1.2f
+                : null,
+            RequireCanInteract = component.DoDistanceCheck
         });
     }
 }

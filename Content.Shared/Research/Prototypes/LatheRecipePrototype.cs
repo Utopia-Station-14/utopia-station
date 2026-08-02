@@ -69,5 +69,10 @@ namespace Content.Shared.Research.Prototypes
         /// </summary>
         [DataField]
         public List<ProtoId<LatheCategoryPrototype>> Categories = new();
+
+        // Utopia-Tweak : Materials
+        [DataField]
+        public int? MaxProductionAmount;
+        // Utopia-Tweak : Materials
     }
 }

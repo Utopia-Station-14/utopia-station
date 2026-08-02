@@ -31,6 +31,7 @@ namespace Content.Client.VendingMachines.UI
         private bool _enabled;
 
         public event Action<GUIBoundKeyEventArgs, ListData>? OnItemSelected;
+        public event Action<VendingMachineWithdrawMessage>? OnWithdraw; // Utopia-Tweak : Economy
 
         public VendingMachineMenu()
         {
@@ -42,7 +43,16 @@ namespace Content.Client.VendingMachines.UI
             VendingContents.DataFilterCondition += DataFilterCondition;
             VendingContents.GenerateItem += GenerateButton;
             VendingContents.ItemKeyBindDown += (args, data) => OnItemSelected?.Invoke(args, data);
+
+            WithdrawButton.OnPressed += OnWithdrawPressed; // Utopia-Tweak : Economy
         }
+
+        // Utopia-Tweak : Economy
+        private void OnWithdrawPressed(BaseButton.ButtonEventArgs args)
+        {
+            OnWithdraw?.Invoke(new VendingMachineWithdrawMessage());
+        }
+        // Utopia-Tweak : Economy
 
         protected override void Dispose(bool disposing)
         {
@@ -58,6 +68,8 @@ namespace Content.Client.VendingMachines.UI
                 _entityManager.QueueDeleteEntity(entity);
             }
             _dummies.Clear();
+
+            WithdrawButton.OnPressed -= OnWithdrawPressed; // Utopia-Tweak : Economy
         }
 
         private bool DataFilterCondition(string filter, ListData data)
@@ -73,25 +85,39 @@ namespace Content.Client.VendingMachines.UI
 
         private void GenerateButton(ListData data, ListContainerButton button)
         {
-            if (data is not VendorItemsListData { ItemProtoID: var protoID, ItemText: var text })
+            if (data is not VendorItemsListData { ItemProtoID: var protoID, ItemText: var text, Price: var price }) // Utopia-Tweak : Economy
                 return;
 
-            var item = new VendingMachineItem(protoID, text);
+            var item = new VendingMachineItem(protoID, text, price); // Utopia-Tweak : Economy
             _listItems[protoID] = (button, item);
             button.AddChild(item);
             button.AddStyleClass(StyleClass.ButtonSquare);
             button.Disabled = !_enabled || _amounts[protoID] == 0;
         }
 
+        // Utopia-Tweak : Economy
+        public void SetCredits(int newBalance)
+        {
+            CreditsLabel.Text = Loc.GetString("vending-ui-credits-amount", ("credits", newBalance));
+            WithdrawButton.Disabled = newBalance == 0;
+        }
+
+        public void SetCreditsVisible(bool isVisible)
+        {
+            Credits.Visible = isVisible;
+        }
+        // Utopia-Tweak : Economy
+
         /// <summary>
         /// Populates the list of available items on the vending machine interface
         /// and sets icons based on their prototypes
         /// </summary>
-        public void Populate(List<VendingMachineInventoryEntry> inventory, bool enabled)
+        public void Populate(List<VendingMachineInventoryEntry> inventory, bool enabled, double priceMultiplier) // Utopia-Tweak : Economy
         {
             _enabled = enabled;
             _listItems.Clear();
             _amounts.Clear();
+            var creditsBarVisible = false;
 
             if (inventory.Count == 0 && VendingContents.Visible)
             {
@@ -140,13 +166,16 @@ namespace Content.Client.VendingMachines.UI
                 if (itemText.Length > longestEntry.Length)
                     longestEntry = itemText;
 
-                listData.Add(new VendorItemsListData(prototype.ID, i)
+                listData.Add(new VendorItemsListData(prototype.ID, i, (int)(entry.Price * priceMultiplier)) // Utopia-Tweak : Economy
                 {
                     ItemText = itemText,
                 });
+
+                if (entry.Price * priceMultiplier != 0) creditsBarVisible = true; // Utopia-Tweak : Economy
             }
 
             VendingContents.PopulateList(listData);
+            SetCreditsVisible(creditsBarVisible); // Utopia-Tweak : Economy
 
             SetSizeAfterUpdate(longestEntry.Length, inventory.Count);
         }
@@ -154,7 +183,7 @@ namespace Content.Client.VendingMachines.UI
         /// <summary>
         /// Updates text entries for vending data in place without modifying the list controls.
         /// </summary>
-        public void UpdateAmounts(List<VendingMachineInventoryEntry> cachedInventory, bool enabled)
+        public void UpdateAmounts(List<VendingMachineInventoryEntry> cachedInventory, bool enabled) // Utopia-Tweak : Economy
         {
             _enabled = enabled;
 
@@ -188,7 +217,7 @@ namespace Content.Client.VendingMachines.UI
         }
     }
 
-    public record VendorItemsListData(EntProtoId ItemProtoID, int ItemIndex) : ListData
+    public record VendorItemsListData(EntProtoId ItemProtoID, int ItemIndex, int Price) : ListData // Utopia-Tweak : Economy
     {
         public string ItemText = string.Empty;
     }

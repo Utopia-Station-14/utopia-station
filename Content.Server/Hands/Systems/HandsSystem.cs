@@ -93,6 +93,11 @@ namespace Content.Server.Hands.Systems
 
         private void OnDisarmed(EntityUid uid, HandsComponent component, ref DisarmedEvent args)
         {
+            // Utopia-Tweak : Combat
+            if (args.Source == uid)
+                return;
+            // Utopia-Tweak : Combat
+
             if (args.Handled)
                 return;
 

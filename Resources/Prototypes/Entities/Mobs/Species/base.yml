@@ -279,6 +279,10 @@
   - type: FireVisuals
     alternateState: Standing
   - type: StunVisuals
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    mutationSlots: 8
+  # Utopia-Tweak : Genetics
 
 - type: entity
   save: false

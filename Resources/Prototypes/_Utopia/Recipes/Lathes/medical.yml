@@ -1,0 +1,16 @@
+- type: latheRecipe
+  id: HandheldGeneticAnalyzer
+  result: UtopiaHandheldGeneticAnalyzerEmpty
+  categories:
+  - Tools
+  completetime: 4
+  materials:
+    Glass: 200
+    Steel: 200
+
+- type: latheRecipe
+  id: DNAInjector
+  result: UtopiaDNAInjectorEmpty
+  completetime: 1
+  materials:
+    Plastic: 75

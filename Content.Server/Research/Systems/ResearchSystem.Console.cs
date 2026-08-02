@@ -1,5 +1,7 @@
+using System.Linq;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Research.Components;
+using Content.Shared._Utopia.Research;
 using Content.Shared.UserInterface;
 using Content.Shared.Access.Components;
 using Content.Shared.Emag.Components;
@@ -23,6 +25,13 @@ public sealed partial class ResearchSystem
         SubscribeLocalEvent<ResearchConsoleComponent, TechnologyDatabaseModifiedEvent>(OnConsoleDatabaseModified);
         SubscribeLocalEvent<ResearchConsoleComponent, TechnologyDatabaseSynchronizedEvent>(OnConsoleDatabaseSynchronized);
         SubscribeLocalEvent<ResearchConsoleComponent, GotEmaggedEvent>(OnEmagged);
+
+        // Utopia-Tweak : Research
+        Subs.BuiEvents<ResearchConsoleComponent>(ResearchConsoleUiKey.Key, subs =>
+        {
+            subs.Event<ResearchConsoleSelectDisciplineMessage>(OnSelectDiscipline);
+        });
+        // Utopia-Tweak : Research
     }
 
     private void OnConsoleUnlock(EntityUid uid, ResearchConsoleComponent component, ConsoleUnlockTechnologyMessage args)
@@ -67,6 +76,14 @@ public sealed partial class ResearchSystem
         SyncClientWithServer(uid);
     }
 
+    // Utopia-Tweak : Research
+
+    private void OnSelectDiscipline(Entity<ResearchConsoleComponent> ent, ref ResearchConsoleSelectDisciplineMessage msg)
+    {
+        ent.Comp.CurrentDiscipline = msg.ProtoId;
+        UpdateConsoleInterface(ent);
+    }
+
     private void UpdateConsoleInterface(EntityUid uid, ResearchConsoleComponent? component = null, ResearchClientComponent? clientComponent = null)
     {
         if (!Resolve(uid, ref component, ref clientComponent, false))
@@ -74,18 +91,57 @@ public sealed partial class ResearchSystem
 
         ResearchConsoleBoundInterfaceState state;
 
-        if (TryGetClientServer(uid, out _, out var serverComponent, clientComponent))
+        Dictionary<string, ResearchAvailablity> list = new();
+        foreach (var proto in PrototypeManager.EnumeratePrototypes<TechnologyPrototype>().ToList())
         {
+            list.Add(proto.ID, ResearchAvailablity.Unavailable);
+        }
+
+        if (TryGetClientServer(uid, out var serverUid, out var serverComponent, clientComponent))
+        {
+            if (clientComponent.Server.HasValue && TryComp<TechnologyDatabaseComponent>(clientComponent.Server.Value, out var db))
+            {
+                var toList = list.ToList();
+                for (var i = 0; i < toList.Count; i++)
+                {
+                    var item = PrototypeManager.Index<TechnologyPrototype>(toList[i].Key);
+                    if (CompOrNull<TechnologyDatabaseComponent>(serverUid)?.UnlockedTechnologies.Contains(item.ID) ?? false)
+                    {
+                        list[item.ID] = ResearchAvailablity.Researched;
+                    }
+
+                    else if (item.TechnologyPrerequisites.Count <= 0)
+                    {
+                        list[item.ID] = serverComponent.Points >= item.Cost ? ResearchAvailablity.Available : ResearchAvailablity.Unavailable;
+                    }
+
+                    else
+                    {
+                        var success = true;
+                        foreach (var required in item.TechnologyPrerequisites)
+                        {
+                            if (!db.UnlockedTechnologies.Contains(required))
+                                success = false;
+                        }
+
+                        var available = success && serverComponent.Points >= item.Cost;
+                        if (success)
+                            list[item.ID] = available ? ResearchAvailablity.Available : ResearchAvailablity.Unavailable;
+                    }
+                }
+            }
+
             var points = clientComponent.ConnectedToServer ? serverComponent.Points : 0;
-            state = new ResearchConsoleBoundInterfaceState(points);
+            state = new ResearchConsoleBoundInterfaceState(points, list, component.CurrentDiscipline);
         }
         else
         {
-            state = new ResearchConsoleBoundInterfaceState(default);
+            state = new ResearchConsoleBoundInterfaceState(default, list, component.CurrentDiscipline);
         }
 
         _uiSystem.SetUiState(uid, ResearchConsoleUiKey.Key, state);
     }
+    // Utopia-Tweak : Research
 
     private void OnPointsChanged(EntityUid uid, ResearchConsoleComponent component, ref ResearchServerPointsChangedEvent args)
     {

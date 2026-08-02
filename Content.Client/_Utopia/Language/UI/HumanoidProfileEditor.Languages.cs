@@ -16,37 +16,67 @@ public sealed partial class HumanoidProfileEditor
 
         if (Profile == null)
             return;
+
         var species = _prototypeManager.Index(Profile.Species);
 
-        LanguagesCountLabel.Text = Loc.GetString("humanoid-profile-editor-languages-count",
-                                                ("current", Profile.Languages.Count),
-                                                ("max", species.MaxLanguages));
+        LanguagesCountLabel.Text = Loc.GetString(
+            "humanoid-profile-editor-languages-count",
+            ("current", Profile.Languages.Count),
+            ("max", species.MaxLanguages)
+        );
 
-        var list = _prototypeManager.EnumeratePrototypes<LanguagePrototype>().Where(x => x.Roundstart).ToList();
-        foreach (var item in species.UniqueLanguages)
+        var availableLanguages = GetAvailableLanguages(species);
+        var defaultLanguages = GetDefaultLanguages(availableLanguages, species);
+
+        AddLanguages(defaultLanguages, species);
+        AddLanguages(availableLanguages.Except(defaultLanguages), species);
+    }
+
+    private List<LanguagePrototype> GetAvailableLanguages(SpeciesPrototype species)
+    {
+        var languages = _prototypeManager
+            .EnumeratePrototypes<LanguagePrototype>()
+            .Where(x => x.Roundstart)
+            .ToList();
+
+        foreach (var uniqueId in species.UniqueLanguages)
         {
-            list.Add(_prototypeManager.Index(item));
+            languages.Add(_prototypeManager.Index(uniqueId));
         }
 
-        list.Sort((x, y) => x.LocalizedName[0].CompareTo(y.LocalizedName[0]));
-        list.Sort((x, y) => y.Priority.CompareTo(x.Priority));
+        return SortLanguages(languages);
+    }
 
-        List<LanguagePrototype> defaultList = new();
-        defaultList.AddRange(list.Where(x => species.DefaultLanguages.Contains(x) && !species.UniqueLanguages.Contains(x)));
-        defaultList.AddRange(list.Where(x => species.UniqueLanguages.Contains(x)));
-        defaultList.Sort((x, y) => x.LocalizedName[0].CompareTo(y.LocalizedName[0]));
-        defaultList.Sort((x, y) => y.Priority.CompareTo(x.Priority));
+    private List<LanguagePrototype> GetDefaultLanguages(List<LanguagePrototype> available, SpeciesPrototype species)
+    {
+        var defaults = new List<LanguagePrototype>();
 
-        foreach (var item in defaultList)
+        var standardDefaults = available.Where(x =>
+            species.DefaultLanguages.Contains(x) &&
+            !species.UniqueLanguages.Contains(x)
+        );
+
+        defaults.AddRange(standardDefaults);
+
+        var uniqueDefaults = available.Where(x => species.UniqueLanguages.Contains(x));
+        defaults.AddRange(uniqueDefaults);
+
+        return SortLanguages(defaults);
+    }
+
+    private List<LanguagePrototype> SortLanguages(List<LanguagePrototype> languages)
+    {
+        var sorted = new List<LanguagePrototype>(languages);
+        sorted.Sort((x, y) => x.LocalizedName[0].CompareTo(y.LocalizedName[0]));
+        sorted.Sort((x, y) => y.Priority.CompareTo(x.Priority));
+        return sorted;
+    }
+
+    private void AddLanguages(IEnumerable<LanguagePrototype> languages, SpeciesPrototype species)
+    {
+        foreach (var language in languages)
         {
-            AddLanguageEntry(item, species);
-        }
-
-        foreach (var item in list)
-        {
-            if (defaultList.Contains(item))
-                continue;
-            AddLanguageEntry(item, species);
+            AddLanguageEntry(language, species);
         }
     }
 
@@ -54,21 +84,36 @@ public sealed partial class HumanoidProfileEditor
     {
         if (Profile == null)
             return;
+
         var entry = new LanguageEntry(proto, false)
         {
             Margin = new(7),
             HorizontalExpand = true
         };
-        entry.SelectButton.Text = Loc.GetString(!Profile.Languages.Contains(proto) ? "language-lobby-add-button" : "language-lobby-remove-button");
+
+        var isAlreadySelected = Profile.Languages.Contains(proto);
+        var maxReached = Profile.Languages.Count >= species.MaxLanguages;
+
+        entry.SelectButton.Text = Loc.GetString(isAlreadySelected
+            ? "language-lobby-remove-button"
+            : "language-lobby-add-button"
+        );
+
         entry.SelectButton.ToolTip = null;
-        entry.SelectButton.Disabled = Profile.Languages.Count >= species.MaxLanguages && !Profile.Languages.Contains(proto);
+        entry.SelectButton.Disabled = maxReached && !isAlreadySelected;
+
         entry.OnLanguageSelected += SelectLanguage;
         LanguagesList.AddChild(entry);
     }
 
     public void SelectLanguage(string protoId)
     {
-        Profile = (Profile?.Languages.Contains(protoId) ?? false) ? Profile?.WithoutLanguage(protoId) : Profile?.WithLanguage(protoId);
+        var isAlreadySelected = Profile?.Languages.Contains(protoId) ?? false;
+
+        Profile = isAlreadySelected
+            ? Profile?.WithoutLanguage(protoId)
+            : Profile?.WithLanguage(protoId);
+
         SetDirty();
         RefreshLanguages();
     }
@@ -77,14 +122,17 @@ public sealed partial class HumanoidProfileEditor
     {
         if (Profile == null)
             return;
+
         var species = _prototypeManager.Index(Profile.Species);
-        foreach (var item in Profile.Languages)
+
+        foreach (var language in Profile.Languages)
         {
-            Profile = Profile?.WithoutLanguage(item);
+            Profile = Profile?.WithoutLanguage(language);
         }
-        foreach (var item in species.DefaultLanguages)
+
+        foreach (var defaultLanguage in species.DefaultLanguages)
         {
-            Profile = Profile?.WithLanguage(item);
+            Profile = Profile?.WithLanguage(defaultLanguage);
         }
 
         SetDirty();

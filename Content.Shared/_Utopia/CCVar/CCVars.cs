@@ -64,4 +64,12 @@ public sealed class UCCVars
     public static readonly CVarDef<float>
         CEZShootingOpeningTileRange = CVarDef.Create("zlevels.ce_shooting_opening_tile_range", 2f, CVar.SERVER | CVar.REPLICATED);
     #endregion
+
+    // Economy
+    public static readonly CVarDef<bool> PaySalary =
+        CVarDef.Create("economy.pay_salary", true, CVar.SERVERONLY);
+
+    // Combat
+    public static readonly CVarDef<bool> CombatShowIcons =
+        CVarDef.Create("combat.show_icons", false, CVar.CLIENTONLY | CVar.ARCHIVE);
 }

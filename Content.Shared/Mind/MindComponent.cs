@@ -121,4 +121,19 @@ public sealed partial class MindComponent : Component
     /// </summary>
     [DataField]
     public LocId? Subtype;
+
+    // Utopia-Tweak : Economy
+    internal readonly HashSet<Memory> Memories = new();
+
+    [ViewVariables]
+    public IEnumerable<Memory> AllMemories => Memories;
+
+    public void AddMemory(Memory memory)
+    {
+        if (Memories.Contains(memory))
+            return;
+
+        Memories.Add(memory);
+    }
+    // Utopia-Tweak : Economy
 }

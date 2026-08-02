@@ -1,0 +1,85 @@
+
+- type: technology
+  id: BluespaceChemistry
+  name: research-technology-bluespace-chemistry
+  icon:
+    sprite: Objects/Specific/Chemistry/beaker_bluespace.rsi
+    state: beakerbluespace
+  discipline: Bluespace
+  tier: 4
+  cost: 10000
+  recipeUnlocks:
+  - BluespaceBeaker
+  - SyringeBluespace
+  position: 3,-1
+  technologyPrerequisites:
+  - ChemicalDispensary
+
+- type: technology
+  id: BluespaceCargoTransport
+  name: research-technology-bluespace-cargo-transport
+  icon:
+    sprite: Structures/cargo_telepad.rsi
+    state: display
+  discipline: Bluespace
+  tier: 4
+  cost: 5000
+  recipeUnlocks:
+  - CargoTelepadMachineCircuitboard
+  position: 2,-1
+  technologyPrerequisites:
+  - BluespaceStorage
+  - BluespaceChemistry
+
+- type: technology
+  id: BluespaceStorage
+  name: research-technology-bluespace-storage
+  icon:
+    sprite: Clothing/Back/Backpacks/holding.rsi
+    state: holding
+  discipline: Bluespace
+  tier: 4
+  cost: 10000
+  recipeUnlocks:
+  - ClothingBackpackHolding
+  - ClothingBackpackSatchelHolding
+  - ClothingBackpackDuffelHolding
+  position: 2,0
+  technologyPrerequisites:
+  - OptimizedMicrogalvanism
+
+- type: technology
+  id: BluespaceParts
+  name: research-technology-bluespace-parts
+  icon:
+    sprite: /Textures/Objects/Misc/stock_parts.rsi
+    state: bluespace_matter_bin
+  discipline: Bluespace
+  tier: 4
+  cost: 15000
+  recipeUnlocks:
+  - BluespaceRPED
+  - QuadraticCapacitorStockPart
+  - FemtoManipulatorStockPart
+  - BluespaceMatterBinStockPart
+  - TriphasicScanningModuleStockPart
+  - QuadUltraMicroLaserStockPart
+  position: 1,-1
+  technologyPrerequisites:
+  - SuperParts
+
+- type: technology
+  id: TelescienceBasics
+  name: research-technology-telescience
+  icon:
+    sprite: _Utopia/Structures/Machines/teleporter.rsi
+    state: icon
+  discipline: Bluespace
+  tier: 4
+  cost: 20000
+  recipeUnlocks:
+  - TelescienceComputerCircuitboard
+  - TelescienceTeleporterMachineCircuitboard
+  position: 1,0
+  technologyPrerequisites:
+  - BluespaceParts

@@ -49,8 +49,10 @@ public sealed class SpeechBarksSystem : EntitySystem
     {
         var volume = isWhisper ? _volume - WhisperFade : _volume;
 
-        if (message.EndsWith("!"))
+        if (message.EndsWith('!'))
+        {
             volume += 1.5f;
+        }
 
         return MinimalVolume + SharedAudioSystem.GainToVolume(volume);
     }
@@ -62,10 +64,10 @@ public sealed class SpeechBarksSystem : EntitySystem
 
     private void OnEntitySpoke(PlaySpeechBarksEvent ev)
     {
-        if (ev.Message == null)
+        if (!TryGetEntity(ev.Source, out var source) || Transform(source.Value).MapID == MapId.Nullspace)
             return;
 
-        if (!TryGetEntity(ev.Source, out var source) || Transform(source.Value).MapID == MapId.Nullspace)
+        if (ev.Message == null)
             return;
 
         var bark = new ActiveBark(source,
@@ -74,13 +76,15 @@ public sealed class SpeechBarksSystem : EntitySystem
             ev.Pitch,
             AdjustDistance(ev.IsWhisper),
             (ev.LowVar, ev.HighVar),
-            ev.Message.Length / 3 + 1);
+            ev.Message.Length / 3 + 1
+        );
+
         _activeBarks.Add(bark);
     }
 
     public void PlayDataPreview(string protoId, float pitch, float lowVar, float highVar)
     {
-        if (!_proto.TryIndex<BarkPrototype>(protoId, out var proto))
+        if (!_proto.TryIndex<SpeechBarkPrototype>(protoId, out var proto))
             return;
 
         var bark = new ActiveBark(null,
@@ -89,7 +93,9 @@ public sealed class SpeechBarksSystem : EntitySystem
             pitch,
             AdjustDistance(false),
             (lowVar, highVar),
-            9);
+            9
+        );
+
         _activeBarks.Add(bark);
     }
 
@@ -117,13 +123,18 @@ public sealed class SpeechBarksSystem : EntitySystem
             item.NextSound = _timing.CurTime +
                 TimeSpan.FromSeconds(_random.NextFloat(item.DelayVariation.Item1, item.DelayVariation.Item2));
 
-            var audioParams = AudioParams.Default.WithPitchScale(_random.NextFloat(item.Pitch - 0.1f, item.Pitch + 0.1f)).WithVolume(item.Volume).WithMaxDistance(item.Distance);
+            var audioParams = AudioParams.Default.WithPitchScale(
+                _random.NextFloat(item.Pitch - 0.1f, item.Pitch + 0.1f))
+                .WithVolume(item.Volume)
+                .WithMaxDistance(item.Distance);
+
             if (item.Source == null)
             {
                 if (item.HasSource)
                 {
                     _activeBarks.Remove(item);
                 }
+
                 else
                 {
                     _audio.PlayGlobal(_audio.ResolveSound(item.Sound), _player.LocalSession, audioParams);
@@ -151,30 +162,18 @@ public sealed class SpeechBarksSystem : EntitySystem
         }
     }
 
-    private sealed class ActiveBark
+    private sealed class ActiveBark(EntityUid? source, SoundSpecifier sound, float volume, float pitch, float distance, (float, float) delay, int length)
     {
-        public readonly EntityUid? Source;
-        public readonly SoundSpecifier Sound = default!;
-        public readonly float Volume = default!;
-        public readonly float Pitch = default!;
-        public readonly float Distance = default!;
-        public readonly (float, float) DelayVariation = default!;
-        public readonly int Length = default!;
-        public readonly bool HasSource;
+        public readonly EntityUid? Source = source;
+        public readonly SoundSpecifier Sound = sound;
+        public readonly float Volume = volume;
+        public readonly float Pitch = pitch;
+        public readonly float Distance = distance;
+        public readonly (float, float) DelayVariation = delay;
+        public readonly int Length = length;
+        public readonly bool HasSource = source.HasValue;
 
         public TimeSpan NextSound = TimeSpan.Zero;
         public int BarksPlayed = 0;
-
-        public ActiveBark(EntityUid? source, SoundSpecifier sound, float volume, float pitch, float distance, (float, float) delay, int length)
-        {
-            Source = source;
-            HasSource = source.HasValue;
-            Sound = sound;
-            Volume = volume;
-            Pitch = pitch;
-            Distance = distance;
-            DelayVariation = delay;
-            Length = length;
-        }
     }
 }

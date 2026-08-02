@@ -1,0 +1,5 @@
+- type: accessGroup
+  id: HeadCommand
+  tags:
+  - Captain
+  - HeadOfPersonnel

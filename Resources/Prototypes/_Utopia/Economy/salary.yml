@@ -1,0 +1,87 @@
+- type: salary
+  id: Salaries
+  salaries:
+    Captain:
+      roundstart: 880
+      salary: 800
+    ChiefEngineer:
+      roundstart: 660
+    ChiefMedicalOfficer:
+      roundstart: 660
+    HeadOfPersonnel:
+      roundstart: 660
+    HeadOfSecurity:
+      roundstart: 660
+    ResearchDirector:
+      roundstart: 660
+    Quartermaster:
+      roundstart: 660
+    # Карго
+    CargoTechnician:
+      roundstart: 220
+    SalvageSpecialist:
+      roundstart: 330
+    # Сервис
+    Boxer:
+      roundstart: 165
+    Chaplain:
+      roundstart: 165
+    Clown:
+      roundstart: 165
+    Librarian:
+      roundstart: 165
+    Mime:
+      roundstart: 165
+    Musician:
+      roundstart: 165
+    Reporter:
+      roundstart: 165
+    Zookeeper:
+      roundstart: 165
+    ServiceWorker:
+      roundstart: 165
+    Janitor:
+      roundstart: 220
+    Chef:
+      roundstart: 220
+    Bartender:
+      roundstart: 220
+    Botanist:
+      roundstart: 220
+    # Инж
+    TechnicalAssistant:
+      roundstart: 220
+    StationEngineer:
+      roundstart: 330
+    AtmosphericTechnician:
+      roundstart: 440
+    # Мед
+    MedicalIntern:
+      roundstart: 220
+    Psychologist:
+      roundstart: 220
+    MedicalDoctor:
+      roundstart: 330
+    Paramedic:
+      roundstart: 440
+    Chemist:
+      roundstart: 440
+    # СБ
+    SecurityCadet:
+      roundstart: 220
+    SecurityOfficer:
+      roundstart: 330
+    Detective:
+      roundstart: 440
+    Warden:
+      roundstart: 550
+    # РНД
+    ResearchAssistant:
+      roundstart: 220
+    Scientist:
+      roundstart: 330
+    # Прочее
+    Passenger:
+      roundstart: 150
+    # # Юридический
+    # Lawyer: 165

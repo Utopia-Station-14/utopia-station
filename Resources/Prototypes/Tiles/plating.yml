@@ -4,6 +4,7 @@
   sprite: /Textures/Tiles/plating.png
   baseTurf: Lattice
   isSubfloor: true
+  deconstructTools: [ AdvancedPrying ] # Utopia-Tweak : Atmos
   footstepSounds:
     collection: FootstepPlating
   friction: 1.5
@@ -20,6 +21,7 @@
   - 1.0
   baseTurf: Lattice
   isSubfloor: true
+  deconstructTools: [ AdvancedPrying ] # Utopia-Tweak : Atmos
   footstepSounds:
     collection: FootstepPlating
   friction: 1.5

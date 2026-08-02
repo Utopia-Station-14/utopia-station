@@ -18,11 +18,13 @@ public sealed partial class VoiceMaskNameChangeWindow : FancyWindow
     public Action<string?>? OnVerbChange;
     public Action? OnToggle;
     public Action? OnAccentToggle;
+
     // Utopia-Tweak : Barks
     public Action<string>? OnBarkChange;
     public Action<string>? OnPitchChange;
-    private List<BarkPrototype> _barks = new();
+    private List<SpeechBarkPrototype> _barks = new();
     // Utopia-Tweak : Barks
+
     private List<(string, string)> _verbs = new();
 
     private string? _verb;
@@ -128,13 +130,14 @@ public sealed partial class VoiceMaskNameChangeWindow : FancyWindow
         };
 
         _barks = proto
-            .EnumeratePrototypes<BarkPrototype>()
+            .EnumeratePrototypes<SpeechBarkPrototype>()
             .Where(o => o.RoundStart)
-            .OrderBy(o => Loc.GetString(o.Name))
+            .OrderBy(o => o.LocName)
             .ToList();
+
         for (var i = 0; i < _barks.Count; i++)
         {
-            var name = Loc.GetString(_barks[i].Name);
+            var name = _barks[i].LocName;
             BarkSelector.AddItem(name);
             BarkSelector.SetItemMetadata(i, _barks[i].ID);
         }

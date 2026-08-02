@@ -1,0 +1,104 @@
+- type: entity
+  categories: [ HideSpawnMenu ]
+  id: ActionGeneticFireball
+  name: fire breath
+  components:
+  - type: Action
+    useDelay: 10
+    itemIconStyle: BigAction
+    raiseOnUser: true
+    sound: !type:SoundPathSpecifier
+      path: /Audio/Magic/fireball.ogg
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: fireball
+  - type: TargetAction
+    checkCanAccess: false
+    range: 60
+  - type: WorldTargetAction
+    event: !type:ProjectileSpellEvent
+      prototype: UtopiaProjectileWeakFireball
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  id: ActionAdrenalineRush
+  name: Adrenaline Rush
+  description: Triggers a powerful surge of adrenaline.
+  components:
+  - type: Action
+    useDelay: 60
+    icon:
+      sprite: Objects/Misc/books.rsi
+      state: icon_lightning
+  - type: InstantAction
+    event: !type:AdrenalineRushActionEvent
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  id: ActionGeneticIceball
+  name: Cryokinesis
+  description: Fire a bolt of ice from your fingertips.
+  components:
+  - type: Action
+    useDelay: 30
+    itemIconStyle: BigAction
+    sound: !type:SoundPathSpecifier
+      path: /Audio/Weapons/bladeslice.ogg
+    icon:
+      sprite: Structures/Specific/Anomalies/ice_anom.rsi
+      state: bullet
+    raiseOnUser: true
+  - type: TargetAction
+    checkCanAccess: false
+    range: 60
+  - type: WorldTargetAction
+    event: !type:ProjectileSpellEvent
+      prototype: ProjectileIcicle
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  id: ActionInkSpurt
+  name: Ink Spurt
+  description: Spurt a puddle of slippery black ink behind you.
+  components:
+  - type: Action
+    useDelay: 45
+    icon:
+      sprite: Objects/Misc/pens.rsi
+      state: pen_centcom
+  - type: InstantAction
+    event: !type:InkSpurtActionEvent
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  id: ActionOpticBlast
+  name: Optic Blast
+  components:
+  - type: Action
+    useDelay: 8
+    itemIconStyle: BigAction
+    raiseOnUser: true
+    sound: !type:SoundPathSpecifier
+      path: /Audio/Weapons/Guns/Gunshots/laser3.ogg
+    icon:
+      sprite: Objects/Weapons/Guns/Projectiles/projectiles.rsi
+      state: bolt
+  - type: TargetAction
+    range: 60
+    checkCanAccess: false
+  - type: WorldTargetAction
+    event: !type:OpticBlastActionEvent
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  id: ActionTrichochromaticShift
+  name: Trichochromatic Shift
+  description: Shift your hair to a random color.
+  components:
+  - type: Action
+    useDelay: 5
+    icon:
+      sprite: Objects/Misc/ParcelWrap/parcel_wrap_trash.rsi
+      state: brown
+  - type: InstantAction
+    event: !type:TrichochromaticShiftActionEvent

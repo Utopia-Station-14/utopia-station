@@ -1,0 +1,6 @@
+- type: soundCollection
+  id: UtopiaShowerMid
+  files:
+  - /Audio/_Utopia/Effects/shower_mid1.ogg
+  - /Audio/_Utopia/Effects/shower_mid2.ogg
+  - /Audio/_Utopia/Effects/shower_mid3.ogg

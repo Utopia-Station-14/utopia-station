@@ -1,0 +1,82 @@
+{
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from https://github.com/tgstation/tgstation/blob/master/icons/obj/machines/microwave.dmi, inhand by mrlegendary:discord",
+    "version": 1,
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "engi_mw"
+        },
+        {
+            "name": "engi_mwb"
+        },
+        {
+            "name": "emissive_engi_mw1",
+            "delays": [
+                [
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.8
+                ]
+            ]
+        },
+        {
+            "name": "engi_mwbloody1",
+            "delays": [
+                [
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.8
+                ]
+            ]
+        },
+        {
+            "name": "engi_mwbloodyo"
+        },
+        {
+            "name": "engi_mwbloody"
+        },
+        {
+            "name": "engi_mw-o"
+        },
+        {
+            "name": "engi_mwo"
+        },
+        {
+            "name": "engi_cell-0",
+            "delays": [
+                [
+                    0.4,
+                    0.4
+                ]
+            ]
+        },
+        {
+            "name": "engi_cell-1"
+        },
+        {
+            "name": "engi_cell-2"
+        },
+        {
+            "name": "engi_cell-3"
+        },
+        {
+            "name": "engi_cell-4"
+        },
+        {
+            "name": "inhand-right",
+            "directions": 4
+        },
+        {
+            "name": "inhand-left",
+            "directions": 4
+        }
+      ]
+    }

@@ -11,20 +11,20 @@
   id: BasicChemistryStatic
   recipes:
   - Beaker
-  - LargeBeaker
+  # - LargeBeaker # Utopia-Tweak-Research
   - Syringe
   - PillCanister
   - HandLabeler
   - BaseChemistryEmptyVial
-  - Dropper
+  # - Dropper # Utopia-Tweak-Research
 
 - type: latheRecipePack
   parent: BasicChemistryStatic
   id: ChemistryStatic
   recipes:
-  - Jug
+  # - Jug # Utopia-Tweak-Research
   - ChemistryEmptyBottle01
-  - ClothingEyesGlassesChemical
+  # - ClothingEyesGlassesChemical # Utopia-Tweak-Research
 
 - type: latheRecipePack
   id: SurgeryStatic
@@ -79,10 +79,12 @@
 - type: latheRecipePack
   id: MedicalBoardsStatic
   recipes:
-  - ElectrolysisUnitMachineCircuitboard
-  - CentrifugeMachineCircuitboard
-  - ChemDispenserMachineCircuitboard
-  - ChemMasterMachineCircuitboard
+  # Utopia-Tweak-Research
+  # - ElectrolysisUnitMachineCircuitboard
+  # - CentrifugeMachineCircuitboard
+  # - ChemDispenserMachineCircuitboard
+  # - ChemMasterMachineCircuitboard
+  # Utopia-Tweak-Research
   - CondenserMachineCircuitBoard
   - HotplateMachineCircuitboard
 

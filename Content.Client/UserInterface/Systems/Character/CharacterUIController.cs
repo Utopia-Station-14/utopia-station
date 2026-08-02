@@ -30,6 +30,7 @@ public sealed class CharacterUIController : UIController, IOnStateEntered<Gamepl
     [Dependency] private readonly IEntityManager _ent = default!;
     [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private readonly ILocalizationManager _localizationManager = default!; // Utopia-Tweak : Economy
 
     [UISystemDependency] private readonly CharacterInfoSystem _characterInfo = default!;
     [UISystemDependency] private readonly SpriteSystem _sprite = default!;
@@ -130,7 +131,7 @@ public sealed class CharacterUIController : UIController, IOnStateEntered<Gamepl
             return;
         }
 
-        var (entity, job, objectives, briefing, entityName) = data;
+        var (entity, job, objectives, briefing, entityName, memories) = data; // Utopia-Tweak : Economy
 
         _window.SpriteView.SetEntity(entity);
 
@@ -140,6 +141,7 @@ public sealed class CharacterUIController : UIController, IOnStateEntered<Gamepl
         _window.SubText.Text = job;
         _window.Objectives.RemoveAllChildren();
         _window.ObjectivesLabel.Visible = objectives.Any();
+        _window.Memories.RemoveAllChildren(); // Utopia-Tweak : Economy
 
         foreach (var (groupId, conditions) in objectives)
         {
@@ -179,6 +181,28 @@ public sealed class CharacterUIController : UIController, IOnStateEntered<Gamepl
 
             _window.Objectives.AddChild(objectiveControl);
         }
+
+        // Utopia-Tweak : Economy
+        foreach (var (memoryName, memoryValue) in memories)
+        {
+            var memoryControl = new BoxContainer()
+            {
+                Orientation = BoxContainer.LayoutOrientation.Vertical,
+                Modulate = Color.Gray
+            };
+
+            var text = _localizationManager.TryGetString(memoryName, out var t, ("value", memoryValue))
+                ? t
+                : $"{memoryName}: {memoryValue}";
+
+            memoryControl.AddChild(new Label
+            {
+                Text = text,
+            });
+
+            _window.Memories.AddChild(memoryControl);
+        }
+        // Utopia-Tweak : Economy
 
         if (briefing != null)
         {

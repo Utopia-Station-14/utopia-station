@@ -13,7 +13,7 @@ public abstract class SharedLanguageSystem : EntitySystem
     [Dependency] private readonly INetManager _netMan = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
 
-    public ProtoId<LanguagePrototype> Universal = "Universal";
+    protected const string Universal = "Universal";
 
     public override void Initialize()
     {
@@ -36,7 +36,7 @@ public abstract class SharedLanguageSystem : EntitySystem
 
     public LanguagePrototype GetCurrentLanguage(EntityUid uid)
     {
-        var universalProto = _proto.Index(Universal);
+        var universalProto = _proto.Index<LanguagePrototype>(Universal);
 
         if (!TryComp<LanguageSpeakerComponent>(uid, out var comp) || comp.CurrentLanguage == null)
             return universalProto;
@@ -57,7 +57,8 @@ public abstract class SharedLanguageSystem : EntitySystem
 
         SortLanguages(uid);
 
-        component.CurrentLanguage = component.Languages.Where(x => (int)x.Value >= 1).ToDictionary().Keys.FirstOrDefault("Universal");
+        component.CurrentLanguage = component.Languages.Where
+            (x => (int)x.Value >= 1).ToDictionary().Keys.FirstOrDefault(Universal);
 
         GetLanguages(uid, out var langs, out var translator, out var current);
         UpdateUi(uid);
@@ -93,11 +94,9 @@ public abstract class SharedLanguageSystem : EntitySystem
     public bool GetLanguagesKnowledged(
         EntityUid? player,
         LanguageKnowledge required,
-        out Dictionary<string, LanguageKnowledge> langs,
-        out string current)
+        out Dictionary<string, LanguageKnowledge> langs)
     {
         langs = [];
-        current = string.Empty;
 
         if (player == null)
             return false;
@@ -124,9 +123,7 @@ public abstract class SharedLanguageSystem : EntitySystem
             }
         }
 
-        current = ev.Current;
-
-        if (langs.Count <= 0 || current == string.Empty)
+        if (langs.Count <= 0)
             return false;
 
         return true;
@@ -134,10 +131,10 @@ public abstract class SharedLanguageSystem : EntitySystem
 
     public LanguagePrototype GetLanguage(string id)
     {
-        if (!_proto.TryIndex<LanguagePrototype>(id, out var result))
-            return _proto.Index(Universal);
+        if (_proto.TryIndex<LanguagePrototype>(id, out var result))
+            return result;
 
-        return result;
+        return _proto.Index<LanguagePrototype>(Universal);
     }
 
     public void AddSpokenLanguage(EntityUid uid, string lang, LanguageKnowledge knowledge = LanguageKnowledge.Speak, LanguageSpeakerComponent? comp = null)
@@ -148,13 +145,9 @@ public abstract class SharedLanguageSystem : EntitySystem
         if (!_proto.TryIndex<LanguagePrototype>(lang, out var _))
             return;
 
-        if (comp.Languages.ContainsKey(lang))
+        if (!comp.Languages.TryAdd(lang, knowledge))
         {
             comp.Languages[lang] = knowledge;
-        }
-        else
-        {
-            comp.Languages.Add(lang, knowledge);
         }
 
         UpdateUi(uid, comp);
@@ -166,8 +159,10 @@ public abstract class SharedLanguageSystem : EntitySystem
             return;
 
         var list = comp.Languages.ToList();
-        list.Sort((x, y) => _proto.Index<LanguagePrototype>(x.Key).LocalizedName[0].CompareTo(_proto.Index<LanguagePrototype>(y.Key).LocalizedName[0]));
-        list.Sort((x, y) => _proto.Index<LanguagePrototype>(y.Key).Priority.CompareTo(_proto.Index<LanguagePrototype>(x.Key).Priority));
+        list.Sort((x, y) => _proto.Index<LanguagePrototype>(x.Key).LocalizedName[0].CompareTo
+            (_proto.Index<LanguagePrototype>(y.Key).LocalizedName[0]));
+        list.Sort((x, y) => _proto.Index<LanguagePrototype>(y.Key).Priority.CompareTo
+            (_proto.Index<LanguagePrototype>(x.Key).Priority));
         list.Sort((x, y) => CanSpeak(uid, y.Key).CompareTo(CanSpeak(uid, x.Key)));
 
         comp.Languages = list.ToDictionary();
@@ -196,7 +191,7 @@ public abstract class SharedLanguageSystem : EntitySystem
         if (HasComp<GhostComponent>(uid))
             return false;
 
-        if (!GetLanguagesKnowledged(uid, LanguageKnowledge.BadSpeak, out var langs, out var _))
+        if (!GetLanguagesKnowledged(uid, LanguageKnowledge.BadSpeak, out var langs))
             return false;
 
         if (langs.ContainsKey(protoId))
@@ -216,7 +211,7 @@ public abstract class SharedLanguageSystem : EntitySystem
         if (!_proto.TryIndex<LanguagePrototype>(protoId, out var proto))
             return false;
 
-        if (!GetLanguagesKnowledged(uid, LanguageKnowledge.Understand, out var langs, out var _))
+        if (!GetLanguagesKnowledged(uid, LanguageKnowledge.Understand, out var langs))
             return false;
 
         if (langs.ContainsKey(protoId))

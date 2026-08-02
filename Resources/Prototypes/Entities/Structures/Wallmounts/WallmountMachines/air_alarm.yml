@@ -109,6 +109,13 @@
     guides:
     - AirAlarms
     - DeviceMonitoringAndControl
+  # Utopia-Add: RPD
+  - type: RCDDeconstructable
+    cost: 15
+    delay: 2
+    fx: EffectRCDDeconstruct2
+    rpdDeconstructable: true
+  # Utopia-Add: RPD
 
 - type: entity
   parent: BaseWallmountMetallic

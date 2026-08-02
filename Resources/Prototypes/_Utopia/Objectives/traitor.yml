@@ -1,0 +1,12 @@
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: BaseTraitorStealObjective
+  id: ADTKravMagaStealObjective
+  components:
+  - type: Objective
+    difficulty: 4
+  - type: NotJobRequirement
+    jobs: [Warden]
+  - type: StealCondition
+    stealGroup: UtopiaClothingHandsGlovesKravMaga
+    owner: job-name-warden

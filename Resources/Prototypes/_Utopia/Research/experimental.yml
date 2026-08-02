@@ -16,6 +16,9 @@
   - AdvancedScanningModuleStockPart
   - HighPowerMicroLaserStockPart
   - RPED
+  position: -1,0
+  technologyPrerequisites:
+  - BasicRobotics
 
 # Tier 3
 
@@ -34,3 +37,6 @@
   - PicoManipulatorStockPart
   - PhasicScanningModuleStockPart
   - UltraHighPowerMicroLaserStockPart
+  position: -1,-1
+  technologyPrerequisites:
+  - AdvancedParts

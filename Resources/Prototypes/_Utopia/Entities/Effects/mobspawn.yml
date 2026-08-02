@@ -11,7 +11,7 @@
     prototype: UtopiaMobCopperCrab
 
 - type: entity
-  id: MobSpawnCopperCrabFriendly
+  id: UtopiaMobSpawnCopperCrabFriendly
   parent: MobSpawnCrabQuartz
   name: mobspawner copper crab
   categories: [ HideSpawnMenu, Spawner ]
@@ -35,7 +35,7 @@
     prototype: UtopiaMobLeadCrab
 
 - type: entity
-  id: MobSpawnLeadCrabFriendly
+  id: UtopiaMobSpawnLeadCrabFriendly
   parent: MobSpawnCrabQuartz
   name: mobspawner lead crab
   categories: [ HideSpawnMenu, Spawner ]

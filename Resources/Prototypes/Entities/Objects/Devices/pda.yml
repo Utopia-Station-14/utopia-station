@@ -84,6 +84,7 @@
       - NotekeeperCartridge
       - NanoTaskCartridge
       - NewsReaderCartridge
+      - UtopiaWalletCartridge # Utopia-Tweak : Economy
     cartridgeSlot:
       priority: -1
       name: device-pda-slot-component-slot-name-cartridge
@@ -155,6 +156,7 @@
     - NanoTaskCartridge
     - NewsReaderCartridge
     - WantedListCartridge
+    - UtopiaWalletCartridge # Utopia-Tweak : Economy
 
 - type: entity
   parent: BasePDA
@@ -481,6 +483,7 @@
     - NanoTaskCartridge
     - NewsReaderCartridge
     - AstroNavCartridge
+    - UtopiaWalletCartridge # Utopia-Tweak : Economy
 
 - type: entity
   parent: BasePDA
@@ -526,6 +529,7 @@
       - NanoTaskCartridge
       - NewsReaderCartridge
       - AstroNavCartridge
+      - UtopiaWalletCartridge # Utopia-Tweak : Economy
 
 - type: entity
   parent: BasePDA
@@ -876,6 +880,7 @@
     - NewsReaderCartridge
     - WantedListCartridge
     - LogProbeCartridge
+    - UtopiaWalletCartridge # Utopia-Tweak : Economy
 
 - type: entity
   parent: BaseSecurityPDA
@@ -1347,6 +1352,7 @@
     - NewsReaderCartridge
     - WantedListCartridge
     - LogProbeCartridge
+    - UtopiaWalletCartridge # Utopia-Tweak : Economy
 
 - type: entity
   parent: BaseMedicalPDA
@@ -1375,6 +1381,7 @@
     - NewsReaderCartridge
     - WantedListCartridge
     - MedTekCartridge
+    - UtopiaWalletCartridge # Utopia-Tweak : Economy
 
 - type: entity
   parent: ClownPDA

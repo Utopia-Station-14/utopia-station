@@ -52,6 +52,41 @@
         mask:
         - ItemMask
   - type: Appearance
+  # Utopia-Tweak : Economy
+  - type: Flammable
+    fireSpread: true
+    alwaysCombustible: true
+    firestackFade: 0
+    damage:
+      types:
+        Heat: 0.5
+  - type: FireVisuals
+    sprite: Effects/fire.rsi
+    normalState: fire
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 1
+        reagents:
+        - ReagentId: Fiber
+          Quantity: 1
+  - type: Currency
+    price:
+      SpaceCash: 1
+  - type: Tag
+    tags:
+      - UtopiaSpaceCash
+  # Utopia-Tweak : Economy
 
 - type: material
   id: Credit

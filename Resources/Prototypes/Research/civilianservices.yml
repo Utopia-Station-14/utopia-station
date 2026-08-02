@@ -13,6 +13,11 @@
   - SeedExtractorMachineCircuitboard
   - HydroponicsTrayMachineCircuitboard
   - ReagentGrinderIndustrialMachineCircuitboard
+  # Utopia-Tweak : Research
+  position: 2,0
+  technologyPrerequisites:
+  - AdvancedEntertainment
+  # Utopia-Tweak : Research
 
 - type: technology
   id: CritterMechs
@@ -33,6 +38,9 @@
   - HamtrPeripheralsElectronics
   - MechEquipmentGrabberSmall
   - VimHarness
+  # Utopia-Tweak : Research
+  position: 1,0
+  # Utopia-Tweak : Research
 
 - type: technology
   id: AudioVisualCommunication
@@ -52,6 +60,11 @@
   - SurveillanceWirelessCameraMonitorCircuitboard
   - TelecomServerCircuitboard
   - HolopadMachineCircuitboard
+  # Utopia-Tweak : Research
+  position: 4,0
+  technologyPrerequisites:
+  - AdvancedEntertainment
+  # Utopia-Tweak : Research
 
 - type: technology
   id: AdvancedEntertainment
@@ -68,6 +81,7 @@
     - DawInstrumentMachineCircuitboard
     - MassMediaCircuitboard
     - JukeboxCircuitBoard
+  position: 3,0 # Utopia-Tweak : Research
 
 - type: technology
   id: MeatManipulation
@@ -82,6 +96,11 @@
   - FatExtractorMachineCircuitboard
   - BiofabricatorMachineCircuitboard
   - BiomassReclaimerMachineCircuitboard
+  # Utopia-Tweak : Research
+  position: 2,1
+  technologyPrerequisites:
+  - Hydroponics
+  # Utopia-Tweak : Research
 
 # Tier 2
 
@@ -106,34 +125,41 @@
   - FauxTileDesertAstroSand
   - FauxTileAstroIronsand
   - FauxTileAstroIronsandBorderless
+  # Utopia-Tweak : Research
+  position: 4,1
+  technologyPrerequisites:
+  - AudioVisualCommunication
+  # Utopia-Tweak : Research
 
-- type: technology
-  id: BiochemicalStasis
-  name: research-technology-biochemical-stasis
-  icon:
-    sprite: Structures/Machines/stasis_bed.rsi
-    state: icon
-  discipline: CivilianServices
-  tier: 2
-  cost: 7500
-  recipeUnlocks:
-  - StasisBedMachineCircuitboard
-  - CryoPodMachineCircuitboard
-  - CryostasisBeaker
-  - SyringeCryostasis
+# Utopia-Tweak : Research
+# - type: technology
+#   id: BiochemicalStasis
+#   name: research-technology-biochemical-stasis
+#   icon:
+#     sprite: Structures/Machines/stasis_bed.rsi
+#     state: icon
+#   discipline: CivilianServices
+#   tier: 2
+#   cost: 7500
+#   recipeUnlocks:
+#   - StasisBedMachineCircuitboard
+#   - CryoPodMachineCircuitboard
+#   - CryostasisBeaker
+#   - SyringeCryostasis
 
-- type: technology # Merge with other T2 medical research if possible!
-  id: MechanizedTreatment
-  name: research-technology-mechanized-treatment
-  icon:
-    sprite: Mobs/Silicon/chassis.rsi
-    state: medical
-  discipline: CivilianServices
-  tier: 2
-  cost: 5000
-  recipeUnlocks:
-  - BorgModuleAdvancedChemical
-  - AdvancedJetInjector
+# - type: technology # Merge with other T2 medical research if possible!
+#   id: MechanizedTreatment
+#   name: research-technology-mechanized-treatment
+#   icon:
+#     sprite: Mobs/Silicon/chassis.rsi
+#     state: medical
+#   discipline: CivilianServices
+#   tier: 2
+#   cost: 5000
+#   recipeUnlocks:
+#   - BorgModuleAdvancedChemical
+#   - AdvancedJetInjector
+# Utopia-Tweak : Research
 
 - type: technology
   id: AdvancedCleaning
@@ -148,6 +174,11 @@
   - AdvMopItem
   - MegaSprayBottle
   - BorgModuleAdvancedCleaning
+  # Utopia-Tweak : Research
+  position: 3,-1
+  technologyPrerequisites:
+  - AdvancedEntertainment
+  # Utopia-Tweak : Research
 
 - type: technology
   id: HONKMech
@@ -168,6 +199,11 @@
   - HonkerPeripheralsElectronics
   - HonkerTargetingElectronics
   - MechEquipmentHorn
+  # Utopia-Tweak : Research
+  position: 1,1
+  technologyPrerequisites:
+  - CritterMechs
+  # Utopia-Tweak : Research
 
 - type: technology
   id: AdvancedSpray
@@ -181,18 +217,29 @@
   recipeUnlocks:
   - WeaponSprayNozzle
   - ClothingBackpackWaterTank
+  # Utopia-Tweak : Research
+  position: 2,-1
+  technologyPrerequisites:
+  - AdvancedCleaning
+  # Utopia-Tweak : Research
 
-- type: technology
-  id: BluespaceCargoTransport
-  name: research-technology-bluespace-cargo-transport
-  icon:
-    sprite: Structures/cargo_telepad.rsi
-    state: display
-  discipline: CivilianServices
-  tier: 2
-  cost: 15000
-  recipeUnlocks:
-  - CargoTelepadMachineCircuitboard
+# - type: technology
+#   id: BluespaceCargoTransport
+#   name: research-technology-bluespace-cargo-transport
+#   icon:
+#     sprite: Structures/cargo_telepad.rsi
+#     state: display
+#   discipline: CivilianServices
+#   tier: 2
+#   cost: 15000
+#   recipeUnlocks:
+#   - CargoTelepadMachineCircuitboard
+#   # Utopia-Tweak : Research
+#   position: 2,2
+#   technologyPrerequisites:
+#   - MeatManipulation
+#   - FauxAstroTiles
+#   # Utopia-Tweak : Research
 
 - type: technology
   id: PushHorn
@@ -206,6 +253,11 @@
   recipeUnlocks:
   - PushHorn
   - BorgModuleAdvancedClowning
+  # Utopia-Tweak : Research
+  position: 1,2
+  technologyPrerequisites:
+  - HONKMech
+  # Utopia-Tweak : Research
 
 # Tier 3
 
@@ -220,29 +272,37 @@
   cost: 10000
   recipeUnlocks:
   - ClothingShoesBootsSpeed
+  # Utopia-Tweak : Research
+  position: 3,2
+  technologyPrerequisites:
+  - MeatManipulation
+  - FauxAstroTiles
+  # Utopia-Tweak : Research
 
-- type: technology
-  id: BluespaceChemistry
-  name: research-technology-bluespace-chemistry
-  icon:
-    sprite: Objects/Specific/Chemistry/beaker_bluespace.rsi
-    state: beakerbluespace
-  discipline: CivilianServices
-  tier: 3
-  cost: 10000
-  recipeUnlocks:
-  - BluespaceBeaker
-  - SyringeBluespace
+# Utopia-Tweak : Research
+# - type: technology
+#   id: BluespaceChemistry
+#   name: research-technology-bluespace-chemistry
+#   icon:
+#     sprite: Objects/Specific/Chemistry/beaker_bluespace.rsi
+#     state: beakerbluespace
+#   discipline: CivilianServices
+#   tier: 3
+#   cost: 10000
+#   recipeUnlocks:
+#   - BluespaceBeaker
+#   - SyringeBluespace
 
-- type: technology
-  id: LauncherSyringe
-  name: research-technology-launcher-syringe
-  icon:
-    sprite: Objects/Weapons/Guns/Cannons/syringe_gun.rsi
-    state: syringe_gun
-  discipline: CivilianServices
-  tier: 3
-  cost: 15000
-  recipeUnlocks:
-  - LauncherSyringe
-  - MiniSyringe
+# - type: technology
+#   id: LauncherSyringe
+#   name: research-technology-launcher-syringe
+#   icon:
+#     sprite: Objects/Weapons/Guns/Cannons/syringe_gun.rsi
+#     state: syringe_gun
+#   discipline: CivilianServices
+#   tier: 3
+#   cost: 15000
+#   recipeUnlocks:
+#   - LauncherSyringe
+#   - MiniSyringe
+# Utopia-Tweak : Research

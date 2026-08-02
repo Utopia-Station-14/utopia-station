@@ -69,6 +69,11 @@ public sealed partial class TechnologyPrototype : IPrototype
     /// </summary>
     [DataField]
     public IReadOnlyList<GenericUnlock> GenericUnlocks = new List<GenericUnlock>();
+
+    // Utopia-Tweak : Research
+    [DataField(required: true)]
+    public Vector2i Position { get; private set; }
+    // Utopia-Tweak : Research
 }
 
 [DataDefinition]

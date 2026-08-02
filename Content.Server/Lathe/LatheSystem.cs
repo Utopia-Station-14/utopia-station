@@ -183,7 +183,7 @@ namespace Content.Server.Lathe
 
             if (quantity <= 0)
                 return false;
-            quantity = int.Min(quantity, MaxItemsPerRequest);
+            quantity = ClampProductionAmount(quantity, recipe, component); // Utopia-Tweak : Materials
 
             if (!CanProduce(uid, recipe, quantity, component))
                 return false;

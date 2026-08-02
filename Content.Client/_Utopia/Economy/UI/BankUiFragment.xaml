@@ -1,0 +1,69 @@
+<ui1:BankUiFragment xmlns="https://spacestation14.io"
+                   xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                   xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+                   xmlns:ui1="clr-namespace:Content.Client._Utopia.Economy.UI"
+                   Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+    <PanelContainer StyleClasses="BackgroundDark"></PanelContainer>
+    <ScrollContainer HorizontalExpand="True" VerticalExpand="True">
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8">
+            <BoxContainer Name="LinkedAccount" Orientation="Vertical" Visible="False">
+                <RichTextLabel Name="LinkedAccountNumberLabel"/>
+                <RichTextLabel Name="LinkedAccountNameLabel" />
+                <RichTextLabel Name="LinkedAccountBalanceLabel" />
+                <BoxContainer Name="TransactionHistoryContainer" Orientation="Vertical" Margin="0 10 0 0">
+                    <Label Name="HistoryHeader" Margin="0 0 0 5" />
+                    <PanelContainer StyleClasses="AngleRect">
+                        <ScrollContainer MinSize="0 90" Margin="5">
+                            <BoxContainer Name="TransactionHistoryList" Orientation="Vertical" />
+                        </ScrollContainer>
+                    </PanelContainer>
+                </BoxContainer>
+            </BoxContainer>
+            <RichTextLabel Name="NoLinkedAccountLabel" HorizontalAlignment="Center" StyleClasses="LabelHeading" Visible="False" />
+            <controls:StripeBack Name="Stripes">
+                <Button Name="AccountLinkButton" HorizontalExpand="True" HorizontalAlignment="Center"
+                        Text="{Loc 'bank-program-ui-link-account'}" />
+                <BoxContainer Name="AccountLink" Orientation="Vertical" Visible="False" HorizontalExpand="True"
+                            Margin="0 5 0 5">
+                    <RichTextLabel Name="AccountLinkMessageLabel" />
+                    <GridContainer HorizontalExpand="True" Columns="2" Rows="2">
+                        <LineEdit Name="AccountLineEdit" HorizontalExpand="True"
+                                PlaceHolder="{Loc 'bank-program-ui-account-number'}" />
+                        <Button Name="LinkConfirmButton" Text="{Loc 'bank-program-ui-link-confirm'}" />
+                        <LineEdit Name="PinLineEdit" HorizontalExpand="True" PlaceHolder="PIN" />
+                        <Button Name="LinkCancelButton" Text="{Loc 'bank-program-ui-link-cancel'}" />
+                    </GridContainer>
+                </BoxContainer>
+            </controls:StripeBack>
+            <RichTextLabel Name="AccountLinkResultLabel" Visible="False" />
+            <controls:StripeBack>
+                <Button Name="TransferButton" HorizontalExpand="True" HorizontalAlignment="Center"
+                        Text="{Loc 'bank-program-ui-transfer-money'}" Visible="False" />
+                <BoxContainer Name="TransferForm" Orientation="Vertical" Visible="False" HorizontalExpand="True"
+                            Margin="0 5 0 5">
+                    <RichTextLabel Text="{Loc 'bank-program-ui-transfer-title'}" Margin="0 0 0 5" />
+                    <GridContainer HorizontalExpand="True" Columns="3" Rows="3">
+                        <LineEdit Name="TargetAccountLineEdit" HorizontalExpand="True"
+                                PlaceHolder="{Loc 'bank-program-ui-target-account'}" />
+                        <LineEdit Name="TransferAmountLineEdit" HorizontalExpand="True"
+                                PlaceHolder="{Loc 'bank-program-ui-transfer-amount'}" />
+                        <LineEdit Name="TransferPinLineEdit" HorizontalExpand="True"
+                                PlaceHolder="PIN" />
+                    </GridContainer>
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                        <Button Name="TransferConfirmButton" Text="{Loc 'bank-program-ui-transfer-confirm'}"
+                            HorizontalExpand="True"/>
+                        <Button Name="TransferCancelButton" Text="{Loc 'bank-program-ui-transfer-cancel'}"
+                            HorizontalExpand="True" Margin="3 0 0 0"/>
+                    </BoxContainer>
+                </BoxContainer>
+            </controls:StripeBack>
+            <RichTextLabel Name="TransferResultLabel" Visible="False" />
+            <Button
+                Name="NotificationSwitch"
+                ToolTip="{Loc news-reader-ui-mute-tooltip}"
+                MinWidth="100"
+                HorizontalAlignment="Center"/>
+        </BoxContainer>
+    </ScrollContainer>
+</ui1:BankUiFragment>

@@ -13,6 +13,7 @@
     selectedMode: SemiAuto
     availableModes:
     - SemiAuto
+    showGunEffect: true # Utopia-Tweak : Gun Shoot Effect
   - type: AmmoCounter
   # All staves recharge. Wands are not.
   - type: RechargeBasicEntityAmmo

@@ -57,4 +57,41 @@ public sealed partial class RCDComponent : Component
     /// </remarks>
     [ViewVariables(VVAccess.ReadOnly)]
     public Transform ConstructionTransform { get; private set; }
+
+    // Utopia-Tweak : RPD
+    /// <summary>
+    /// A cached copy of currently selected RCD prototype
+    /// </summary>
+    [ViewVariables(VVAccess.ReadOnly)]
+    public RCDPrototype CachedPrototype { get; set; } = default!;
+
+    /// <summary>
+    /// Indicates if a mirrored version of the construction prototype should be used (if available)
+    /// </summary>
+    [AutoNetworkedField, ViewVariables(VVAccess.ReadOnly)]
+    public bool UseMirrorPrototype = false;
+
+    /// <summary>
+    /// Indicates whether this is an RCD or an RPD
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public bool IsRpd { get; set; } = false;
+
+    /// <summary>
+    /// Stores player rotation
+    /// This is a workaround to the fact eye rotation is not currently networked and required for pipe layering
+    /// Sent only when needed
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public float? LastKnownEyeRotation { get; set; } = null;
+
+    /// <summary>
+    /// Current pipe layer / build mode for RPD
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public RpdMode CurrentMode { get; set; } = RpdMode.Free;
+
+    [DataField]
+    public SoundSpecifier SoundSwitchMode { get; set; } = new SoundPathSpecifier("/Audio/Machines/quickbeep.ogg");
+    // Utopia-Tweak : RPD
 }

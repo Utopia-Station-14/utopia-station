@@ -299,6 +299,12 @@
         damage:
           types:
             Radiation: 3
+      # Utopia-Tweak : Genetics
+      - !type:RandomMutation
+        probability: .02
+        minMutations: 1
+        maxMutations: 1
+      # Utopia-Tweak : Genetics
 
 - type: reagent
   id: HeartbreakerToxin

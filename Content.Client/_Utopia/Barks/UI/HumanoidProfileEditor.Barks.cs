@@ -9,15 +9,15 @@ namespace Content.Client.Lobby.UI;
 
 public sealed partial class HumanoidProfileEditor
 {
-    private List<BarkPrototype> _barkList = new();
+    private List<SpeechBarkPrototype> _barkList = new();
     private FancyWindow? _barkWindow;
 
     private void InitializeBarks()
     {
         _barkList = _prototypeManager
-            .EnumeratePrototypes<BarkPrototype>()
+            .EnumeratePrototypes<SpeechBarkPrototype>()
             .Where(o => o.RoundStart)
-            .OrderBy(o => Loc.GetString(o.Name))
+            .OrderBy(o => o.LocName)
             .ToList();
 
         BarkProtoButton.OnPressed += _ => OpenBarkWindow();
@@ -29,18 +29,16 @@ public sealed partial class HumanoidProfileEditor
         if (Profile is null)
             return;
 
-        if (_barkWindow != null)
-        {
-            _barkWindow.Close();
-            _barkWindow = null;
-        }
+        _barkWindow?.Close();
+        _barkWindow = null;
 
         var barkTab = new BarkTab();
         barkTab.SetSelectedBark(
             Profile.Bark.Proto,
             Profile.Bark.Pitch,
             Profile.Bark.MinVar,
-            Profile.Bark.MaxVar);
+            Profile.Bark.MaxVar
+        );
 
         barkTab.OnBarkSelected += OnBarkSelected;
         barkTab.OnPitchChanged += OnBarkPitchChanged;
@@ -52,11 +50,10 @@ public sealed partial class HumanoidProfileEditor
             Title = Loc.GetString("humanoid-profile-editor-bark-window-title"),
             MinSize = new Vector2(750, 600),
         };
+
         _barkWindow.ContentsContainer.AddChild(barkTab);
-        _barkWindow.OnClose += () =>
-        {
-            _barkWindow = null;
-        };
+        _barkWindow.OnClose += () => _barkWindow = null;
+
         _barkWindow.OpenCentered();
     }
 
@@ -93,14 +90,14 @@ public sealed partial class HumanoidProfileEditor
         UpdateBarkButtonText();
         if (_barkWindow != null && _barkWindow.ContentsContainer.ChildCount > 0)
         {
-            var barkTab = _barkWindow.ContentsContainer.GetChild(0) as BarkTab;
-            if (barkTab != null)
+            if (_barkWindow.ContentsContainer.GetChild(0) is BarkTab barkTab)
             {
                 barkTab.SetSelectedBark(
                     Profile.Bark.Proto,
                     Profile.Bark.Pitch,
                     Profile.Bark.MinVar,
-                    Profile.Bark.MaxVar);
+                    Profile.Bark.MaxVar
+                );
             }
         }
     }
@@ -111,10 +108,12 @@ public sealed partial class HumanoidProfileEditor
             return;
 
         var bark = _barkList.FirstOrDefault(b => b.ID == Profile.Bark.Proto);
+
         if (bark != null)
         {
-            BarkProtoButton.Text = Loc.GetString(bark.Name);
+            BarkProtoButton.Text = bark.LocName;
         }
+
         else
         {
             BarkProtoButton.Text = Loc.GetString("humanoid-profile-editor-bark-none");

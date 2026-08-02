@@ -3,13 +3,13 @@
   id: UtopiaCopperOre
 
 - type: Tag
-  id: UtopiaHeatExchanger
-
-- type: Tag
-  id: UtopiaHeatExchangerConnection
-
-- type: Tag
   id: UtopiaLeadOre
+
+- type: Tag
+  id: UtopiaBluespaceCrystal
+
+- type: Tag
+  id: UtopiaBluespaceOre
 
 # URT
 - type: Tag
@@ -18,3 +18,20 @@
 # Grab
 - type: Tag
   id: IgnoreChokeSpeechBlocking
+
+# Economy
+- type: Tag
+  id: UtopiaIgnoreBalanceChecks
+
+- type: Tag
+  id: UtopiaSpaceCash
+
+- type: Tag
+  id: UtopiaDepartamentCard
+
+# Heat Exchanger
+- type: Tag
+  id: UtopiaHeatExchanger
+
+- type: Tag
+  id: UtopiaHeatExchangerConnection

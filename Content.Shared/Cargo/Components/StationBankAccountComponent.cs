@@ -1,3 +1,5 @@
+using System.Linq;
+using Content.Shared._Utopia.Economy;
 using Content.Shared.Cargo.Prototypes;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -8,7 +10,7 @@ namespace Content.Shared.Cargo.Components;
 /// <summary>
 /// Added to the abstract representation of a station to track its money.
 /// </summary>
-[RegisterComponent, NetworkedComponent, Access(typeof(SharedCargoSystem)), AutoGenerateComponentPause, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, Access(typeof(SharedCargoSystem), typeof(SharedEconomySystem)), AutoGenerateComponentPause, AutoGenerateComponentState] // Utopia-Tweak : Economy
 public sealed partial class StationBankAccountComponent : Component
 {
     /// <summary>
@@ -74,10 +76,30 @@ public sealed partial class StationBankAccountComponent : Component
     /// </summary>
     [DataField]
     public TimeSpan IncomeDelay = TimeSpan.FromSeconds(50);
+
+    // Utopia-Tweak : Economy
+    /// <summary>
+    /// Хранит в себе информацию о станционных банковских аккаунтах
+    /// </summary>
+    [ViewVariables(VVAccess.ReadOnly)]
+    public Dictionary<ProtoId<CargoAccountPrototype>, BankAccount> BankAccounts = new();
+    // Utopia-Tweak : Economy
 }
 
 /// <summary>
 /// Broadcast and raised on station ent whenever its balance is updated.
 /// </summary>
 [ByRefEvent]
-public readonly record struct BankBalanceUpdatedEvent(EntityUid Station, Dictionary<ProtoId<CargoAccountPrototype>, int> Balance);
+// Utopia-Tweak : Economy
+public sealed class BankBalanceUpdatedEvent : EntityEventArgs
+{
+    public readonly EntityUid Station;
+    public readonly Dictionary<ProtoId<CargoAccountPrototype>, int> Balance;
+
+    public BankBalanceUpdatedEvent(EntityUid station, Dictionary<ProtoId<CargoAccountPrototype>, int> balance)
+    {
+        Station = station;
+        Balance = balance;
+    }
+}
+// Utopia-Tweak : Economy

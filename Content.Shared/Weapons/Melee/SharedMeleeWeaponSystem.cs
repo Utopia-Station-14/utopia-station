@@ -664,7 +664,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
         // Sawmill.Debug($"Melee damage is {damage.Total} out of {component.Damage.Total}");
 
         // Raise event before doing damage so we can cancel damage if the event is handled
-        var hitEvent = new MeleeHitEvent(targets, user, meleeUid, damage, direction);
+        var hitEvent = new MeleeHitEvent(targets, user, meleeUid, damage, direction, iswide: true); // Utopia-Tweak : Combat
         RaiseLocalEvent(meleeUid, hitEvent);
 
         if (hitEvent.Handled)
@@ -915,6 +915,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
 
         var eventArgs = new DisarmedEvent(target.Value, user, 1 - chance);
         RaiseLocalEvent(target.Value, ref eventArgs);
+        RaiseLocalEvent(user, ref eventArgs); // Utopia-Tweak : Combat
 
         // Nothing handled it so abort.
         if (!eventArgs.Handled)

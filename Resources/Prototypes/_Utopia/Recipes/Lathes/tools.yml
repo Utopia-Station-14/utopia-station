@@ -7,3 +7,24 @@
     Steel: 650
     Plastic: 150
     Copper: 50
+
+- type: latheRecipe
+  parent: BaseToolRecipe
+  id: BluespaceRPED
+  result: BluespaceRPED
+  completetime: 15
+  materials:
+    Steel: 1300
+    Plastic: 300
+    Copper: 100
+    BluespaceCrystal: 25
+
+- type: latheRecipe
+  parent: BaseToolRecipe
+  id: RPD
+  result: UtopiaRPDEmpty
+  completetime: 4
+  materials:
+    Steel: 1000
+    Plastic: 300
+    Copper: 200

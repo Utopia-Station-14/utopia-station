@@ -29,6 +29,7 @@
       path: /Audio/Weapons/Guns/Gunshots/shotgun.ogg
     soundEmpty:
       path: /Audio/Weapons/Guns/Empty/empty.ogg
+    showGunEffect: true # Utopia-Tweak : Gun Shoot Effect
   - type: BallisticAmmoProvider
     whitelist:
       tags:

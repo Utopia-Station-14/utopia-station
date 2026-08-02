@@ -18,9 +18,9 @@ public sealed partial class BarkTab : Control
 
     private readonly SpeechBarksSystem _barkSystem;
 
-    private List<BarkPrototype> _allBarks = new();
-    private List<BarkPrototype> _filteredBarks = new();
-    private Dictionary<string, List<BarkPrototype>> _barksByCategory = new();
+    private List<SpeechBarkPrototype> _allBarks = new();
+    private List<SpeechBarkPrototype> _filteredBarks = new();
+    private Dictionary<string, List<SpeechBarkPrototype>> _barksByCategory = new();
 
     private string? _selectedCategory = null;
     private string _currentBarkId = default!;
@@ -65,9 +65,9 @@ public sealed partial class BarkTab : Control
     private void LoadBarks()
     {
         _allBarks = _prototypeManager
-            .EnumeratePrototypes<BarkPrototype>()
+            .EnumeratePrototypes<SpeechBarkPrototype>()
             .Where(b => b.RoundStart)
-            .OrderBy(b => Loc.GetString(b.Name))
+            .OrderBy(b => b.LocName)
             .ToList();
 
         _barksByCategory = _allBarks
@@ -176,10 +176,11 @@ public sealed partial class BarkTab : Control
     private void FilterBarks()
     {
         var searchText = SearchEdit.Text.ToLower();
-        IEnumerable<BarkPrototype> barks;
+        IEnumerable<SpeechBarkPrototype> barks;
+
         if (_selectedCategory != null)
         {
-            barks = _barksByCategory.GetValueOrDefault(_selectedCategory, new List<BarkPrototype>());
+            barks = _barksByCategory.GetValueOrDefault(_selectedCategory, new List<SpeechBarkPrototype>());
         }
         else
         {
@@ -189,8 +190,9 @@ public sealed partial class BarkTab : Control
         if (!string.IsNullOrWhiteSpace(searchText))
         {
             barks = barks.Where(b =>
-                Loc.GetString(b.Name).ToLower().Contains(searchText) ||
-                b.ID.ToLower().Contains(searchText));
+                b.LocName.ToLower().Contains(searchText) ||
+                b.ID.ToLower().Contains(searchText)
+            );
         }
 
         _filteredBarks = barks.ToList();
@@ -209,7 +211,7 @@ public sealed partial class BarkTab : Control
         {
             var button = new Button
             {
-                Text = Loc.GetString(bark.Name),
+                Text = bark.LocName,
                 ToggleMode = true,
                 HorizontalExpand = true,
                 VerticalExpand = false,
@@ -235,7 +237,7 @@ public sealed partial class BarkTab : Control
     {
         foreach (var button in BarksGrid.Children.OfType<Button>())
         {
-            button.Pressed = button.Text == Loc.GetString(_filteredBarks.FirstOrDefault(b => b.ID == _currentBarkId)?.Name ?? "");
+            button.Pressed = button.Text == _filteredBarks.FirstOrDefault(b => b.ID == _currentBarkId)?.LocName;
         }
     }
 }

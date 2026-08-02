@@ -90,6 +90,8 @@ public abstract class SharedLatheSystem : EntitySystem
         if (amount <= 0)
             return false;
 
+        amount = ClampProductionAmount(amount, recipe, component); // Utopia-Tweak : Materials
+
         foreach (var (material, needed) in recipe.Materials)
         {
             var adjustedAmount = AdjustMaterial(needed, recipe.ApplyMaterialDiscount, component.MaterialUseMultiplier);
@@ -99,6 +101,14 @@ public abstract class SharedLatheSystem : EntitySystem
         }
         return true;
     }
+
+    // Utopia-Tweak : Materials
+    public static int ClampProductionAmount(int amount, LatheRecipePrototype recipe, LatheComponent? component = null)
+    {
+        var maxAmount = recipe.MaxProductionAmount ?? component?.DefaultProductionAmount ?? MaxItemsPerRequest;
+        return Math.Clamp(amount, 1, Math.Max(1, maxAmount));
+    }
+    // Utopia-Tweak : Materials
 
     private void OnEmagged(EntityUid uid, EmagLatheRecipesComponent component, ref GotEmaggedEvent args)
     {

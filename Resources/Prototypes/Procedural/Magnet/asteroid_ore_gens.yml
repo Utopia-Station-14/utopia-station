@@ -11,8 +11,12 @@
     OreUranium: 0.20
     OreArtifactFragment: 0.10
     OreBananium: 0.10
-    UtopiaOreCopper: 1.0 # Utopia-Tweak : Ores
-    UtopiaOreLead: 0.5 # Utopia-Tweak : Ores
+
+    # Utopia-Tweak : Ores
+    OreCopper: 1.0
+    OreLead: 0.30
+    BluespaceOre: 0.20
+    # Utopia-Tweak : Ores
 
 - type: oreDunGen
   id: OreIron

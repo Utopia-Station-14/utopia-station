@@ -1,11 +1,11 @@
 {
-    "version": 1,
+    "version": 2,
     "size": {
         "x": 32,
         "y": 32
     },
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from /tg/station at commit 9065b811726ae52be5d1889f436c01a24efbf47a, edited by github user @Flareguy for Space Station 14, inhands by BoskiYourk (GitHub)",
+    "copyright": "Taken from https://github.com/ss220club/BandaStation/blob/master/modular_bandastation/aesthetics/kitchen/icons/microwave.dmi",
     "states": [
         {
             "name": "mw"
@@ -17,7 +17,17 @@
             "name": "mw0"
         },
         {
-            "name": "mw_running_unlit"
+            "name": "mw_running_unlit",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "mwb"

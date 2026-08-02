@@ -142,6 +142,10 @@
     - id: ResearchDisk10000
       weight: 0.5
     - id: ArabianLamp
+    # Utopia-Tweak : Combat
+    - id: UtopiaWeaponTonfaBlueprint
+      weight: 0.3
+    # Utopia-Tweak : Combat
     - !type:NestedSelector
       tableId: TreasureCoinPileRare
       rolls: !type:RangeNumberSelector

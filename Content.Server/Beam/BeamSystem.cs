@@ -1,7 +1,8 @@
-﻿using System.Numerics;
+using System.Numerics;
 using Content.Server.Beam.Components;
 using Content.Shared.Beam;
 using Content.Shared.Beam.Components;
+using Content.Shared.GameTicking;
 using Content.Shared.Physics;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
@@ -22,6 +23,8 @@ public sealed class BeamSystem : SharedBeamSystem
     [Dependency] private readonly SharedBroadphaseSystem _broadphase = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
 
+    public uint NextIndex { get; private set; } // Utopia-Tweak : MachineParts
+
     public override void Initialize()
     {
         base.Initialize();
@@ -30,7 +33,26 @@ public sealed class BeamSystem : SharedBeamSystem
         SubscribeLocalEvent<BeamComponent, BeamControllerCreatedEvent>(OnControllerCreated);
         SubscribeLocalEvent<BeamComponent, BeamFiredEvent>(OnBeamFired);
         SubscribeLocalEvent<BeamComponent, ComponentRemove>(OnRemove);
+
+        // Utopia-Tweak : MachineParts
+        SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestart);
+        NextIndex = 0;
+        // Utopia-Tweak : MachineParts
     }
+
+    // Utopia-Tweak : MachineParts
+    public override void AccumulateIndex()
+    {
+        base.AccumulateIndex();
+
+        NextIndex++;
+    }
+
+    private void OnRoundRestart(RoundRestartCleanupEvent ev)
+    {
+        NextIndex = 0;
+    }
+    // Utopia-Tweak : MachineParts
 
     private void OnBeamCreationSuccess(EntityUid uid, BeamComponent component, CreateBeamSuccessEvent args)
     {
@@ -74,7 +96,8 @@ public sealed class BeamSystem : SharedBeamSystem
         Vector2 distanceCorrection,
         EntityUid? controller,
         string? bodyState = null,
-        string shader = "unshaded")
+        string shader = "unshaded",
+        Action<EntityUid>? beamAction = null) // Utopia-Tweak : MachineParts
     {
         var beamSpawnPos = beamStartPos;
         var ent = Spawn(prototype, beamSpawnPos);
@@ -82,6 +105,11 @@ public sealed class BeamSystem : SharedBeamSystem
 
         if (!TryComp<PhysicsComponent>(ent, out var physics) || !TryComp<BeamComponent>(ent, out var beam))
             return;
+
+        // Utopia-Tweak : MachineParts
+        beamAction?.Invoke(ent);
+        beam.BeamIndex = NextIndex;
+        // Utopia-Tweak : MachineParts
 
         FixturesComponent? manager = null;
         _fixture.TryCreateFixture(
@@ -123,6 +151,11 @@ public sealed class BeamSystem : SharedBeamSystem
             beamSpawnPos = beamSpawnPos.Offset(calculatedDistance.Normalized());
             var newEnt = Spawn(prototype, beamSpawnPos);
 
+            // Utopia-Tweak : MachineParts
+            beamAction?.Invoke(newEnt);
+            Comp<BeamComponent>(newEnt).BeamIndex = NextIndex;
+            // Utopia-Tweak : MachineParts
+
             var ev = new BeamVisualizerEvent(GetNetEntity(newEnt), distanceLength, userAngle, bodyState, shader);
             RaiseNetworkEvent(ev);
         }
@@ -141,7 +174,10 @@ public sealed class BeamSystem : SharedBeamSystem
     /// <param name="bodyState">Optional sprite state for the <see cref="bodyPrototype"/> if a default one is not given</param>
     /// <param name="shader">Optional shader for the <see cref="bodyPrototype"/> if a default one is not given</param>
     /// <param name="controller"></param>
-    public void TryCreateBeam(EntityUid user, EntityUid target, string bodyPrototype, string? bodyState = null, string shader = "unshaded", EntityUid? controller = null)
+    /// <param name="beamAction">Action that is called on each beam entity.</param>
+    /// <param name="accumulateIndex">Whether to accumulate NextIndex.</param>
+    public void TryCreateBeam(EntityUid user, EntityUid target, string bodyPrototype, string? bodyState = null, string shader = "unshaded", EntityUid? controller = null,
+        Action<EntityUid>? beamAction = null, bool accumulateIndex = true) // Utopia-Tweak : MachineParts
     {
         if (Deleted(user) || Deleted(target))
             return;
@@ -163,6 +199,13 @@ public sealed class BeamSystem : SharedBeamSystem
         if (calculatedDistance.Length() == 0)
             return;
 
+        // Utopia-Tweak : MachineParts
+        if (accumulateIndex)
+        {
+            AccumulateIndex();
+        }
+        // Utopia-Tweak : MachineParts
+
         if (controller != null && TryComp<BeamComponent>(controller, out var controllerBeamComp))
         {
             controllerBeamComp.HitTargets.Add(user);
@@ -171,7 +214,7 @@ public sealed class BeamSystem : SharedBeamSystem
 
         var distanceCorrection = calculatedDistance - calculatedDistance.Normalized();
 
-        CreateBeam(bodyPrototype, userAngle, calculatedDistance, beamStartPos, distanceCorrection, controller, bodyState, shader);
+        CreateBeam(bodyPrototype, userAngle, calculatedDistance, beamStartPos, distanceCorrection, controller, bodyState, shader, beamAction);
 
         var ev = new CreateBeamSuccessEvent(user, target);
         RaiseLocalEvent(user, ev);

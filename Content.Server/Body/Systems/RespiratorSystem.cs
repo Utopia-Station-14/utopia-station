@@ -1,3 +1,4 @@
+using Content.Server._Utopia.RespiratorBlocker;
 using Content.Server.Administration.Logs;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Body.Components;
@@ -84,7 +85,11 @@ public sealed class RespiratorSystem : EntitySystem
 
             UpdateSaturation(uid, -(float)respirator.UpdateInterval.TotalSeconds, respirator);
 
-            if (!_mobState.IsIncapacitated(uid) && !(TryComp<PullableComponent>(uid, out var pullable) && TryComp<PullerComponent>(pullable.Puller, out var puller) && puller.Stage == GrabStage.Choke)) // cannot breathe in crit. // Utopia-Tweak : Grab
+            if (!_mobState.IsIncapacitated(uid)
+            && !(TryComp<PullableComponent>(uid, out var pullable)
+            && TryComp<PullerComponent>(pullable.Puller, out var puller)
+            && puller.Stage == GrabStage.Choke
+            && HasComp<BreathBlockComponent>(uid))) // cannot breathe in crit. // Utopia-Tweak : Grab
             {
                 switch (respirator.Status)
                 {

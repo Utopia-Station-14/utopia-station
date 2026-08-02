@@ -39,17 +39,19 @@ public sealed class SpeechBarksSystem : EntitySystem
 
         foreach (var ent in _lookup.GetEntitiesInRange(Transform(uid).Coordinates, 10f))
         {
-            if (!_mind.TryGetMind(ent, out _, out var mind) || mind.UserId == null || !_player.TryGetSessionById(mind.UserId, out var session))
+            if (!_mind.TryGetMind(ent, out _, out var mind) || mind.UserId == null
+            || !_player.TryGetSessionById(mind.UserId, out var session))
                 continue;
 
             RaiseNetworkEvent(new PlaySpeechBarksEvent(
-                        GetNetEntity(uid),
-                        message,
-                        soundSpecifier,
-                        ev.Data.Pitch,
-                        ev.Data.MinVar,
-                        ev.Data.MaxVar,
-                        args.IsWhisper), session);
+                GetNetEntity(uid),
+                message,
+                soundSpecifier,
+                ev.Data.Pitch,
+                ev.Data.MinVar,
+                ev.Data.MaxVar,
+                args.IsWhisper), session
+            );
         }
     }
 }

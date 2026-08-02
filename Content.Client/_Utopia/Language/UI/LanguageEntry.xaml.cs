@@ -14,14 +14,21 @@ public sealed partial class LanguageEntry : Control
     public LanguageEntry(LanguagePrototype proto, bool translator)
     {
         RobustXamlLoader.Load(this);
+
         Name.Text = proto.LocalizedName;
-        if (proto.UiColor.HasValue)
-            Name.FontColorOverride = proto.UiColor.Value;
-        SelectButton.ToolTip = translator ?
-            Loc.GetString("language-choose-button-tooltip-translator") :
-            Loc.GetString("language-choose-button-tooltip-known");
         Description.SetMessage(proto.LocalizedDescription);
         Language = proto.ID;
+
+        var uiColor = proto.UiColor;
+
+        if (uiColor.HasValue)
+        {
+            Name.FontColorOverride = uiColor.Value;
+        }
+
+        SelectButton.ToolTip = translator
+            ? Loc.GetString("language-choose-button-tooltip-translator")
+            : Loc.GetString("language-choose-button-tooltip-known");
 
         SelectButton.OnPressed += _ => OnLanguageSelected?.Invoke(proto.ID);
     }

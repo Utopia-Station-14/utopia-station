@@ -1,3 +1,4 @@
+using System.IO.Pipelines;
 using System.Linq;
 using Content.Shared.VendingMachines;
 using Robust.Client.Animations;
@@ -58,6 +59,8 @@ public sealed class VendingMachineSystem : SharedVendingMachineSystem
         {
             component.ContrabandInventory.Add(entry.Key, new(entry.Value));
         }
+
+        component.Credits = state.Credits; // Utopia-Tweak : Economy
 
         if (UISystem.TryGetOpenUi<VendingMachineBoundUserInterface>(uid, VendingMachineUiKey.Key, out var bui))
         {

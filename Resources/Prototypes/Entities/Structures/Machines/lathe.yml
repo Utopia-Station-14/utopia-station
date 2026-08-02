@@ -133,11 +133,12 @@
     - ServiceStatic
     - PowerCellsStatic
     - ElectronicsStatic
-    # Utopia-Tweak : Machine Parts
+    # Utopia-Tweak : Research
     dynamicPacks:
     - AdvancedMachineParts
     - SuperMachineParts
-    # Utopia-Tweak : Machine Parts
+    - BluespaceMachineParts
+    # Utopia-Tweak : Research
   - type: EmagLatheRecipes
     emagStaticPacks:
     - SecurityAmmoStatic
@@ -197,7 +198,7 @@
     unlitRunningState: unlit-building
     staticPacks:
     - ChemistryStatic
-    - SurgeryStatic
+    # - SurgeryStatic # Utopia-Tweak : Research
     dynamicPacks:
     - AdvancedTools
     - ScienceEquipment
@@ -212,6 +213,10 @@
     - Janitor
     - Instruments
     - Equipment
+    # Utopia-Tweak : Research
+    - MedicalDynamic
+    - SurgeryStatic
+    # Utopia-Tweak : Research
   - type: EmagLatheRecipes
     emagDynamicPacks:
     - SecurityAmmo
@@ -259,6 +264,9 @@
     - CargoBoardsStatic
     - MedicalBoardsStatic
     - EngineeringBoardsStatic
+    # Utopia-Tweak : Research
+    - EconomyBoardsStatic
+    # Utopia-Tweak : Research
     dynamicPacks:
     - EngineeringBoards
     - CargoBoards
@@ -268,6 +276,10 @@
     - CameraBoards
     - MechBoards
     - ShuttleBoards
+    # Utopia-Tweak : Research
+    - MedicalBoardsDynamic
+    - BluespaceBoardsDynamic
+    # Utopia-Tweak : Research
   - type: EmagLatheRecipes
     emagDynamicPacks:
     - SecurityBoards
@@ -474,6 +486,9 @@
     - SurgeryStatic
     dynamicPacks:
     - Chemistry
+    # Utopia-Tweak : Research
+    - MedicalDynamic
+    # Utopia-Tweak : Research
   - type: Machine
     board: MedicalTechFabCircuitboard
   - type: StealTarget

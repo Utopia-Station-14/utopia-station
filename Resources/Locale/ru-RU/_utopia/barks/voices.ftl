@@ -1,93 +1,93 @@
 # Standart
-bark-human1-name = Стандарт 1
-bark-human2-name = Стандарт 2
-bark-human3-name = Стандарт 3
-bark-guitar-muted-low-name = Гитара (Низкий)
-bark-guitar-muted-mid-name = Гитара (Средний)
-bark-guitar-muted-high-name = Гитара (Высокий)
-bark-banjo-mid-name = Банджо (Средний)
-bark-banjo-high-name = Банджо (Высокий)
-bark-synth-1-name = Синт 1
-bark-synth-2-name = Синт 2
-bark-synth-3-name = Синт 3
-bark-synth-4-name = Синт 4
-bark-weh-name = Вех!
-bark-merp-name = Мерп!
-bark-chrip-1-name = Чирикание
-bark-chrip-2-name = Тявканье
+bark-Human1-name = Стандарт 1
+bark-Human2-name = Стандарт 2
+bark-Human3-name = Стандарт 3
+bark-GuitarMutedLow-name = Гитара (Низкий)
+bark-GuitarMutedMid-name = Гитара (Средний)
+bark-GuitarMutedHigh-name = Гитара (Высокий)
+bark-BanjoMedium-name = Банджо (Средний)
+bark-BanjoHigh-name = Банджо (Высокий)
+bark-Synth1-name = Синт 1
+bark-Synth2-name = Синт 2
+bark-Synth3-name = Синт 3
+bark-Synth4-name = Синт 4
+bark-Weh-name = Вех!
+bark-MerpSound-name = Мерп!
+bark-Chrip1-name = Чирикание
+bark-Chrip2-name = Тявканье
 
 # Undertale
-bark-flowey-name = Флауи (Undertale)
-bark-mettaton-name = Меттатон (Undertale)
-bark-papyrus-name = Папирус (Undertale)
-bark-sans-name = Санс (Undertale)
-bark-toriel-name = Ториэль (Undertale)
-bark-alphys-name = Альфис (Undertale)
-bark-asgore-name = Азгор (Undertale)
-bark-gaster-name = Гастер (Undertale)
-bark-undyne-name = Андаин (Undertale)
-bark-temmie-name = Темми (Undertale)
+bark-Flowey-name = Флауи (Undertale)
+bark-Mettaton-name = Меттатон (Undertale)
+bark-Papyrus-name = Папирус (Undertale)
+bark-Sans-name = Санс (Undertale)
+bark-Toriel-name = Ториэль (Undertale)
+bark-Alphys-name = Альфис (Undertale)
+bark-Asgore-name = Азгор (Undertale)
+bark-Gaster-name = Гастер (Undertale)
+bark-Undyne-name = Андаин (Undertale)
+bark-Temmie-name = Темми (Undertale)
 
 # Underswap
-bark-underswap-sans-name = Санс (Underswap)
+bark-UnderswapSans-name = Санс (Underswap)
 
 # Undertale Yellow
-bark-chujin-name = Чу-джин (Undertale Yellow)
-bark-axis-name = Аксис (Undertale Yellow)
-bark-ceroba-name = Цероба (Undertale Yellow)
-bark-davl-name = Давл (Undertale Yellow)
-bark-ace-name = Эйс (Undertale Yellow)
-bark-ed-name = Эд (Undertale Yellow)
-bark-marlet-name = Марлет (Undertale Yellow)
-bark-moray-name = Мюрей (Undertale Yellow)
-bark-starlo-name = Старло (Undertale Yellow)
+bark-Chujin-name = Чу-джин (Undertale Yellow)
+bark-Axis-name = Аксис (Undertale Yellow)
+bark-Ceroba-name = Цероба (Undertale Yellow)
+bark-Dalv-name = Давл (Undertale Yellow)
+bark-Ace-name = Эйс (Undertale Yellow)
+bark-Ed-name = Эд (Undertale Yellow)
+bark-Marlet-name = Марлет (Undertale Yellow)
+bark-Moray-name = Мюрей (Undertale Yellow)
+bark-Starlo-name = Старло (Undertale Yellow)
 
 # Deltarune
-bark-susie-name = Сьюзи (Deltarune)
-bark-spamton-name = Спамтон Г. Спамтон (Deltarune)
-bark-rudolph-name = Рудольф (Deltarune)
-bark-roxlscaard-name = Рокслз Каард (Deltarune)
-bark-ralsei-name = Ралсей (Deltarune)
-bark-queen-name = Королева (Deltarune)
-bark-noelle-name = Ноэлль (Deltarune)
-bark-lancer-name  = Лансер (Deltarune)
-bark-tenna-name = Мистер Ант Тенна (Deltarune)
-bark-jevil-name = Джевил (Deltarune)
-bark-berdly-name = Бёрдли (Deltarune)
-bark-noellesmom-name = Мама Ноэлль (Deltarune)
-bark-gersonboom-name = Герсон Бум (Deltarune)
-bark-jackenstein-name = Джекинштейн (Deltarune)
+bark-Susie-name = Сьюзи (Deltarune)
+bark-Spamton-name = Спамтон Г. Спамтон (Deltarune)
+bark-Rudolph-name = Рудольф (Deltarune)
+bark-RoxlsCaard-name = Рокслз Каард (Deltarune)
+bark-Ralsei-name = Ралсей (Deltarune)
+bark-Queen-name = Королева (Deltarune)
+bark-Noelle-name = Ноэлль (Deltarune)
+bark-Lancer-name = Лансер (Deltarune)
+bark-MrAntTenna-name = Мистер Ант Тенна (Deltarune)
+bark-Jevil-name = Джевил (Deltarune)
+bark-Berdly-name = Бёрдли (Deltarune)
+bark-NoellesMom-name = Мама Ноэлль (Deltarune)
+bark-GersonBoom-name = Герсон Бум (Deltarune)
+bark-Jackenstein-name = Джекинштейн (Deltarune)
 
 # Deltarune: Chapter REwritten
-bark-charkis-name = Чаркис (Deltarune: Chapter REwritten)
-bark-junkil-name = Джанкил Д. Джанкил (Deltarune: Chapter REwritten)
-bark-scampton-name = Скамптон Великий (Deltarune: Chapter REwritten)
+bark-Charkis-name = Чаркис (Deltarune: Chapter REwritten)
+bark-Junkil-name = Джанкил Д. Джанкил (Deltarune: Chapter REwritten)
+bark-Scampton-name = Скамптон Великий (Deltarune: Chapter REwritten)
 
 # TS!Underswap
-bark-TSUAlphys-name = Альфис (TS!Underswap)
-bark-bugerpant-name = Бугерпант (TS!Underswap)
+bark-TSUndAlphys-name = Альфис (TS!Underswap)
+bark-Bugerpant-name = Бугерпант (TS!Underswap)
 bark-CoffinK-name = Коффин-К (TS!Underswap)
-bark-crossbones-name = Крестец (TS!Underswap)
-bark-harry-name = Гарри (TS!Underswap)
-bark-larry-name = Ларри (TS!Underswap)
-bark-mettalot-name = Метталот (TS!Underswap)
-bark-moldrick-name = Молдрик (TS!Underswap)
-bark-splosion-name = Сержант Взрывс (TS!Underswap)
+bark-Crossbones-name = Крестец (TS!Underswap)
+bark-Harry-name = Гарри (TS!Underswap)
+bark-Larry-name = Ларри (TS!Underswap)
+bark-Mettalot-name = Метталот (TS!Underswap)
+bark-Moldrick-name = Молдрик (TS!Underswap)
+bark-SGTSplosion-name = Сержант Взрывс (TS!Underswap)
 
 # Minecraft
-bark-minecraftbass-name = Басс (Minecraft)
-bark-minecraftbassattack-name = Ударный басс (Minecraft)
-bark-minecraftbell-name = Колокол (Minecraft)
-bark-minecraftbit-name = Треугольная волна (Minecraft)
-bark-minecraftcowbell-name = Коровий колокол (Minecraft)
-bark-minecraftdidgeridoo-name = Диджериду (Minecraft)
-bark-minecraftflute-name = Флейта (Minecraft)
-bark-minecraftguitar-name = Гитара (Minecraft)
-bark-minecraftharp-name = Арфа (Minecraft)
-bark-minecrafticechime-name = Ветряной колокольчик (Minecraft)
-bark-minecraftironxylophone-name = Вибрафон (Minecraft)
-bark-minecraftpling-name = Синтезатор (Minecraft)
-bark-minecraftxylobone-name = Ксилофон (Minecraft)
+bark-MinecraftBass-name = Басс (Minecraft)
+bark-MinecraftBassAttack-name = Ударный басс (Minecraft)
+bark-MinecraftBell-name = Колокол (Minecraft)
+bark-MinecraftBit-name = Треугольная волна (Minecraft)
+bark-MinecraftCowBell-name = Коровий колокол (Minecraft)
+bark-MinecraftDidgeridoo-name = Диджериду (Minecraft)
+bark-MinecraftFlute-name = Флейта (Minecraft)
+bark-MinecraftGuitar-name = Гитара (Minecraft)
+bark-MinecraftHarp-name = Арфа (Minecraft)
+bark-MinecraftIceChime-name = Ветряной колокольчик (Minecraft)
+bark-MinecraftIronXylophone-name = Вибрафон (Minecraft)
+bark-MinecraftPling-name = Синтезатор (Minecraft)
+bark-MinecraftXylobone-name = Ксилофон (Minecraft)
 
 # Microsoft
-bark-sam-name = TTS Сэм (Microsoft)
+bark-Sam-name = TTS Сэм (Microsoft)

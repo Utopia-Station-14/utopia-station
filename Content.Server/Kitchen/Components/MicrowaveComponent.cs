@@ -114,8 +114,10 @@ namespace Content.Server.Kitchen.Components
         // Utopia-Tweak : Machine Parts
         [DataField]
         public ProtoId<MachinePartPrototype> MachinePartCookTimeMultiplier = "Laser";
+
         [ViewVariables(VVAccess.ReadWrite)]
         public float FinalCookTimeMultiplier = 1.0f;
+
         [DataField]
         public float CookTimeScalingConstant = 0.5f;
         // Utopia-Tweak : Machine Parts

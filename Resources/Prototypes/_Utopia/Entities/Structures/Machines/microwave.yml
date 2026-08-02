@@ -1,0 +1,97 @@
+- type: entity
+  id: UtopiaKitchenMicrowaveBattery
+  parent: KitchenMicrowave
+  name: wireless microwave oven
+  description: A microwave oven that can run on an inserted power cell when grid power is unavailable.
+  components:
+  - type: Item
+    sprite: _Utopia/Structures/Machines/engi_wave.rsi
+    size: Ginormous
+  - type: Sprite
+    sprite: _Utopia/Structures/Machines/engi_wave.rsi
+    drawdepth: SmallObjects
+    snapCardinals: true
+    offset: "0.0,0.2"
+    layers:
+    - state: engi_mw
+      map: ["enum.MicrowaveVisualizerLayers.Base"]
+    - state: emissive_engi_mw1
+      shader: unshaded
+      map: ["enum.MicrowaveVisualizerLayers.BaseUnlit"]
+      visible: false
+    - state: engi_mwo
+      map: [enum.MicrowaveVisualizerLayers.Opened]
+      visible: false
+    - state: engi_mwbloodyo
+      map: ["bloody"]
+      visible: false
+    - state: engi_mwbloody
+      shader: unshaded
+      map: ["bloodyunshaded"]
+      visible: false
+    - state: engi_mw-o
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+      visible: false
+    - state: engi_cell-4
+      map: ["enum.BatterySlotVisualsLayers.Charge"]
+      shader: unshaded
+  - type: MicrowaveBattery
+    cookingPowerDraw: 40
+  - type: PowerCellSlot
+    cellSlotId: cell_slot
+  - type: BatterySlotVisuals
+    baseState: engi_cell
+    steps: 5
+  - type: ContainerContainer
+    containers:
+      microwave_entity_container: !type:Container
+      machine_board: !type:Container
+      machine_parts: !type:Container
+      cell_slot: !type:ContainerSlot
+  - type: EmptyOnMachineDeconstruct
+    containers:
+    - microwave_entity_container
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        ejectOnBreak: true
+        whitelist:
+          components:
+          - PowerCell
+  - type: WiresPanel
+    openingTool: Screwing
+  - type: ItemSlotsPanelLock
+    slots:
+      - cell_slot
+  - type: GenericVisualizer
+    visuals:
+      enum.MicrowaveVisualState.Bloody:
+        bloody:
+          True: { visible: true }
+          False: { visible: false }
+        bloodyunshaded:
+          True: { visible: true }
+          False: { visible: false }
+      enum.PowerDeviceVisuals.VisualState:
+        enum.MicrowaveVisualizerLayers.Base:
+          Idle: { state: "engi_mw" }
+          Broken: { state: "engi_mwb" }
+          Cooking: { state: "engi_mw" }
+        enum.MicrowaveVisualizerLayers.BaseUnlit:
+          Idle: { visible: false }
+          Broken: { visible: false }
+          Cooking: { visible: true }
+        bloodyunshaded:
+          Idle: { visible: false }
+          Broken: { visible: false }
+          Cooking: { state: engi_mwbloody1 }
+        enum.MicrowaveVisualizerLayers.Opened:
+          Opened: { visible: true }
+          Closed: { visible: false }
+          Cooking: { visible: false }
+          Broken: { visible: false }
+      enum.WiresVisuals.MaintenancePanelState:
+        enum.WiresVisualLayers.MaintenancePanel:
+          True: { visible: true }
+          False: { visible: false }
