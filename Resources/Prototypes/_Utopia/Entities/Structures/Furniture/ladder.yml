@@ -1,7 +1,7 @@
 - type: entity
   id: UtopiaZLevelLadder
   parent: BaseStructure
-  name: Ladder
+  name: ladder
   description: womp womp
   components:
   - type: Sprite
