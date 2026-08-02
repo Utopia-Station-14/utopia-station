@@ -32,6 +32,8 @@
     languages:
       GalacticCommon: Speak
   - type: CEZLevelGhostMover
+  - type: CEZPhysics
+    ignoreHighGround: true
   # Utopia-Tweak-end
 
 # shared parent between aghosts, replay spectators and normal observers

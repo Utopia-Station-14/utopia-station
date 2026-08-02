@@ -1,4 +1,4 @@
-using Robust.Shared.GameObjects;
+using Content.Shared.DoAfter;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 
@@ -8,10 +8,15 @@ namespace Content.Shared._Utopia.ZLevels.Components;
 public sealed partial class ZLevelLadderComponent : Component
 {
     [DataField, AutoNetworkedField]
+    public TimeSpan Delay = TimeSpan.FromSeconds(3);
+
+    [DataField, AutoNetworkedField]
     public bool AllowUp = true;
 
     [DataField, AutoNetworkedField]
     public bool AllowDown = true;
+
+    public EntityUid? Destination;
 }
 
 [Serializable, NetSerializable]
@@ -26,6 +31,9 @@ public enum ZLevelLadderUiKey : byte
 {
     Key
 }
+
+[Serializable, NetSerializable]
+public sealed partial class ZLevelLadderDoAfterEvent : SimpleDoAfterEvent;
 
 [Serializable, NetSerializable]
 public sealed class ZLevelLadderMessage(ZMoveDirection direction) : BoundUserInterfaceMessage

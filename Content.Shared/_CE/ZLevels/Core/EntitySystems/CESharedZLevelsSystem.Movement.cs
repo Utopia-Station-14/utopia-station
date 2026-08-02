@@ -21,23 +21,8 @@ namespace Content.Shared._CE.ZLevels.Core.EntitySystems;
 
 public abstract partial class CESharedZLevelsSystem
 {
-    public const int MaxZLevelsBelowRendering = 3;
-
-    private const float ZGravityForce = 9.8f;
-    private const float ZVelocityLimit = 20.0f;
-
-    /// <summary>
-    /// The maximum height at which a player will automatically climb higher when stepping on a highground entity.
-    /// </summary>
-    private const float MaxStepHeight = 0.5f;
-
-    /// <summary>
-    /// The minimum speed required to trigger LandEvent events.
-    /// </summary>
-    private const float ImpactVelocityLimit = 5.0f;
-
     private EntityQuery<CEZLevelHighGroundComponent> _highgroundQuery;
-    private readonly Dictionary<EntityUid, float> _queuedLandings = new();   // Utopia-Tweak
+    private readonly Dictionary<EntityUid, float> _queuedLandings = new(); // Utopia-Tweak
 
     private void InitMovement()
     {
@@ -115,7 +100,7 @@ public abstract partial class CESharedZLevelsSystem
     {
         base.Update(frameTime);
 
-        _queuedLandings.Clear();    // Utopia-Tweak
+        _queuedLandings.Clear(); // Utopia-Tweak
 
         var query = EntityQueryEnumerator<CEZPhysicsComponent, CEActiveZPhysicsComponent, TransformComponent, PhysicsComponent>();
         while (query.MoveNext(out var uid, out var zPhys, out _, out var xform, out var physics))
@@ -164,10 +149,11 @@ public abstract partial class CESharedZLevelsSystem
         if (!TryMapUp(currentMapUid.Value, out var mapAboveUid))
             return false;
 
-        if (!GridQuery.TryComp(mapAboveUid.Value, out var mapAboveGrid))
+        var worldPos = _transform.GetWorldPosition(ent);
+        if (!MapManager.TryFindGridAt(mapAboveUid.Value, worldPos, out var gridUid, out var grid))
             return false;
 
-        if (MapSys.TryGetTileRef(mapAboveUid.Value, mapAboveGrid, _transform.GetWorldPosition(ent), out var tileRef) &&
+        if (MapSys.TryGetTileRef(gridUid, grid, worldPos, out var tileRef) &&
             !tileRef.Tile.IsEmpty)
             return true;
 
@@ -257,8 +243,10 @@ public abstract partial class CESharedZLevelsSystem
         if (!_mapQuery.TryComp(targetMap, out var targetMapComp))
             return false;
 
+        var worldRot = _transform.GetWorldRotation(ent);
 
         _transform.SetMapCoordinates(ent, new MapCoordinates(_transform.GetWorldPosition(ent), targetMapComp.MapId));
+        _transform.SetWorldRotation(ent, worldRot);
 
         var ev = new CEZLevelMapMoveEvent(offset, targetMap.Value.Comp.Depth);
         RaiseLocalEvent(ent, ev);

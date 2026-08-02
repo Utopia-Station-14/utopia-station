@@ -10,10 +10,13 @@ using Content.Shared.Actions;
 using Content.Shared.Audio;
 using Content.Shared.Damage.Systems;
 using Content.Shared.DoAfter;
+using Content.Shared.Gravity;
 using Content.Shared.Mobs;
+using Content.Shared.Movement.Systems;
 using Content.Shared.Stunnable;
 using Content.Shared.Toggleable;
 using JetBrains.Annotations;
+using Robust.Shared.Physics.Components;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared._CE.ZLevels.Flight;
@@ -25,6 +28,8 @@ public abstract class CESharedZFlightSystem : EntitySystem
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private SharedGravitySystem _gravity = default!;
+    [Dependency] private MovementSpeedModifierSystem _movementSpeed = default!;
 
     protected EntityQuery<CEZPhysicsComponent> ZPhyzQuery;
 
@@ -219,6 +224,24 @@ public abstract class CESharedZFlightSystem : EntitySystem
         args.Handled = true;
     }
 
+    protected float GetMassFactor(Entity<CEZFlyerComponent> ent)
+    {
+        if (ent.Comp.ReferenceMass <= 0f || !TryComp<PhysicsComponent>(ent, out var body) || body.FixturesMass <= 0f)
+            return 1f;
+
+        return Math.Clamp(body.FixturesMass / ent.Comp.ReferenceMass, ent.Comp.MinMassFactor, ent.Comp.MaxMassFactor);
+    }
+
+    private void OnRefreshWeightlessModifiers(Entity<CEZFlyerComponent> ent, ref RefreshWeightlessModifiersEvent args)
+    {
+        if (!ent.Comp.Active)
+            return;
+
+        var modifier = ent.Comp.DefaultGravityIntensity / GetMassFactor(ent);
+        args.WeightlessModifier *= modifier;
+        args.WeightlessAccelerationMod *= modifier;
+    }
+
     [PublicAPI]
     public bool TryActivateFlight(Entity<CEZFlyerComponent?> ent, CEZPhysicsComponent? zPhys = null)
     {
@@ -241,6 +264,8 @@ public abstract class CESharedZFlightSystem : EntitySystem
         DirtyField(ent, ent.Comp, nameof(CEZFlyerComponent.Active));
 
         _zLevel.SetZGravity((ent, zPhys), 0);
+        _gravity.RefreshWeightless(ent.Owner);
+        _movementSpeed.RefreshWeightlessModifiers(ent.Owner);
 
         // Update toggle action icon state
         if (ent.Comp.ZLevelToggleActionEntity != null)
@@ -266,6 +291,8 @@ public abstract class CESharedZFlightSystem : EntitySystem
         DirtyField(ent, ent.Comp, nameof(CEZFlyerComponent.Active));
 
         _zLevel.SetZGravity((ent, zPhys), ent.Comp.DefaultGravityIntensity);
+        _gravity.RefreshWeightless(ent.Owner);
+        _movementSpeed.RefreshWeightlessModifiers(ent.Owner);
 
         // Update toggle action icon state
         if (ent.Comp.ZLevelToggleActionEntity != null)

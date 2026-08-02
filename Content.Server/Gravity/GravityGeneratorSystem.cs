@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.Gravity;
@@ -99,7 +98,7 @@ public sealed class GravityGeneratorSystem : SharedGravityGeneratorSystem
 
         var targetGroupId = motionLink.GroupId;
 
-        if (!TryComp<TransformComponent>(parentUid, out var parentXform) || parentXform.MapUid == null)
+        if (!TryComp(parentUid, out TransformComponent? parentXform) || parentXform.MapUid == null)
             return grids;
 
         if (!_zLevels.TryGetZNetwork(parentXform.MapUid.Value, out var net) || net == null)
@@ -115,7 +114,7 @@ public sealed class GravityGeneratorSystem : SharedGravityGeneratorSystem
         }
 
         var query = EntityQueryEnumerator<MapGridComponent, TransformComponent, GridMotionLinkComponent>();
-        while (query.MoveNext(out var gridUid, out var gridComp, out var gridXform, out var linkComp))
+        while (query.MoveNext(out var gridUid, out var _, out var gridXform, out var linkComp))
         {
             if (linkComp.GroupId == targetGroupId && gridXform.MapUid != null && validMaps.Contains(gridXform.MapUid.Value))
             {

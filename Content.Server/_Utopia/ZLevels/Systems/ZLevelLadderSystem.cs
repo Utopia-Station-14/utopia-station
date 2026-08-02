@@ -2,10 +2,11 @@ using Content.Server.Popups;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared._Utopia.ZLevels.Components;
+using Content.Shared.DoAfter;
+using Content.Shared.Ghost;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
-using Robust.Shared.Maths;
 using System.Numerics;
 
 namespace Content.Server._Utopia.ZLevels.Systems;
@@ -18,10 +19,12 @@ public sealed class ZLevelLadderSystem : EntitySystem
     [Dependency] private readonly MapSystem _map = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
 
     public override void Initialize()
     {
         SubscribeLocalEvent<ZLevelLadderComponent, ZLevelLadderMessage>(OnSelect);
+        SubscribeLocalEvent<ZLevelLadderComponent, ZLevelLadderDoAfterEvent>(OnDoAfter);
         SubscribeLocalEvent<ZLevelLadderComponent, BoundUIOpenedEvent>(OnUiOpened);
     }
 
@@ -31,7 +34,6 @@ public sealed class ZLevelLadderSystem : EntitySystem
 
         if (dirs.Count == 0)
         {
-            _popup.PopupEntity("No way", uid, args.Actor);
             _ui.CloseUi(uid, args.UiKey, args.Actor);
             return;
         }
@@ -64,17 +66,36 @@ public sealed class ZLevelLadderSystem : EntitySystem
 
         if (targetMap == null)
         {
-            _popup.PopupEntity("No way", uid, user);
             return;
         }
 
         if (!IsValidDestination(uid, targetMap.Value, msg.Direction))
         {
-            _popup.PopupEntity("Blocked", uid, user);
             return;
         }
 
-        Teleport(user, targetMap.Value);
+        var delay = HasComp<GhostComponent>(user) ? TimeSpan.Zero : comp.Delay;
+        var doAfter = new DoAfterArgs(EntityManager, user, delay, new ZLevelLadderDoAfterEvent(), uid, uid, uid)
+        {
+            BreakOnMove = true,
+            BlockDuplicate = true,
+            BreakOnDamage = true,
+            CancelDuplicate = true,
+        };
+
+        comp.Destination = targetMap;
+        _doAfter.TryStartDoAfter(doAfter);
+    }
+
+    private void OnDoAfter(EntityUid uid, ZLevelLadderComponent comp, ZLevelLadderDoAfterEvent args)
+    {
+        if (args.Cancelled || args.Handled || comp.Deleted)
+            return;
+
+        if (comp.Destination != null)
+        {
+            Teleport(args.User, comp.Destination.Value);
+        }
     }
 
     private List<ZMoveDirection> GetAvailableDirections(EntityUid uid, ZLevelLadderComponent comp)
@@ -96,10 +117,11 @@ public sealed class ZLevelLadderSystem : EntitySystem
     private bool IsValidDestination(EntityUid source, EntityUid targetMap, ZMoveDirection direction)
     {
         var hasTile = HasTileAt(source, targetMap);
+        var hasSourseTile = HasTileAt(source, source);
 
         return direction switch
         {
-            ZMoveDirection.Down => hasTile,
+            ZMoveDirection.Down => !hasSourseTile,
             ZMoveDirection.Up => !hasTile,
             _ => false
         };

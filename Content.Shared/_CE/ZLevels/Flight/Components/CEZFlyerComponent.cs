@@ -26,6 +26,19 @@ public sealed partial class CEZFlyerComponent : Component
     [DataField]
     public float DefaultGravityIntensity = 1f;
 
+    /// <summary>
+    /// Fixture mass at which the configured drain and speeds apply unchanged.
+    /// Heavier flyers drain faster and fly slower; lighter ones the reverse.
+    /// </summary>
+    [DataField]
+    public float ReferenceMass = 70f;
+
+    [DataField]
+    public float MinMassFactor = 0.5f;
+
+    [DataField]
+    public float MaxMassFactor = 2f;
+
     [DataField]
     public EntProtoId UpActionProto = "CEActionZFlightUp";
 

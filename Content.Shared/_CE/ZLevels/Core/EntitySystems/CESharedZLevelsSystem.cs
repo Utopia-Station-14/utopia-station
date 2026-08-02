@@ -1,7 +1,7 @@
 /*
  * This file is sublicensed under MIT License
  * https://github.com/space-wizards/space-station-14/blob/master/LICENSE.TXT
- */
+*/
 
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -33,6 +33,7 @@ public abstract partial class CESharedZLevelsSystem : EntitySystem
     [Dependency] protected readonly SharedMapSystem MapSys = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly SharedPhysicsSystem _physicsSystem = default!;
     [Dependency] private readonly FixtureSystem _fix = default!; // Utopia-Tweak : ZLevels
     [Dependency] private readonly SharedGravitySystem _gravity = default!; // Utopia-Tweak : ZLevels
     [Dependency] private readonly IConfigurationManager _config = default!; // Utopia-Tweak : ZLevels
@@ -40,8 +41,7 @@ public abstract partial class CESharedZLevelsSystem : EntitySystem
     private EntityQuery<MapComponent> _mapQuery;
     private EntityQuery<CEZLevelMapComponent> _zMapQuery;
     protected EntityQuery<MapGridComponent> GridQuery;
-
-    protected EntityQuery<CEZPhysicsComponent> ZPhyzQuery = default!;
+    protected EntityQuery<CEZPhysicsComponent> ZPhyzQuery;
 
     public override void Initialize()
     {
@@ -89,13 +89,18 @@ public abstract partial class CESharedZLevelsSystem : EntitySystem
         var query = EntityQueryEnumerator<CEZLevelsNetworkComponent>();
         while (query.MoveNext(out var network))
         {
-            if (!network.ZLevels.ContainsValue(inputMapUid))
+            if (!network.ZLevels.ContainsKey(inputMapUid.Comp.Depth)) // Utopia-Tweak : ZLevels
                 continue;
 
             if (!network.ZLevels.TryGetValue(inputMapUid.Comp.Depth + offset, out var targetMapUid))
                 continue;
 
-            if (!_zMapQuery.TryComp(targetMapUid, out var targetZLevelComp))
+            // Utopia-Tweak : ZLevels
+            if (targetMapUid == null)
+                continue;
+            // Utopia-Tweak : ZLevels
+
+            if (!_zMapQuery.TryComp(targetMapUid.Value, out var targetZLevelComp)) // Utopia-Tweak : ZLevels
                 continue;
 
             outputMapUid = (targetMapUid.Value, targetZLevelComp);

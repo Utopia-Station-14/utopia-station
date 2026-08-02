@@ -4,14 +4,11 @@ using Content.Server._Utopia.ZLevels.Power;
 using Content.Shared._Utopia.ZLevels.Cables.Components;
 using Content.Server.Disposal.Tube;
 using Content.Server._Utopia.ZLevels.Disposal.Components;
-using Content.Server.NodeContainer.Nodes;
 using Content.Shared.NodeContainer;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared._Utopia.ZLevels.Pipes.Components;
 using Content.Shared._Utopia.ZLevels.Transmission.Components;
-using Robust.Shared.GameObjects;
-using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using System.Numerics;
 
@@ -276,7 +273,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         var tile = _map.LocalToTile(gridUid, grid, xform.Coordinates);
         var tileSize = grid.TileSize;
         var localCenter = new Vector2(tile.X + 0.5f, tile.Y + 0.5f) * tileSize;
-        
+
         var worldMatrix = _transform.GetWorldMatrix(gridUid);
         var worldCenter = Vector2.Transform(localCenter, worldMatrix);
 
@@ -289,7 +286,7 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
         var tile = _map.LocalToTile(gridUid, grid, xform.Coordinates);
         var tileSize = grid.TileSize;
         var localCenter = new Vector2(tile.X + 0.5f, tile.Y + 0.5f) * tileSize;
-        
+
         var worldMatrix = _transform.GetWorldMatrix(gridUid);
         var worldCenter = Vector2.Transform(localCenter, worldMatrix);
 

@@ -24,8 +24,6 @@ public sealed partial class CEClientZLevelsSystem : CESharedZLevelsSystem
     [Dependency] private readonly IEyeManager _eye = default!;
     [Dependency] private readonly AnimationPlayerSystem _animation = default!;
 
-    public static float ZLevelOffset = 0.7f;
-
     public override void Initialize()
     {
         base.Initialize();
@@ -39,7 +37,7 @@ public sealed partial class CEClientZLevelsSystem : CESharedZLevelsSystem
     {
         Angle rotation = _eye.CurrentEye.Rotation * -1;
         var localPosition = GetVisualsLocalPosition((ent, ent), Transform(ent));
-        var offset = rotation.RotateVec(new Vector2(0, localPosition * ZLevelOffset));
+        var offset = rotation.RotateVec(new Vector2(0, localPosition));
         args.Offset += offset;
     }
 
@@ -67,7 +65,7 @@ public sealed partial class CEClientZLevelsSystem : CESharedZLevelsSystem
 
             sprite.NoRotation = localPosition != 0 || zPhys.NoRotDefault;
 
-            _sprite.SetOffset((uid, sprite), zPhys.SpriteOffsetDefault + new Vector2(0, localPosition * ZLevelOffset));
+            _sprite.SetOffset((uid, sprite), zPhys.SpriteOffsetDefault + new Vector2(0, localPosition));
             _sprite.SetDrawDepth((uid, sprite), localPosition > 0 ? (int)Shared.DrawDepth.DrawDepth.OverMobs : zPhys.DrawDepthDefault);
         }
 
