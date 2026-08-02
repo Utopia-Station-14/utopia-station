@@ -345,35 +345,35 @@ namespace Content.Server.Disposal.Tube
             if (!Resolve(target, ref targetTube))
                 return null;
 
-            // Utopia-Tweak : ZLevels
-            if (TryComp<ZDisposalPipeComponent>(target, out var zPipe) &&
-                TryComp<ZLevelEntityLinkComponent>(target, out var zLink))
-            {
-                var targetXform = Transform(target);
+            // // Utopia-Tweak : ZLevels
+            // if (TryComp<ZDisposalPipeComponent>(target, out var zPipe) &&
+            //     TryComp<ZLevelEntityLinkComponent>(target, out var zLink))
+            // {
+            //     var targetXform = Transform(target);
 
-                EntityUid targetMap = zPipe.ZDirection switch
-                {
-                    ZNodeDirection.Up => zLink.AboveMap ?? default,
-                    ZNodeDirection.Down => zLink.BelowMap ?? default,
-                    _ => default
-                };
+            //     EntityUid targetMap = zPipe.ZDirection switch
+            //     {
+            //         ZNodeDirection.Up => zLink.AboveMap ?? default,
+            //         ZNodeDirection.Down => zLink.BelowMap ?? default,
+            //         _ => default
+            //     };
 
-                if (targetMap == default)
-                    return null;
+            //     if (targetMap == default)
+            //         return null;
 
-                var zTarget = _zTransmission.TryFindZDisposalTarget(
-                    target,
-                    targetMap,
-                    zPipe.ZDirection
-                );
+            //     var zTarget = _zTransmission.TryFindZDisposalTarget(
+            //         target,
+            //         targetMap,
+            //         zPipe.ZDirection
+            //     );
 
-                if (zTarget != null)
-                {
-                    TransferToZTube(target, zTarget.Value);
-                    return zTarget;
-                }
-            }
-            // Utopia-Tweak : ZLevels
+            //     if (zTarget != null)
+            //     {
+            //         TransferToZTube(target, zTarget.Value);
+            //         return zTarget;
+            //     }
+            // }
+            // // Utopia-Tweak : ZLevels
 
             var oppositeDirection = nextDirection.GetOpposite();
             var normalXform = Transform(target);
