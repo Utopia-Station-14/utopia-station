@@ -13,8 +13,6 @@
         </PanelContainer.PanelOverride>
 
         <BoxContainer Orientation="Vertical" Margin="12">
-
-            <!-- Header -->
             <PanelContainer Margin="0 0 0 8" HorizontalExpand="True">
                 <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 0, 0, 15">
                     <Label Name="TitleLabel" VerticalAlignment="Center"/>
@@ -28,8 +26,6 @@
             </PanelContainer>
 
             <BoxContainer Orientation="Horizontal" VerticalExpand="True">
-
-                <!-- Left: sprite in bright box + status badge -->
                 <BoxContainer Orientation="Vertical" MinWidth="210" MaxWidth="210">
                     
                     <PanelContainer Margin="0 10 0 16" HorizontalAlignment="Center">
@@ -37,11 +33,10 @@
                             <gfx:StyleBoxFlat BackgroundColor="#282C37" BorderColor="#3B404E" BorderThickness="1"/>
                         </PanelContainer.PanelOverride>
                         <TextureRect Name="BeaconSprite"
-                                     TexturePath="/Textures/Structures/Machines/rndpointsource.rsi/rndpointsource-icon.png"
-                                     Stretch="KeepAspectCentered"
-                                     HorizontalAlignment="Center"
-                                     SetSize="110 110"
-                                     Margin="12"/>
+                                    Stretch="KeepAspectCentered"
+                                    HorizontalAlignment="Center"
+                                    SetSize="110 110"
+                                    Margin="12"/>
                     </PanelContainer>
 
                     <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 8">
