@@ -39,8 +39,7 @@ public sealed class EconomicRecordsConsoleSystem : EntitySystem
 
     private void OnFiltersChanged(Entity<EconomicRecordsConsoleComponent> ent, ref SetStationRecordFilter msg)
     {
-        if (ent.Comp.Filter == null ||
-            ent.Comp.Filter.Type != msg.Type || ent.Comp.Filter.Value != msg.Value)
+        if (ent.Comp.Filter == null || ent.Comp.Filter.Type != msg.Type || ent.Comp.Filter.Value != msg.Value)
         {
             ent.Comp.Filter = new StationRecordsFilter(msg.Type, msg.Value);
             UpdateUserInterface(ent);

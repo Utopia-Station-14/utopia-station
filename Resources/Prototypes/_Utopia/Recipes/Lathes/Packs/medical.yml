@@ -10,6 +10,7 @@
   - CloningPodMachineCircuitboard
   - MedicalScannerMachineCircuitboard
   - CloningConsoleComputerCircuitboard
+  - DnaManipulatorConsoleCircuitboard
 
 - type: latheRecipePack
   id: MedicalDynamic
@@ -18,3 +19,5 @@
   - LargeBeaker
   - ClothingEyesGlassesChemical
   - Dropper
+  - DNAInjector
+  - HandheldGeneticAnalyzer

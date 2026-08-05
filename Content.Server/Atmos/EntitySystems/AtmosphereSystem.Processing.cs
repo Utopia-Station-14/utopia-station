@@ -75,6 +75,10 @@ namespace Content.Server.Atmos.EntitySystems
 
                     // Update tile.IsSpace and tile.MapAtmosphere, and tile.AirtightData.
                     UpdateTileData(ent, mapAtmos, tile);
+                    // Utopia-Tweak : Z-Levels
+                    RefreshZAtmosTransferCandidates(ent, indices);
+                    ActivateZAtmosTransferCandidate(atmosphere, tile);
+                    // Utopia-Tweak : Z-Levels
                 }
                 atmosphere.InvalidatedCoords.Clear();
 
@@ -186,18 +190,36 @@ namespace Content.Server.Atmos.EntitySystems
             }
             else
             {
-                mapAtmosphere = true;
-                tile.ThermalConductivity =  0.5f;
-                tile.HeatCapacity = float.PositiveInfinity;
+                // Utopia-Tweak : ZLevels
+                bool isZTransit = HasAnySolidZLevelTileBelow(ent.Owner, ent.Comp3, idx);
 
-                if (!tile.NoGridTile)
+                if (isZTransit)
                 {
-                    tile.NoGridTile = true;
+                    mapAtmosphere = false; 
+                    tile.ThermalConductivity = 0.5f;
+                    tile.HeatCapacity = 1.0f; 
 
-                    // This tile just became a non-grid atmos tile.
-                    // It, or one of its neighbours, might now be completely disconnected from the grid.
-                    QueueTileTrim(ent.Comp1, tile);
+                    if (!tile.NoGridTile)
+                    {
+                        tile.NoGridTile = true;
+                    }
                 }
+                else
+                {
+                    mapAtmosphere = true;
+                    tile.ThermalConductivity =  0.5f;
+                    tile.HeatCapacity = float.PositiveInfinity;
+
+                    if (!tile.NoGridTile)
+                    {
+                        tile.NoGridTile = true;
+
+                        // This tile just became a non-grid atmos tile.
+                        // It, or one of its neighbours, might now be completely disconnected from the grid.
+                        QueueTileTrim(ent.Comp1, tile);
+                    }
+                }
+                // Utopia-Tweak : ZLevels
             }
 
             UpdateAirtightData(ent.Owner, ent.Comp1, ent.Comp3, tile);
@@ -621,6 +643,8 @@ namespace Content.Server.Atmos.EntitySystems
         private void UpdateProcessing(float frameTime)
         {
             _simulationStopwatch.Restart();
+
+            RunZAtmosProcessing(); // Utopia-Tweak : Z-Levels
 
             if (!_simulationPaused)
             {

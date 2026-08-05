@@ -1,17 +1,13 @@
-using Content.Server._Utopia.Atmos.Components; 
-using Content.Shared.Damage; 
-using Content.Shared.Damage.Systems; 
-using Content.Shared.Buckle.Components; 
-using Content.Shared.FixedPoint; 
-using Content.Server.Atmos; 
-using Content.Server.Atmos.EntitySystems; 
-using Content.Server.Atmos.Piping.Components; 
-using Content.Server.NodeContainer; 
-using Content.Server.NodeContainer.Nodes; 
-using Content.Server.NodeContainer.EntitySystems; 
-using Content.Shared.Atmos; 
-using Content.Shared.Atmos.Components; 
-using Robust.Shared.GameObjects;
+using Content.Server._Utopia.Atmos.Components;
+using Content.Server.Atmos.EntitySystems;
+using Content.Server.Atmos.Piping.Components;
+using Content.Server.NodeContainer.Nodes;
+using Content.Server.NodeContainer.EntitySystems;
+using Content.Shared.Atmos;
+using Content.Shared.Buckle.Components;
+using Content.Shared.Damage;
+using Content.Shared.Damage.Systems;
+using Content.Shared.FixedPoint;
 
 namespace Content.Server._Utopia.Atmos.EntitySystems;
 
@@ -38,14 +34,14 @@ public sealed class HeatExchangingPipeSystem : EntitySystem
             return;
 
         // Если на тайле радиатора стоит сущность - скип.
-        if (args.Grid is {} grid
+        if (args.Grid is { } grid
             && _transform.TryGetGridTilePosition(uid, out var tile)
             && _atmos.IsTileAirBlockedCached(grid, tile))
         {
             return;
         }
 
-        // Здесь всё начинается. Ну или заканчивается, если газа в трубе нету. 
+        // Здесь всё начинается. Ну или заканчивается, если газа в трубе нету.
         var air = pipe.Air;
         if (air.TotalMoles <= 0f)
             return;
@@ -71,34 +67,34 @@ public sealed class HeatExchangingPipeSystem : EntitySystem
     {
         // dT является разницей температур между трубой и тайлом.
         // Если разница достаточно низкая, можно проигнорировать передачу.
-        float dT = air.Temperature - env.Temperature;
+        var dT = air.Temperature - env.Temperature;
         if (MathF.Abs(dT) < comp.MinimumTemperatureDifference)
             return;
 
         // Собираем теплоемкость газов.
-        float Cpipe = _atmos.GetHeatCapacity(air, true);
-        float Cenv  = _atmos.GetHeatCapacity(env, true);
+        var cPipe = _atmos.GetHeatCapacity(air, true);
+        var cEnv = _atmos.GetHeatCapacity(env, true);
 
-        if (Cpipe < Atmospherics.MinimumHeatCapacity ||
-            Cenv  < Atmospherics.MinimumHeatCapacity)
+        if (cPipe < Atmospherics.MinimumHeatCapacity ||
+            cEnv < Atmospherics.MinimumHeatCapacity)
             return;
 
         // TdivQ - коэффициент перевода энергии в изменение температуры
         // Используется для симметричного обмена энергией
-        float TdivQ = (1f / Cpipe) + (1f / Cenv);
+        var tDivQ = 1f / cPipe + 1f / cEnv;
 
         // Немного конвекции ниже.
-        float k = comp.ThermalConductivity * TdivQ;
-        float dT2 = dT * MathF.Exp(-k * dt);
+        var k = comp.ThermalConductivity * tDivQ;
+        var dT2 = dT * MathF.Exp(-k * dt);
 
         // Количество переданной энергии
         // Если dE положительное - тепло уходит из трубы на тайл.
         // Если dE отрицательное - тепло уходит из тайла в трубу.
-        float dE = (dT - dT2) / TdivQ;
+        var dE = (dT - dT2) / tDivQ;
 
         // И завершаем всё передачей тепла.
         _atmos.AddHeat(air, -dE);
-        _atmos.AddHeat(env,  dE);
+        _atmos.AddHeat(env, dE);
     }
 
     /// <summary>
@@ -107,19 +103,19 @@ public sealed class HeatExchangingPipeSystem : EntitySystem
     private void HeatExchangeInVacuum(GasMixture air, HeatExchangingPipeComponent comp, float dt)
     {
         // Берём теплоемкость газа с трубы.
-        float Cpipe = _atmos.GetHeatCapacity(air, true);
-        if (Cpipe < Atmospherics.MinimumHeatCapacity)
+        var cPipe = _atmos.GetHeatCapacity(air, true);
+        if (cPipe < Atmospherics.MinimumHeatCapacity)
             return;
 
         // Разница температуры между трубой и в данном случае вакуумом.
-        float dT = air.Temperature - Atmospherics.TCMB;
+        var dT = air.Temperature - Atmospherics.TCMB;
 
         // Немного конвекции ниже.
-        float k = comp.RadiationCoefficient / Cpipe;
-        float dT2 = dT * MathF.Exp(-k * dt);
+        var k = comp.RadiationCoefficient / cPipe;
+        var dT2 = dT * MathF.Exp(-k * dt);
 
         // Завершаем всё передачей тепла в вакуум.
-        float dE = (dT - dT2) / (1f / Cpipe);
+        var dE = (dT - dT2) / (1f / cPipe);
         _atmos.AddHeat(air, -dE);
     }
 

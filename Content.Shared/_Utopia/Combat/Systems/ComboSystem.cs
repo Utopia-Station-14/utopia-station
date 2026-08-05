@@ -5,12 +5,14 @@ using Content.Shared.CombatMode;
 using Content.Shared.Humanoid;
 using Content.Shared.Weapons.Melee.Events;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.Shared._Utopia.Combat;
 
 public sealed class SharedComboSystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
 
     public override void Initialize()
     {
@@ -22,18 +24,29 @@ public sealed class SharedComboSystem : EntitySystem
         SubscribeLocalEvent<ComboComponent, ToggleCombatActionEvent>(OnCombatToggled);
     }
 
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        if (!_timing.IsFirstTimePredicted)
+            return;
+
+        var query = EntityQueryEnumerator<ComboComponent>();
+        while (query.MoveNext(out var ent, out var comp))
+        {
+            if (_timing.CurTime < comp.ResetTime)
+                continue;
+
+            ClearActions(ent, comp);
+        }
+    }
+
     private void OnDisarmUsed(Entity<ComboComponent> entity, ref DisarmAttemptEvent args)
     {
         if (args.DisarmerUid != entity.Owner || args.DisarmerUid == args.TargetUid)
             return;
 
-        entity.Comp.CurrestActions.Add(CombatAction.Disarm);
-
-        if (entity.Comp.CurrestActions.Count >= 5)
-        {
-            entity.Comp.CurrestActions.RemoveAt(0);
-        }
-
+        AddAction(entity.Owner, entity.Comp, CombatAction.Disarm);
         TryDoCombo(entity.Owner, args.TargetUid, entity.Comp);
     }
 
@@ -45,13 +58,7 @@ public sealed class SharedComboSystem : EntitySystem
         if (!HasComp<HumanoidAppearanceComponent>(args.HitEntities[0]))
             return;
 
-        entity.Comp.CurrestActions.Add(CombatAction.Hit);
-
-        if (entity.Comp.CurrestActions.Count >= 5 && entity.Comp.CurrestActions != null)
-        {
-            entity.Comp.CurrestActions.RemoveAt(0);
-        }
-
+        AddAction(entity.Owner, entity.Comp, CombatAction.Hit);
         TryDoCombo(entity.Owner, args.HitEntities[0], entity.Comp);
     }
 
@@ -60,13 +67,7 @@ public sealed class SharedComboSystem : EntitySystem
         if (args.Puller.Owner != entity.Owner || args.NewStage <= args.OldStage)
             return;
 
-        entity.Comp.CurrestActions.Add(CombatAction.Grab);
-
-        if (entity.Comp.CurrestActions.Count >= 5)
-        {
-            entity.Comp.CurrestActions.RemoveAt(0);
-        }
-
+        AddAction(entity.Owner, entity.Comp, CombatAction.Grab);
         TryDoCombo(entity.Owner, args.Pulling.Owner, entity.Comp);
     }
 
@@ -75,7 +76,7 @@ public sealed class SharedComboSystem : EntitySystem
         if (!HasComp<CombatModeComponent>(entity))
             return;
 
-        entity.Comp.CurrestActions.Clear();
+        ClearActions(entity.Owner, entity.Comp);
     }
 
     private bool TryDoCombo(EntityUid user, EntityUid target, ComboComponent comp)
@@ -94,6 +95,7 @@ public sealed class SharedComboSystem : EntitySystem
             if (!ContainsSubsequence(mainList, subList))
                 continue;
 
+
             foreach (var comboEvent in protoCombo.ComboEvent)
             {
                 comboEvent.DoEffect(user, target, EntityManager);
@@ -104,10 +106,29 @@ public sealed class SharedComboSystem : EntitySystem
 
         if (isComboCompleted)
         {
-            comp.CurrestActions.Clear();
+            ClearActions(user, comp);
         }
 
         return true;
+    }
+
+    private void AddAction(EntityUid user, ComboComponent comp, CombatAction action)
+    {
+        comp.CurrestActions.Add(action);
+        comp.ResetTime += _timing.CurTime;
+
+        if (comp.CurrestActions.Count > 5)
+        {
+            comp.CurrestActions.RemoveAt(0);
+        }
+
+        Dirty(user, comp);
+    }
+
+    private void ClearActions(EntityUid user, ComboComponent comp)
+    {
+        comp.CurrestActions.Clear();
+        Dirty(user, comp);
     }
 
     public static bool ContainsSubsequence<T>(List<T> mainList, List<T> subList)

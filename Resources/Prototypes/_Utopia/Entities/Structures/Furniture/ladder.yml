@@ -1,0 +1,16 @@
+- type: entity
+  id: UtopiaZLevelLadder
+  parent: BaseStructure
+  name: ladder
+  description: womp womp
+  components:
+  - type: Sprite
+    sprite: _Utopia/Structures/ladders.rsi
+    state: icon
+  - type: ZLevelLadder
+  - type: ActivatableUI
+    key: enum.ZLevelLadderUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.ZLevelLadderUiKey.Key:
+        type: ZLevelLadderBoundUserInterface

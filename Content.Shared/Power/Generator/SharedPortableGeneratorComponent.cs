@@ -103,12 +103,14 @@ public sealed class PortableGeneratorComponentBuiState : BoundUserInterfaceState
     public float MaximumPower;
     public float OptimalPower;
     public bool On;
+    public float? TemperatureCelsius; // Utopia-Tweak : PACMAN-updt
 
     public PortableGeneratorComponentBuiState(
         FuelGeneratorComponent component,
         float remainingFuel,
         bool clogged,
-        (float Demand, float Supply)? networkStats)
+        (float Demand, float Supply)? networkStats,
+        float? temperatureCelsius = null) // Utopia-Tweak : PACMAN-updt
     {
         RemainingFuel = remainingFuel;
         Clogged = clogged;
@@ -117,6 +119,7 @@ public sealed class PortableGeneratorComponentBuiState : BoundUserInterfaceState
         OptimalPower = component.OptimalPower;
         On = component.On;
         NetworkStats = networkStats;
+        TemperatureCelsius = temperatureCelsius; // Utopia-Tweak : PACMAN-updt
     }
 }
 
@@ -146,4 +149,9 @@ public enum GeneratorVisuals : byte
     /// Boolean: is the generator running?
     /// </summary>
     Running,
+
+    /// <summary>
+    /// Boolean: is the generator leaking radiation?
+    /// </summary>
+    Radiating,
 }

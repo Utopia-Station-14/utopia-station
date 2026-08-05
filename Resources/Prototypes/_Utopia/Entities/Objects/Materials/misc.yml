@@ -1,0 +1,51 @@
+- type: entity
+  parent: MaterialBase
+  id: UtopiaMaterialBluespaceCrystal
+  name: bluespace crystal
+  description: Crystal of concentrated Bluespace energy. Extremely rare.
+  suffix: Full
+  components:
+  - type: PhysicalComposition
+    materialComposition:
+      BluespaceCrystal: 50
+  - type: Material
+  - type: Sprite
+    sprite: _Utopia/Objects/Materials/crystal.rsi
+    layers:
+    - state: crystal_3
+      map: [ "base" ]
+  - type: StackPrice
+    price: 200
+  - type: Appearance
+  - type: Stack
+    stackType: BluespaceCrystal
+    baseLayer: base
+    layerStates:
+    - crystal
+    - crystal
+    - crystal_2
+    - crystal_3
+    count: 3
+  - type: RandomTeleport
+  - type: RandomTeleportOnUse
+  - type: TeleportCrystal
+  - type: Item
+    size: Tiny
+    sprite: _Utopia/Objects/Materials/crystal.rsi
+  - type: Tag
+    tags:
+    - UtopiaBluespaceCrystal
+    - RawMaterial
+
+- type: entity
+  parent: UtopiaMaterialBluespaceCrystal
+  id: UtopiaMaterialBluespaceCrystal1
+  name: bluespace crystal
+  suffix: Single
+  components:
+  - type: Sprite
+    layers:
+    - state: crystal
+      map: ["base"]
+  - type: Stack
+    count: 1

@@ -89,6 +89,23 @@
 # Tier 2
 
 - type: technology
+  id: BasicGenetics
+  name: research-technology-basic-genetics
+  icon:
+    sprite: _Utopia/Objects/Specific/Medical/geneticanalyzer.rsi
+    state: icon
+  discipline: Biochemical
+  tier: 2
+  cost: 7500
+  recipeUnlocks:
+  - DnaManipulatorConsoleCircuitboard
+  - HandheldGeneticAnalyzer
+  - DNAInjector
+  position: 1,0
+  technologyPrerequisites:
+  - Virology
+
+- type: technology
   id: Cryopod
   name: research-technology-cryogenics
   icon:
@@ -117,7 +134,7 @@
   - CentrifugeMachineCircuitboard
   position: 1,1
   technologyPrerequisites:
-  - Virology
+  - BasicGenetics
 
 - type: technology
   id: Biofabrication

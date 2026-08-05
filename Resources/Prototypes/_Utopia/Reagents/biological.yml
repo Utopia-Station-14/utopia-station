@@ -1,0 +1,13 @@
+- type: reagent
+  id: Ink
+  name: reagent-name-ink
+  desc: reagent-desc-ink
+  physicalDesc: reagent-physical-desc-viscous
+  flavor: bitter
+  color: "#000000"
+  slipData:
+    requiredSlipSpeed: 3.5
+  recognizable: true
+  boilingPoint: 100.0
+  meltingPoint: 0.0
+  friction: 0.4

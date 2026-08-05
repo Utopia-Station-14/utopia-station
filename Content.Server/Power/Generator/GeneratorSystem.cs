@@ -204,7 +204,6 @@ public sealed class GeneratorSystem : SharedGeneratorSystem
         UpdateState(uid, generator);
         Dirty(uid, generator);
     }
-
     public override void Update(float frameTime)
     {
         var query = EntityQueryEnumerator<FuelGeneratorComponent, PowerSupplierComponent>();

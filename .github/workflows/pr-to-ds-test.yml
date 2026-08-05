@@ -1,0 +1,74 @@
+name: Pull Request Merged Notification
+
+on:
+  pull_request_target:
+    types: [closed]
+
+jobs:
+  notify:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord Notification
+        env:
+          MERGED_PR_WEBHOOK: ${{ secrets.MERGED_PR_WEBHOOK }}
+        run: |
+          PR_BODY=$(cat << 'EOF'
+          ${{ github.event.pull_request.body }}
+          EOF
+          )
+
+          if ! echo "$PR_BODY" | grep -q ":cl:"; then
+            echo "В описании PR отсутствует тег :cl:. Уведомление в Discord отправлено не будет."
+            exit 0
+          fi
+
+          PR_TITLE=$(cat << 'EOF'
+          ${{ github.event.pull_request.title }}
+          EOF
+          )
+
+          AUTHOR=$(cat << 'EOF'
+          ${{ github.event.pull_request.user.login }}
+          EOF
+          )
+
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          PR_NUM="${{ github.event.pull_request.number }}"
+          AVATAR="${{ github.event.pull_request.user.avatar_url }}"
+
+          CREATED_ISO="${{ github.event.pull_request.created_at }}"
+          MERGED_ISO="${{ github.event.pull_request.merged_at }}"
+
+          CREATED_DATE=$(date -d "$CREATED_ISO" +"%d.%m.%Y %H:%M")
+          MERGED_DATE=$(date -d "$MERGED_ISO" +"%d.%m.%Y %H:%M")
+
+          CHANGELOG=$(echo "$PR_BODY" | awk '/:cl:/{flag=1} flag')
+          EMBED_DESC=$(printf "%s\n\n%s" "**$PR_TITLE**" "$CHANGELOG")
+
+          PAYLOAD=$(jq -n \
+            --arg title "🟣 PR #$PR_NUM | Обновление успешно принято!" \
+            --arg url "$PR_URL" \
+            --arg desc "$EMBED_DESC" \
+            --arg author_name "$AUTHOR" \
+            --arg author_icon "$AVATAR" \
+            --arg created "📅 $CREATED_DATE" \
+            --arg merged "🏁 $MERGED_DATE" \
+            '{
+              embeds: [{
+                title: $title,
+                url: $url,
+                description: $desc,
+                color: 10181046,
+                author: {
+                  name: $author_name,
+                  icon_url: $author_icon
+                },
+                fields: [
+                  { name: "Создан", value: $created, inline: true },
+                  { name: "Принят", value: $merged, inline: true }
+                ]
+              }]
+            }')
+
+          curl -H "Content-Type: application/json" -X POST -d "$PAYLOAD" "$MERGED_PR_WEBHOOK"

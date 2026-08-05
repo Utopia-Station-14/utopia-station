@@ -1,4 +1,5 @@
 using Content.Server.Atmos.Components;
+using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Robust.Shared.Map.Components;
@@ -98,11 +99,7 @@ namespace Content.Server.Atmos.EntitySystems
                     LastShareCheck(tile);
                 }
             }
-
-            if(tile.Air != null)
-                React(tile.Air, tile);
-
-            InvalidateVisuals(ent, tile);
+            ShareZLevelAtmos(ent, tile, fireCount); // Utopia-Tweak : Z-Levels
 
             var remove = true;
 
@@ -154,6 +151,11 @@ namespace Content.Server.Atmos.EntitySystems
         {
             if (tile.Air == null || tile.Excited)
                 return;
+
+            // Utopia-Tweak : Z-Levels
+            if (tile.GridIndex != gridAtmosphere.Owner)
+                    return;
+            // Utopia-Tweak : Z-Levels
 
             tile.Excited = true;
             gridAtmosphere.ActiveTiles.Add(tile);

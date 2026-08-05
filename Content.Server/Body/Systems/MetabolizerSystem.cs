@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Server._Utopia.Genetics.Mutations.Components;
 using Content.Server.Body.Components;
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Organ;
@@ -157,6 +158,19 @@ public sealed class MetabolizerSystem : SharedMetabolizerSystem
                 continue;
 
             var mostToRemove = FixedPoint2.Zero;
+
+            // Utopia-Tweak : Genetics
+            var bodyUid = ent.Comp2?.Body ?? solutionEntityUid.Value;
+
+            if (TryComp<ChemicalResistanceComponent>(bodyUid, out var resistance) && resistance.Reagents.Contains(reagent.Prototype))
+            {
+                var removeAmount = FixedPoint2.Min(resistance.PurgeAmount, quantity);
+                solution.RemoveReagent(reagent, removeAmount);
+                reagents += 1;
+                continue;
+            }
+            // Utopia-Tweak : Genetics
+
             if (proto.Metabolisms is null)
             {
                 if (ent.Comp1.RemoveEmpty)

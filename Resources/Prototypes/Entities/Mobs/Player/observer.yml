@@ -27,11 +27,14 @@
         density: 15
         layer:
         - GhostImpassable
-  # Utopia-Tweak : Language
+  # Utopia-Tweak-start
   - type: LanguageSpeaker
     languages:
       GalacticCommon: Speak
-  # Utopia-Tweak : Language
+  - type: CEZLevelGhostMover
+  - type: CEZPhysics
+    ignoreHighGround: true
+  # Utopia-Tweak-end
 
 # shared parent between aghosts, replay spectators and normal observers
 - type: entity

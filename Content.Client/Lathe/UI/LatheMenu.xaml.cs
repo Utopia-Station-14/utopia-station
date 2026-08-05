@@ -137,7 +137,8 @@ public sealed partial class LatheMenu : DefaultWindow
         int idx = 0;
         foreach (var prototype in sortedRecipesToShow)
         {
-            var canProduce = _lathe.CanProduce(Entity, prototype, quantity, component: lathe);
+            var clampedQuantity = SharedLatheSystem.ClampProductionAmount(quantity, prototype, lathe); // Utopia-Tweak : Materials
+            var canProduce = _lathe.CanProduce(Entity, prototype, clampedQuantity, component: lathe); // Utopia-Tweak : Materials
             var tooltipFunction = () => GenerateTooltipText(prototype);
 
             if (idx >= oldChildCount)
@@ -147,6 +148,7 @@ public sealed partial class LatheMenu : DefaultWindow
                 {
                     if (!int.TryParse(AmountLineEdit.Text, out var amount) || amount <= 0)
                         amount = 1;
+                    amount = SharedLatheSystem.ClampProductionAmount(amount, prototype, lathe); // Utopia-Tweak : Materials
                     RecipeQueueAction?.Invoke(s, amount);
                 };
                 RecipeList.AddChild(control);
@@ -179,7 +181,7 @@ public sealed partial class LatheMenu : DefaultWindow
     private string GenerateTooltipText(LatheRecipePrototype prototype)
     {
         StringBuilder sb = new();
-        var multiplier = _entityManager.GetComponent<LatheComponent>(Entity).MaterialUseMultiplier;
+        var multiplier = _entityManager.GetComponent<LatheComponent>(Entity).FinalMaterialUseMultiplier; // Utopia-Tweak : Machine Parts
 
         foreach (var (id, amount) in prototype.Materials)
         {
