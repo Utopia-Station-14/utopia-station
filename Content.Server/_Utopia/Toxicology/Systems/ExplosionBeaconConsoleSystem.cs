@@ -50,12 +50,10 @@ public sealed class ExplosionBeaconConsoleSystem : SharedExplosionBeaconConsoleS
 
         var state = new ExplosionBeaconConsoleState(
             linked: true,
-            targetSlope: beacon.Comp.TargetSlope,
             targetIntensity: beacon.Comp.TargetIntensity,
             targetCurrentIntensity: beacon.Comp.TargetCurrentIntensity,
             currentAttempt: beacon.Comp.CurrentAttempt,
             maxAttempts: beacon.Comp.MaxAttempts,
-            lastSlope: beacon.Comp.LastSlope,
             lastTotalIntensity: beacon.Comp.LastTotalIntensity,
             lastCurrentIntensity: beacon.Comp.LastCurrentIntensity,
             lastPoints: beacon.Comp.LastPoints);
@@ -66,7 +64,6 @@ public sealed class ExplosionBeaconConsoleSystem : SharedExplosionBeaconConsoleS
             state);
     }
 
-    // 🔥 реакция на shared-ивенты
     protected override void OnBeaconLinked(Entity<ExplosionBeaconConsoleComponent> ent)
     {
         UpdateUserInterface(ent);

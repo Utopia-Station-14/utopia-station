@@ -192,6 +192,11 @@ namespace Content.Shared.Atmos
             // Utopia-Tweak : Gases
         };
 
+        /// <summary>
+        ///     Maximum temperature for the fire's color gradient shift
+        /// </summary>
+        public const float MaxTemperatureForFire = 10000f; // Utopia-Tweak : Toxicology
+
         #region Excited Groups
 
         /// <summary>

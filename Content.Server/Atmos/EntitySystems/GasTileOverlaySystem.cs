@@ -175,7 +175,8 @@ namespace Content.Server.Atmos.EntitySystems
 
         public GasOverlayData GetOverlayData(GasMixture? mixture)
         {
-            var data = new GasOverlayData(0, new byte[VisibleGasId.Length]);
+            byte tempByte = mixture != null ? GasOverlayData.GetTemperatureByte(mixture.Temperature) : (byte)0;
+            var data = new GasOverlayData(0, new byte[VisibleGasId.Length], tempByte);
 
             for (var i = 0; i < VisibleGasId.Length; i++)
             {
@@ -191,16 +192,13 @@ namespace Content.Server.Atmos.EntitySystems
 
                 opacity = (byte) (ContentHelpers.RoundToLevels(
                     MathHelper.Clamp01((moles - gas.GasMolesVisible) /
-                                       (gas.GasMolesVisibleMax - gas.GasMolesVisible)) * 255, byte.MaxValue,
+                                    (gas.GasMolesVisibleMax - gas.GasMolesVisible)) * 255, byte.MaxValue,
                     _thresholds) * 255 / (_thresholds - 1));
             }
 
             return data;
         }
 
-        /// <summary>
-        ///     Updates the visuals for a tile on some grid chunk. Returns true if the visuals have changed.
-        /// </summary>
         private bool UpdateChunkTile(GridAtmosphereComponent gridAtmosphere, GasOverlayChunk chunk, Vector2i index)
         {
             ref var oldData = ref chunk.TileData[chunk.GetDataIndex(index)];
@@ -214,16 +212,17 @@ namespace Content.Server.Atmos.EntitySystems
                 return true;
             }
 
+            byte tempByte = tile.Air != null ? GasOverlayData.GetTemperatureByte(tile.Air.Temperature) : (byte)0;
             var changed = false;
             if (oldData.Equals(default))
             {
                 changed = true;
-                oldData = new GasOverlayData(tile.Hotspot.State, new byte[VisibleGasId.Length]);
+                oldData = new GasOverlayData(tile.Hotspot.State, new byte[VisibleGasId.Length], tempByte);
             }
-            else if (oldData.FireState != tile.Hotspot.State)
+            else if (oldData.FireState != tile.Hotspot.State || oldData.Temperature != tempByte)
             {
                 changed = true;
-                oldData = new GasOverlayData(tile.Hotspot.State, oldData.Opacity);
+                oldData = new GasOverlayData(tile.Hotspot.State, oldData.Opacity, tempByte);
             }
 
             if (tile is {Air: not null, NoGridTile: false})

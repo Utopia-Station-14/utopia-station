@@ -97,6 +97,12 @@
   color: 1c1a1a
   reagent: Zauker
   pricePerMole: 150
+  colorGradient:
+    - "#FFEB3B"
+    - "#87CEEB"
+    - "#0000CD"
+  gradientMinTemp: 300.0
+  gradientMaxTemp: 5000.0
 
 - type: gas
   id: Halon
@@ -111,6 +117,12 @@
   color: e3574d
   reagent: Halon
   pricePerMole: 10
+  colorGradient:
+    - "#FFEB3B"
+    - "#87CEEB"
+    - "#0000CD"
+  gradientMinTemp: 300.0
+  gradientMaxTemp: 5000.0
 
 - type: gas
   id: Helium
@@ -135,3 +147,9 @@
   color: 525151
   reagent: Anti-Noblium
   pricePerMole: 150
+  colorGradient:
+    - "#FFEB3B"
+    - "#87CEEB"
+    - "#0000CD"
+  gradientMinTemp: 300.0
+  gradientMaxTemp: 5000.0

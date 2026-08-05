@@ -83,5 +83,16 @@ namespace Content.Shared.Atmos.Prototypes
 
         [DataField("pricePerMole")]
         public float PricePerMole { get; set; } = 0;
+    
+        // Utopia-Tweak : Toxicology
+        [DataField("colorGradient")]
+        public List<Color>? ColorGradient { get; private set; } = null;
+
+        [DataField("gradientMinTemp")]
+        public float GradientMinTemp { get; private set; } = 300f;
+
+        [DataField("gradientMaxTemp")]
+        public float GradientMaxTemp { get; private set; } = 5000f;
+        // Utopia-Tweak : Toxicology
     }
 }

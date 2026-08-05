@@ -1,5 +1,6 @@
 using Content.Shared._Utopia.Explosion.Events;
 using Content.Shared._Utopia.Toxicology.Components;
+using Content.Server.Research.Systems;
 using Robust.Shared.Random;
 
 namespace Content.Server._Utopia.Toxicology.Systems;
@@ -11,6 +12,7 @@ public sealed class ExplosionBeaconSystem : EntitySystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ExplosionBeaconConsoleSystem _console = default!;
+    [Dependency] private readonly ResearchSystem _server = default!;
 
     public override void Initialize()
     {
@@ -27,19 +29,17 @@ public sealed class ExplosionBeaconSystem : EntitySystem
 
     private void OnExplosionHit(Entity<ExplosionBeaconComponent> beacon, ref ExplosionPowerEvent args)
     {
-        Process(beacon, args.Slope, args.TotalIntensity, args.CurrentIntensity);
+        Process(beacon, args.TotalIntensity, args.CurrentIntensity);
         _console.UpdateConsolesForBeacon(beacon);
     }
 
-    private void Process(Entity<ExplosionBeaconComponent> beacon, float slope, float totalIntensity, float currentIntensity)
+    private void Process(Entity<ExplosionBeaconComponent> beacon, float totalIntensity, float currentIntensity)
     {
-        var slopePoints = GetPoints(slope, beacon.Comp.TargetSlope);
         var intensityPoints = GetPoints(totalIntensity, beacon.Comp.TargetIntensity);
         var currentPoints = GetPoints(currentIntensity, beacon.Comp.TargetCurrentIntensity);
 
-        var points = slopePoints + intensityPoints + currentPoints;
+        var points = intensityPoints + currentPoints;
 
-        beacon.Comp.LastSlope = slope;
         beacon.Comp.LastTotalIntensity = totalIntensity;
         beacon.Comp.LastCurrentIntensity = currentIntensity;
         beacon.Comp.LastPoints = points;
@@ -84,12 +84,12 @@ public sealed class ExplosionBeaconSystem : EntitySystem
 
         points = (int) (points * multiplier);
         beacon.Comp.LastPoints = points;
-        // TODO: передача очков на сервер РнД
+
+        _server.ModifyServerPoints(beacon, points);
     }
 
     public void RandomTargetNumbers(Entity<ExplosionBeaconComponent> beacon)
     {
-        beacon.Comp.TargetSlope = _random.Next(beacon.Comp.TargetSlopeMin, beacon.Comp.TargetSlopeMax);
         beacon.Comp.TargetIntensity = _random.Next(beacon.Comp.TargetIntensityMin, beacon.Comp.TargetIntensityMax);
         beacon.Comp.TargetCurrentIntensity = _random.Next(beacon.Comp.TargetIntensityMin, beacon.Comp.TargetIntensityMax);
     }

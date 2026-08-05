@@ -5,19 +5,17 @@ using Robust.Client.UserInterface;
 namespace Content.Client._Utopia.Toxicology.UI;
 
 [UsedImplicitly]
-public sealed class ExplosionBeaconConsoleBoundUserInterface : BoundUserInterface
+public sealed class ExplosionBeaconConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : BoundUserInterface(owner, uiKey)
 {
+    [ViewVariables]
     private ExplosionBeaconConsoleWindow? _window;
-
-    public ExplosionBeaconConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
-    {
-    }
-
     protected override void Open()
     {
         base.Open();
 
         _window = this.CreateWindow<ExplosionBeaconConsoleWindow>();
+
+        _window.OnClose += Close;
         _window.OpenCentered();
     }
 
@@ -33,7 +31,9 @@ public sealed class ExplosionBeaconConsoleBoundUserInterface : BoundUserInterfac
     {
         base.Dispose(disposing);
 
-        if (disposing)
-            _window?.Dispose();
+        if (!disposing)
+            return;
+
+        _window?.Dispose();
     }
 }

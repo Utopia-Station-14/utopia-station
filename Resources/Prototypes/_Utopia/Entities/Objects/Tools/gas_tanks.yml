@@ -1,0 +1,39 @@
+- type: entity
+  id: GasTankMixer
+  name: tank mixer
+  description: Put there something funny i dunno.
+  parent: BaseItem
+  components:
+  - type: GasTankMixerVisuals
+  - type: Sprite
+    sprite: _Utopia/Objects/Tools/gasmixer.rsi
+    layers:
+    - state: icon
+    - state: a
+      map: ["enum.GasTankMixerVisualLayers.TankA"]
+      visible: false
+    - state: b
+      map: ["enum.GasTankMixerVisualLayers.TankB"]
+      visible: false
+  - type: ContainerContainer
+    containers:
+      gas_tank_a: !type:ContainerSlot {}
+      gas_tank_b: !type:ContainerSlot {}
+  - type: ItemSlots
+    slots:
+      gas_tank_a:
+        whitelist:
+          components:
+          - GasTank
+      gas_tank_b:
+        whitelist:
+          components:
+          - GasTank
+  - type: GasTankMixer
+  - type: ActivatableUI
+    singleUser: true
+    key: enum.GasTankMixerUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.GasTankMixerUiKey.Key:
+        type: GasTankMixerBoundUserInterface

@@ -10,25 +10,16 @@ public sealed partial class ExplosionBeaconComponent : Component
     public ProtoId<SinkPortPrototype> LinkingPort = "ExplosionBeaconReceiver";
 
     [DataField]
-    public float TargetSlope;
-
-    [DataField]
     public float TargetIntensity;
 
     [DataField]
     public float TargetCurrentIntensity;
 
     [DataField]
-    public int TargetSlopeMin = 100;
+    public int TargetIntensityMin = 5;
 
     [DataField]
-    public int TargetSlopeMax = 500;
-
-    [DataField]
-    public int TargetIntensityMin = 100;
-
-    [DataField]
-    public int TargetIntensityMax = 500;
+    public int TargetIntensityMax = 100;
 
     [DataField]
     public int CurrentAttempt;
@@ -38,9 +29,6 @@ public sealed partial class ExplosionBeaconComponent : Component
 
     [DataField]
     public int MinPoints = 10;
-
-    [ViewVariables]
-    public float? LastSlope;
 
     [ViewVariables]
     public float? LastTotalIntensity;

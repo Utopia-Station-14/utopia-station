@@ -1,33 +1,136 @@
-<controls:FancyWindow xmlns="https://spacestation14.io"
-            xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
-            Title="{Loc explosion-beacon-console-window-title}"
-            MinSize="420 360">
-    <BoxContainer Orientation="Vertical" Margin="8">
-        <Label Name="StatusLabel" StyleClasses="LabelKeyText"/>
-        <Control MinHeight="8"/>
-        <Label Text="{Loc explosion-beacon-console-targets-header}" StyleClasses="LabelBig"/>
-        <GridContainer Columns="2" Margin="0 4 0 0">
-            <Label Text="{Loc explosion-beacon-console-target-slope}"/>
-            <Label Name="TargetSlopeLabel"/>
-            <Label Text="{Loc explosion-beacon-console-target-intensity}"/>
-            <Label Name="TargetIntensityLabel"/>
-            <Label Text="{Loc explosion-beacon-console-target-current-intensity}"/>
-            <Label Name="TargetCurrentIntensityLabel"/>
-        </GridContainer>
-        <Control MinHeight="12"/>
-        <Label Text="{Loc explosion-beacon-console-attempts-header}" StyleClasses="LabelBig"/>
-        <Label Name="AttemptsLabel"/>
-        <Control MinHeight="12"/>
-        <Label Text="{Loc explosion-beacon-console-last-header}" StyleClasses="LabelBig"/>
-        <GridContainer Columns="2" Margin="0 4 0 0">
-            <Label Text="{Loc explosion-beacon-console-last-slope}"/>
-            <Label Name="LastSlopeLabel"/>
-            <Label Text="{Loc explosion-beacon-console-last-intensity}"/>
-            <Label Name="LastIntensityLabel"/>
-            <Label Text="{Loc explosion-beacon-console-last-current-intensity}"/>
-            <Label Name="LastCurrentIntensityLabel"/>
-            <Label Text="{Loc explosion-beacon-console-last-points}"/>
-            <Label Name="LastPointsLabel"/>
-        </GridContainer>
-    </BoxContainer>
+<controls:FancyWindow
+        xmlns="https://spacestation14.io"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+        xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+        x:Class="Content.Client._Utopia.Toxicology.UI.ExplosionBeaconConsoleWindow"
+        SetSize="760 560"
+        MinSize="760 560">
+
+    <PanelContainer>
+        <PanelContainer.PanelOverride>
+            <gfx:StyleBoxFlat BackgroundColor="#181A20"/>
+        </PanelContainer.PanelOverride>
+
+        <BoxContainer Orientation="Vertical" Margin="12">
+
+            <!-- Header -->
+            <PanelContainer Margin="0 0 0 8" HorizontalExpand="True">
+                <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 0, 0, 15">
+                    <Label Name="TitleLabel" VerticalAlignment="Center"/>
+                </BoxContainer>
+            </PanelContainer>
+
+            <PanelContainer MinHeight="1" HorizontalExpand="True" Margin="0 0 0 10">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#2C3038"/>
+                </PanelContainer.PanelOverride>
+            </PanelContainer>
+
+            <BoxContainer Orientation="Horizontal" VerticalExpand="True">
+
+                <!-- Left: sprite in bright box + status badge -->
+                <BoxContainer Orientation="Vertical" MinWidth="210" MaxWidth="210">
+                    
+                    <PanelContainer Margin="0 10 0 16" HorizontalAlignment="Center">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#282C37" BorderColor="#3B404E" BorderThickness="1"/>
+                        </PanelContainer.PanelOverride>
+                        <TextureRect Name="BeaconSprite"
+                                     TexturePath="/Textures/Structures/Machines/rndpointsource.rsi/rndpointsource-icon.png"
+                                     Stretch="KeepAspectCentered"
+                                     HorizontalAlignment="Center"
+                                     SetSize="110 110"
+                                     Margin="12"/>
+                    </PanelContainer>
+
+                    <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 8">
+                        <PanelContainer Name="StatusBadge">
+                            <Label Name="StatusLabel" HorizontalAlignment="Center"/>
+                        </PanelContainer>
+                    </BoxContainer>
+
+                    <Control VerticalExpand="True"/>
+                </BoxContainer>
+
+                <Control MinWidth="12"/>
+
+                <PanelContainer MinWidth="1" VerticalExpand="True">
+                    <PanelContainer.PanelOverride>
+                        <gfx:StyleBoxFlat BackgroundColor="#2C3038"/>
+                    </PanelContainer.PanelOverride>
+                </PanelContainer>
+
+                <Control MinWidth="12"/>
+
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+
+                    <Label Name="TargetHeaderLabel" Margin="0 0 0 4"/>
+
+                    <PanelContainer MinHeight="1" HorizontalExpand="True" Margin="0 0 0 10">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#2C3038"/>
+                        </PanelContainer.PanelOverride>
+                    </PanelContainer>
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                        <Label Name="TargetIntensityLabel" MinWidth="250" HorizontalExpand="True"/>
+                        <Label Name="TargetIntensityValueLabel" HorizontalAlignment="Right"/>
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                        <Label Name="TargetCurrentIntensityLabel" MinWidth="250" HorizontalExpand="True"/>
+                        <Label Name="TargetCurrentIntensityValueLabel" HorizontalAlignment="Right"/>
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Vertical" Margin="0 12 0 0">
+                        <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                            <Label Name="AttemptsLabel" HorizontalExpand="True"/>
+                            <Label Name="AttemptsValueLabel" HorizontalAlignment="Right"/>
+                        </BoxContainer>
+                        <PanelContainer Name="AttemptsBorder">
+                            <PanelContainer.PanelOverride>
+                                <gfx:StyleBoxFlat BackgroundColor="#12141A" BorderColor="#2C3038" BorderThickness="2"/>
+                            </PanelContainer.PanelOverride>
+                            <ProgressBar Name="AttemptsBar" MinValue="0" MaxValue="1" MinHeight="20"/>
+                        </PanelContainer>
+                    </BoxContainer>
+
+                    <Label Name="LastHeaderLabel" Margin="0 16 0 4"/>
+
+                    <PanelContainer MinHeight="1" HorizontalExpand="True" Margin="0 0 0 10">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#2C3038"/>
+                        </PanelContainer.PanelOverride>
+                    </PanelContainer>
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                        <Label Name="LastIntensityLabel" MinWidth="250" HorizontalExpand="True"/>
+                        <Label Name="LastIntensityValueLabel" HorizontalAlignment="Right"/>
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                        <Label Name="LastCurrentIntensityLabel" MinWidth="250" HorizontalExpand="True"/>
+                        <Label Name="LastCurrentIntensityValueLabel" HorizontalAlignment="Right"/>
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                        <Label Name="LastPointsLabel" MinWidth="250" HorizontalExpand="True"/>
+                        <Label Name="LastPointsValueLabel" HorizontalAlignment="Right"/>
+                    </BoxContainer>
+
+                    <Control VerticalExpand="True"/>
+                </BoxContainer>
+            </BoxContainer>
+
+            <BoxContainer Orientation="Vertical">
+                <PanelContainer StyleClasses="LowDivider" />
+                <BoxContainer Orientation="Horizontal" Margin="10 2 5 0" VerticalAlignment="Bottom">
+                    <Label Text="{Loc 'explosion-beacon-console-hint'}" StyleClasses="WindowFooterText" />
+                    <Label Text="{Loc 'explosion-beacon-console-joke'}" StyleClasses="WindowFooterText"
+                            HorizontalAlignment="Right" HorizontalExpand="True" Margin="0 0 5 0" />
+                </BoxContainer>
+            </BoxContainer>
+        </BoxContainer>
+    </PanelContainer>
 </controls:FancyWindow>

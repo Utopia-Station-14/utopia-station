@@ -85,7 +85,6 @@ public abstract class SharedExplosionBeaconConsoleSystem : EntitySystem
         OnBeaconUnlinked(ent);
     }
 
-    // 🔥 hooks для сервера
     protected virtual void OnBeaconLinked(Entity<ExplosionBeaconConsoleComponent> ent) { }
     protected virtual void OnBeaconUnlinked(Entity<ExplosionBeaconConsoleComponent> ent) { }
 

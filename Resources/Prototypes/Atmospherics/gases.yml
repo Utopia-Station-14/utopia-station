@@ -39,6 +39,20 @@
   color: FF3300
   reagent: Plasma
   pricePerMole: 0
+  colorGradient:
+  - "#FF2800"
+  - "#FF4700"
+  - "#FF6C00"
+  - "#FF9600"
+  - "#FFC800"
+  - "#FFF000"
+  - "#FFFF90"
+  - "#FFFFFF"
+  - "#F0FDFF"
+  - "#C6F6FF"
+  - "#8AE7FF"
+  gradientMinTemp: 300.0
+  gradientMaxTemp: 5000.0
 
 - type: gas
   id: Tritium
@@ -51,6 +65,19 @@
   color: 13FF4B
   reagent: Tritium
   pricePerMole: 2.5
+  colorGradient:
+  - "#00FF40"
+  - "#40FF40"
+  - "#8DFF3A"
+  - "#D8FF2A"
+  - "#FFF240"
+  - "#FFFFFF"
+  - "#E8FFFF"
+  - "#B5F5FF"
+  - "#6FE3FF"
+  - "#2BCFFF"
+  gradientMinTemp: 300.0
+  gradientMaxTemp: 5000.0
 
 - type: gas
   id: WaterVapor

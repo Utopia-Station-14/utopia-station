@@ -1,0 +1,32 @@
+<DefaultWindow xmlns="https://spacestation14.io"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               Title="{Loc 'gas-tank-mixer-window-title'}"
+               MinSize="320 230"
+               SetSize="320 230">
+    <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="8">
+        
+        <BoxContainer Orientation="Horizontal" SeparationOverride="16">
+            
+            <BoxContainer Orientation="Vertical" SeparationOverride="4">
+                <Label Name="StatusLabelA" />
+                <Button Name="EjectAButton" Text="{Loc 'gas-tank-mixer-eject-a'}" />
+            </BoxContainer>
+            
+            <BoxContainer Orientation="Vertical" SeparationOverride="4">
+                <Label Name="StatusLabelB" />
+                <Button Name="EjectBButton" Text="{Loc 'gas-tank-mixer-eject-b'}" />
+            </BoxContainer>
+        </BoxContainer>
+
+        <Label Name="TimerLabel" />
+
+        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+            <Label Text="{Loc 'gas-tank-mixer-timer-label'}" />
+            <LineEdit Name="TimeInput" PlaceHolder="{Loc 'gas-tank-mixer-timer-placeholder'}" HorizontalExpand="True" />
+            <Button Name="SetTimeButton" Text="{Loc 'gas-tank-mixer-set-time'}" />
+        </BoxContainer>
+
+        <Button Name="StartButton" Text="{Loc 'gas-tank-mixer-start'}" />
+        
+    </BoxContainer>
+</DefaultWindow>
