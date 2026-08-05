@@ -1,0 +1,83 @@
+- type: polymorph
+  id: GeneticMonkeyMorph
+  configuration:
+    entity: MobMonkey
+    forced: true
+    duration: null
+    transferDamage: true
+    transferName: true
+    allowRepeatedMorphs: true
+    inventory: Drop
+    revertOnCrit: false
+    revertOnDeath: false
+    revertOnEat: false
+
+- type: polymorph
+  id: GeneticKoboldMorph
+  configuration:
+    entity: MobKobold
+    forced: true
+    duration: null
+    transferDamage: true
+    transferName: true
+    allowRepeatedMorphs: true
+    inventory: Drop
+    revertOnCrit: false
+    revertOnDeath: false
+    revertOnEat: false
+
+- type: polymorph
+  id: GeneticFleshJaredMorph
+  configuration:
+    entity: UtopiaPolyFleshJared
+    forced: true
+    duration: null
+    transferDamage: true
+    transferName: true
+    allowRepeatedMorphs: true
+    inventory: Drop
+    revertOnCrit: false
+    revertOnDeath: false
+    revertOnEat: false
+
+- type: polymorph
+  id: GeneticFleshGolemMorph
+  configuration:
+    entity: UtopiaPolyFleshGolem
+    forced: true
+    duration: null
+    transferDamage: true
+    transferName: true
+    allowRepeatedMorphs: true
+    inventory: Drop
+    revertOnCrit: false
+    revertOnDeath: false
+    revertOnEat: false
+
+- type: polymorph
+  id: GeneticFleshClampMorph
+  configuration:
+    entity: UtopiaPolyFleshClamp
+    forced: true
+    duration: null
+    transferDamage: true
+    transferName: true
+    allowRepeatedMorphs: true
+    inventory: Drop
+    revertOnCrit: false
+    revertOnDeath: false
+    revertOnEat: false
+
+- type: polymorph
+  id: GeneticFleshLoverMorph
+  configuration:
+    entity: UtopiaPolyFleshLover
+    forced: true
+    duration: null
+    transferDamage: true
+    transferName: true
+    allowRepeatedMorphs: true
+    inventory: Drop
+    revertOnCrit: false
+    revertOnDeath: false
+    revertOnEat: false

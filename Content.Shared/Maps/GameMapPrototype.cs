@@ -44,6 +44,26 @@ public sealed partial class GameMapPrototype : IPrototype
     [DataField(required: true)]
     public ResPath MapPath { get; private set; } = default!;
 
+    /// <summary>
+    /// CrystallEdge: Additional maps loaded below the main map (at negative depth levels).
+    /// Each map in the list is loaded at depth -N, -N+1, ..., -1, with <see cref="MapPath"/> at depth 0.
+    /// </summary>
+    [DataField, Obsolete("ZMapping usage preferred")]
+    public List<ResPath> MapsBelow = new();
+
+    /// <summary>
+    /// CrystallEdge: additional maps loaded above the main map (at positive depth levels).
+    /// Each map in the list is loaded at depth 1, 2, ..., N. <see cref="MapPath"/> works as depth 0.
+    /// </summary>
+    [DataField, Obsolete("ZMapping usage preferred")]
+    public List<ResPath> MapsAbove = new();
+
+    /// <summary>
+    /// CrystallEdge: ability to setup shared components for all zLevels
+    /// </summary>
+    [DataField]
+    public ComponentRegistry ZLevelsComponentOverrides = new();
+
     [DataField("stations", required: true)]
     private Dictionary<string, StationConfig> _stations = new();
 
@@ -51,6 +71,12 @@ public sealed partial class GameMapPrototype : IPrototype
     /// The stations this map contains. The names should match with the BecomesStation components.
     /// </summary>
     public IReadOnlyDictionary<string, StationConfig> Stations => _stations;
+
+    /// <summary>
+    /// Utopia-Tweak: Является ли эта карта многоэтажной
+    /// </summary>
+    [DataField]
+    public bool ZMap = false;
 
     /// <summary>
     /// Performs a shallow clone of this map prototype, replacing <c>MapPath</c> with the argument.

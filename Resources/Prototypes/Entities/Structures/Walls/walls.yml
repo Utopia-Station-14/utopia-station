@@ -55,6 +55,11 @@
     resistance: 2
   - type: BlockWeather
   - type: SunShadowCast
+  # Utopia-Tweak-start: Z-levels
+  - type: CEZPhysics
+  - type: CEZLevelHighGround
+    fixtureId: fix1
+  # Utopia-Tweak-end
 
 - type: entity
   abstract: true

@@ -17,11 +17,41 @@
                 </Control>
                 <!-- Power -->
                 <Label Text="{Loc 'portable-generator-ui-target-power-label'}"/>
-                <SpinBox Name="TargetPower" HorizontalExpand="True"/>
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                    <Slider Name="TargetPowerSlider"
+                            MinValue="0"
+                            MaxValue="100"
+                            Value="0"
+                            Rounded="True"
+                            HorizontalExpand="True"/>
+                    <Label Name="TargetPowerLabel"
+                           Margin="4 0 0 0"
+                           MinWidth="32"
+                           Text="0"/>
+                </BoxContainer>
                 <Label Text="{Loc 'portable-generator-ui-efficiency-label'}"/>
                 <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
                     <Label Name="Efficiency" Text="???%" />
                     <Label Name="Eta" HorizontalExpand="True" Margin="4 0 0 0" />
+                </BoxContainer>
+                <!-- Utopia-Tweak : PACMAN-updt -->
+                <Label Name="TemperatureLabel"
+                    Text="{Loc 'portable-generator-ui-temperature-label'}"
+                    Visible="False"/>
+                <BoxContainer Name="TemperatureContainer"
+                              Orientation="Horizontal"
+                              HorizontalExpand="True"
+                              Visible="False">
+                    <ProgressBar Name="TemperatureBar"
+                                MinValue="0"
+                                MaxValue="150"
+                                Value="0"
+                                HorizontalExpand="True"/>
+                    <Label Name="TemperatureValue"
+                           Margin="4 0 0 0"
+                           MinWidth="48"
+                           Text="0 °C"/>
+                <!-- Utopia-Tweak : PACMAN-updt -->
                 </BoxContainer>
                 <Label Text="{Loc 'portable-generator-ui-fuel-use-label'}"/>
                 <ProgressBar Name="FuelFraction" MinValue="0" MaxValue="1" HorizontalExpand="True"/>

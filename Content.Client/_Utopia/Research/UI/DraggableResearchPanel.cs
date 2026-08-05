@@ -8,32 +8,31 @@ namespace Content.Client._Utopia.Research.UI;
 
 public sealed partial class DraggablePanel : LayoutContainer
 {
-    public DraggablePanel() { }
-
     protected override void Draw(DrawingHandleScreen handle)
     {
-        foreach (var child in Children)
-        {
-            if (child is not ResearchConsoleItem item)
-                continue;
+        var children = Children.OfType<ResearchConsoleItem>().ToList();
+        if (children.Count == 0)
+            return;
 
+        var itemById = children.ToDictionary(x => x.Prototype.ID);
+
+        foreach (var item in children)
+        {
             if (item.Prototype.TechnologyPrerequisites.Count <= 0)
                 continue;
 
-            var list = Children.Where(x => x is ResearchConsoleItem second
-            && item.Prototype.TechnologyPrerequisites.Contains(second.Prototype.ID));
-
             var lineColor = GetRefinedConnectionColor(item);
 
-            foreach (var second in list)
+            foreach (var requiredId in item.Prototype.TechnologyPrerequisites)
             {
+                if (!itemById.TryGetValue(requiredId, out var second))
+                    continue;
 
                 var startCoords = new Vector2(item.PixelPosition.X + item.PixelWidth / 2, item.PixelPosition.Y + item.PixelHeight / 2);
                 var endCoords = new Vector2(second.PixelPosition.X + second.PixelWidth / 2, second.PixelPosition.Y + second.PixelHeight / 2);
 
                 if (second.PixelPosition.Y != item.PixelPosition.Y)
                 {
-
                     handle.DrawLine(startCoords, new(endCoords.X, startCoords.Y), lineColor);
                     handle.DrawLine(new(endCoords.X, startCoords.Y), endCoords, lineColor);
                 }

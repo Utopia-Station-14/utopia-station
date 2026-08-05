@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-NC-SA-3.0",
-  "copyright": "sprites by M1and1B and Unlumy",
+  "copyright": "sprites by M1and1B and Unlumy, bluespace ore by firemix_ inhand created by HTMLSystem",
   "size": {
     "x": 32,
     "y": 32
@@ -27,6 +27,17 @@
       },
       {
         "name": "lead-inhand-left",
+        "directions": 4
+      },
+      {
+        "name": "bluespace"
+      },
+      {
+        "name": "bluespace-inhand-right",
+        "directions": 4
+      },
+      {
+        "name": "bluespace-inhand-left",
         "directions": 4
       }
   ]

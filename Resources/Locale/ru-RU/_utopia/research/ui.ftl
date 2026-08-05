@@ -3,6 +3,8 @@ research-console-menu-recenter-button = Центрировать
 research-console-menu-server-researched-button = Изучено
 research-console-tech-cost-label = { $cost } О.И.
 research-console-tier-percentage = : { $perc }%
+research-console-required-text = Требуется исследовать:
+research-console-no-tech-requirements = Для исследования ничего не требуется.
 
 research-console-flavor-left = Расположение исследования не гарантирует его полезность.
 research-console-flavor-right = 2.0

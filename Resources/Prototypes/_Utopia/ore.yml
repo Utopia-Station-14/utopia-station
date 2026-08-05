@@ -9,3 +9,9 @@
   oreEntity: UtopiaLeadOre1
   minOreYield: 1
   maxOreYield: 2
+
+- type: ore
+  id: UtopiaOreBluespace
+  oreEntity: UtopiaBluespaceCrystalOre1
+  minOreYield: 1
+  maxOreYield: 1

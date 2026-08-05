@@ -370,6 +370,20 @@ public abstract partial class SharedStaminaSystem : EntitySystem
                 continue;
             }
 
+            // Utopia-Tweak : Genetics
+            if (comp.ActiveDrains.Count > 0)
+            {
+                foreach (var (source, (drainRate, _)) in comp.ActiveDrains)
+                {
+                    TakeStaminaDamage(uid,
+                    drainRate * frameTime,
+                    comp,
+                    source: source,
+                    visual: false);
+                }
+            }
+            // Utopia-Tweak : Genetics
+
             // Shouldn't need to consider paused time as we're only iterating non-paused stamina components.
             var nextUpdate = comp.NextUpdate;
 
@@ -382,10 +396,15 @@ public abstract partial class SharedStaminaSystem : EntitySystem
 
             comp.NextUpdate += TimeSpan.FromSeconds(1f);
 
-            TakeStaminaDamage(
-                uid,
-                comp.AfterCritical ? -comp.Decay * comp.AfterCritDecayMultiplier : -comp.Decay, // Recover faster after crit
-                comp);
+            // Utopia-Tweak : Genetics
+            if (comp.ActiveDrains.Count == 0)
+            {
+                TakeStaminaDamage(
+                    uid,
+                    comp.AfterCritical ? -comp.Decay * comp.AfterCritDecayMultiplier : -comp.Decay, // Recover faster after crit
+                    comp);
+            }
+            // Utopia-Tweak : Genetics
 
             Dirty(uid, comp);
         }
@@ -456,6 +475,28 @@ public abstract partial class SharedStaminaSystem : EntitySystem
 
         _movementMod.TryUpdateMovementStatus(ent.Owner, status.Value, ent.Comp.StunModifierThresholds[closest]);
     }
+
+    // Utopia-Tweak : Genetics
+    public void ToggleStaminaDrain(EntityUid target, float drainRate, bool enabled, bool modifiesSpeed, EntityUid? source = null)
+    {
+        if (!TryComp<StaminaComponent>(target, out var stamina))
+            return;
+
+        var actualSource = source ?? target;
+
+        if (enabled)
+        {
+            stamina.ActiveDrains[actualSource] = (drainRate, modifiesSpeed);
+            EnsureComp<ActiveStaminaComponent>(target);
+        }
+        else
+        {
+            stamina.ActiveDrains.Remove(actualSource);
+        }
+
+        Dirty(target, stamina);
+    }
+    // Utopia-Tweak : Genetics
 
     [Serializable, NetSerializable]
     public sealed class StaminaAnimationEvent(NetEntity entity) : EntityEventArgs

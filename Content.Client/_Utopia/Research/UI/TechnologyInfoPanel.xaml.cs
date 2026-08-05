@@ -1,3 +1,5 @@
+using Content.Client.Research;
+using Content.Client.Research.UI;
 using Content.Client.Lathe;
 using Content.Shared._Utopia.Research;
 using Content.Shared.Research.Prototypes;
@@ -19,6 +21,7 @@ public sealed partial class TechnologyInfoPanel : Control
 
     public TechnologyPrototype Prototype;
     public Action<TechnologyPrototype>? BuyAction;
+
     public TechnologyInfoPanel(TechnologyPrototype proto, SpriteSystem sprite, bool hasAccess, ResearchAvailablity availablity)
     {
         RobustXamlLoader.Load(this);
@@ -27,10 +30,22 @@ public sealed partial class TechnologyInfoPanel : Control
         Prototype = proto;
 
         _lathe = _ent.System<LatheSystem>();
+        var research = _ent.System<ResearchSystem>();
 
         TechnologyNameLabel.Text = Loc.GetString(proto.Name);
         DisciplineTexture.Texture = sprite.Frame0(_proto.Index(proto.Discipline).Icon);
         TechnologyTexture.Texture = sprite.Frame0(proto.Icon);
+
+        NoPrereqLabel.Visible = proto.TechnologyPrerequisites.Count == 0;
+        PrereqsContainer.Visible = !NoPrereqLabel.Visible;
+
+        RequiredTechContainer.RemoveAllChildren();
+        foreach (var techId in proto.TechnologyPrerequisites)
+        {
+            var tech = _proto.Index(techId);
+            var description = research.GetTechnologyDescription(tech, true, false, true);
+            RequiredTechContainer.AddChild(new MiniTechnologyCardControl(tech, _proto, sprite, description));
+        }
 
         UnlocksContainer.DisposeAllChildren();
         foreach (var item in proto.RecipeUnlocks)
@@ -41,7 +56,9 @@ public sealed partial class TechnologyInfoPanel : Control
         }
 
         if (!hasAccess)
+        {
             ResearchButton.ToolTip = Loc.GetString("research-console-no-access-popup");
+        }
 
         Color? color = null;
         switch (availablity)

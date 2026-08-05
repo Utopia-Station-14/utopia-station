@@ -93,6 +93,12 @@
         },
         {
             "name": "storageFourway"
+        },
+        {
+            "name": "pipeUp"
+        },
+        {
+            "name": "pipeDown"
         }
     ]
 }

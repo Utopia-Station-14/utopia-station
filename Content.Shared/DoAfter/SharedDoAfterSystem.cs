@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Content.Shared._Utopia.Genetics.Mutations.Components;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
@@ -218,6 +219,15 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
         }
 
         id = new DoAfterId(args.User, comp.NextId++);
+
+        // Utopia-Tweak : Genetics
+        if (TryComp<MutationDoAfterModifierComponent>(args.User, out var modComp))
+        {
+            var newSeconds = args.Delay.TotalSeconds * modComp.Multiplier;
+            args.Delay = TimeSpan.FromSeconds(newSeconds);
+        }
+        // Utopia-Tweak : Genetics
+
         var doAfter = new DoAfter(id.Value.Index, args, GameTiming.CurTime);
 
         // Networking yay

@@ -96,6 +96,27 @@
       minGroupSize: 1
       maxGroupSize: 1
 
+    # Utopia-Tweak : Ores
+    - !type:OreDunGen
+      replacement: IronRock
+      entity: UtopiaIronRockCopper
+      count: 35
+      minGroupSize: 1
+      maxGroupSize: 2
+    - !type:OreDunGen
+      replacement: IronRock
+      entity: UtopiaIronRockLead
+      count: 40
+      minGroupSize: 1
+      maxGroupSize: 2
+    - !type:OreDunGen
+      replacement: IronRock
+      entity: UtopiaIronRockBluespace
+      count: 15
+      minGroupSize: 1
+      maxGroupSize: 2
+    # Utopia-Tweak : Ores
+
 # Configs
 - type: dungeonConfig
   id: VGRoidBlob

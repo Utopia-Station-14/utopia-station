@@ -53,6 +53,12 @@
     MeteorRockUranium: 0.5
     MeteorRockBananium: 0.5
 
+    # Utopia-Tweak : Ores
+    UtopiaMeteorRockCopper: 2
+    UtopiaMeteorRockLead: 5
+    UtopiaMeteorRockBluespace: 0.5
+    # Utopia-Tweak : Ores
+
 # Event Schedulers
 
 - type: entity

@@ -390,6 +390,13 @@ namespace Content.IntegrationTests.Tests
                 "LoadedChunk", // Worldgen chunk loading malding.
                 "BiomeSelection", // Whaddya know, requires config.
                 "ActivatableUI", // Requires enum key
+
+                // Utopia-Tweak : ZLevels
+                "GridMotion",
+                "CEZLevelsNetwork",
+                "CEZLevelMap",
+                "GridMotionLink",
+                // Utopia-Tweak : ZLevels
             };
 
             await using var pair = await PoolManager.GetServerClient();

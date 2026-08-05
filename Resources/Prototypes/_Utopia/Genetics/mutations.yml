@@ -1,0 +1,1170 @@
+- type: geneticMutation
+  id: CowboyAccent
+  name: mutation-name-cowboy-accent
+  desc: mutation-desc-cowboy-accent
+  instability: 0
+  conflicts:
+    - ItalianAccent
+    - LiarAccent
+  components:
+  - type: ReplacementAccent
+    accent: cowboy
+
+- type: geneticMutation
+  id: SouthernAccent
+  name: mutation-name-southern-accent
+  desc: mutation-desc-southern-accent
+  instability: 0
+  components:
+  - type: SouthernAccent
+
+- type: geneticMutation
+  id: PirateAccent
+  name: mutation-name-pirate-accent
+  desc: mutation-desc-pirate-accent
+  instability: 0
+  components:
+  - type: PirateAccent
+
+- type: geneticMutation
+  id: GermanAccent
+  name: mutation-name-german-accent
+  desc: mutation-desc-german-accent
+  instability: 0
+  components:
+  - type: GermanAccent
+
+- type: geneticMutation
+  id: ItalianAccent
+  name: mutation-name-italian-accent
+  desc: mutation-desc-italian-accent
+  instability: 0
+  conflicts:
+    - CowboyAccent
+    - LiarAccent
+  components:
+  - type: ReplacementAccent
+    accent: italian
+
+- type: geneticMutation
+  id: FrenchAccent
+  name: mutation-name-french-accent
+  desc: mutation-desc-french-accent
+  instability: 0
+  components:
+  - type: FrenchAccent
+
+- type: geneticMutation
+  id: SpanishAccent
+  name: mutation-name-spanish-accent
+  desc: mutation-desc-spanish-accent
+  instability: 0
+  components:
+  - type: SpanishAccent
+
+- type: geneticMutation
+  id: LiarAccent
+  name: mutation-name-liar-accent
+  desc: mutation-desc-liar-accent
+  instability: 0
+  conflicts:
+    - CowboyAccent
+    - ItalianAccent
+  components:
+  - type: ReplacementAccent
+    accent: liar
+
+- type: geneticMutation
+  id: RussianAccent
+  name: mutation-name-russian-accent
+  desc: mutation-desc-russian-accent
+  instability: 0
+  components:
+  - type: RussianAccent
+
+- type: geneticMutation
+  id: SocialAnxiety
+  name: mutation-name-social-anxiety
+  desc: mutation-desc-social-anxiety
+  instability: 0
+  components:
+  - type: StutteringAccent
+    matchRandomProb: 0.1
+    fourRandomProb: 0
+    threeRandomProb: 0
+    cutRandomProb: 0
+
+- type: geneticMutation
+  id: FrontalLisp
+  name: mutation-name-frontal-lisp
+  desc: mutation-desc-frontal-lisp
+  instability: 0
+  components:
+  - type: FrontalLisp
+
+- type: geneticMutation
+  id: Snoring
+  name: mutation-name-snoring
+  desc: mutation-desc-snoring
+  instability: 0
+  components:
+  - type: Snoring
+
+- type: geneticMutation
+  id: Paracusia
+  name: mutation-name-paracusia
+  desc: mutation-desc-paracusia
+  instability: 0
+  components:
+  - type: Paracusia
+    minTimeBetweenIncidents: 0.1
+    maxTimeBetweenIncidents: 300
+    maxSoundDistance: 7
+    sounds:
+      collection: Paracusia
+
+- type: geneticMutation
+  id: ApianHoneyGlands
+  name: mutation-name-apian-honey-glands
+  desc: mutation-desc-apian-honey-glands
+  popupText: mutation-popup-apian-honey-glands
+  instability: 5
+  components:
+  - type: MutationChronicReagentVomit
+    reagent: Sugar
+    minAmount: 8
+    maxAmount: 18
+    minInterval: 90
+    maxInterval: 240
+    chance: 0.75
+
+- type: geneticMutation
+  id: MothStomach
+  name: mutation-name-moth-stomach
+  desc: mutation-desc-moth-stomach
+  popupText: mutation-popup-moth-stomach
+  instability: 0
+  entityWhitelist:
+    - MobMoth
+    - BaseMobMoth
+  conflicts:
+    - ReptilianStomach
+    - CarnivoreStomach
+    - HumanStomach
+  components:
+  - type: MutationStomachSwap
+    newStomachPrototype: OrganMothStomach
+
+- type: geneticMutation
+  id: ReptilianStomach
+  name: mutation-name-reptilian-stomach
+  desc: mutation-desc-reptilian-stomach
+  popupText: mutation-popup-reptilian-stomach
+  instability: 0
+  entityWhitelist:
+    - MobReptilian
+    - BaseMobReptilian
+  conflicts:
+    - MothStomach
+    - CarnivoreStomach
+    - HumanStomach
+  components:
+  - type: MutationStomachSwap
+    newStomachPrototype: OrganReptilianStomach
+
+- type: geneticMutation
+  id: CarnivoreStomach
+  name: mutation-name-carnivore-stomach
+  desc: mutation-desc-carnivore-stomach
+  popupText: mutation-popup-carnivore-stomach
+  instability: 0
+  entityWhitelist:
+    - BaseMobVulpkanin
+    - MobFelinidBase
+  conflicts:
+    - MothStomach
+    - ReptilianStomach
+    - HumanStomach
+  components:
+  - type: MutationStomachSwap
+    newStomachPrototype: OrganVulpkaninStomach
+
+- type: geneticMutation
+  id: HumanStomach
+  name: mutation-name-human-stomach
+  desc: mutation-desc-human-stomach
+  popupText: mutation-popup-human-stomach
+  instability: 0
+  entityWhitelist:
+    - MobHuman
+    - BaseMobHuman
+  conflicts:
+    - MothStomach
+    - ReptilianStomach
+    - CarnivoreStomach
+  components:
+  - type: MutationStomachSwap
+    newStomachPrototype: OrganHumanStomach
+
+- type: geneticMutation
+  id: NitrogenBreathingMutation
+  name: mutation-name-nitrogen-breathing
+  desc: mutation-desc-nitrogen-breathing
+  popupText: mutation-popup-nitrogen-breathing
+  instability: 0
+  entityWhitelist:
+    - MobVox
+    - BaseMobVox
+  conflicts:
+    - PhoronBreathingMutation
+  components:
+  - type: MutationLungSwap
+    newLungPrototype: OrganVoxLungs
+
+- type: geneticMutation
+  id: PhoronBreathingMutation
+  name: mutation-name-phoron-breathing
+  desc: mutation-desc-phoron-breathing
+  popupText: mutation-popup-phoron-breathing
+  instability: 0
+  probabilityWeight: 5
+  conflicts:
+    - NitrogenBreathingMutation
+  components:
+  - type: MutationLungSwap
+    newLungPrototype: UtopiaOrganPhoronLungs
+
+- type: geneticMutation
+  id: AlcoholImmunity
+  name: mutation-name-alcohol-immunity
+  desc: mutation-desc-alcohol-immunity
+  popupText: mutation-popup-alcohol-immunity
+  instability: 0
+  conflicts:
+    - AcidResistance
+    - PhoronImmunity
+    - GeneralToxinResistance
+    - NeurotoxinResistance
+    - RadiationToxinResistance
+    - MutationMedicineImmunity
+  components:
+  - type: ChemicalResistance
+    reagents:
+      - Ethanol
+
+- type: geneticMutation
+  id: AcidResistance
+  name: mutation-name-acid-resistance
+  desc: mutation-desc-acid-resistance
+  popupText: mutation-popup-acid-resistance
+  instability: 8
+  conflicts:
+    - AlcoholImmunity
+    - PhoronImmunity
+    - GeneralToxinResistance
+    - NeurotoxinResistance
+    - RadiationToxinResistance
+    - MutationMedicineImmunity
+  components:
+  - type: ChemicalResistance
+    reagents:
+      - SulfuricAcid
+      - FluorosulfuricAcid
+      - PolytrinicAcid
+
+- type: geneticMutation
+  id: PhoronImmunity
+  name: mutation-name-phoron-immunity
+  desc: mutation-desc-phoron-immunity
+  popupText: mutation-popup-phoron-immunity
+  instability: 5
+  conflicts:
+    - AlcoholImmunity
+    - AcidResistance
+    - GeneralToxinResistance
+    - NeurotoxinResistance
+    - RadiationToxinResistance
+    - MutationMedicineImmunity
+  components:
+  - type: ChemicalResistance
+    reagents:
+      - Plasma
+
+- type: geneticMutation
+  id: GeneralToxinResistance
+  name: mutation-name-general-toxin-resistance
+  desc: mutation-desc-general-toxin-resistance
+  popupText: mutation-popup-general-toxin-resistance
+  instability: 15
+  conflicts:
+    - AlcoholImmunity
+    - AcidResistance
+    - PhoronImmunity
+    - NeurotoxinResistance
+    - RadiationToxinResistance
+    - MutationMedicineImmunity
+  components:
+  - type: ChemicalResistance
+    reagents:
+      - Toxin
+      - CarpoToxin
+      - ChloralHydrate
+      - Lexorin
+      - Histamine
+      - Amatoxin
+      - Bungotoxin
+
+- type: geneticMutation
+  id: NeurotoxinResistance
+  name: mutation-name-neurotoxin-resistance
+  desc: mutation-desc-neurotoxin-resistance
+  popupText: mutation-popup-neurotoxin-resistance
+  instability: 10
+  conflicts:
+    - AlcoholImmunity
+    - AcidResistance
+    - PhoronImmunity
+    - GeneralToxinResistance
+    - RadiationToxinResistance
+    - MutationMedicineImmunity
+  components:
+  - type: ChemicalResistance
+    reagents:
+      - MindbreakerToxin
+      - Vestine
+      - Pax
+
+- type: geneticMutation
+  id: RadiationToxinResistance
+  name: mutation-name-radiation-toxin-resistance
+  desc: mutation-desc-radiation-toxin-resistance
+  popupText: mutation-popup-radiation-toxin-resistance
+  mutadoneResistant: true
+  instability: 5
+  conflicts:
+    - AlcoholImmunity
+    - AcidResistance
+    - PhoronImmunity
+    - GeneralToxinResistance
+    - NeurotoxinResistance
+    - MutationMedicineImmunity
+  components:
+  - type: ChemicalResistance
+    reagents:
+      - UnstableMutagen
+
+- type: geneticMutation
+  id: ChitinoarmisDurescutis
+  name: mutation-name-chitinoarmis-durescutis
+  desc: mutation-desc-chitinoarmis-durescutis
+  popupText: mutation-popup-chitinoarmis-durescutis
+  instability: 12
+  conflicts:
+    - KeratinHyperplasia
+    - OssifiedExoskeleton
+    - CrystallineDermalLattice
+    - AblativeCuticle
+    - ComprehensiveDermalFortification
+  components:
+  - type: MutationPassiveArmorProvider
+    modifierSetId: ChitinoarmisDurescutisArmor
+
+- type: geneticMutation
+  id: KeratinHyperplasia
+  name: mutation-name-keratin-hyperplasia
+  desc: mutation-desc-keratin-hyperplasia
+  popupText: mutation-popup-keratin-hyperplasia
+  instability: 14
+  conflicts:
+    - ChitinoarmisDurescutis
+    - OssifiedExoskeleton
+    - CrystallineDermalLattice
+    - AblativeCuticle
+    - ComprehensiveDermalFortification
+  components:
+  - type: MutationPassiveArmorProvider
+    modifierSetId: KeratinHyperplasiaArmor
+
+- type: geneticMutation
+  id: OssifiedExoskeleton
+  name: mutation-name-ossified-exoskeleton
+  desc: mutation-desc-ossified-exoskeleton
+  popupText: mutation-popup-ossified-exoskeleton
+  instability: 18
+  conflicts:
+    - ChitinoarmisDurescutis
+    - KeratinHyperplasia
+    - CrystallineDermalLattice
+    - AblativeCuticle
+    - ComprehensiveDermalFortification
+  components:
+  - type: MutationPassiveArmorProvider
+    modifierSetId: OssifiedExoskeletonArmor
+
+- type: geneticMutation
+  id: CrystallineDermalLattice
+  name: mutation-name-crystalline-dermal-lattice
+  desc: mutation-desc-crystalline-dermal-lattice
+  popupText: mutation-popup-crystalline-dermal-lattice
+  hidden: true
+  researchPoints: 1600
+  instability: 18
+  conflicts:
+    - ChitinoarmisDurescutis
+    - KeratinHyperplasia
+    - OssifiedExoskeleton
+    - AblativeCuticle
+    - ComprehensiveDermalFortification
+  components:
+  - type: MutationPassiveArmorProvider
+    modifierSetId: CrystallineDermalLatticeArmor
+
+- type: geneticMutation
+  id: AblativeCuticle
+  name: mutation-name-ablative-cuticle
+  desc: mutation-desc-ablative-cuticle
+  popupText: mutation-popup-ablative-cuticle
+  hidden: true
+  researchPoints: 1600
+  instability: 18
+  conflicts:
+    - ChitinoarmisDurescutis
+    - KeratinHyperplasia
+    - OssifiedExoskeleton
+    - CrystallineDermalLattice
+    - ComprehensiveDermalFortification
+  components:
+  - type: MutationPassiveArmorProvider
+    modifierSetId: AblativeCuticleArmor
+
+- type: geneticMutation
+  id: ComprehensiveDermalFortification
+  name: mutation-name-comprehensive-dermal-fortification
+  desc: mutation-desc-comprehensive-dermal-fortification
+  popupText: mutation-popup-comprehensive-dermal-fortification
+  hidden: true
+  researchPoints: 3000
+  instability: 24
+  conflicts:
+    - ChitinoarmisDurescutis
+    - KeratinHyperplasia
+    - OssifiedExoskeleton
+    - CrystallineDermalLattice
+    - AblativeCuticle
+  components:
+  - type: MutationPassiveArmorProvider
+    modifierSetId: ComprehensiveDermalFortificationArmor
+
+- type: geneticMutation
+  id: ColdResistance
+  name: mutation-name-cold-resistance
+  desc: mutation-desc-cold-resistance
+  conflicts:
+    - FireResistance
+    - ThermalResistance
+  instability: 10
+  components:
+  - type: MutationThermalResistance
+    coolingCoefficient: 0.5
+
+- type: geneticMutation
+  id: FireResistance
+  name: mutation-name-fire-resistance
+  desc: mutation-desc-fire-resistance
+  conflicts:
+    - ColdResistance
+    - ThermalResistance
+  instability: 10
+  components:
+  - type: MutationThermalResistance
+    heatingCoefficient: 0.5
+  - type: FireProtection
+    reduction: 0.5
+
+- type: geneticMutation
+  id: ThermalResistance
+  name: mutation-name-thermal-resistance
+  desc: mutation-desc-thermal-resistance
+  conflicts:
+    - ColdResistance
+    - FireResistance
+  hidden: true
+  researchPoints: 2500
+  instability: 15
+  components:
+  - type: MutationThermalResistance
+    heatingCoefficient: 0.6
+    coolingCoefficient: 0.6
+  - type: FireProtection
+    reduction: 0.5
+
+- type: geneticMutation
+  id: HemopoiesisOverdrive
+  name: mutation-name-hemopoiesis-overdrive
+  desc: mutation-desc-hemopoiesis-overdrive
+  popupText: mutation-popup-hemopoiesis-overdrive
+  instability: 12
+  components:
+  - type: MutationBloodRegeneration
+    regenRatePerSecond: 1
+    targetPercentage: .75
+
+- type: geneticMutation
+  id: MetaNeuralAntenna
+  name: mutation-name-meta-neural-antenna
+  desc: mutation-desc-meta-neural-antenna
+  popupText: mutation-popup-meta-neural-antenna
+  instability: 5
+  components:
+  - type: MutationRadio
+    radioChannels:
+    - Common
+
+- type: geneticMutation
+  id: MusculatureEnhancement
+  name: mutation-name-musculature-enhancement
+  desc: mutation-desc-musculature-enhancement
+  popupText: mutation-popup-musculature-enhancement
+  instability: 10
+  components:
+  - type: BonusMeleeDamage
+    heavyDamageMultiplier: 1.4
+  - type: MutationPullStrengthModifier
+    multiplier: 1.03
+
+- type: geneticMutation
+  id: EnhancedPhysicalConditioning
+  name: mutation-name-enhanced-physical-conditioning
+  desc: mutation-desc-enhanced-physical-conditioning
+  popupText: mutation-popup-enhanced-physical-conditioning
+  instability: 10
+  components:
+  - type: MutationIncreaseStaminaCritThreshold
+    thresholdBonus: 30
+
+- type: geneticMutation
+  id: RadiationResistance
+  name: mutation-name-radiation-resistance
+  desc: mutation-desc-radiation-resistance
+  popupText: mutation-popup-radiation-resistance
+  instability: 25
+  sequencerResistant: true
+  scrambleResistant: true
+  probabilityWeight: 5
+  researchPoints: 900
+  components:
+  - type: MutationRadiationResistance
+    modifier: RadiationResistance
+
+- type: geneticMutation
+  id: Regeneration
+  name: mutation-name-regeneration
+  desc: mutation-desc-regeneration
+  popupText: mutation-popup-regeneration
+  conflicts:
+    - MinorRegeneration
+  probabilityWeight: 2.5
+  researchPoints: 4000
+  instability: 35
+  components:
+  - type: MutationRegeneration
+    healAmount: 1
+    interval: 3
+
+- type: geneticMutation
+  id: Insulated
+  name: mutation-name-insulated
+  desc: mutation-desc-insulated
+  popupText: mutation-popup-insulated
+  instability: 15
+  components:
+  - type: Insulated
+
+- type: geneticMutation
+  id: AdaptiveIridophores
+  name: mutation-name-adaptive-iridophores
+  desc: mutation-desc-adaptive-iridophores
+  popupText: mutation-popup-adaptive-iridophores
+  instability: 30
+  entityWhitelist:
+  - MobReptilian
+  - MobKobold
+  probabilityWeight: 6
+  researchPoints: 2500
+  components:
+  - type: Stealth
+    enabledOnDeath: false
+  - type: StealthOnMove
+    passiveVisibilityRate: -0.14
+    movementVisibilityRate: 1
+
+- type: geneticMutation
+  id: NoSlip
+  name: mutation-name-no-slip
+  desc: mutation-desc-no-slip
+  popupText: mutation-popup-no-slip
+  instability: 10
+  components:
+  - type: NoSlip
+
+- type: geneticMutation
+  id: AdrenalHypersecretion
+  name: mutation-name-adrenal-hypersecretion
+  desc: mutation-desc-adrenal-hypersecretion
+  popupText: mutation-popup-adrenal-hypersecretion
+  instability: 20
+  probabilityWeight: 6
+  researchPoints: 1800
+  components:
+  - type: MutationSpeedBoost
+    walkMultiplier: 1.2
+    sprintMultiplier: 1.2
+
+- type: geneticMutation
+  id: MitochondrialEfficiencyEnhancement
+  name: mutation-name-mitochondrial-efficiency-enhancement
+  desc: mutation-desc-mitochondrial-efficiency-enhancement
+  popupText: mutation-popup-mitochondrial-efficiency-enhancement
+  instability: 15
+  components:
+  - type: MutationStaminaRegenerationBoost
+    regenBonus: 1.5
+  - type: StaminaResistance
+    damageCoefficient: 0.7
+    worn: false
+
+- type: geneticMutation
+  id: PressureResistance
+  name: mutation-name-pressure-resistance
+  desc: mutation-desc-pressure-resistance
+  popupText: mutation-popup-pressure-resistance
+  instability: 15
+  components:
+  - type: PressureImmunity
+
+- type: geneticMutation
+  id: MinorRegeneration
+  name: mutation-name-minor-regeneration
+  desc: mutation-desc-minor-regeneration
+  popupText: mutation-popup-minor-regeneration
+  conflicts:
+    - Regeneration
+  instability: 15
+  components:
+  - type: MutationRegeneration
+    healAmount: 0.1
+    interval: 5
+
+- type: geneticMutation
+  id: PhotoreceptorDesensitization
+  name: mutation-name-photoreceptor-desensitization
+  desc: mutation-desc-photoreceptor-desensitization
+  popupText: mutation-popup-photoreceptor-desensitization
+  instability: 18
+  components:
+  - type: FlashImmunity
+
+- type: geneticMutation
+  id: QuickReflexes
+  name: mutation-name-quick-reflexes
+  desc: mutation-desc-quick-reflexes
+  popupText: mutation-popup-quick-reflexes
+  instability: 18
+  probabilityWeight: 5
+  researchPoints: 1200
+  components:
+  - type: MutationDoAfterModifier
+    multiplier: 0.75
+
+- type: geneticMutation
+  id: MutationMedicineImmunity
+  name: mutation-name-mutation-medicine-immunity
+  desc: mutation-desc-mutation-medicine-immunity
+  mutadoneResistant: true
+  probabilityWeight: 4
+  researchPoints: 1200
+  instability: 15
+  conflicts:
+    - AlcoholImmunity
+    - AcidResistance
+    - PhoronImmunity
+    - GeneralToxinResistance
+    - NeurotoxinResistance
+    - RadiationToxinResistance
+  components:
+  - type: ChemicalResistance
+    reagents:
+      - Mutadone
+
+- type: geneticMutation
+  id: SevereMyopia
+  name: mutation-name-severe-myopia
+  desc: mutation-desc-severe-myopia
+  popupText: mutation-popup-severe-myopia
+  instability: -10
+  components:
+  - type: PermanentBlindness
+    blindness: 4
+
+- type: geneticMutation
+  id: Blindness
+  name: mutation-name-blindness
+  desc: mutation-desc-blindness
+  popupText: mutation-popup-blindness
+  instability: -20
+  components:
+  - type: PermanentBlindness
+
+- type: geneticMutation
+  id: Unrevivable
+  name: mutation-name-unrevivable
+  desc: mutation-desc-unrevivable
+  popupText: mutation-popup-unrevivable
+  instability: -20
+  components:
+  - type: Unrevivable
+
+- type: geneticMutation
+  id: BloodToxification
+  name: mutation-name-blood-toxification
+  desc: mutation-desc-blood-toxification
+  popupText: mutation-popup-blood-toxification
+  instability: -15
+  components:
+  - type: MutationBloodToxification
+    interval: 5.0
+    chance: 0.25
+    toxinAmount: 1.0
+
+- type: geneticMutation
+  id: ChronicCough
+  name: mutation-name-chronic-cough
+  desc: mutation-desc-chronic-cough
+  instability: -5
+  components:
+  - type: MutationChronicEmote
+    interval: 60.0
+    emoteChance: 0.4
+    dropChance: 0.25
+    emoteId: "Cough"
+
+- type: geneticMutation
+  id: Dyspraxia
+  name: mutation-name-dyspraxia
+  desc: mutation-desc-dyspraxia
+  popupText: mutation-popup-dyspraxia
+  instability: -10
+  components:
+  - type: Clumsy
+
+- type: geneticMutation
+  id: FrontalGyrusSuspension
+  name: mutation-name-frontal-gyrus-suspension
+  desc: mutation-desc-frontal-gyrus-suspension
+  popupText: mutation-popup-frontal-gyrus-suspension
+  instability: -5
+  components:
+  - type: Muted
+
+- type: geneticMutation
+  id: Pacifist
+  name: mutation-name-pacifist
+  desc: mutation-desc-pacifist
+  popupText: mutation-popup-pacifist
+  instability: -10
+  components:
+  - type: Pacified
+
+- type: geneticMutation
+  id: Narcolepsy
+  name: mutation-name-narcolepsy
+  desc: mutation-desc-narcolepsy
+  popupText: mutation-popup-narcolepsy
+  instability: -5
+  components:
+  - type: Narcolepsy
+    maxTimeBetweenIncidents: 600
+    minTimeBetweenIncidents: 300
+    maxDurationOfIncident: 30
+    minDurationOfIncident: 10
+
+- type: geneticMutation
+  id: Radioactive
+  name: mutation-name-radioactive
+  desc: mutation-desc-radioactive
+  popupText: mutation-popup-radioactive
+  instability: 15
+  components:
+  - type: RadiationSource
+
+- type: geneticMutation
+  id: Paranoia
+  name: mutation-name-paranoia
+  desc: mutation-desc-paranoia
+  instability: 0
+  components:
+  - type: MutationParanoia
+    interval: 20.0
+    emoteChance: 0.6
+
+- type: geneticMutation
+  id: PhysicallyUnfit
+  name: mutation-name-physically-unfit
+  desc: mutation-desc-physically-unfit
+  popupText: mutation-popup-physically-unfit
+  instability: -5
+  components:
+  - type: MutationIncreaseStaminaCritThreshold
+    thresholdBonus: -30
+
+- type: geneticMutation
+  id: SpatialDestabilization
+  name: mutation-name-spatial-destabilization
+  desc: mutation-desc-spatial-destabilization
+  popupText: mutation-popup-spatial-destabilization
+  instability: 20
+  probabilityWeight: 12
+  components:
+  - type: MutationSpatialDestabilization
+    minInterval: 45
+    maxInterval: 120
+    teleportRadius: 8
+    teleportAttempts: 10
+    sound:
+      path: /Audio/Effects/teleport_departure.ogg
+
+- type: geneticMutation
+  id: Stupefaction
+  name: mutation-name-stupefaction
+  desc: mutation-desc-stupefaction
+  popupText: mutation-popup-stupefaction
+  instability: -10
+  probabilityWeight: 12
+  mutadoneResistant: true
+  components:
+  - type: MutationStupefaction
+    minInterval: 90
+    maxInterval: 240
+    drainAmount: 999
+
+- type: geneticMutation
+  id: MusculatureAtrophy
+  name: mutation-name-musculature-atrophy
+  desc: mutation-desc-musculature-atrophy
+  popupText: mutation-popup-musculature-atrophy
+  instability: -5
+  conflicts:
+    - MusculatureEnhancement
+  components:
+  - type: BonusMeleeDamage
+    heavyDamageMultiplier: 0.7
+  - type: MutationPullStrengthModifier
+    multiplier: 0.97
+
+- type: geneticMutation
+  id: ReducedPhysicalConditioning
+  name: mutation-name-reduced-physical-conditioning
+  desc: mutation-desc-reduced-physical-conditioning
+  popupText: mutation-popup-reduced-physical-conditioning
+  instability: -5
+  conflicts:
+    - EnhancedPhysicalConditioning
+  components:
+  - type: MutationIncreaseStaminaCritThreshold
+    thresholdBonus: -30
+
+- type: geneticMutation
+  id: AdrenalHyposecretion
+  name: mutation-name-adrenal-hyposecretion
+  desc: mutation-desc-adrenal-hyposecretion
+  popupText: mutation-popup-adrenal-hyposecretion
+  instability: -10
+  conflicts:
+    - AdrenalHypersecretion
+  components:
+  - type: MutationSpeedBoost
+    walkMultiplier: 0.85
+    sprintMultiplier: 0.85
+
+- type: geneticMutation
+  id: MitochondrialInefficiency
+  name: mutation-name-mitochondrial-inefficiency
+  desc: mutation-desc-mitochondrial-inefficiency
+  popupText: mutation-popup-mitochondrial-inefficiency
+  instability: -5
+  conflicts:
+    - MitochondrialEfficiencyEnhancement
+  components:
+  - type: MutationStaminaRegenerationBoost
+    regenBonus: 0.5
+  - type: StaminaResistance
+    damageCoefficient: 1.4
+    worn: false
+
+- type: geneticMutation
+  id: CerebellarDysmetria
+  name: mutation-name-cerebellar-dysmetria
+  desc: mutation-desc-cerebellar-dysmetria
+  popupText: mutation-popup-cerebellar-dysmetria
+  instability: -10
+  conflicts:
+    - NeuralHyperkinesis
+  components:
+  - type: MutationDoAfterModifier
+    multiplier: 1.45
+
+- type: geneticMutation
+  id: BioluminescentGlands
+  name: mutation-name-bioluminescent-glands
+  desc: mutation-desc-bioluminescent-glands
+  popupText: mutation-popup-bioluminescent-glands
+  instability: 0
+  probabilityWeight: 15
+  components:
+  - type: PointLight
+    enabled: true
+    color: "#66FFFF"
+    radius: 5
+    energy: 0.5
+
+- type: geneticMutation
+  id: VulpkaninTailMutation
+  name: mutation-name-vulpkanin-tail-mutation
+  desc: mutation-desc-vulpkanin-tail-mutation
+  popupText: mutation-popup-vulpkanin-tail-mutation
+  instability: 5
+  researchPoints: 600
+  strictEntityWhitelist:
+    - BaseMobSpeciesOrganic
+  conflicts:
+    - ReptilianTailMutation
+  components:
+  - type: MutationTailSwap
+    newTailMarking: VulpTail
+
+- type: geneticMutation
+  id: ReptilianTailMutation
+  name: mutation-name-reptilian-tail-mutation
+  desc: mutation-desc-reptilian-tail-mutation
+  popupText: mutation-popup-reptilian-tail-mutation
+  instability: 5
+  researchPoints: 600
+  strictEntityWhitelist:
+    - BaseMobSpeciesOrganic
+  conflicts:
+    - VulpkaninTailMutation
+  components:
+  - type: MutationTailSwap
+    newTailMarking: LizardTailSmooth
+
+- type: geneticMutation
+  id: SpiderWeb
+  name: mutation-name-spider-web
+  desc: mutation-desc-spider-web
+  popupText: mutation-popup-spider-web
+  researchPoints: 600
+  instability: 12
+  conflicts:
+    - ClownSpiderWeb
+  components:
+  - type: Spider
+  - type: IgnoreSpiderWeb
+
+- type: geneticMutation
+  id: ClownSpiderWeb
+  name: mutation-name-clown-spider-web
+  desc: mutation-desc-clown-spider-web
+  popupText: mutation-popup-clown-spider-web
+  researchPoints: 3000
+  hidden: true
+  instability: 18
+  conflicts:
+    - SpiderWeb
+  components:
+  - type: Spider
+    webPrototype: SpiderWebClown
+  - type: IgnoreSpiderWeb
+
+- type: geneticMutation
+  id: OvipositionGlands
+  name: mutation-name-oviposition-glands
+  desc: mutation-desc-oviposition-glands
+  popupText: mutation-popup-oviposition-glands
+  instability: 10
+  probabilityWeight: 7
+  researchPoints: 800
+  components:
+  - type: EggLayer
+    eggSpawn:
+    - proto: UtopiaFoodEggMystery
+      amount: 1
+
+- type: geneticMutation
+  id: Firebreath
+  name: mutation-name-firebreath
+  desc: mutation-desc-firebreath
+  popupText: mutation-popup-firebreath
+  instability: 25
+  entityWhitelist:
+    - BaseMobReptilian
+    - MobBaseKobold
+  probabilityWeight: 3
+  researchPoints: 2500
+  components:
+  - type: MutationFirebreath
+
+- type: geneticMutation
+  id: AdrenalineRush
+  name: mutation-name-adrenaline-rush
+  desc: mutation-desc-adrenaline-rush
+  popupText: mutation-popup-adrenaline-rush
+  instability: 20
+  probabilityWeight: 5
+  researchPoints: 950
+  components:
+  - type: MutationAdrenalineRush
+    actionId: ActionAdrenalineRush
+
+- type: geneticMutation
+  id: Cryokinesis
+  name: mutation-name-cryokinesis
+  desc: mutation-desc-cryokinesis
+  popupText: mutation-popup-cryokinesis
+  instability: 15
+  probabilityWeight: 2
+  researchPoints: 1000
+  components:
+  - type: MutationCryokinesis
+
+- type: geneticMutation
+  id: InkGlands
+  name: mutation-name-ink-glands
+  desc: mutation-desc-ink-glands
+  popupText: mutation-popup-ink-glands
+  instability: 8
+  probabilityWeight: 8
+  researchPoints: 600
+  components:
+  - type: MutationInkGlands
+    actionId: ActionInkSpurt
+
+- type: geneticMutation
+  id: OpticEnergizer
+  name: mutation-name-optic-energizer
+  desc: mutation-desc-optic-energizer
+  popupText: mutation-popup-optic-energizer
+  instability: 15
+  probabilityWeight: 5
+  researchPoints: 1200
+  components:
+  - type: MutationOpticEnergizer
+    actionId: ActionOpticBlast
+
+- type: geneticMutation
+  id: TrichochromaticShift
+  name: mutation-name-trichochromatic-shift
+  desc: mutation-desc-trichochromatic-shift
+  popupText: mutation-popup-trichochromatic-shift
+  instability: 6
+  probabilityWeight: 9
+  researchPoints: 700
+  components:
+  - type: MutationTrichochromaticShift
+    actionId: ActionTrichochromaticShift
+
+- type: geneticMutation
+  id: GeneticMonkeyMorph
+  name: mutation-name-genetic-monkey-morph
+  desc: mutation-desc-genetic-monkey-morph
+  popupText: mutation-popup-genetic-monkey-morph
+  researchPoints: 6000
+  scrambleResistant: true
+  instability: 20
+  strictEntityWhitelist:
+    - BaseMobHuman
+  components:
+  - type: MutationPolymorph
+    polymorphId: GeneticMonkeyMorph
+
+- type: geneticMutation
+  id: GeneticKoboldMorph
+  name: mutation-name-genetic-kobold-morph
+  desc: mutation-desc-genetic-kobold-morph
+  popupText: mutation-popup-genetic-kobold-morph
+  hidden: true
+  researchPoints: 6000
+  scrambleResistant: true
+  instability: 20
+  strictEntityWhitelist:
+    - BaseMobReptilian
+  components:
+  - type: MutationPolymorph
+    polymorphId: GeneticKoboldMorph
+
+- type: geneticMutation
+  id: FleshJaredCurse
+  name: mutation-name-flesh-jared-curse
+  desc: mutation-desc-flesh-jared-curse
+  popupText: mutation-popup-flesh-jared-curse
+  hidden: true
+  researchPoints: 6000
+  instabilityMutation: true
+  mutadoneResistant: true
+  sequencerResistant: true
+  scrambleResistant: true
+  printable: false
+  instability: 10
+  components:
+  - type: MutationInstabilityPolymorph
+    polymorphId: GeneticFleshJaredMorph
+
+- type: geneticMutation
+  id: FleshGolemCurse
+  name: mutation-name-flesh-golem-curse
+  desc: mutation-desc-flesh-golem-curse
+  popupText: mutation-popup-flesh-golem-curse
+  hidden: true
+  researchPoints: 6000
+  instabilityMutation: true
+  mutadoneResistant: true
+  sequencerResistant: true
+  scrambleResistant: true
+  printable: false
+  instability: 20
+  components:
+  - type: MutationInstabilityPolymorph
+    polymorphId: GeneticFleshGolemMorph
+
+- type: geneticMutation
+  id: FleshClampCurse
+  name: mutation-name-flesh-clamp-curse
+  desc: mutation-desc-flesh-clamp-curse
+  popupText: mutation-popup-flesh-clamp-curse
+  hidden: true
+  researchPoints: 6000
+  instabilityMutation: true
+  mutadoneResistant: true
+  sequencerResistant: true
+  scrambleResistant: true
+  printable: false
+  instability: 10
+  components:
+  - type: MutationInstabilityPolymorph
+    polymorphId: GeneticFleshClampMorph
+
+- type: geneticMutation
+  id: FleshLoverCurse
+  name: mutation-name-flesh-lover-curse
+  desc: mutation-desc-flesh-lover-curse
+  popupText: mutation-popup-flesh-lover-curse
+  researchPoints: 6000
+  hidden: true
+  instabilityMutation: true
+  mutadoneResistant: true
+  sequencerResistant: true
+  scrambleResistant: true
+  printable: false
+  instability: 10
+  components:
+  - type: MutationInstabilityPolymorph
+    polymorphId: GeneticFleshLoverMorph

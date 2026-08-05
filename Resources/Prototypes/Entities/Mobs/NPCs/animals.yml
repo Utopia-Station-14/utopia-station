@@ -81,6 +81,12 @@
   - type: Tag
     tags:
     - VimPilot
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: NightVision
+      chance: 0.5
+  # Utopia-Tweak : Genetics
 
 - type: entity
   name: bee
@@ -167,6 +173,12 @@
       behaviors:
       - !type:GibBehavior
         recursive: false
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: ApianHoneyGlands
+      chance: 0.5
+  # Utopia-Tweak : Genetics
 
 - type: entity
   name: bee
@@ -197,7 +209,12 @@
       - ReagentId: Blood
         Quantity: 0.1
   - type: ZombieImmune
-
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: OvipositionGlands
+      chance: 0.5
+  # Utopia-Tweak : Genetics
 
 - type: entity
   name: chicken
@@ -454,6 +471,13 @@
     damage:
       types:
         Piercing: 0
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: RadiationResistance
+      chance: 0.8
+      startActive: 0.8
+  # Utopia-Tweak : Genetics
 
 - type: entity
   name: glockroach
@@ -735,6 +759,12 @@
   - type: NpcFactionMember
     factions:
     - Passive
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: OvipositionGlands
+      chance: 0.5
+  # Utopia-Tweak : Genetics
 
 - type: entity
   name: white duck #Quack
@@ -1022,6 +1052,12 @@
       task: RuminantCompound
   - type: Body
     prototype: AnimalHemocyanin
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: ChitinoarmisDurescutis
+      chance: 0.5
+  # Utopia-Tweak : Genetics
 
 - type: entity
   name: goat
@@ -1177,6 +1213,12 @@
   - type: NpcFactionMember
     factions:
     - Passive
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: OvipositionGlands
+      chance: 0.5
+  # Utopia-Tweak : Genetics
 
 - type: entity
   name: gorilla
@@ -1257,6 +1299,12 @@
       0: Alive
       200: Critical
       250: Dead
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: MusculatureEnhancement
+      chance: 0.5
+  # Utopia-Tweak : Genetics
 
 - type: entity
   name: kangaroo
@@ -1341,6 +1389,13 @@
   - type: HTN
     rootTask:
       task: SimpleHostileCompound
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    mutationSlots: 4
+    baseMutations:
+    - id: StoragePouch
+      chance: 0.5
+  # Utopia-Tweak : Genetics
 
 - type: entity
   name: boxing kangaroo
@@ -1471,7 +1526,10 @@
       - !type:WashCreamPie
   - type: Crawler
   - type: StatusIcon
-
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    mutationSlots: 8
+  # Utopia-Tweak : Genetics
 
 
 - type: entity

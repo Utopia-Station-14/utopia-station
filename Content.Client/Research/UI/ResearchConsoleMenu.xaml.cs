@@ -51,6 +51,9 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
     private Vector2 _position = new Vector2(45, 250);
     private bool _draggin;
 
+    private readonly Dictionary<ProtoId<TechDisciplinePrototype>, DisciplineButton> _disciplineButtons = new();
+    private IReadOnlyList<TechDisciplinePrototype> _sortedDisciplines = Array.Empty<TechDisciplinePrototype>();
+
     public ResearchConsoleMenu()
     {
         RobustXamlLoader.Load(this);
@@ -86,41 +89,28 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
 
     public void UpdatePanels(ResearchConsoleBoundInterfaceState state)
     {
-        DragContainer.DisposeAllChildren();
-        DisciplinesContainer.DisposeAllChildren();
         List = state.Researches;
         _localState = state;
+
+        EnsureDisciplineButtons();
 
         if (state.CurrentDiscipline != CurrentDiscipline)
         {
             CurrentDiscipline = state.CurrentDiscipline;
         }
 
-        var disciplines = _prototype.EnumeratePrototypes<TechDisciplinePrototype>()
-            .ToList()
-            .OrderBy(x => x.Name);
-
-        foreach (var proto in disciplines)
+        foreach (var (disciplineId, button) in _disciplineButtons)
         {
-            var discipline = new DisciplineButton(proto)
-            {
-                ToggleMode = true,
-                HorizontalExpand = true,
-                VerticalExpand = true,
-                Text = Loc.GetString(proto.Name),
-                Margin = new(2)
-            };
+            var pressed = disciplineId == CurrentDiscipline;
+            button.SetClickPressed(pressed);
 
-            discipline.SetClickPressed(proto.ID == CurrentDiscipline);
-            DisciplinesContainer.AddChild(discipline);
-
-            if (proto.ID == CurrentDiscipline)
+            if (pressed)
             {
-                _parallaxControl.ModulateSelfOverride = proto.Color;
+                _parallaxControl.ModulateSelfOverride = button.Proto.Color;
             }
-
-            discipline.OnPressed += SelectDiscipline;
         }
+
+        DragContainer.DisposeAllChildren();
 
         foreach (var tech in _prototype.EnumeratePrototypes<TechnologyPrototype>().Where(x => x.Discipline == CurrentDiscipline))
         {
@@ -137,6 +127,33 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
             {
                 SelectTech(tech, List[tech.ID]);
             }
+        }
+    }
+
+    private void EnsureDisciplineButtons()
+    {
+        if (_disciplineButtons.Count > 0)
+            return;
+
+        _sortedDisciplines = _prototype.EnumeratePrototypes<TechDisciplinePrototype>()
+            .OrderBy(x => x.Name)
+            .ToList();
+
+        foreach (var proto in _sortedDisciplines)
+        {
+            var discipline = new DisciplineButton(proto)
+            {
+                ToggleMode = true,
+                HorizontalExpand = true,
+                VerticalExpand = true,
+                MuteSounds = true,
+                Text = Loc.GetString(proto.Name),
+                Margin = new(2)
+            };
+
+            discipline.OnPressed += SelectDiscipline;
+            _disciplineButtons[proto.ID] = discipline;
+            DisciplinesContainer.AddChild(discipline);
         }
     }
 
@@ -235,7 +252,6 @@ public sealed partial class ResearchConsoleMenu : FancyWindow
             return;
 
         var proto = discipline.Proto;
-
         CurrentDiscipline = proto.ID;
 
         discipline.SetClickPressed(false);
