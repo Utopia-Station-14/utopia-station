@@ -109,7 +109,8 @@
       "directions": 4
     },
     {
-      "name": "panel_open"
+      "name": "panel_open",
+      "directions": 4
     },
     {
       "name": "opening",
