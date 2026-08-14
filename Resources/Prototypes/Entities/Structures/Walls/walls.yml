@@ -623,7 +623,6 @@
         node: girder
       - !type:DoActsBehavior
         acts: ["Destruction"]
-    base: reinf_over
   - type: Appearance
   - type: GenericVisualizer
     visuals:
