@@ -271,12 +271,10 @@
       - Wall
   - type: Sprite
     sprite: Structures/Walls/debugwall.rsi
-    layers:
-    - state: wall-0
+    state: wall-0
   - type: Icon
     sprite: Structures/Walls/debugwall.rsi
-    layers:
-    - state: wall-0
+    state: wall-0
   - type: Destructible
     thresholds:
     - trigger:
@@ -625,7 +623,6 @@
         node: girder
       - !type:DoActsBehavior
         acts: ["Destruction"]
-    base: reinf_over
   - type: Appearance
   - type: GenericVisualizer
     visuals:
