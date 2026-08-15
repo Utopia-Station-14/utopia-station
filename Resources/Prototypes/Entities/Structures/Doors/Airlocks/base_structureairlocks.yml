@@ -7,8 +7,6 @@
   - type: Anchorable
     flags:
     - Anchorable
-  - type: Rotatable
-    increment: 90
   - type: StationAiWhitelist
   - type: MeleeSound
     soundGroups:
