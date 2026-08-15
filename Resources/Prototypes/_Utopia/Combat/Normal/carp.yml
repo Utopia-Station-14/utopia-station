@@ -1,0 +1,55 @@
+- type: combatMove
+  id: Keelhaul
+  actionsNeeds:
+    - Grab
+    - Hit
+  comboEvent:
+    - !type:ComboEffectToStanding
+      comboEvents:
+      - !type:ComboDamageEffect
+        damage:
+          types:
+            Blunt: 10
+      - !type:ComboStaminaDamageEffect
+        staminaDamage: 60
+      - !type:ComboThrowTargetEffect
+        thrownSpeed: 20
+      - !type:ComboStunEffect
+        stunTime: 6
+        fall: true
+        dropItems: false
+    - !type:ComboEffectToDowned
+      comboEvents:
+      - !type:ComboDamageEffect
+        damage:
+          types:
+            Blunt: 5
+      - !type:ComboStaminaDamageEffect
+        staminaDamage: 40
+    - !type:ComboStopGrabEffect
+
+- type: combatMove
+  id: CrashingWaves
+  actionsNeeds:
+    - Disarm
+    - Hit
+  comboEvent:
+    - !type:ComboDamageEffect
+      damage:
+        types:
+          Blunt: 15
+    - !type:ComboThrowTargetEffect
+      thrownSpeed: 25
+    - !type:ComboFallEffect
+      dropItems: false
+
+- type: combatMove
+  id: Teeth
+  actionsNeeds:
+    - Hit
+    - Hit
+  comboEvent:
+    - !type:ComboDamageEffect
+      damage:
+        types:
+          Slash: 20

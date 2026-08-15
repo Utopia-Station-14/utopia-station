@@ -2354,3 +2354,23 @@
   - !type:BuyerJobCondition
     whitelist:
     - Lawyer
+
+- type: listing
+  id: UplinkCQCManual
+  name: uplink-cqc-manual-name
+  description: uplink-cqc-manual-desc
+  productEntity: CQCManual
+  cost:
+    Telecrystal: 12
+  categories:
+  - UplinkWeaponry
+
+- type: listing
+  id: UplinkSleepingCarpScroll
+  name: uplink-sleeping-carp-scroll-name
+  description: uplink-sleeping-carp-scroll-desc
+  productEntity: SleepingCarpScroll
+  cost:
+    Telecrystal: 18
+  categories:
+  - UplinkWeaponry

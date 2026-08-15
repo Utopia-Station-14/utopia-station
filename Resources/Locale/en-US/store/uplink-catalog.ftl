@@ -508,3 +508,9 @@ uplink-briefcase-gun-desc = An indistinct briefcase with a highly compact C-20K 
 
 uplink-energycrossbow-name = Mini Energy Crossbow
 uplink-energycrossbow-desc = The go-to sidearm of any operative who prefers their victims not to be moving. Fires regenerating toxic arrows that floors victims in an instant.
+
+uplink-cqc-manual-name = CQC Manual
+uplink-cqc-manual-desc = An ancient manuscript revealing the secrets of close-quarters combat. Contains four powerful techniques for the experienced fighter.
+
+uplink-sleeping-carp-scroll-name = Scroll of the Sleeping Carp
+uplink-sleeping-carp-scroll-desc = A mystical scroll with martial arts techniques of the sleeping carp style. Teaches three special moves and grants the ability to reflect any projectile. Also increases unarmed melee damage.
