@@ -7,7 +7,6 @@
   - type: Anchorable
     flags:
     - Anchorable
-  - type: Rotatable
   - type: StationAiWhitelist
   - type: MeleeSound
     soundGroups:
@@ -178,6 +177,11 @@
       # This tag is used to nagivate the Airlock construction graph. It's needed because the construction graph is shared between Airlock, AirlockGlass, and HighSecDoor
   - type: PryUnpowered
   - type: BlockWeather
+  ## Utopia-tweak
+  - type: IconSmooth
+    key: walls
+    mode: NoSprite
+  ## Utopia-tweak
   - type: GuideHelp
     guides:
     - Airlocks

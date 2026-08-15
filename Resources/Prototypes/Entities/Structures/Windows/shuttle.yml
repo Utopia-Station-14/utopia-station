@@ -5,9 +5,11 @@
   components:
   - type: Sprite
     drawdepth: WallTops
-    sprite: Structures/Windows/shuttle_window.rsi
+    sprite: Structures/Windows/window.rsi
+    state: wall-0
   - type: Icon
-    sprite: Structures/Windows/shuttle_window.rsi
+    sprite: Structures/Windows/window.rsi
+    state: wall-0
   - type: Repairable
     fuelCost: 15
     doAfterDelay: 3
@@ -39,8 +41,6 @@
             max: 2
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
-  - type: IconSmooth
-    base: swindow
   - type: Construction
     graph: Window
     node: shuttleWindow

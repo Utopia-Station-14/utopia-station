@@ -270,13 +270,16 @@
   name: debug wall
   suffix: DEBUG
   components:
+  - type: Appearance
   - type: Tag
     tags:
       - Wall
   - type: Sprite
-    sprite: Structures/Walls/debug.rsi
+    sprite: Structures/Walls/debugwall.rsi
+    state: wall-0
   - type: Icon
-    sprite: Structures/Walls/debug.rsi
+    sprite: Structures/Walls/debugwall.rsi
+    state: wall-0
   - type: Destructible
     thresholds:
     - trigger:
@@ -290,9 +293,7 @@
             max: 1
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
-  - type: IconSmooth
-    key: walls
-    base: debug
+  - type: WallConnect
 
 - type: entity
   parent: BaseWall
@@ -594,10 +595,11 @@
   name: reinforced wall
   components:
   - type: Sprite
-    sprite: Structures/Walls/solid.rsi
+    sprite: Structures/Walls/solid_reinforced.rsi
+    state: wall-0
   - type: Icon
-    sprite: Structures/Walls/solid.rsi
-    state: rgeneric
+    sprite: Structures/Walls/solid_reinforced.rsi
+    state: wall-0
   - type: Construction
     graph: Girder
     node: reinforcedWall
@@ -626,9 +628,6 @@
         node: girder
       - !type:DoActsBehavior
         acts: ["Destruction"]
-  - type: IconSmooth
-    key: walls
-    base: reinf_over
   - type: Appearance
   - type: GenericVisualizer
     visuals:
@@ -657,6 +656,7 @@
         layer:
         - WallLayer
         density: 2000
+  - type: WallConnect
 
 - type: entity
   parent: WallReinforced
@@ -945,15 +945,16 @@
     resistance: 5
   - type: Sprite
     sprite: Structures/Walls/shuttle.rsi
+    state: wall-0
   - type: Icon
     sprite: Structures/Walls/shuttle.rsi
-    state: full
+    state: wall-0
   - type: Construction
     graph: Girder
     node: shuttleWall
-  - type: IconSmooth
-    key: walls
-    base: state
+    # Utopia-Tweak : SpritesUpdt
+  - type: WallConnect
+    # Utopia-Tweak : SpritesUpdt
   - type: Appearance
   - type: GenericVisualizer
     visuals:
@@ -985,14 +986,17 @@
   id: WallSolid
   name: solid wall
   components:
+  - type: Appearance
   - type: Sprite
     sprite: Structures/Walls/solid.rsi
+    state: wall-0
   - type: WallReplacementMarker
   - type: Construction
     graph: Girder
     node: wall
   - type: Icon
     sprite: Structures/Walls/solid.rsi
+    state: wall-0
   - type: RCDDeconstructable
     cost: 6
     delay: 8
@@ -1019,9 +1023,7 @@
         node: girder
       - !type:DoActsBehavior
         acts: ["Destruction"]
-  - type: IconSmooth
-    key: walls
-    base: solid
+  - type: WallConnect
 
 - type: entity
   parent: WallDiagonalBase

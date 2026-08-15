@@ -18,7 +18,7 @@
       drawdepth: Walls
       sprite: Structures/Walls/grille.rsi
       layers:
-        - state: grille
+        - state: wall-0
         - state: electrified
           sprite: Effects/electricity.rsi
           map: ["enum.ElectrifiedLayers.Sparks"]
@@ -26,7 +26,7 @@
           visible: false
     - type: Icon
       sprite: Structures/Walls/grille.rsi
-      state: grille
+      state: wall-0
     - type: Construction
       graph: Grille
       node: grille
@@ -85,6 +85,7 @@
             True: { visible: True }
             False: { visible: False }
     - type: AnimationPlayer
+    - type: WallConnect
 
 - type: entity
   id: ClockworkGrille
