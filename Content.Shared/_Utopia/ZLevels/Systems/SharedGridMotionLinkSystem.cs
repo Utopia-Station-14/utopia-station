@@ -142,7 +142,7 @@ public abstract class SharedGridMotionLinkSystem : EntitySystem
         return true;
     }
 
-    private List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>> GetGridsOfGroup(string groupId)
+    public List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>> GetGridsOfGroup(string groupId)
     {
         var matches = new List<Entity<GridMotionLinkComponent, MapGridComponent, PhysicsComponent>>();
 

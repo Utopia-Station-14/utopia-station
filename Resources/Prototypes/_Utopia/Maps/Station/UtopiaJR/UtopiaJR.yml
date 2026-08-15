@@ -1,0 +1,22 @@
+- type: gameMap
+  id: UtopiaJR
+  mapName: 'Utopia Station JR'
+  mapsBelow:
+    - /Maps/_Utopia/Station/UtopiaJR/map-depth-0.yml
+  mapsAbove:
+    - /Maps/_Utopia/Station/UtopiaJR/map-depth-2.yml
+    - /Maps/_Utopia/Station/UtopiaJR/map-depth-3.yml
+  mapPath: /Maps/_Utopia/Station/UtopiaJR/map-depth-1.yml
+  minPlayers: 0
+  stations:
+    UtopiaJR:
+      stationProto: StandardNanotrasenStation
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: '{0} Utopia Station {1} JR'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: 'TG'
+        - type: StationJobs
+          availableJobs:
+            Captain: [ -1, -1 ]
