@@ -52,10 +52,9 @@
   - type: CEZLevelHighGround
     heightCurve:
     - 1.05
-    - 1.05
-    - 1.05
     - 0.5
     - 0.1
+    stick: true
   - type: Fixtures
     fixtures:
       hard:

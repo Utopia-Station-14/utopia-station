@@ -2,6 +2,7 @@ using Content.Server._Utopia.Language;
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Systems;
 using Content.Server.Power.Components;
+using Content.Shared._Utopia.ZLevels.Systems;
 using Content.Shared._Utopia.Language;
 using Content.Shared.Chat;
 using Content.Shared.Database;
@@ -30,6 +31,8 @@ public sealed class RadioSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly LanguageSystem _language = default!; // Utopia-Tweak : Language
+    [Dependency] private readonly SharedGridCoverageSystem _zLevels = default!;
+
 
     // set used to prevent radio feedback loops.
     private readonly HashSet<string> _messages = new();
@@ -181,8 +184,8 @@ public sealed class RadioSystem : EntitySystem
         RaiseLocalEvent(radioSource, ref sendAttemptEv);
         var canSend = !sendAttemptEv.Cancelled;
 
-        var sourceMapId = Transform(radioSource).MapID;
-        var hasActiveServer = HasActiveServer(sourceMapId, channel.ID);
+        var sourceCoverage = _zLevels.GetGridCoverage(radioSource); // Pirate: multiz
+        var hasActiveServer = HasActiveServer(sourceCoverage, channel.ID); // Pirate: multiz
         var sourceServerExempt = _exemptQuery.HasComp(radioSource);
 
         var radioQuery = EntityQueryEnumerator<ActiveRadioComponent, TransformComponent>();
@@ -195,7 +198,7 @@ public sealed class RadioSystem : EntitySystem
                     continue;
             }
 
-            if (!channel.LongRange && transform.MapID != sourceMapId && !radio.GlobalReceive)
+            if (!channel.LongRange && !_zLevels.IsInCoverage(sourceCoverage, receiver, transform) && !radio.GlobalReceive)
                 continue;
 
             // don't need telecom server for long range channels or handheld radios and intercoms
@@ -224,12 +227,14 @@ public sealed class RadioSystem : EntitySystem
     }
 
     /// <inheritdoc cref="TelecomServerComponent"/>
-    private bool HasActiveServer(MapId mapId, string channelId)
+    private bool HasActiveServer(GridCoverage coverage, string channelId)
     {
-        var servers = EntityQuery<TelecomServerComponent, EncryptionKeyHolderComponent, ApcPowerReceiverComponent, TransformComponent>();
-        foreach (var (_, keys, power, transform) in servers)
+        var servers = EntityQueryEnumerator<TelecomServerComponent, EncryptionKeyHolderComponent, ApcPowerReceiverComponent, TransformComponent>();
+        while (servers.MoveNext(out var server, out _, out var keys, out var power, out var transform))
         {
-            if (transform.MapID == mapId &&
+            var serverInCoverage = _zLevels.IsInCoverage(coverage, server, transform);
+
+            if (serverInCoverage &&
                 power.Powered &&
                 keys.Channels.Contains(channelId))
             {
