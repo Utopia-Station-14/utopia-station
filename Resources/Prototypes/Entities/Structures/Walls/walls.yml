@@ -943,15 +943,16 @@
     resistance: 5
   - type: Sprite
     sprite: Structures/Walls/shuttle.rsi
+    state: wall-0
   - type: Icon
     sprite: Structures/Walls/shuttle.rsi
-    state: full
+    state: wall-0
   - type: Construction
     graph: Girder
     node: shuttleWall
-  - type: IconSmooth
-    key: walls
-    base: state
+    # Utopia-Tweak : SpritesUpdt
+  - type: WallConnect
+    # Utopia-Tweak : SpritesUpdt
   - type: Appearance
   - type: GenericVisualizer
     visuals:

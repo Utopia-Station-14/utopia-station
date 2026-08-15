@@ -124,10 +124,6 @@
   components:
   - type: RCDDeconstructable
     deconstructable: false
-  ## Utopia-tweak start
-  - type: IconSmooth
-    key: walls
-  ## Utipia tweak end
 
 - type: entity
   id: WindowDirectional
