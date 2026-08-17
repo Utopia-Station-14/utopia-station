@@ -9,9 +9,18 @@ namespace Content.Server.Radiation.Components;
 [Access(typeof(RadiationSystem))]
 public sealed partial class RadiationBlockingContainerComponent : Component
 {
+    // Utopia-Tweak : RadiationUpdt
     /// <summary>
-    ///     How many rads per second does the blocker absorb?
+    ///     Flat reduction in radiation when an item is in the container.
     /// </summary>
     [DataField("resistance")]
-    public float RadResistance = 1f;
+    public float RadResistance = 0f;
+
+    /// <summary>
+    ///     TODO: Clarify this.
+    ///     Radiation decay for the Goobstation radiation overhaul after applying the flat reduction.
+    /// </summary>
+    [DataField("decay")]
+    public float RadDecay = 1f;
+    // Utopia-Tweak : RadiationUpdt
 }
