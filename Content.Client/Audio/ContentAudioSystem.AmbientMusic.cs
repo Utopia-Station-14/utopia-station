@@ -15,6 +15,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Client._Utopia.Audio.Systems;
 
 namespace Content.Client.Audio;
 
@@ -29,6 +30,7 @@ public sealed partial class ContentAudioSystem
     [Dependency] private readonly IStateManager _state = default!;
     [Dependency] private readonly RulesSystem _rules = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly NowPlayingClientSystem _nowPlaying = default!; // Utopia-Tweak : NowPlaying
 
     private readonly TimeSpan _minAmbienceTime = TimeSpan.FromSeconds(30);
     private readonly TimeSpan _maxAmbienceTime = TimeSpan.FromSeconds(60);
@@ -217,6 +219,13 @@ public sealed partial class ContentAudioSystem
         {
             FadeIn(_ambientMusicStream, strim.Value.Component, AmbientMusicFadeTime);
         }
+
+        // Utopia-Tweak : NowPlaying
+
+        if (_musicProto.ID == "Space")
+            _nowPlaying.ShowNowPlayingForPath(track);
+
+        // Utopia-Tweak : NowPlaying
 
         // Refresh the list
         if (tracks.Count == 0)

@@ -67,6 +67,10 @@ namespace Content.Server.Nuke
         /// </summary>
         public int LastPlayedKeypadSemitones = 0;
 
+        // Utopia-Tweak : NowPlaying
+        public float NukeSongNotifyRadius = 150f;
+        // Utopia-Tweak : NowPlaying
+
         [DataField("keypadPressSound")]
         public SoundSpecifier KeypadPressSound = new SoundPathSpecifier("/Audio/Machines/Nuke/general_beep.ogg");
 

@@ -22,6 +22,7 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
 using Robust.Shared.Timing;
+using Content.Shared._Utopia.Audio.Systems;
 
 namespace Content.Server.Nuke;
 
@@ -45,6 +46,7 @@ public sealed class NukeSystem : EntitySystem
     [Dependency] private readonly AppearanceSystem _appearance = default!;
     [Dependency] private readonly TurfSystem _turf = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly NowPlayingSystem _nowPlay = default!; // Utopia-Tweak : NowPlaying
 
     /// <summary>
     ///     Used to calculate when the nuke song should start playing for maximum kino with the nuke sfx
@@ -329,6 +331,8 @@ public sealed class NukeSystem : EntitySystem
         {
             _sound.DispatchStationEventMusic(uid, _selectedNukeSong, StationEventMusicType.Nuke);
             nuke.PlayedNukeSong = true;
+
+            _nowPlay.NotifyNowPlaying(uid, _selectedNukeSong, nuke.NukeSongNotifyRadius); // Utopia-Tweak : NowPlaying
         }
 
         // play alert sound if time is running out
