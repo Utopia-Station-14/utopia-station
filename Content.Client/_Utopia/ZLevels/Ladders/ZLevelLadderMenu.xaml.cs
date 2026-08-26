@@ -5,8 +5,6 @@ using Robust.Client.GameObjects;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
-using Robust.Shared.GameObjects;
-using Robust.Shared.IoC;
 using Robust.Shared.Utility;
 
 namespace Content.Client._Utopia.ZLevels.Ladders;
@@ -16,8 +14,8 @@ public sealed partial class ZLevelLadderMenu : RadialMenu
 {
     private EntityUid _owner;
 
-    [Dependency] private readonly IEntityManager _entMan = default!;
-    [Dependency] private readonly IResourceCache _resCache = default!;
+    [Dependency] private IEntityManager _entMan = default!;
+    [Dependency] private IResourceCache _resCache = default!;
 
     public event Action<ZMoveDirection>? OnSelected;
 

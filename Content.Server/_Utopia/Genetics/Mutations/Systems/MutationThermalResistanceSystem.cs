@@ -4,7 +4,7 @@ namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
 using Content.Shared.Temperature;
 
-public sealed class MutationThermalResistanceSystem : EntitySystem
+public sealed partial class MutationThermalResistanceSystem : EntitySystem
 {
     public override void Initialize()
     {

@@ -11,14 +11,13 @@ using System.Numerics;
 
 namespace Content.Server._Utopia.ZLevels.Systems;
 
-public sealed class ZLevelLadderSystem : EntitySystem
+public sealed partial class ZLevelLadderSystem : EntitySystem
 {
-    [Dependency] private readonly CESharedZLevelsSystem _zLevels = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly MapSystem _map = default!;
-    [Dependency] private readonly IMapManager _mapManager = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
+    [Dependency] private CESharedZLevelsSystem _zLevels = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private MapSystem _map = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
 
     public override void Initialize()
@@ -139,7 +138,7 @@ public sealed class ZLevelLadderSystem : EntitySystem
 
         var targetCoords = new MapCoordinates(worldBox.Center, mapXform.MapID);
 
-        if (!_mapManager.TryFindGridAt(targetCoords, out var targetGridUid, out var targetGridComp))
+        if (!_map.TryFindGridAt(targetCoords, out var targetGridUid, out var targetGridComp))
             return false;
 
         var invMatrix = _transform.GetInvWorldMatrix(targetGridUid);

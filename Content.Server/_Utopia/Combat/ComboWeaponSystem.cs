@@ -4,10 +4,10 @@ using Content.Shared._Utopia.Combat;
 
 namespace Content.Server._Utopia.Combat;
 
-public sealed class WeaponComboSystem : SharedWeaponComboSystem
+public sealed partial class WeaponComboSystem : SharedWeaponComboSystem
 {
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
 
     public override void Initialize()
     {

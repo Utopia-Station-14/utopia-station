@@ -5,7 +5,7 @@
 
 namespace Content.Shared._CE.ZLevels.Damage.SafeFalling;
 
-public sealed class CESafeFallingSystem : EntitySystem
+public sealed partial class CESafeFallingSystem : EntitySystem
 {
     public override void Initialize()
     {

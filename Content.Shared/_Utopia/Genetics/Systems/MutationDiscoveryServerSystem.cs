@@ -2,7 +2,7 @@ using Content.Shared._Utopia.Genetics.Components;
 
 namespace Content.Shared._Utopia.Genetics.Systems;
 
-public sealed class SharedMutationDiscoverySystem : EntitySystem
+public sealed partial class SharedMutationDiscoverySystem : EntitySystem
 {
     public void DiscoverMutation(EntityUid consoleUid, string mutationId)
     {

@@ -5,11 +5,11 @@ using Content.Shared.Gravity;
 
 namespace Content.Server.Gravity;
 
-public sealed class GravityGeneratorSystem : SharedGravityGeneratorSystem
+public sealed partial class GravityGeneratorSystem : SharedGravityGeneratorSystem
 {
-    [Dependency] private readonly GravitySystem _gravitySystem = default!;
-    [Dependency] private readonly SharedPointLightSystem _lights = default!;
-    [Dependency] private readonly CESharedZLevelsSystem _zLevels = default!; // Utopia-Tweak : ZLevels
+    [Dependency] private GravitySystem _gravitySystem = default!;
+    [Dependency] private SharedPointLightSystem _lights = default!;
+    [Dependency] private CESharedZLevelsSystem _zLevels = default!; // Utopia-Tweak : ZLevels
 
     public override void Initialize()
     {

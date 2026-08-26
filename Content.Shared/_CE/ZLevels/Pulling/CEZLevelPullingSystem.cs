@@ -13,22 +13,18 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared._CE.ZLevels.Pulling;
 
-public sealed class CEZLevelPullingSystem : EntitySystem
+public sealed partial class CEZLevelPullingSystem : EntitySystem
 {
-    [Dependency] private readonly PullingSystem _pulling = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
-
-    private EntityQuery<CEZLevelPullingTransitionComponent> _transitionQuery;
-    private EntityQuery<CEZPhysicsComponent> _zPhysicsQuery;
+    [Dependency] private PullingSystem _pulling = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private ActionBlockerSystem _actionBlocker = default!;
+    [Dependency] private EntityQuery<CEZLevelPullingTransitionComponent> _transitionQuery = default!;
+    [Dependency] private EntityQuery<CEZPhysicsComponent> _zPhysicsQuery = default!;
 
     public override void Initialize()
     {
         base.Initialize();
-
-        _transitionQuery = GetEntityQuery<CEZLevelPullingTransitionComponent>();
-        _zPhysicsQuery = GetEntityQuery<CEZPhysicsComponent>();
 
         SubscribeLocalEvent<ActivePullerComponent, CEZLevelBeforeMapMoveEvent>(OnPullerMove);
         SubscribeLocalEvent<CEZLevelPullingTransitionComponent, CEZLevelMapMoveEvent>(OnPulledEntityMove);

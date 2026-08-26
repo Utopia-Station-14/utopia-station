@@ -9,10 +9,10 @@ using Robust.Shared.Map;
 namespace Content.Server._Utopia.ZLevels;
 
 [AdminCommand(AdminFlags.Server | AdminFlags.Mapping)]
-public sealed class LoadGridZNetworkCommand : LocalizedEntityCommands
+public sealed partial class LoadGridZNetworkCommand : LocalizedEntityCommands
 {
-    [Dependency] private readonly IResourceManager _resMan = default!;
-    [Dependency] private readonly ZNetworkMappingSystem _zLoader = default!;
+    [Dependency] private IResourceManager _resMan = default!;
+    [Dependency] private ZNetworkMappingSystem _zLoader = default!;
 
     public override string Command => "loadgrid-znetwork";
     public override string Description => "Load your ZNetwork grid";

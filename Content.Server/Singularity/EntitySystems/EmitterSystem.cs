@@ -4,10 +4,15 @@ using Content.Server.Administration.Logs;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Projectiles;
+using Content.Server.Pinpointer;
+using Content.Server.Radio.EntitySystems;
 using Content.Server.Weapons.Ranged.Systems;
+using Content.Shared.Construction;
 using Content.Shared.Construction.Components;
 using Content.Shared.Database;
+using Content.Shared.Destructible;
 using Content.Shared.DeviceLinking.Events;
+using Content.Shared.Emag.Systems;
 using Content.Shared.Interaction;
 using Content.Shared.Lock;
 using Content.Shared.Popups;
@@ -26,14 +31,16 @@ using Timer = Robust.Shared.Timing.Timer;
 
 namespace Content.Server.Singularity.EntitySystems
 {
-    public sealed class EmitterSystem : SharedEmitterSystem
+    public sealed partial class EmitterSystem : SharedEmitterSystem
     {
-        [Dependency] private readonly IRobustRandom _random = default!;
-        [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-        [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-        [Dependency] private readonly SharedPopupSystem _popup = default!;
-        [Dependency] private readonly ProjectileSystem _projectile = default!;
-        [Dependency] private readonly GunSystem _gun = default!;
+        [Dependency] private IRobustRandom _random = default!;
+        [Dependency] private IAdminLogManager _adminLogger = default!;
+        [Dependency] private SharedAppearanceSystem _appearance = default!;
+        [Dependency] private SharedPopupSystem _popup = default!;
+        [Dependency] private ProjectileSystem _projectile = default!;
+        [Dependency] private GunSystem _gun = default!;
+        [Dependency] private RadioSystem _radio = default!;
+        [Dependency] private NavMapSystem _navMap = default!;
 
         public override void Initialize()
         {
@@ -44,6 +51,9 @@ namespace Content.Server.Singularity.EntitySystems
             SubscribeLocalEvent<EmitterComponent, ActivateInWorldEvent>(OnActivate);
             SubscribeLocalEvent<EmitterComponent, AnchorStateChangedEvent>(OnAnchorStateChanged);
             SubscribeLocalEvent<EmitterComponent, SignalReceivedEvent>(OnSignalReceived);
+            SubscribeLocalEvent<EmitterComponent, DestructionEventArgs>(OnDestruction);
+            SubscribeLocalEvent<EmitterComponent, MachineDeconstructedEvent>(OnDeconstructed); // you shouldn't be able to deconstruct locked emitters but out of scope to fix
+            SubscribeLocalEvent<EmitterComponent, LockToggledEvent>(OnLockToggled);
 
             // Utopia-Tweak : Machine Part
             SubscribeLocalEvent<EmitterComponent, RefreshPartsEvent>(OnRefreshParts);
@@ -86,9 +96,10 @@ namespace Content.Server.Singularity.EntitySystems
                         ("target", uid)), uid, args.User);
                 }
 
+                var stateText = component.IsOn ? "on" : "off";
                 _adminLogger.Add(LogType.FieldGeneration,
                     component.IsOn ? LogImpact.Medium : LogImpact.High,
-                    $"{ToPrettyString(args.User):player} toggled {ToPrettyString(uid):emitter}");
+                    $"{ToPrettyString(args.User):player} toggled {ToPrettyString(uid):emitter} to {stateText}");
                 args.Handled = true;
             }
             else
@@ -168,6 +179,8 @@ namespace Content.Server.Singularity.EntitySystems
             {
                 return;
             }
+
+            AlertRadio((uid, component), component.LocUnpowered);
 
             component.IsPowered = false;
 
@@ -288,6 +301,37 @@ namespace Content.Server.Singularity.EntitySystems
             {
                 component.BoltType = boltType;
             }
+        }
+        private void OnDestruction(Entity<EmitterComponent> ent, ref DestructionEventArgs args)
+        {
+            // Engineering needs to know if an emitter is destroyed so they can replace it before the engine looses.
+            AlertRadio(ent, ent.Comp.LocDestroyed);
+        }
+
+        private void OnDeconstructed(Entity<EmitterComponent> ent, ref MachineDeconstructedEvent args)
+        {
+            // right now you don't even need to unlock the emitter to deconstruct it. that's almost certainly a bug but even without it it probably still needs an alert
+            AlertRadio(ent, ent.Comp.LocDeconstructed);
+        }
+
+        private void AlertRadio(Entity<EmitterComponent> ent, string locString)
+        {
+            if (!ent.Comp.AlertRadio || !ent.Comp.IsOn || !ent.Comp.IsPowered)
+                return; // APEs do not need to scream over engineering radio, and an emitter that is off is probably not going to be alerting radios
+
+            var message = Loc.GetString(
+                locString,
+                ("location", FormattedMessage.RemoveMarkupOrThrow(_navMap.GetNearestBeaconString(ent.Owner)))
+            );
+            _radio.SendRadioMessage(ent.Owner, message, ent.Comp.RadioChannel, ent.Owner);
+        }
+
+        private void OnLockToggled(Entity<EmitterComponent> ent, ref LockToggledEvent args)
+        {
+            if (args.Locked)
+                return;
+
+            AlertRadio(ent, ent.Comp.LocUnlocked);
         }
 
         // Utopia-Tweak : Machine Part

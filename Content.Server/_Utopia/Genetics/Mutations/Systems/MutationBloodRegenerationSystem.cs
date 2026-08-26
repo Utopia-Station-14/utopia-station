@@ -6,11 +6,11 @@ using Content.Shared.Mobs.Systems;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationBloodRegenerationSystem : EntitySystem
+public sealed partial class MutationBloodRegenerationSystem : EntitySystem
 {
-    [Dependency] private readonly BloodstreamSystem _bloodstream = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
+    [Dependency] private BloodstreamSystem _bloodstream = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutionContainer = default!;
 
     private float _accum = 0f;
 

@@ -6,15 +6,13 @@ using Content.Server.Polymorph.Components;
 using Content.Server.Polymorph.Systems;
 using Content.Shared._Utopia.Genetics.Prototypes;
 using Content.Shared.Buckle.Components;
-using Robust.Shared.Prototypes;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationInstabilityPolymorphSystem : EntitySystem
+public sealed partial class MutationInstabilityPolymorphSystem : EntitySystem
 {
-    [Dependency] private readonly PolymorphSystem _polymorph = default!;
-    [Dependency] private readonly GeneticsSystem _genetics = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
+    [Dependency] private PolymorphSystem _polymorph = default!;
+    [Dependency] private GeneticsSystem _genetics = default!;
 
     public override void Initialize()
     {
@@ -42,7 +40,7 @@ public sealed class MutationInstabilityPolymorphSystem : EntitySystem
             if (!entry.Enabled)
                 continue;
 
-            if (_proto.TryIndex<GeneticMutationPrototype>(entry.Id, out var proto))
+            if (ProtoMan.TryIndex<GeneticMutationPrototype>(entry.Id, out var proto))
             {
                 var addsPolymorphTrigger = proto.Components.Values
                     .Any(c => c.Component is MutationInstabilityPolymorphComponent);

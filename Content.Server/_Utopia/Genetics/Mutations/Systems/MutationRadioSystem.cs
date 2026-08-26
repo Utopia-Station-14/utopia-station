@@ -3,7 +3,7 @@ using Content.Shared.Radio.Components;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationRadioSystem : EntitySystem
+public sealed partial class MutationRadioSystem : EntitySystem
 {
     public override void Initialize()
     {

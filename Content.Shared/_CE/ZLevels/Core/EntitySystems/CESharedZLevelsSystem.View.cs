@@ -13,8 +13,7 @@ namespace Content.Shared._CE.ZLevels.Core.EntitySystems;
 
 public abstract partial class CESharedZLevelsSystem
 {
-    [Dependency] protected readonly ITileDefinitionManager TilDefMan = default!;
-    [Dependency] protected readonly IMapManager MapManager = default!; // Utopia-Tweak : ZLevels
+    [Dependency] protected ITileDefinitionManager TilDefMan = default!;
 
     private void InitView()
     {
@@ -48,7 +47,7 @@ public abstract partial class CESharedZLevelsSystem
 
         if (HasOpaqueAbove(ent) && !HasComp<GhostComponent>(ent.Owner)) // Utopia-Tweak : ZLevels
         {
-            _popup.PopupClient(Loc.GetString("ce-zlevel-look-up-fail"), ent, ent);
+            _popup.PopupEntity(Loc.GetString("ce-zlevel-look-up-fail"), ent, ent);
             return;
         }
 
@@ -68,7 +67,7 @@ public abstract partial class CESharedZLevelsSystem
 
         var worldPos = _transform.GetWorldPosition(ent); // Utopia-Tweak : ZLevels
 
-        if (!MapManager.TryFindGridAt(mapAboveUid.Value.Owner, worldPos, out var gridAboveUid, out var gridAboveComp)) // Utopia-Tweak : ZLevels
+        if (!MapSys.TryFindGridAt(mapAboveUid.Value.Owner, worldPos, out var gridAboveUid, out var gridAboveComp)) // Utopia-Tweak : ZLevels
             return false;
 
         if (!MapSys.TryGetTileRef(gridAboveUid, gridAboveComp, worldPos, out var tileRef)) // Utopia-Tweak : ZLevels

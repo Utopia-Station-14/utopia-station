@@ -3,7 +3,7 @@ using Content.Shared.Damage.Components;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationIncreaseStaminaCritThresholdSystem : EntitySystem
+public sealed partial class MutationIncreaseStaminaCritThresholdSystem : EntitySystem
 {
     public override void Initialize()
     {

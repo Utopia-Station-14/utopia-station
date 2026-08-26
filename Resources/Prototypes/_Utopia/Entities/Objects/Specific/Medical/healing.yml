@@ -2,10 +2,10 @@
   parent: PillCanister
   id: UtopiaPillCanisterMutadone
   name: pill canister
-  suffix: Mutadone 15u
+  suffix: Mutadone 20u
   components:
   - type: Label
-    currentLabel: мутадон 15 ед
+    localizedLabel: pill-label-mutadone-20u
   - type: StorageFill
     contents:
     - id: UtopiaPillMutadone
@@ -15,18 +15,17 @@
   parent: Pill
   id: UtopiaPillMutadone
   name: pill
-  suffix: Mutadone 15u
+  suffix: Mutadone 20u
   components:
   - type: Pill
     pillType: 8
   - type: Sprite
     state: pill17
   - type: Label
-    currentLabel: мутадон 15 ед
-  - type: SolutionContainerManager
-    solutions:
-      food:
+    localizedLabel: pill-label-mutadone-20u
+  - type: Solution
+    solution:
         maxVol: 20
         reagents:
         - ReagentId: Mutadone
-          Quantity: 15
+          Quantity: 20

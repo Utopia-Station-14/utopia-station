@@ -15,16 +15,15 @@ using Robust.Shared.Map.Components;
 
 namespace Content.Server._CE.ZLevels.Audio;
 
-public sealed class CEZLevelsAudioSystem : EntitySystem
+public sealed partial class CEZLevelsAudioSystem : EntitySystem
 {
-    [Dependency] private readonly IConfigurationManager _config = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
-    [Dependency] private readonly IMapManager _mapManager = default!;
-    [Dependency] private readonly ITileDefinitionManager _tileDefinition = default!;
-    [Dependency] private readonly CEZLevelOpeningCache _openingCache = default!;
-    [Dependency] private readonly CESharedZLevelsSystem _zLevels = default!;
+    [Dependency] private IConfigurationManager _config = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private ITileDefinitionManager _tileDefinition = default!;
+    [Dependency] private CEZLevelOpeningCache _openingCache = default!;
+    [Dependency] private CESharedZLevelsSystem _zLevels = default!;
 
     private const float CrossZAudioOpeningRadius = 1.5f;
 
@@ -34,8 +33,8 @@ public sealed class CEZLevelsAudioSystem : EntitySystem
     private readonly List<Entity<MapGridComponent>> _openingGridScratch = new();
     private readonly List<(Vector2 Center, float Distance)> _openingCenters = new();
 
-    private EntityQuery<CEZLevelMapComponent> _zMapQuery;
-    private EntityQuery<MapComponent> _mapQuery;
+    [Dependency] private EntityQuery<CEZLevelMapComponent> _zMapQuery = default!;
+    [Dependency] private EntityQuery<MapComponent> _mapQuery = default!;
     private bool _crossZAudioEnabled = true;
     private bool _creatingProjection;
     private bool _debug;
@@ -43,9 +42,6 @@ public sealed class CEZLevelsAudioSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
-
-        _zMapQuery = GetEntityQuery<CEZLevelMapComponent>();
-        _mapQuery = GetEntityQuery<MapComponent>();
 
         Subs.CVar(_config, UCCVars.CEZLevelsCrossZAudio, OnCrossZAudioChanged, true);
         Subs.CVar(_config, UCCVars.CEZLevelsCrossZAudioDebug, v => _debug = v, true);
@@ -249,7 +245,6 @@ public sealed class CEZLevelsAudioSystem : EntitySystem
             CrossZAudioOpeningRadius,
             _openingCenters,
             _openingGridScratch,
-            _mapManager,
             _map,
             _transform,
             _tileDefinition,

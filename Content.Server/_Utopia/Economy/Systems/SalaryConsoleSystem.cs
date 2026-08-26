@@ -1,24 +1,26 @@
 using Content.Server.Station.Systems;
-using Content.Server.StationRecords.Systems;
 using Content.Shared._Utopia.Economy;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.StationRecords;
+using Content.Shared.StationRecords.Events;
+using Content.Shared.StationRecords.Components;
+using Content.Shared.StationRecords.Systems;
 using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 
 namespace Content.Server._Utopia.Economy;
 
-public sealed class SalaryConsoleSystem : EntitySystem
+public sealed partial class SalaryConsoleSystem : EntitySystem
 {
-    [Dependency] private readonly StationSystem _station = default!;
-    [Dependency] private readonly BankCardSystem _bankCard = default!;
-    [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
-    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
-    [Dependency] private readonly StationRecordsSystem _stationRecords = default!;
-    [Dependency] private readonly StationRecordKeyStorageSystem _keyStorage = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
+    [Dependency] private StationSystem _station = default!;
+    [Dependency] private BankCardSystem _bankCard = default!;
+    [Dependency] private ItemSlotsSystem _itemSlots = default!;
+    [Dependency] private SharedUserInterfaceSystem _ui = default!;
+    [Dependency] private StationRecordsSystem _stationRecords = default!;
+    [Dependency] private StationRecordKeyStorageSystem _keyStorage = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private SharedAudioSystem _audioSystem = default!;
 
     public override void Initialize()
     {
@@ -28,7 +30,7 @@ public sealed class SalaryConsoleSystem : EntitySystem
         SubscribeLocalEvent<SalaryConsoleComponent, EntRemovedFromContainerMessage>(UpdateUiState);
 
         SubscribeLocalEvent<SalaryConsoleComponent, RecordModifiedEvent>(UpdateUiState);
-        SubscribeLocalEvent<SalaryConsoleComponent, AfterGeneralRecordCreatedEvent>(UpdateUiState);
+        SubscribeLocalEvent<SalaryConsoleComponent, GeneralRecordCreatedEvent>(UpdateUiState);
         SubscribeLocalEvent<SalaryConsoleComponent, RecordRemovedEvent>(UpdateUiState);
 
         Subs.BuiEvents<SalaryConsoleComponent>(SalaryConsoleUiKey.Key, subs =>

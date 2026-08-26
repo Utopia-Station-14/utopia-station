@@ -13,14 +13,14 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._Utopia.Genetics.Systems;
 
-public sealed class DNASequenceInjectorSystem : EntitySystem
+public sealed partial class DNASequenceInjectorSystem : EntitySystem
 {
-    [Dependency] private readonly DoAfterSystem _doAfter = default!;
-    [Dependency] private readonly GeneticShuffleSystem _shuffle = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly GeneticsSystem _genetics = default!;
+    [Dependency] private DoAfterSystem _doAfter = default!;
+    [Dependency] private GeneticShuffleSystem _shuffle = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private GeneticsSystem _genetics = default!;
 
     public override void Initialize()
     {

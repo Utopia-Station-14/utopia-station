@@ -5,9 +5,9 @@ using Robust.Server.GameObjects;
 
 namespace Content.Server._Utopia.Toxicology;
 
-public sealed class ExplosionBeaconConsoleSystem : SharedExplosionBeaconConsoleSystem
+public sealed partial class ExplosionBeaconConsoleSystem : SharedExplosionBeaconConsoleSystem
 {
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
 
     public override void Initialize()
     {

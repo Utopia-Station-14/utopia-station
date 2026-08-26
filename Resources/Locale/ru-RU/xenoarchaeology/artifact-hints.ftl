@@ -41,6 +41,7 @@ artifact-trigger-hint-plasma = Газообразный форон
 artifact-trigger-hint-land = Активное замедление
 artifact-trigger-hint-examine = Внимательное изучение
 artifact-trigger-hint-medical = Терапевтические химикаты
+
 xenoarch-trigger-tip-music = Гармоничные звуковые вибрации
 xenoarch-trigger-tip-heat = Газ высокой температуры
 xenoarch-trigger-tip-cold = Газ низкой температуры
@@ -52,7 +53,8 @@ xenoarch-trigger-tip-tritium = Тритий
 xenoarch-trigger-tip-ammonia = Аммиак
 xenoarch-trigger-tip-n2o = Оксид азота
 xenoarch-trigger-tip-frezon = Фрезон
-xenoarch-trigger-tip-radiation = Радиация
+xenoarch-trigger-tip-radiation = Излучение тяжелых ионов
+xenoarch-trigger-tip-microwave = Микроволновое излучение
 xenoarch-trigger-tip-brute-damage = Физический урон
 xenoarch-trigger-tip-interaction = Физическое взаимодействие
 xenoarch-trigger-tip-wrenching = Затягивание
@@ -67,10 +69,25 @@ xenoarch-trigger-tip-blood = Кровь
 xenoarch-trigger-tip-throw = Бросок
 xenoarch-trigger-tip-death = Смерть
 xenoarch-trigger-tip-magnet = Магнитные волны
+xenoarch-trigger-tip-money = Взяточничество
+xenoarch-trigger-tip-knowledge = Усвоение знаний
+xenoarch-trigger-tip-carbs = Употребление углеводов
+xenoarch-trigger-tip-meat = Употребление протеинов
+xenoarch-trigger-tip-produce = Употребление здоровых продуктов
+xenoarch-trigger-tip-stamp = Бюрократическое одобрение
+xenoarch-trigger-tip-shock = Электрический шок
+xenoarch-trigger-tip-particle = Воздействие частиц
+xenoarch-trigger-tip-anomparticle = Воздействие аномальных частиц
+xenoarch-trigger-tip-stamina-damage = Органическое истощение
+xenoarch-trigger-tip-laser = Воздействие фотонов высокой интенсивности
+
+### Description hints
 xenoarch-trigger-examine-wrenching = Вокруг него свободно крутится частичка.
 xenoarch-trigger-examine-prying = С его поверхности поднимается панель.
 xenoarch-trigger-examine-screwing = На нём имеется приподнятая часть с небольшой вставкой в ней.
 xenoarch-trigger-examine-pulsing = Из поверхности артефакта торчит открытый диод.
 xenoarch-trigger-examine-timer = Резьбы и царапины покрываю поверхность... Вы едва различаете число: [italic]{ $time }[/italic]
+
+### Effects hints
 xenoarch-effect-puddle = Производит лужу из следующих реагентов: { $reagent }
 xenoarch-effect-foam = Производит пену из следующих реагентов: { $reagent }

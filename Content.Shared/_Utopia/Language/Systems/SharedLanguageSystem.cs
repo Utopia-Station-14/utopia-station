@@ -7,11 +7,11 @@ using Robust.Shared.Network;
 
 namespace Content.Shared._Utopia.Language;
 
-public abstract class SharedLanguageSystem : EntitySystem
+public abstract partial class SharedLanguageSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly INetManager _netMan = default!;
-    [Dependency] private readonly SharedContainerSystem _container = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private INetManager _netMan = default!;
+    [Dependency] private SharedContainerSystem _container = default!;
 
     protected const string Universal = "Universal";
 

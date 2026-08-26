@@ -1,5 +1,5 @@
 using Content.Shared.Atmos;
-using Content.Server.Atmos.Piping.Components;
+using Content.Shared.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared._Utopia.Supermatter.Components;

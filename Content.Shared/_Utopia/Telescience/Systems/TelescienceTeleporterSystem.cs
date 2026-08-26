@@ -13,16 +13,16 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared._Utopia.Telescience.Systems;
 
-public sealed class TelescienceTeleporterSystem : EntitySystem
+public sealed partial class TelescienceTeleporterSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _time = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
-    [Dependency] private readonly PullingSystem _pullingSystem = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedPowerReceiverSystem _power = default!;
-    [Dependency] private readonly LinkedEntitySystem _link = default!;
-    [Dependency] private readonly SparksSystem _sparks = default!;
+    [Dependency] private IGameTiming _time = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private SharedTransformSystem _xform = default!;
+    [Dependency] private PullingSystem _pullingSystem = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedPowerReceiverSystem _power = default!;
+    [Dependency] private LinkedEntitySystem _link = default!;
+    [Dependency] private SparksSystem _sparks = default!;
 
     public override void Initialize()
     {

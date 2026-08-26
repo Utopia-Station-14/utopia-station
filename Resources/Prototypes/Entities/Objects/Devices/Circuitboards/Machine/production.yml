@@ -24,7 +24,7 @@
     requirements: # Utopia-Tweak : Machine Parts
       MatterBin: 3 # Utopia-Tweak : Machine Parts
     stackRequirements:
-      # Manipulator: 3 # Utopia-Tweak : Machine Parts
+      # Manipulator: 4 # Utopia-Tweak : Machine Parts
       Glass: 1
     tagRequirements:
       Igniter:
@@ -1453,7 +1453,7 @@
   - type: Sprite
     state: supply
   - type: MachineBoard
-    prototype: GravityGeneratorMini
+    prototype: GravityGeneratorMiniUncharged
     requirements: # Utopia-Tweak : Machine Parts
       Capacitor: 4 # Utopia-Tweak : Machine Parts
       MatterBin: 3 # Utopia-Tweak : Machine Parts

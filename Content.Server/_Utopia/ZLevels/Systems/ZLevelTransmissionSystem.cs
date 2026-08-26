@@ -2,7 +2,6 @@ using Content.Server._Utopia.ZLevels.Pipes.Systems;
 using Content.Server._Utopia.ZLevels.Nodes;
 using Content.Server._Utopia.ZLevels.Power;
 using Content.Shared._Utopia.ZLevels.Cables.Components;
-using Content.Server.Disposal.Tube;
 using Content.Server._Utopia.ZLevels.Disposal.Components;
 using Content.Shared.NodeContainer;
 using Content.Shared._CE.ZLevels.Core.Components;
@@ -14,14 +13,14 @@ using System.Numerics;
 
 namespace Content.Server._Utopia.ZLevels.Transmission.Systems;
 
-public sealed class ZLevelTransmissionSystem : EntitySystem
+public sealed partial class ZLevelTransmissionSystem : EntitySystem
 {
-    [Dependency] private readonly CESharedZLevelsSystem _zLevels = default!;
-    [Dependency] private readonly ZPipeSystem _zPipes = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly ZCableSystem _zCables = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
+    [Dependency] private CESharedZLevelsSystem _zLevels = default!;
+    [Dependency] private ZPipeSystem _zPipes = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private ZCableSystem _zCables = default!;
+    [Dependency] private SharedMapSystem _map = default!;
 
     public override void Initialize()
     {
@@ -193,44 +192,44 @@ public sealed class ZLevelTransmissionSystem : EntitySystem
     }
     #endregion
 
-    #region Disposal
-    public EntityUid? TryFindZDisposalTarget(
-        EntityUid source,
-        EntityUid targetMap,
-        ZNodeDirection dir)
-    {
-        if (!TryGetAnchoredGrid(source, out var xform, out var gridUid, out var grid))
-            return null;
+    // #region Disposal
+    // public EntityUid? TryFindZDisposalTarget(
+    //     EntityUid source,
+    //     EntityUid targetMap,
+    //     ZNodeDirection dir)
+    // {
+    //     if (!TryGetAnchoredGrid(source, out var xform, out var gridUid, out var grid))
+    //         return null;
 
-        var worldBox = GetTileBox(gridUid, grid, xform);
+    //     var worldBox = GetTileBox(gridUid, grid, xform);
 
-        var required = dir == ZNodeDirection.Up
-            ? ZNodeDirection.Down
-            : ZNodeDirection.Up;
+    //     var required = dir == ZNodeDirection.Up
+    //         ? ZNodeDirection.Down
+    //         : ZNodeDirection.Up;
 
-        if (!TryComp(targetMap, out TransformComponent? mapXform))
-            return null;
+    //     if (!TryComp(targetMap, out TransformComponent? mapXform))
+    //         return null;
 
-        foreach (var ent in _lookup.GetEntitiesIntersecting(mapXform.MapID, worldBox, LookupFlags.All))
-        {
-            if (!TryComp(ent, out ZDisposalPipeComponent? zPipe))
-                continue;
+    //     foreach (var ent in _lookup.GetEntitiesIntersecting(mapXform.MapID, worldBox, LookupFlags.All))
+    //     {
+    //         if (!TryComp(ent, out ZDisposalPipeComponent? zPipe))
+    //             continue;
 
-            if (zPipe.ZDirection != required)
-                continue;
+    //         if (zPipe.ZDirection != required)
+    //             continue;
 
-            if (!TryComp(ent, out TransformComponent? exform) || !exform.Anchored)
-                continue;
+    //         if (!TryComp(ent, out TransformComponent? exform) || !exform.Anchored)
+    //             continue;
 
-            if (!TryComp(ent, out DisposalTubeComponent? disposal))
-                continue;
+    //         if (!TryComp(ent, out DisposalTubeComponent? disposal))
+    //             continue;
 
-            return ent;
-        }
+    //         return ent;
+    //     }
 
-        return null;
-    }
-    #endregion
+    //     return null;
+    // }
+    // #endregion
 
     #region Helpers
     private bool TryGetAnchoredGrid(EntityUid uid, out TransformComponent xform, out EntityUid gridUid, out MapGridComponent grid)

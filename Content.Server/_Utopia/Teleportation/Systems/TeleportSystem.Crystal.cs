@@ -11,13 +11,13 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._Utopia.Teleportation;
 
-public sealed class TeleportCrystalSystem : EntitySystem
+public sealed partial class TeleportCrystalSystem : EntitySystem
 {
-    [Dependency] private readonly TeleportSystem _teleport = default!;
-    [Dependency] private readonly SharedScaleVisualsSystem _scaleVisuals = default!;
-    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
-    [Dependency] private readonly StackSystem _stack = default!;
-    [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
+    [Dependency] private TeleportSystem _teleport = default!;
+    [Dependency] private SharedScaleVisualsSystem _scaleVisuals = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private StackSystem _stack = default!;
+    [Dependency] private SharedContainerSystem _containerSystem = default!;
 
     public override void Initialize()
     {

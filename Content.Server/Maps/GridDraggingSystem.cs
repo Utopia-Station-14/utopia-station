@@ -10,12 +10,12 @@ using Content.Server._Utopia.ZLevels.Systems;
 namespace Content.Server.Maps;
 
 /// <inheritdoc />
-public sealed class GridDraggingSystem : SharedGridDraggingSystem
+public sealed partial class GridDraggingSystem : SharedGridDraggingSystem
 {
-    [Dependency] private readonly IConGroupController _admin = default!;
-    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
-    [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
-    [Dependency] private readonly GridMotionLinkSystem _gridMotion = default!; // Utopia-Tweak : ZLevels
+    [Dependency] private IConGroupController _admin = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private SharedTransformSystem _transformSystem = default!;
+    [Dependency] private GridMotionLinkSystem _gridMotion = default!; // Utopia-Tweak : ZLevels
 
     private readonly HashSet<ICommonSession> _draggers = new();
 

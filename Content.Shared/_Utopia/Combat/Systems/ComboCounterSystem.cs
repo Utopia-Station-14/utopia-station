@@ -2,9 +2,9 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared._Utopia.Combat;
 
-public sealed class ComboCounterSystem : EntitySystem
+public sealed partial class ComboCounterSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     public void AddToCounter(ComboCounterComponent comp, int input)
     {

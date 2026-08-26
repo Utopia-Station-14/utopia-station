@@ -6,10 +6,10 @@ using Content.Shared.Power.EntitySystems;
 
 namespace Content.Shared._Utopia.Toxicology;
 
-public abstract class SharedExplosionBeaconConsoleSystem : EntitySystem
+public abstract partial class SharedExplosionBeaconConsoleSystem : EntitySystem
 {
-    [Dependency] private readonly SharedDeviceLinkSystem _deviceLink = default!;
-    [Dependency] private readonly SharedPowerReceiverSystem _power = default!;
+    [Dependency] private SharedDeviceLinkSystem _deviceLink = default!;
+    [Dependency] private SharedPowerReceiverSystem _power = default!;
 
     public override void Initialize()
     {

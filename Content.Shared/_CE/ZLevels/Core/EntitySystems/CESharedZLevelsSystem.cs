@@ -24,34 +24,28 @@ namespace Content.Shared._CE.ZLevels.Core.EntitySystems;
 
 public abstract partial class CESharedZLevelsSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
-    [Dependency] private readonly DamageableSystem _damage = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly ActionBlockerSystem _blocker = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] protected readonly SharedMapSystem MapSys = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedPhysicsSystem _physicsSystem = default!;
-    [Dependency] private readonly FixtureSystem _fix = default!; // Utopia-Tweak : ZLevels
-    [Dependency] private readonly SharedGravitySystem _gravity = default!; // Utopia-Tweak : ZLevels
-    [Dependency] private readonly IConfigurationManager _config = default!; // Utopia-Tweak : ZLevels
-
-    private EntityQuery<MapComponent> _mapQuery;
-    private EntityQuery<CEZLevelMapComponent> _zMapQuery;
-    protected EntityQuery<MapGridComponent> GridQuery;
-    protected EntityQuery<CEZPhysicsComponent> ZPhyzQuery;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
+    [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private ActionBlockerSystem _blocker = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] protected SharedMapSystem MapSys = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedPhysicsSystem _physicsSystem = default!;
+    [Dependency] private FixtureSystem _fix = default!; // Utopia-Tweak : ZLevels
+    [Dependency] private SharedGravitySystem _gravity = default!; // Utopia-Tweak : ZLevels
+    [Dependency] private IConfigurationManager _config = default!; // Utopia-Tweak : ZLevels
+    [Dependency] private EntityQuery<MapComponent> _mapQuery = default!;
+    [Dependency] private EntityQuery<CEZLevelMapComponent> _zMapQuery = default!;
+    [Dependency] protected EntityQuery<MapGridComponent> GridQuery = default!;
+    [Dependency] protected EntityQuery<CEZPhysicsComponent> ZPhyzQuery = default!;
 
     public override void Initialize()
     {
         base.Initialize();
-
-        _mapQuery = GetEntityQuery<MapComponent>();
-        _zMapQuery = GetEntityQuery<CEZLevelMapComponent>();
-        GridQuery = GetEntityQuery<MapGridComponent>();
-        ZPhyzQuery = GetEntityQuery<CEZPhysicsComponent>();
 
         InitMovement();
         InitView();

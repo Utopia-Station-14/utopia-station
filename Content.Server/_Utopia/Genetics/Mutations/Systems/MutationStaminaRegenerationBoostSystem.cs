@@ -4,9 +4,9 @@ using Content.Shared.Damage.Components;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationStaminaRegenerationBoostSystem : EntitySystem
+public sealed partial class MutationStaminaRegenerationBoostSystem : EntitySystem
 {
-    [Dependency] private readonly StaminaSystem _staminaSystem = default!;
+    [Dependency] private StaminaSystem _staminaSystem = default!;
 
     public override void Update(float frameTime)
     {

@@ -8,7 +8,7 @@ namespace Content.Server.EntityEffects.Effects.Genetics;
 
 public sealed partial class MutationRemovalSystem : EntityEffectSystem<GeneticsComponent, MutationRemoval>
 {
-    [Dependency] private readonly IEntityManager _entMan = default!;
+    [Dependency] private IEntityManager _entMan = default!;
 
     protected override void Effect(Entity<GeneticsComponent> entity, ref EntityEffectEvent<MutationRemoval> args)
     {

@@ -9,8 +9,9 @@
     drawdepth: ThinWire
     visible: false
   - type: Damageable
-    damageContainer: Inorganic
     damageModifierSet: Metallic
+  - type: Injurable
+    damageContainer: Inorganic
   - type: Destructible
     thresholds:
     - trigger:
@@ -32,7 +33,7 @@
     cost: 2
     delay: 0
     fx: EffectRCDConstruct0
-    
+
 - type: entity
   parent: ZCableBase
   id: UtopiaZCableHVUp
@@ -87,7 +88,7 @@
   - type: ZLevelEntityLink
 
 - type: entity
-  parent: ZCableBase 
+  parent: ZCableBase
   id: UtopiaZCableHVDown
   name: HV power cable
   description: An orange high voltage power cable.

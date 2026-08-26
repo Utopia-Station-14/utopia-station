@@ -64,7 +64,7 @@
   tier: 1
   cost: 7500
   recipeUnlocks:
-  - BorgModuleAdvancedChemical
+  - BorgModuleAdvancedTopical
   - AdvancedJetInjector
   position: 3,1
   technologyPrerequisites:

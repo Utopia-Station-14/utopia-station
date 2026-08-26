@@ -5,9 +5,9 @@ using Content.Shared.Verbs;
 
 namespace Content.Server.Kitchen.EntitySystems;
 
-public sealed class MicrowaveBatterySystem : EntitySystem
+public sealed partial class MicrowaveBatterySystem : EntitySystem
 {
-    [Dependency] private readonly PopupSystem _popupSystem = default!;
+    [Dependency] private PopupSystem _popupSystem = default!;
 
     public override void Initialize()
     {

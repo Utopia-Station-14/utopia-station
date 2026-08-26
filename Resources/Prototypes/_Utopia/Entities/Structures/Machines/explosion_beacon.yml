@@ -13,7 +13,10 @@
   - type: Transform
     anchored: true
   - type: ApcPowerReceiver
-    powerLoad: 500
+    powerLoad: 50
+  - type: PowerState
+    idlePowerDraw: 50
+    workingPowerDraw: 500
   - type: ExplosionBeacon
   - type: DeviceNetwork
     deviceNetId: Wired
@@ -61,7 +64,10 @@
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
   - type: ApcPowerReceiver
-    powerLoad: 300
+    powerLoad: 50
+  - type: PowerState
+    idlePowerDraw: 50
+    workingPowerDraw: 300
   - type: AccessReader
     access: [["Research"]]
   - type: PointLight

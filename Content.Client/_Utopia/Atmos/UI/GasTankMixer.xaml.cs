@@ -46,18 +46,18 @@ namespace Content.Client._Utopia.Atmos.UI
 
         public void UpdateState(GasTankMixerBoundUserInterfaceState state)
         {
-            _statusLabelA.Text = state.HasTankA 
-                ? Loc.GetString("gas-tank-mixer-status-tank-a-inserted") 
+            _statusLabelA.Text = state.HasTankA
+                ? Loc.GetString("gas-tank-mixer-status-tank-a-inserted")
                 : Loc.GetString("gas-tank-mixer-status-tank-a-empty");
             _ejectAButton.Disabled = !state.HasTankA || state.IsActive;
 
-            _statusLabelB.Text = state.HasTankB 
-                ? Loc.GetString("gas-tank-mixer-status-tank-b-inserted") 
+            _statusLabelB.Text = state.HasTankB
+                ? Loc.GetString("gas-tank-mixer-status-tank-b-inserted")
                 : Loc.GetString("gas-tank-mixer-status-tank-b-empty");
             _ejectBButton.Disabled = !state.HasTankB || state.IsActive;
 
-            _timerLabel.Text = state.IsActive 
-                ? Loc.GetString("gas-tank-mixer-timer-active", ("timer", state.Timer.ToString("F1"))) 
+            _timerLabel.Text = state.IsActive
+                ? Loc.GetString("gas-tank-mixer-timer-active", ("timer", state.Timer.ToString("F1")))
                 : Loc.GetString("gas-tank-mixer-timer-idle", ("timer", state.Timer.ToString("F1")));
 
             _timeInput.Editable = !state.IsActive;

@@ -1,22 +1,15 @@
 using Content.Server.Atmos.EntitySystems;
-using Content.Server.Atmos.Piping.Components;
-using Content.Server.Atmos.Piping.Unary.Components;
-using Content.Server.Atmos;
-using Content.Server.Atmos.Components;
-using Content.Server.NodeContainer.Nodes;
 using Content.Server._Utopia.ZLevels.Nodes;
 using Content.Shared._Utopia.ZLevels.Pipes.Components;
 using Content.Shared.NodeContainer;
 using Content.Shared.Atmos;
-using Content.Shared.Atmos.EntitySystems;
-using Robust.Shared.GameObjects;
-using System.Collections.Generic;
+using Content.Shared.Atmos.Components;
 
 namespace Content.Server._Utopia.ZLevels.Pipes.Systems;
 
-public sealed class ZPipeSystem : EntitySystem
+public sealed partial class ZPipeSystem : EntitySystem
 {
-    [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
+    [Dependency] private AtmosphereSystem _atmosphere = default!;
 
     private readonly Dictionary<ZPipeNode, HashSet<ZPipeNode>> _connections = new();
 
@@ -77,7 +70,7 @@ public sealed class ZPipeSystem : EntitySystem
         var T = src.Temperature;
         var V = src.Volume;
         var dstV = dst.Volume;
-        
+
         if (T <= 0f || V <= 0f || dstV <= 0f)
             return;
 

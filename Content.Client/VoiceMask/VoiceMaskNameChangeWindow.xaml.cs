@@ -28,11 +28,9 @@ public sealed partial class VoiceMaskNameChangeWindow : FancyWindow
     private List<(string, string)> _verbs = new();
 
     private string? _verb;
-
     public VoiceMaskNameChangeWindow()
     {
         RobustXamlLoader.Load(this);
-
         NameSelectorSet.OnPressed += _ =>
         {
             OnNameChange?.Invoke(NameSelector.Text);
@@ -87,13 +85,13 @@ public sealed partial class VoiceMaskNameChangeWindow : FancyWindow
             SpeechVerbSelector.SelectId(id);
     }
 
-    public void UpdateState(string name, string? verb, bool active, bool accentHide, string barkId, float barkPitch) // Utopia-Tweak : Barks
+    public void UpdateState(string name, string? verb, bool active, bool accentHide, LocId titleText, string barkId, float barkPitch) // Utopia-Tweak : Barks
     {
         NameSelector.Text = name;
         _verb = verb;
         ToggleButton.Pressed = active;
         ToggleAccentButton.Pressed = accentHide;
-
+        Title = Loc.GetString(titleText);
         for (int id = 0; id < SpeechVerbSelector.ItemCount; id++)
         {
             if (string.Equals(verb, SpeechVerbSelector.GetItemMetadata(id)))

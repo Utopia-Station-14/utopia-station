@@ -9,9 +9,9 @@ using Content.Shared.Stacks;
 
 namespace Content.Server._Utopia.Telescience.Systems;
 
-public sealed class TelescienceComputerSystem : EntitySystem
+public sealed partial class TelescienceComputerSystem : EntitySystem
 {
-    [Dependency] private readonly SharedPopupSystem _sharedPopupSystem = default!;
+    [Dependency] private SharedPopupSystem _sharedPopupSystem = default!;
 
     public override void Initialize()
     {

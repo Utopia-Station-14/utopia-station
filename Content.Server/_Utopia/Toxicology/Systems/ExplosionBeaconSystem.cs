@@ -8,11 +8,11 @@ namespace Content.Server._Utopia.Toxicology.Systems;
 /// <summary>
 /// Система маяка, который отслеживает параметры взрывов.
 /// </summary>
-public sealed class ExplosionBeaconSystem : EntitySystem
+public sealed partial class ExplosionBeaconSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly ExplosionBeaconConsoleSystem _console = default!;
-    [Dependency] private readonly ResearchSystem _server = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private ExplosionBeaconConsoleSystem _console = default!;
+    [Dependency] private ResearchSystem _server = default!;
 
     public override void Initialize()
     {

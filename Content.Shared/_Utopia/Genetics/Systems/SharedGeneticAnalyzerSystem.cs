@@ -2,7 +2,7 @@ using Content.Shared._Utopia.Genetics.Components;
 
 namespace Content.Shared._Utopia.Genetics.Systems;
 
-public abstract class SharedGeneticAnalyzerSystem : EntitySystem
+public abstract partial class SharedGeneticAnalyzerSystem : EntitySystem
 {
     public void ClearScan(EntityUid uid, GeneticAnalyzerComponent? comp = null)
     {

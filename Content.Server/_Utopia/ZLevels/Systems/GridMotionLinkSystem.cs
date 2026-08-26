@@ -3,7 +3,7 @@ using Content.Shared._Utopia.ZLevels.Systems;
 
 namespace Content.Server._Utopia.ZLevels.Systems;
 
-public sealed class GridMotionLinkSystem : SharedGridMotionLinkSystem
+public sealed partial class GridMotionLinkSystem : SharedGridMotionLinkSystem
 {
     public override void Initialize()
     {
