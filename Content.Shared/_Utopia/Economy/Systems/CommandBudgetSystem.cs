@@ -4,10 +4,10 @@ using Content.Shared.Cargo.Components;
 
 namespace Content.Shared._Utopia.Economy;
 
-public sealed class CommandBudgetSystem : SharedEconomySystem
+public sealed partial class CommandBudgetSystem : SharedEconomySystem
 {
-    [Dependency] private readonly PaperSystem _paper = default!;
-    [Dependency] private readonly SharedStationSystem _station = default!;
+    [Dependency] private PaperSystem _paper = default!;
+    [Dependency] private SharedStationSystem _station = default!;
 
     public override void Initialize()
     {

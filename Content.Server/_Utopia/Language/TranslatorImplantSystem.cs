@@ -2,7 +2,4 @@ using Content.Shared.Implants;
 
 namespace Content.Server.Implants;
 
-public sealed class TranslatorImplantSystem : SharedTranslatorImplantSystem
-{
-
-}
+public sealed class TranslatorImplantSystem : SharedTranslatorImplantSystem;

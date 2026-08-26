@@ -11,8 +11,8 @@ namespace Content.Server.Construction;
 
 public sealed partial class ConstructionSystem
 {
-    [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private ExamineSystemShared _examineSystem = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
 
     private void InitializeMachineUpgrades()
     {

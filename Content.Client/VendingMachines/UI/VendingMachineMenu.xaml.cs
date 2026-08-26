@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Numerics;
 using Content.Client.Stylesheets;
 using Content.Shared.VendingMachines;
@@ -10,215 +9,212 @@ using FancyWindow = Content.Client.UserInterface.Controls.FancyWindow;
 using Robust.Client.UserInterface;
 using Content.Client.UserInterface.Controls;
 using Content.Shared.IdentityManagement;
-using Robust.Client.Graphics;
 using Robust.Shared.Utility;
 
-namespace Content.Client.VendingMachines.UI
+namespace Content.Client.VendingMachines.UI;
+
+[GenerateTypedNameReferences]
+public sealed partial class VendingMachineMenu : FancyWindow
 {
-    [GenerateTypedNameReferences]
-    public sealed partial class VendingMachineMenu : FancyWindow
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IEntityManager _entityManager = default!;
+
+    private readonly Dictionary<EntProtoId, EntityUid> _dummies = [];
+    private readonly Dictionary<EntProtoId, (ListContainerButton Button, VendingMachineItem Item)> _listItems = new();
+    private readonly Dictionary<EntProtoId, uint> _amounts = new();
+
+    /// <summary>
+    /// Whether the vending machine is able to be interacted with or not.
+    /// </summary>
+    private bool _enabled;
+
+    public event Action<GUIBoundKeyEventArgs, ListData>? OnItemSelected;
+    public event Action<VendingMachineWithdrawMessage>? OnWithdraw; // Utopia-Tweak : Economy
+
+    public VendingMachineMenu()
     {
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-        [Dependency] private readonly IEntityManager _entityManager = default!;
+        MinSize = SetSize = new Vector2(250, 150);
+        RobustXamlLoader.Load(this);
+        IoCManager.InjectDependencies(this);
 
-        private readonly Dictionary<EntProtoId, EntityUid> _dummies = [];
-        private readonly Dictionary<EntProtoId, (ListContainerButton Button, VendingMachineItem Item)> _listItems = new();
-        private readonly Dictionary<EntProtoId, uint> _amounts = new();
+        VendingContents.SearchBar = SearchBar;
+        VendingContents.DataFilterCondition += DataFilterCondition;
+        VendingContents.GenerateItem += GenerateButton;
+        VendingContents.ItemKeyBindDown += (args, data) => OnItemSelected?.Invoke(args, data);
+        WithdrawButton.OnPressed += OnWithdrawPressed; // Utopia-Tweak : Economy
+    }
 
-        /// <summary>
-        /// Whether the vending machine is able to be interacted with or not.
-        /// </summary>
-        private bool _enabled;
+    // Utopia-Tweak : Economy
+    private void OnWithdrawPressed(BaseButton.ButtonEventArgs args)
+    {
+        OnWithdraw?.Invoke(new VendingMachineWithdrawMessage());
+    }
+    // Utopia-Tweak : Economy
 
-        public event Action<GUIBoundKeyEventArgs, ListData>? OnItemSelected;
-        public event Action<VendingMachineWithdrawMessage>? OnWithdraw; // Utopia-Tweak : Economy
+    protected override void Dispose(bool disposing)
+    {
+        base.Dispose(disposing);
 
-        public VendingMachineMenu()
+        // Don't clean up dummies during disposal or we'll just have to spawn them again
+        if (!disposing)
+            return;
+
+        // Delete any dummy items we spawned
+        foreach (var entity in _dummies.Values)
         {
-            MinSize = SetSize = new Vector2(250, 150);
-            RobustXamlLoader.Load(this);
-            IoCManager.InjectDependencies(this);
-
-            VendingContents.SearchBar = SearchBar;
-            VendingContents.DataFilterCondition += DataFilterCondition;
-            VendingContents.GenerateItem += GenerateButton;
-            VendingContents.ItemKeyBindDown += (args, data) => OnItemSelected?.Invoke(args, data);
-
-            WithdrawButton.OnPressed += OnWithdrawPressed; // Utopia-Tweak : Economy
+            _entityManager.QueueDeleteEntity(entity);
         }
+        _dummies.Clear();
 
-        // Utopia-Tweak : Economy
-        private void OnWithdrawPressed(BaseButton.ButtonEventArgs args)
+        WithdrawButton.OnPressed -= OnWithdrawPressed; // Utopia-Tweak : Economy
+    }
+
+    private bool DataFilterCondition(string filter, ListData data)
+    {
+        if (data is not VendorItemsListData { ItemText: var text })
+            return false;
+
+        if (string.IsNullOrEmpty(filter))
+            return true;
+
+        return text.Contains(filter, StringComparison.CurrentCultureIgnoreCase);
+    }
+
+    private void GenerateButton(ListData data, ListContainerButton button)
+    {
+        if (data is not VendorItemsListData { ItemProtoID: var protoID, ItemText: var text, Price: var price }) // Utopia-Tweak : Economy
+            return;
+
+        var item = new VendingMachineItem(protoID, text, price); // Utopia-Tweak : Economy
+        _listItems[protoID] = (button, item);
+        button.AddChild(item);
+        button.AddStyleClass(StyleClass.ButtonSquare);
+        button.Disabled = !_enabled || _amounts[protoID] == 0;
+    }
+
+    // Utopia-Tweak : Economy
+    public void SetCredits(int newBalance)
+    {
+        CreditsLabel.Text = Loc.GetString("vending-ui-credits-amount", ("credits", newBalance));
+        WithdrawButton.Disabled = newBalance == 0;
+    }
+
+    public void SetCreditsVisible(bool isVisible)
+    {
+        Credits.Visible = isVisible;
+    }
+    // Utopia-Tweak : Economy
+
+    /// <summary>
+    /// Populates the list of available items on the vending machine interface
+    /// and sets icons based on their prototypes
+    /// </summary>
+    public void Populate(List<VendingMachineInventoryEntry> inventory, bool enabled, double priceMultiplier) // Utopia-Tweak : Economy
+    {
+        _enabled = enabled;
+        _listItems.Clear();
+        _amounts.Clear();
+        var creditsBarVisible = false; // Utopia-Tweak : Economy
+
+        if (inventory.Count == 0 && VendingContents.Visible)
         {
-            OnWithdraw?.Invoke(new VendingMachineWithdrawMessage());
-        }
-        // Utopia-Tweak : Economy
+            SearchBar.Visible = false;
+            VendingContents.Visible = false;
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-
-            // Don't clean up dummies during disposal or we'll just have to spawn them again
-            if (!disposing)
-                return;
-
-            // Delete any dummy items we spawned
-            foreach (var entity in _dummies.Values)
+            var outOfStockLabel = new Label
             {
-                _entityManager.QueueDeleteEntity(entity);
-            }
-            _dummies.Clear();
+                Text = Loc.GetString("vending-machine-component-try-eject-out-of-stock"),
+                Margin = new Thickness(4, 4),
+                HorizontalExpand = true,
+                VerticalAlignment = VAlignment.Stretch,
+                HorizontalAlignment = HAlignment.Center
+            };
 
-            WithdrawButton.OnPressed -= OnWithdrawPressed; // Utopia-Tweak : Economy
+            MainContainer.AddChild(outOfStockLabel);
+
+            SetSizeAfterUpdate(outOfStockLabel.Text.Length, 0);
+
+            return;
         }
 
-        private bool DataFilterCondition(string filter, ListData data)
+        var longestEntry = string.Empty;
+        var listData = new List<VendorItemsListData>();
+
+        for (var i = 0; i < inventory.Count; i++)
         {
-            if (data is not VendorItemsListData { ItemText: var text })
-                return false;
+            var entry = inventory[i];
 
-            if (string.IsNullOrEmpty(filter))
-                return true;
-
-            return text.Contains(filter, StringComparison.CurrentCultureIgnoreCase);
-        }
-
-        private void GenerateButton(ListData data, ListContainerButton button)
-        {
-            if (data is not VendorItemsListData { ItemProtoID: var protoID, ItemText: var text, Price: var price }) // Utopia-Tweak : Economy
-                return;
-
-            var item = new VendingMachineItem(protoID, text, price); // Utopia-Tweak : Economy
-            _listItems[protoID] = (button, item);
-            button.AddChild(item);
-            button.AddStyleClass(StyleClass.ButtonSquare);
-            button.Disabled = !_enabled || _amounts[protoID] == 0;
-        }
-
-        // Utopia-Tweak : Economy
-        public void SetCredits(int newBalance)
-        {
-            CreditsLabel.Text = Loc.GetString("vending-ui-credits-amount", ("credits", newBalance));
-            WithdrawButton.Disabled = newBalance == 0;
-        }
-
-        public void SetCreditsVisible(bool isVisible)
-        {
-            Credits.Visible = isVisible;
-        }
-        // Utopia-Tweak : Economy
-
-        /// <summary>
-        /// Populates the list of available items on the vending machine interface
-        /// and sets icons based on their prototypes
-        /// </summary>
-        public void Populate(List<VendingMachineInventoryEntry> inventory, bool enabled, double priceMultiplier) // Utopia-Tweak : Economy
-        {
-            _enabled = enabled;
-            _listItems.Clear();
-            _amounts.Clear();
-            var creditsBarVisible = false;
-
-            if (inventory.Count == 0 && VendingContents.Visible)
+            if (!_prototypeManager.Resolve(entry.ID, out var prototype))
             {
-                SearchBar.Visible = false;
-                VendingContents.Visible = false;
-
-                var outOfStockLabel = new Label()
-                {
-                    Text = Loc.GetString("vending-machine-component-try-eject-out-of-stock"),
-                    Margin = new Thickness(4, 4),
-                    HorizontalExpand = true,
-                    VerticalAlignment = VAlignment.Stretch,
-                    HorizontalAlignment = HAlignment.Center
-                };
-
-                MainContainer.AddChild(outOfStockLabel);
-
-                SetSizeAfterUpdate(outOfStockLabel.Text.Length, 0);
-
-                return;
+                _amounts[entry.ID] = 0;
+                continue;
             }
 
-            var longestEntry = string.Empty;
-            var listData = new List<VendorItemsListData>();
-
-            for (var i = 0; i < inventory.Count; i++)
+            if (!_dummies.TryGetValue(entry.ID, out var dummy))
             {
-                var entry = inventory[i];
-
-                if (!_prototypeManager.Resolve(entry.ID, out var prototype))
-                {
-                    _amounts[entry.ID] = 0;
-                    continue;
-                }
-
-                if (!_dummies.TryGetValue(entry.ID, out var dummy))
-                {
-                    dummy = _entityManager.Spawn(entry.ID);
-                    _dummies.Add(entry.ID, dummy);
-                }
-
-                var itemName = Identity.Name(dummy, _entityManager);
-                var itemText = $"{itemName} [{entry.Amount}]";
-                _amounts[entry.ID] = entry.Amount;
-
-                if (itemText.Length > longestEntry.Length)
-                    longestEntry = itemText;
-
-                listData.Add(new VendorItemsListData(prototype.ID, i, (int)(entry.Price * priceMultiplier)) // Utopia-Tweak : Economy
-                {
-                    ItemText = itemText,
-                });
-
-                if (entry.Price * priceMultiplier != 0) creditsBarVisible = true; // Utopia-Tweak : Economy
+                dummy = _entityManager.Spawn(entry.ID);
+                _dummies.Add(entry.ID, dummy);
             }
 
-            VendingContents.PopulateList(listData);
-            SetCreditsVisible(creditsBarVisible); // Utopia-Tweak : Economy
-
-            SetSizeAfterUpdate(longestEntry.Length, inventory.Count);
-        }
-
-        /// <summary>
-        /// Updates text entries for vending data in place without modifying the list controls.
-        /// </summary>
-        public void UpdateAmounts(List<VendingMachineInventoryEntry> cachedInventory, bool enabled) // Utopia-Tweak : Economy
-        {
-            _enabled = enabled;
-
-            foreach (var proto in _dummies.Keys)
-            {
-                if (!_listItems.TryGetValue(proto, out var button))
-                    continue;
-
-                var dummy = _dummies[proto];
-                if (!cachedInventory.TryFirstOrDefault(o => o.ID == proto, out var entry))
-                    continue;
-                var amount = entry.Amount;
-                // Could be better? Problem is all inventory entries get squashed.
-                var text = GetItemText(dummy, amount);
-
-                button.Item.SetText(text);
-                button.Button.Disabled = !enabled || amount == 0;
-            }
-        }
-
-        private string GetItemText(EntityUid dummy, uint amount)
-        {
             var itemName = Identity.Name(dummy, _entityManager);
-            return $"{itemName} [{amount}]";
+            var itemText = $"{itemName} [{entry.Amount}]";
+            _amounts[entry.ID] = entry.Amount;
+
+            if (itemText.Length > longestEntry.Length)
+                longestEntry = itemText;
+
+            listData.Add(new VendorItemsListData(prototype.ID, i, (int)(entry.Price * priceMultiplier)) // Utopia-Tweak : Economy
+            {
+                ItemText = itemText,
+            });
+
+            if (entry.Price * priceMultiplier != 0) creditsBarVisible = true; // Utopia-Tweak : Economy
         }
 
-        private void SetSizeAfterUpdate(int longestEntryLength, int contentCount)
-        {
-            SetSize = new Vector2(Math.Clamp((longestEntryLength + 2) * 12, 250, 400),
-                Math.Clamp(contentCount * 50, 150, 350));
-        }
+        VendingContents.PopulateList(listData);
+        SetCreditsVisible(creditsBarVisible); // Utopia-Tweak : Economy
+
+        SetSizeAfterUpdate(longestEntry.Length, inventory.Count);
     }
 
-    public record VendorItemsListData(EntProtoId ItemProtoID, int ItemIndex, int Price) : ListData // Utopia-Tweak : Economy
+    /// <summary>
+    /// Updates text entries for vending data in place without modifying the list controls.
+    /// </summary>
+    public void UpdateAmounts(List<VendingMachineInventoryEntry> cachedInventory, bool enabled)
     {
-        public string ItemText = string.Empty;
+        _enabled = enabled;
+
+        foreach (var proto in _dummies.Keys)
+        {
+            if (!_listItems.TryGetValue(proto, out var button))
+                continue;
+
+            var dummy = _dummies[proto];
+            if (!cachedInventory.TryFirstOrDefault(o => o.ID == proto, out var entry))
+                continue;
+            var amount = entry.Amount;
+            // Could be better? Problem is all inventory entries get squashed.
+            var text = GetItemText(dummy, amount);
+
+            button.Item.SetText(text);
+            button.Button.Disabled = !enabled || amount == 0;
+        }
     }
+
+    private string GetItemText(EntityUid dummy, uint amount)
+    {
+        var itemName = Identity.Name(dummy, _entityManager);
+        return $"{itemName} [{amount}]";
+    }
+
+    private void SetSizeAfterUpdate(int longestEntryLength, int contentCount)
+    {
+        SetSize = new Vector2(Math.Clamp((longestEntryLength + 2) * 12, 250, 400),
+            Math.Clamp(contentCount * 50, 150, 350));
+    }
+}
+
+public record VendorItemsListData(EntProtoId ItemProtoID, int ItemIndex, int Price) : ListData // Utopia-Tweak : Economy
+{
+    public string ItemText = string.Empty;
 }

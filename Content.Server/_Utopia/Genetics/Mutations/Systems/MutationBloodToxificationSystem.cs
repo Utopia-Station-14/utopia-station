@@ -3,18 +3,16 @@ using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Damage.Prototypes;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationBloodToxificationSystem : EntitySystem
+public sealed partial class MutationBloodToxificationSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
 
     public override void Initialize()
     {
@@ -43,7 +41,7 @@ public sealed class MutationBloodToxificationSystem : EntitySystem
             if (!_random.Prob(comp.Chance))
                 continue;
 
-            var damage = new DamageSpecifier(_prototypeManager.Index<DamageTypePrototype>(comp.DamageType), comp.ToxinAmount);
+            var damage = new DamageSpecifier(ProtoMan.Index<DamageTypePrototype>(comp.DamageType), comp.ToxinAmount);
             _damageable.TryChangeDamage(uid, damage, true);
         }
     }

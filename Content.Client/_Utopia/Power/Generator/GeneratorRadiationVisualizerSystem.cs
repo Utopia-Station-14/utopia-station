@@ -32,8 +32,8 @@ public sealed class GeneratorRadiationVisualizerSystem : VisualizerSystem<Genera
         if (!SpriteSystem.LayerMapTryGet((uid, sprite), GeneratorVisualLayers.Body, out var layer, false))
             return;
 
-        AppearanceSystem.TryGetData(uid,GeneratorVisuals.Radiating, out bool radiating, appearance);
-        AppearanceSystem.TryGetData(uid,GeneratorVisuals.Running, out bool running, appearance);
+        AppearanceSystem.TryGetData(uid, GeneratorVisuals.Radiating, out bool radiating, appearance);
+        AppearanceSystem.TryGetData(uid, GeneratorVisuals.Running, out bool running, appearance);
 
         var state = radiating
             ? GeneratorVisualState.Radiating
@@ -41,13 +41,13 @@ public sealed class GeneratorRadiationVisualizerSystem : VisualizerSystem<Genera
                 ? GeneratorVisualState.Running
                 : GeneratorVisualState.Idle;
 
-        SpriteSystem.LayerSetRsiState((uid, sprite), layer, 
+        SpriteSystem.LayerSetRsiState((uid, sprite), layer,
         state switch
-            {
-                GeneratorVisualState.Idle => "portgen1",
-                GeneratorVisualState.Running => "portgen1on",
-                GeneratorVisualState.Radiating => "portgen1rad",
-                _ => "portgen1"
-            });
+        {
+            GeneratorVisualState.Idle => "portgen1",
+            GeneratorVisualState.Running => "portgen1on",
+            GeneratorVisualState.Radiating => "portgen1rad",
+            _ => "portgen1"
+        });
     }
 }

@@ -4,6 +4,7 @@ using Content.Server.Atmos.Piping.Components;
 using Content.Server.NodeContainer.Nodes;
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Shared.Atmos;
+using Content.Shared.Atmos.Components;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
@@ -11,12 +12,12 @@ using Content.Shared.FixedPoint;
 
 namespace Content.Server._Utopia.Atmos.EntitySystems;
 
-public sealed class HeatExchangingPipeSystem : EntitySystem
+public sealed partial class HeatExchangingPipeSystem : EntitySystem
 {
-    [Dependency] private readonly AtmosphereSystem _atmos = default!;
-    [Dependency] private readonly NodeContainerSystem _nodes = default!;
-    [Dependency] private readonly DamageableSystem _damage = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private AtmosphereSystem _atmos = default!;
+    [Dependency] private NodeContainerSystem _nodes = default!;
+    [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
 
     public override void Initialize()
     {

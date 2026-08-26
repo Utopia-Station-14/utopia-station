@@ -4,7 +4,6 @@ using Content.Server.Research.Components;
 using Content.Shared._Utopia.Research;
 using Content.Shared.UserInterface;
 using Content.Shared.Access.Components;
-using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Research.Components;
@@ -14,7 +13,8 @@ namespace Content.Server.Research.Systems;
 
 public sealed partial class ResearchSystem
 {
-    [Dependency] private readonly EmagSystem _emag = default!;
+    [Dependency] private EmagSystem _emag = default!;
+    [Dependency] private IdentitySystem _identity = default!;
 
     private void InitializeConsole()
     {
@@ -41,7 +41,7 @@ public sealed partial class ResearchSystem
         if (!this.IsPowered(uid, EntityManager))
             return;
 
-        if (!PrototypeManager.TryIndex<TechnologyPrototype>(args.Id, out var technologyPrototype))
+        if (!ProtoMan.TryIndex<TechnologyPrototype>(args.Id, out var technologyPrototype))
             return;
 
         if (TryComp<AccessReaderComponent>(uid, out var access) && !_accessReader.IsAllowed(act, uid, access))
@@ -55,14 +55,12 @@ public sealed partial class ResearchSystem
 
         if (!_emag.CheckFlag(uid, EmagType.Interaction))
         {
-            var getIdentityEvent = new TryGetIdentityShortInfoEvent(uid, act);
-            RaiseLocalEvent(getIdentityEvent);
 
             var message = Loc.GetString(
                 "research-console-unlock-technology-radio-broadcast",
                 ("technology", Loc.GetString(technologyPrototype.Name)),
                 ("amount", technologyPrototype.Cost),
-                ("approver", getIdentityEvent.Title ?? string.Empty)
+                ("approver", _identity.GetIdentityShortInfo(act, uid) ?? string.Empty)
             );
             _radio.SendRadioMessage(uid, message, component.AnnouncementChannel, uid, escapeMarkup: false);
         }
@@ -92,7 +90,7 @@ public sealed partial class ResearchSystem
         ResearchConsoleBoundInterfaceState state;
 
         Dictionary<string, ResearchAvailablity> list = new();
-        foreach (var proto in PrototypeManager.EnumeratePrototypes<TechnologyPrototype>().ToList())
+        foreach (var proto in ProtoMan.EnumeratePrototypes<TechnologyPrototype>().ToList())
         {
             list.Add(proto.ID, ResearchAvailablity.Unavailable);
         }
@@ -104,7 +102,7 @@ public sealed partial class ResearchSystem
                 var toList = list.ToList();
                 for (var i = 0; i < toList.Count; i++)
                 {
-                    var item = PrototypeManager.Index<TechnologyPrototype>(toList[i].Key);
+                    var item = ProtoMan.Index<TechnologyPrototype>(toList[i].Key);
                     if (CompOrNull<TechnologyDatabaseComponent>(serverUid)?.UnlockedTechnologies.Contains(item.ID) ?? false)
                     {
                         list[item.ID] = ResearchAvailablity.Researched;

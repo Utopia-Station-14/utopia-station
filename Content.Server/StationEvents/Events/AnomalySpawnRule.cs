@@ -9,12 +9,11 @@ using Robust.Shared.Random;
 
 namespace Content.Server.StationEvents.Events;
 
-public sealed class AnomalySpawnRule : StationEventSystem<AnomalySpawnRuleComponent>
+public sealed partial class AnomalySpawnRule : StationEventSystem<AnomalySpawnRuleComponent>
 {
-    [Dependency] private readonly AnomalySystem _anomaly = default!;
-    [Dependency] private readonly CESharedZLevelsSystem _zLevels = default!; // Utopia-Tweak : ZLevels
-    [Dependency] private readonly IRobustRandom _random = default!; // Utopia-Tweak : ZLevels
-    // [Dependency] private SupermatterSystem _superMatter = default!; // Utopia-Tweak : Supermatter
+    [Dependency] private AnomalySystem _anomaly = default!;
+    [Dependency] private CESharedZLevelsSystem _zLevels = default!; // Utopia-Tweak : ZLevels
+    [Dependency] private IRobustRandom _random = default!; // Utopia-Tweak : ZLevels
 
     protected override void Added(EntityUid uid, AnomalySpawnRuleComponent component, GameRuleComponent gameRule, GameRuleAddedEvent args)
     {

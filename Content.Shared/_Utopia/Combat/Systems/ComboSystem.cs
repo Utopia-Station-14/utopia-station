@@ -1,18 +1,16 @@
 using System.Linq;
 using Content.Shared._Utopia.Grab;
 using Content.Shared.Actions.Events;
+using Content.Shared.Body;
 using Content.Shared.CombatMode;
-using Content.Shared.Humanoid;
 using Content.Shared.Weapons.Melee.Events;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Shared._Utopia.Combat;
 
-public sealed class SharedComboSystem : EntitySystem
+public sealed partial class SharedComboSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     public override void Initialize()
     {
@@ -55,7 +53,7 @@ public sealed class SharedComboSystem : EntitySystem
         if (args.User != entity.Owner || !args.IsHit || !args.HitEntities.Any())
             return;
 
-        if (!HasComp<HumanoidAppearanceComponent>(args.HitEntities[0]))
+        if (!HasComp<VisualBodyComponent>(args.HitEntities[0]))
             return;
 
         AddAction(entity.Owner, entity.Comp, CombatAction.Hit);
@@ -89,7 +87,7 @@ public sealed class SharedComboSystem : EntitySystem
 
         foreach (var combo in comp.AvailableMoves)
         {
-            var protoCombo = _prototype.Index(combo);
+            var protoCombo = ProtoMan.Index(combo);
             var subList = protoCombo.ActionsNeeds;
 
             if (!ContainsSubsequence(mainList, subList))

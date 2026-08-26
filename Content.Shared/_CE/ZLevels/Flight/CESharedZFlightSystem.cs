@@ -21,23 +21,20 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared._CE.ZLevels.Flight;
 
-public abstract class CESharedZFlightSystem : EntitySystem
+public abstract partial class CESharedZFlightSystem : EntitySystem
 {
-    [Dependency] private readonly CESharedZLevelsSystem _zLevel = default!;
-    [Dependency] private readonly SharedAmbientSoundSystem _ambient = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private CESharedZLevelsSystem _zLevel = default!;
+    [Dependency] private SharedAmbientSoundSystem _ambient = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedActionsSystem _actions = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
     [Dependency] private SharedGravitySystem _gravity = default!;
     [Dependency] private MovementSpeedModifierSystem _movementSpeed = default!;
-
-    protected EntityQuery<CEZPhysicsComponent> ZPhyzQuery;
+    [Dependency] protected EntityQuery<CEZPhysicsComponent> ZPhyzQuery = default!;
 
     public override void Initialize()
     {
         base.Initialize();
-
-        ZPhyzQuery = GetEntityQuery<CEZPhysicsComponent>();
 
         SubscribeLocalEvent<CEZPhysicsComponent, CEFlightStartedEvent>(OnStartFlight);
         SubscribeLocalEvent<CEZPhysicsComponent, CEFlightStoppedEvent>(OnStopFlight);

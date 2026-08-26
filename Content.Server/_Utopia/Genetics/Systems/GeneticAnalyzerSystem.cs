@@ -17,17 +17,17 @@ using Robust.Shared.Audio.Systems;
 
 namespace Content.Server._Utopia.Genetics.GeneticAnalyzer;
 
-public sealed class GeneticAnalyzerSystem : SharedGeneticAnalyzerSystem
+public sealed partial class GeneticAnalyzerSystem : SharedGeneticAnalyzerSystem
 {
-    [Dependency] private readonly DoAfterSystem _doAfter = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly PowerCellSystem _cell = default!;
-    [Dependency] private readonly PaperSystem _paperSystem = default!;
-    [Dependency] private readonly HandsSystem _handsSystem = default!;
-    [Dependency] private readonly MetaDataSystem _metaData = default!;
-    [Dependency] private readonly SharedMutationDiscoverySystem _mutationDiscovery = default!;
+    [Dependency] private DoAfterSystem _doAfter = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private PowerCellSystem _cell = default!;
+    [Dependency] private PaperSystem _paperSystem = default!;
+    [Dependency] private HandsSystem _handsSystem = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private SharedMutationDiscoverySystem _mutationDiscovery = default!;
 
     public override void Initialize()
     {
@@ -46,7 +46,7 @@ public sealed class GeneticAnalyzerSystem : SharedGeneticAnalyzerSystem
 
         var discoveredIds = _mutationDiscovery.GetGridDiscovered(ent.Owner);
 
-        var printed = EntityManager.SpawnEntity(ent.Comp.ReportEntity, Transform(ent).Coordinates);
+        var printed = Spawn(ent.Comp.ReportEntity, Transform(ent).Coordinates);
 
         _handsSystem.PickupOrDrop(args.Actor, printed, checkActionBlocker: false);
 

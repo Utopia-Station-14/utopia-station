@@ -8,10 +8,10 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationRegenerationSystem : EntitySystem
+public sealed partial class MutationRegenerationSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
 
     private static readonly string[] RegenTypes =
     {
@@ -48,7 +48,9 @@ public sealed class MutationRegenerationSystem : EntitySystem
 
             comp.NextHeal += TimeSpan.FromSeconds(comp.Interval);
 
-            if (!damageable.Damage.DamageDict.Any(kvp => RegenTypes.Contains(kvp.Key) && kvp.Value > 0))
+            var damage = _damageable.GetAllDamage(uid);
+
+            if (!damage.DamageDict.Any(kvp => RegenTypes.Contains(kvp.Key) && kvp.Value > 0))
                 continue;
 
             var totalToHeal = FixedPoint2.New(comp.HealAmount);
@@ -56,7 +58,7 @@ public sealed class MutationRegenerationSystem : EntitySystem
 
             foreach (var type in RegenTypes)
             {
-                if (damageable.Damage.DamageDict.TryGetValue(type, out var current) && current > 0)
+                if (damage.DamageDict.TryGetValue(type, out var current) && current > 0)
                 {
                     typesNeedingHeal.Add((type, current));
                 }

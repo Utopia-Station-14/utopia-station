@@ -40,8 +40,3 @@
     Cold: 85.0
     Caustic: 85.0
     Shock: 80.0
-
-- type: damageModifierSet
-  id: RadiationResistance
-  coefficients:
-    Radiation: 0.05

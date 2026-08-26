@@ -13,7 +13,7 @@ using Content.Shared.Maps;
 namespace Content.Server._CE.ZLevels.Roof;
 
 /// <inheritdoc/>
-public sealed class CERoofSystem : CESharedRoofSystem
+public sealed partial class CERoofSystem : CESharedRoofSystem
 {
     private readonly HashSet<Vector2i> _roofMap = new();
 

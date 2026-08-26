@@ -6,7 +6,7 @@
   flavor: bitter
   color: "#e69edd"
   metabolisms:
-    Gas:
+    Respiration:
       effects:
       - !type:GenericStatusEffect
         key: SeeingRainbows
@@ -65,7 +65,7 @@
   boilingPoint: -183.0
   meltingPoint: -218.4
   metabolisms:
-    Gas:
+    Respiration:
       effects:
       - !type:Oxygenate
         conditions:
@@ -108,7 +108,7 @@
   boilingPoint: -253.0
   meltingPoint: -259.2
   metabolisms:
-    Gas:
+    Respiration:
       effects:
       - !type:MovementSpeedModifier
         conditions:
@@ -164,7 +164,7 @@
   boilingPoint: -253.0
   meltingPoint: -259.2
   metabolisms:
-    Gas:
+    Respiration:
       effects:
       - !type:GenericStatusEffect
         conditions:
@@ -182,10 +182,12 @@
         scaling: true
         ignoreResistances: true
         damage:
-          groups:
-            Brute: -1.5
-            Burn: -2
           types:
+            Blunt: -0.5
+            Slash: -0.5
+            Piercing: -0.5
+            Heat: -1
+            Shock: -1
             Asphyxiation: -0.5
             Poison: -0.5
 
@@ -219,7 +221,7 @@
   boilingPoint: -253.0
   meltingPoint: -259.2
   metabolisms:
-    Gas:
+    Respiration:
       effects:
       - !type:HealthChange
         conditions:

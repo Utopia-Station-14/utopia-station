@@ -17,7 +17,7 @@ namespace Content.Client._Utopia.Toxicology.UI;
 [GenerateTypedNameReferences]
 public sealed partial class ExplosionBeaconConsoleWindow : FancyWindow
 {
-    [Dependency] private readonly IResourceCache _resourceCache = default!;
+    [Dependency] private IResourceCache _resourceCache = default!;
     private static readonly Color SubText = new(0.62f, 0.65f, 0.70f);
 
     public ExplosionBeaconConsoleWindow()

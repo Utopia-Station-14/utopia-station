@@ -21,18 +21,18 @@ namespace Content.Server.Power.Generator;
 /// Implements logic for portable generators (the PACMAN). Primarily UI & power switching behavior.
 /// </summary>
 /// <seealso cref="PortableGeneratorComponent"/>
-public sealed class PortableGeneratorSystem : SharedPortableGeneratorSystem
+public sealed partial class PortableGeneratorSystem : SharedPortableGeneratorSystem
 {
-    [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly DoAfterSystem _doAfter = default!;
-    [Dependency] private readonly AudioSystem _audio = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly GeneratorSystem _generator = default!;
-    [Dependency] private readonly PowerSwitchableSystem _switchable = default!;
-    [Dependency] private readonly ActiveGeneratorRevvingSystem _revving = default!;
-    [Dependency] private readonly GeneratorOverheatSystem _overheat = default!; //Utopia-Tweak : PACMAN-updt
-    [Dependency] private readonly AtmosphereSystem _atmosphere = default!; // Utopia-Tweak : PACMAN-updt
+    [Dependency] private UserInterfaceSystem _uiSystem = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private DoAfterSystem _doAfter = default!;
+    [Dependency] private AudioSystem _audio = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private GeneratorSystem _generator = default!;
+    [Dependency] private PowerSwitchableSystem _switchable = default!;
+    [Dependency] private ActiveGeneratorRevvingSystem _revving = default!;
+    [Dependency] private GeneratorOverheatSystem _overheat = default!; //Utopia-Tweak : PACMAN-updt
+    [Dependency] private AtmosphereSystem _atmosphere = default!; // Utopia-Tweak : PACMAN-updt
 
     public override void Initialize()
     {
@@ -112,7 +112,7 @@ public sealed class PortableGeneratorSystem : SharedPortableGeneratorSystem
     private bool AtmosHasOxygen(EntityUid uid)
     {
         var env = _atmosphere.GetContainingMixture(uid, false, true);
-        
+
         if (env != null && env.GetMoles(Gas.Oxygen) > 0)
             return true;
 
@@ -136,7 +136,7 @@ public sealed class PortableGeneratorSystem : SharedPortableGeneratorSystem
         var sound = empty ? component.StartSoundEmpty : component.StartSound;
         _audio.PlayPvs(sound, uid);
 
-        if (!clogged && !empty && atmos && _random.Prob(component.StartChance)) // Utopia-Tweak : PACMAN-updt. 
+        if (!clogged && !empty && atmos && _random.Prob(component.StartChance)) // Utopia-Tweak : PACMAN-updt.
         {
             _generator.SetFuelGeneratorOn(uid, true, fuelGenerator);
 

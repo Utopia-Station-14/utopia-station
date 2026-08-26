@@ -9,7 +9,7 @@ namespace Content.Server.Utopua.Power.EntitySystems;
 /// This handles using upgraded machine parts
 /// to modify the power supply/generation of a machine.
 /// </summary>
-public sealed class UpgradePowerSystem : EntitySystem
+public sealed partial class UpgradePowerSystem : EntitySystem
 {
     /// <inheritdoc/>
     public override void Initialize()

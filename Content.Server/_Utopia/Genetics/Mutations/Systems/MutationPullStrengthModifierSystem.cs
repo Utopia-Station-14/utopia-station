@@ -4,7 +4,7 @@ using Content.Shared.Movement.Systems;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationPullStrengthModifierSystem : EntitySystem
+public sealed partial class MutationPullStrengthModifierSystem : EntitySystem
 {
     public override void Initialize()
     {

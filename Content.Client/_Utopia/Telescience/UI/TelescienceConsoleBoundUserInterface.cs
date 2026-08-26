@@ -3,9 +3,9 @@ using Content.Shared._Utopia.Telescience.Messages;
 
 namespace Content.Client._Utopia.Telescience.UI;
 
-public sealed class TelescienceConsoleBoundUserInterface : BoundUserInterface
+public sealed partial class TelescienceConsoleBoundUserInterface : BoundUserInterface
 {
-    [Dependency] private readonly IEntityManager _entMan = default!;
+    [Dependency] private IEntityManager _entMan = default!;
 
     private TelescienceWindow? _window;
 

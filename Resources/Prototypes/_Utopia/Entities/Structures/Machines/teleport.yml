@@ -44,7 +44,10 @@
   - type: Transform
     anchored: true
   - type: ApcPowerReceiver
-    powerLoad: 12000
+    powerLoad: 50
+  - type: PowerState
+    idlePowerDraw: 50
+    workingPowerDraw: 12000
   - type: TelescienceTeleporter
   - type: DeviceNetwork
     deviceNetId: Wired

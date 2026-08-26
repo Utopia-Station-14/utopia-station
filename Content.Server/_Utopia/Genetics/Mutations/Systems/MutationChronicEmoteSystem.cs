@@ -4,20 +4,18 @@ using Content.Server.Popups;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationChronicCoughSystem : EntitySystem
+public sealed partial class MutationChronicCoughSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly ChatSystem _chat = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private ChatSystem _chat = default!;
 
     public override void Initialize()
     {
@@ -45,7 +43,7 @@ public sealed class MutationChronicCoughSystem : EntitySystem
             if (!_random.Prob(comp.EmoteChance))
                 continue;
 
-            if (!_prototypeManager.TryIndex<EmotePrototype>(comp.EmoteId, out var _))
+            if (!ProtoMan.TryIndex<EmotePrototype>(comp.EmoteId, out var _))
                 continue;
 
             _chat.TryEmoteWithChat(uid, comp.EmoteId);

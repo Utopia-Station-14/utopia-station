@@ -58,8 +58,10 @@
     radius: 1.5
   - type: LitOnPowered
   - type: ApcPowerReceiver
-    powerLoad: 200
-    priority: Low
+    powerLoad: 50
+  - type: PowerState
+    idlePowerDraw: 50
+    workingPowerDraw: 200
   - type: ExtensionCableReceiver
   - type: EmitSoundOnUIOpen
     sound:

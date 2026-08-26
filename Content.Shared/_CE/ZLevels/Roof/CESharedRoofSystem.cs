@@ -17,22 +17,18 @@ namespace Content.Shared._CE.ZLevels.Roof;
 /// Systems that automatically covers tiles with roofs (or removes roofs)
 /// if there is a tile on one of the levels above in the ZLevels network.
 /// </summary>
-public abstract class CESharedRoofSystem : EntitySystem
+public abstract partial class CESharedRoofSystem : EntitySystem
 {
-    [Dependency] protected readonly CESharedZLevelsSystem ZLevel = default!;
-    [Dependency] protected readonly SharedRoofSystem Roof = default!;
-    [Dependency] protected readonly SharedMapSystem Map = default!;
-    [Dependency] protected readonly ITileDefinitionManager TilDefMan = default!;
-
-    protected EntityQuery<MapGridComponent> GridQuery;
-    protected EntityQuery<RoofComponent> RoofQuery;
+    [Dependency] protected CESharedZLevelsSystem ZLevel = default!;
+    [Dependency] protected SharedRoofSystem Roof = default!;
+    [Dependency] protected SharedMapSystem Map = default!;
+    [Dependency] protected ITileDefinitionManager TilDefMan = default!;
+    [Dependency] protected EntityQuery<MapGridComponent> GridQuery = default!;
+    [Dependency] protected EntityQuery<RoofComponent> RoofQuery = default!;
 
     public override void Initialize()
     {
         base.Initialize();
-
-        GridQuery = GetEntityQuery<MapGridComponent>();
-        RoofQuery = GetEntityQuery<RoofComponent>();
 
         SubscribeLocalEvent<CEZLevelMapComponent, TileChangedEvent>(OnTileChanged);
     }

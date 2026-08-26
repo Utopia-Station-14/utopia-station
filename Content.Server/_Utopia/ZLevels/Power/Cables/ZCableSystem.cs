@@ -1,16 +1,12 @@
-using System.Collections.Generic;
-using Content.Server.NodeContainer;
-using Content.Server.NodeContainer.Nodes;
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server._Utopia.ZLevels.Nodes;
 using Content.Shared.NodeContainer;
-using Robust.Shared.GameObjects;
 
 namespace Content.Server._Utopia.ZLevels.Power;
 
-public sealed class ZCableSystem : EntitySystem
+public sealed partial class ZCableSystem : EntitySystem
 {
-    [Dependency] private readonly NodeGroupSystem _nodeGroup = default!;
+    [Dependency] private NodeGroupSystem _nodeGroup = default!;
 
     private readonly Dictionary<ZCableNode, HashSet<ZCableNode>> _connections = new();
 
@@ -21,12 +17,12 @@ public sealed class ZCableSystem : EntitySystem
 
         return new List<Node>();
     }
-    
+
     public void AddZConnection(ZCableNode a, ZCableNode b)
     {
         var addedToA = GetOrAdd(a).Add(b);
         var addedToB = GetOrAdd(b).Add(a);
-        
+
         if (!addedToA && !addedToB)
             return;
 

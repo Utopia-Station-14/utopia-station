@@ -8,13 +8,13 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._Utopia.Genetics.Systems;
 
-public sealed class InstabilityCountdownSystem : EntitySystem
+public sealed partial class InstabilityCountdownSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly GeneticsSystem _genetics = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private GeneticsSystem _genetics = default!;
 
     public override void Initialize()
     {

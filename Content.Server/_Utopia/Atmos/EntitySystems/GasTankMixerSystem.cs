@@ -1,20 +1,18 @@
 using Content.Server.Atmos.Components;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
-using Content.Shared.Atmos.EntitySystems;
 using Content.Shared.Containers.ItemSlots;
-using Content.Shared.Interaction;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 
 namespace Content.Server.Atmos.EntitySystems
 {
-    public sealed class GasTankMixerSystem : EntitySystem
+    public sealed partial class GasTankMixerSystem : EntitySystem
     {
-        [Dependency] private readonly AtmosphereSystem _atmosphereSystem = default!;
-        [Dependency] private readonly GasTankSystem _gasTankSystem = default!;
-        [Dependency] private readonly UserInterfaceSystem _ui = default!;
-        [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
+        [Dependency] private AtmosphereSystem _atmosphereSystem = default!;
+        [Dependency] private GasTankSystem _gasTankSystem = default!;
+        [Dependency] private UserInterfaceSystem _ui = default!;
+        [Dependency] private ItemSlotsSystem _itemSlots = default!;
 
         public override void Initialize()
         {
@@ -25,7 +23,8 @@ namespace Content.Server.Atmos.EntitySystems
             SubscribeLocalEvent<GasTankMixerComponent, EntInsertedIntoContainerMessage>(OnContainerChanged);
             SubscribeLocalEvent<GasTankMixerComponent, EntRemovedFromContainerMessage>(OnContainerChanged);
 
-            Subs.BuiEvents<GasTankMixerComponent>(GasTankMixerUiKey.Key, subs => {
+            Subs.BuiEvents<GasTankMixerComponent>(GasTankMixerUiKey.Key, subs =>
+            {
                 subs.Event<GasTankMixerStartMessage>(OnStartMessage);
                 subs.Event<GasTankMixerSetTimeMessage>(OnSetTimeMessage);
                 subs.Event<GasTankMixerEjectMessage>(OnEjectMessage);
@@ -39,18 +38,18 @@ namespace Content.Server.Atmos.EntitySystems
 
         // private void OnInteractHand(EntityUid uid, GasTankMixerComponent comp, InteractHandEvent args)
         // {
-        //     if (args.Handled) 
+        //     if (args.Handled)
         //         return;
 
         //     _ui.OpenUi(uid, GasTankMixerUiKey.Key, args.User);
         //     UpdateUi(uid, comp);
-            
+
         //     args.Handled = true;
         // }
 
         private void OnStartMessage(EntityUid uid, GasTankMixerComponent comp, GasTankMixerStartMessage args)
         {
-            if (comp.IsActive) 
+            if (comp.IsActive)
                 return;
 
             if (_itemSlots.TryGetSlot(uid, GasTankMixerComponent.SlotAName, out var slotA) &&
@@ -66,7 +65,7 @@ namespace Content.Server.Atmos.EntitySystems
 
         private void OnSetTimeMessage(EntityUid uid, GasTankMixerComponent comp, GasTankMixerSetTimeMessage args)
         {
-            if (comp.IsActive) 
+            if (comp.IsActive)
                 return;
 
             comp.Timer = Math.Clamp(args.Time, 1f, 300f);
@@ -75,7 +74,7 @@ namespace Content.Server.Atmos.EntitySystems
 
         private void OnEjectMessage(EntityUid uid, GasTankMixerComponent comp, GasTankMixerEjectMessage args)
         {
-            if (comp.IsActive) 
+            if (comp.IsActive)
                 return;
 
             if (_itemSlots.TryGetSlot(uid, args.SlotId, out var slot))
@@ -132,9 +131,7 @@ namespace Content.Server.Atmos.EntitySystems
             {
                 _atmosphereSystem.React(tankA.Air, tankA);
             }
-            _gasTankSystem.CheckStatus((entA.Value, tankA));
         }
-
 
         private void UpdateUi(EntityUid uid, GasTankMixerComponent comp)
         {

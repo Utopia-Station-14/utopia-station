@@ -25,18 +25,18 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._Utopia.Genetics.Systems;
 
-public sealed class DnaScannerConsoleSystem : EntitySystem
+public sealed partial class DnaScannerConsoleSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly GeneticsSystem _genetics = default!;
-    [Dependency] private readonly GeneticShuffleSystem _shuffle = default!;
-    [Dependency] private readonly SharedMutationDiscoverySystem _discovery = default!;
-    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
-    [Dependency] private readonly MutationUnlockTriggerSystem _unlockTrigger = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private GeneticsSystem _genetics = default!;
+    [Dependency] private GeneticShuffleSystem _shuffle = default!;
+    [Dependency] private SharedMutationDiscoverySystem _discovery = default!;
+    [Dependency] private SharedUserInterfaceSystem _ui = default!;
+    [Dependency] private MutationUnlockTriggerSystem _unlockTrigger = default!;
 
     private const float SequencerButtonRadiationDamage = 0.2f;
     private const float ScrambleRadiationDamage = 15f;
@@ -507,7 +507,7 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
         {
             MobState.Dead => "Dead",
             MobState.Critical or MobState.Alive => TryComp<DamageableComponent>(uid, out var d)
-                ? MathF.Round((float)d.TotalDamage, 1).ToString()
+                ? MathF.Round((float)_damageable.GetTotalDamage((uid, d)), 1).ToString()
                 : "0",
             _ => null
         };
@@ -518,7 +518,9 @@ public sealed class DnaScannerConsoleSystem : EntitySystem
         if (!TryComp<DamageableComponent>(uid, out var damageable))
             return null;
 
-        if (!damageable.Damage.DamageDict.TryGetValue(Radiation, out var rad))
+        var damageSpecifier = _damageable.GetAllDamage((uid, damageable));
+
+        if (!damageSpecifier.DamageDict.TryGetValue(Radiation, out var rad))
             return 0f;
 
         return MathF.Round(rad.Float(), 2);

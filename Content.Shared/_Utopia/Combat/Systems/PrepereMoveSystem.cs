@@ -1,15 +1,15 @@
 using System.Linq;
 using Content.Shared.Actions;
-using Content.Shared.Humanoid;
+using Content.Shared.Body;
 using Content.Shared.Popups;
 using Content.Shared.Weapons.Melee.Events;
 
 namespace Content.Shared._Utopia.Combat;
 
-public sealed class SharedPrepareActionSystem : EntitySystem
+public sealed partial class SharedPrepareActionSystem : EntitySystem
 {
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private SharedActionsSystem _actions = default!;
 
     public override void Initialize()
     {
@@ -52,7 +52,7 @@ public sealed class SharedPrepareActionSystem : EntitySystem
         if (!args.IsHit || !args.HitEntities.Any())
             return;
 
-        if (!TryComp<HumanoidAppearanceComponent>(args.HitEntities[0], out _))
+        if (!TryComp<VisualBodyComponent>(args.HitEntities[0], out _))
             return;
 
         UseEventOnTarget(ent, args.HitEntities[0], ent.Comp.PreparedMove);

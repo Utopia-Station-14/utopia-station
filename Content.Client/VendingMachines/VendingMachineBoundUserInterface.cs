@@ -5,115 +5,107 @@ using Robust.Client.UserInterface;
 using Robust.Shared.Input;
 using System.Linq;
 
-namespace Content.Client.VendingMachines
+namespace Content.Client.VendingMachines;
+
+public sealed class VendingMachineBoundUserInterface(EntityUid owner, Enum uiKey) : BoundUserInterface(owner, uiKey)
 {
-    public sealed class VendingMachineBoundUserInterface : BoundUserInterface
+    [ViewVariables]
+    private VendingMachineMenu? _menu;
+
+    [ViewVariables]
+    private List<VendingMachineInventoryEntry> _cachedInventory = new();
+
+    protected override void Open()
     {
-        [ViewVariables]
-        private VendingMachineMenu? _menu;
+        base.Open();
 
-        [ViewVariables]
-        private List<VendingMachineInventoryEntry> _cachedInventory = new();
-
-        public VendingMachineBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
-        {
-        }
-
-        protected override void Open()
-        {
-            base.Open();
-
-            _menu = this.CreateWindowCenteredLeft<VendingMachineMenu>();
-            _menu.Title = EntMan.GetComponent<MetaDataComponent>(Owner).EntityName;
-            _menu.OnItemSelected += OnItemSelected;
-            Refresh();
-
-            _menu.OnWithdraw += OnWithdrawPressed; // Utopia-Tweak : Economy
-        }
-
-        // Utopia-Tweak : Economy
-        private void OnWithdrawPressed(VendingMachineWithdrawMessage message)
-        {
-            SendPredictedMessage(new VendingMachineWithdrawMessage());
-        }
-        // Utopia-Tweak : Economy
-
-        public void Refresh()
-        {
-            var enabled = EntMan.TryGetComponent(Owner, out VendingMachineComponent? bendy) && !bendy.Ejecting;
-
-            var system = EntMan.System<VendingMachineSystem>();
-            _cachedInventory = system.GetAllInventory(Owner);
-
-            // Utopia-Tweak : Economy
-            if (bendy == null)
-                return;
-
-            var multiplier = bendy.PriceMultiplier;
-
-            if (bendy.AllForFree)
-                multiplier = 0;
-            // Utopia-Tweak : Economy
-
-            _menu?.Populate(_cachedInventory, enabled, multiplier); // Utopia-Tweak : Economy
-
-            // Utopia-Tweak : Economy
-            if (bendy.Credits != 0 && !bendy.AllForFree)
-                _menu?.SetCreditsVisible(true);
-
-            _menu?.SetCredits(bendy.Credits);
-            // Utopia-Tweak : Economy
-        }
-
-        public void UpdateAmounts()
-        {
-            var enabled = EntMan.TryGetComponent(Owner, out VendingMachineComponent? bendy) && !bendy.Ejecting;
-
-            var system = EntMan.System<VendingMachineSystem>();
-            _cachedInventory = system.GetAllInventory(Owner);
-            _menu?.UpdateAmounts(_cachedInventory, enabled);
-
-            // Utopia-Tweak : Economy
-            if (bendy == null)
-                return;
-
-            _menu?.SetCredits(bendy.Credits);
-            // Utopia-Tweak : Economy
-        }
-
-        private void OnItemSelected(GUIBoundKeyEventArgs args, ListData data)
-        {
-            if (args.Function != EngineKeyFunctions.UIClick)
-                return;
-
-            if (data is not VendorItemsListData { ItemIndex: var itemIndex })
-                return;
-
-            if (_cachedInventory.Count == 0)
-                return;
-
-            var selectedItem = _cachedInventory.ElementAtOrDefault(itemIndex);
-
-            if (selectedItem == null)
-                return;
-
-            SendPredictedMessage(new VendingMachineEjectMessage(selectedItem.Type, selectedItem.ID));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (!disposing)
-                return;
-
-            if (_menu == null)
-                return;
-
-            _menu.OnWithdraw -= OnWithdrawPressed; // Utopia-Tweak : Economy
-
-            _menu.OnItemSelected -= OnItemSelected;
-            _menu.OnClose -= Close;
-            _menu.Dispose();
-        }
+        _menu = this.CreateWindowCenteredLeft<VendingMachineMenu>();
+        _menu.Title = EntMan.GetComponent<MetaDataComponent>(Owner).EntityName;
+        _menu.OnItemSelected += OnItemSelected;
+        _menu.OnWithdraw += OnWithdrawPressed; // Utopia-Tweak : Economy
+        Refresh();
     }
+
+    public void Refresh()
+    {
+        var enabled = EntMan.TryGetComponent(Owner, out VendingMachineComponent? bendy) && !bendy.Ejecting;
+
+        var system = EntMan.System<VendingMachineSystem>();
+        _cachedInventory = system.GetAllInventory(Owner);
+
+        // Utopia-Tweak : Economy
+        if (bendy == null)
+            return;
+
+        var multiplier = bendy.PriceMultiplier;
+
+        if (bendy.AllForFree)
+            multiplier = 0;
+
+        _menu?.Populate(_cachedInventory, enabled, multiplier);
+
+        if (bendy.Credits != 0 && !bendy.AllForFree)
+            _menu?.SetCreditsVisible(true);
+
+        _menu?.SetCredits(bendy.Credits);
+        // Utopia-Tweak : Economy
+    }
+
+    public void UpdateAmounts()
+    {
+        var enabled = EntMan.TryGetComponent(Owner, out VendingMachineComponent? bendy) && !bendy.Ejecting;
+
+        var system = EntMan.System<VendingMachineSystem>();
+        _cachedInventory = system.GetAllInventory(Owner);
+        _menu?.UpdateAmounts(_cachedInventory, enabled);
+
+        // Utopia-Tweak : Economy
+        if (bendy == null)
+            return;
+
+        _menu?.SetCredits(bendy.Credits);
+        // Utopia-Tweak : Economy
+    }
+
+    private void OnItemSelected(GUIBoundKeyEventArgs args, ListData data)
+    {
+        if (args.Function != EngineKeyFunctions.UIClick)
+            return;
+
+        if (data is not VendorItemsListData { ItemIndex: var itemIndex })
+            return;
+
+        if (_cachedInventory.Count == 0)
+            return;
+
+        var selectedItem = _cachedInventory.ElementAtOrDefault(itemIndex);
+
+        if (selectedItem == null)
+            return;
+
+        SendPredictedMessage(new VendingMachineEjectMessage(selectedItem.Type, selectedItem.ID));
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        base.Dispose(disposing);
+        if (!disposing)
+            return;
+
+        if (_menu == null)
+            return;
+
+        _menu.OnWithdraw -= OnWithdrawPressed; // Utopia-Tweak : Economy
+
+        _menu.OnItemSelected -= OnItemSelected;
+        _menu.OnClose -= Close;
+        _menu.Dispose();
+    }
+
+    // Utopia-Tweak : Economy
+    private void OnWithdrawPressed(VendingMachineWithdrawMessage message)
+    {
+        SendPredictedMessage(new VendingMachineWithdrawMessage());
+    }
+    // Utopia-Tweak : Economy
 }

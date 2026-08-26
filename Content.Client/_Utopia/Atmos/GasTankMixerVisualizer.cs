@@ -1,12 +1,11 @@
 using Content.Shared.Atmos;
 using Robust.Client.GameObjects;
-using Robust.Shared.GameStates;
 
 namespace Content.Client._Utopia.Atmos;
 
-public sealed class GasTankMixerClientSystem : EntitySystem
+public sealed partial class GasTankMixerClientSystem : EntitySystem
 {
-    [Dependency] private readonly SpriteSystem _sprite = default!;
+    [Dependency] private SpriteSystem _sprite = default!;
 
     public override void Initialize()
     {

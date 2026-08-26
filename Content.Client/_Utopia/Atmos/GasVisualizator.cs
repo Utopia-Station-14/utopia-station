@@ -4,12 +4,13 @@ using Robust.Shared.Maths;
 using Robust.Shared.GameObjects;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Prototypes;
+using Content.Shared.Atmos.EntitySystems;
 
 namespace Content.Client._Utopia.Atmos
 {
-    public sealed class GasVisualsSystem : EntitySystem
+    public sealed partial class GasVisualsSystem : EntitySystem
     {
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+        [Dependency] private IPrototypeManager _prototypeManager = default!;
         private readonly Dictionary<string, GasPrototype> _gasColors = new();
 
         public override void Initialize()
@@ -41,25 +42,39 @@ namespace Content.Client._Utopia.Atmos
             }
         }
 
-        public Color GetGasColor(string gasId, byte tempByte)
+        public Color GetGasColor(string gasId, ThermalByte thermalByte)
         {
-            if (!_gasColors.TryGetValue(gasId, out var gasColorProto) || gasColorProto.ColorGradient == null || gasColorProto.ColorGradient.Count == 0)
+            if (!_gasColors.TryGetValue(gasId, out var gasColorProto) ||
+                gasColorProto.ColorGradient == null ||
+                gasColorProto.ColorGradient.Count == 0)
                 return Color.White;
 
-            float temperature = (tempByte / 255f) * Atmospherics.MaxTemperatureForFire;
+            if (thermalByte.IsAtmosImpossible || thermalByte.IsVacuum)
+                return Color.White;
 
-            if (temperature <= gasColorProto.GradientMinTemp) return gasColorProto.ColorGradient[0];
-            if (temperature >= gasColorProto.GradientMaxTemp) return gasColorProto.ColorGradient[^1];
+            if (!thermalByte.TryGetTemperature(out float temperature, onVacuumReturnTcmb: false))
+                return Color.White;
 
-            float t = (temperature - gasColorProto.GradientMinTemp) / (gasColorProto.GradientMaxTemp - gasColorProto.GradientMinTemp);
-            int colorCount = gasColorProto.ColorGradient.Count;
-            float scaledT = t * (colorCount - 1);
-            int index = (int)scaledT;
+            if (temperature <= gasColorProto.GradientMinTemp)
+                return gasColorProto.ColorGradient[0];
+
+            if (temperature >= gasColorProto.GradientMaxTemp)
+                return gasColorProto.ColorGradient[^1];
+
+            var t = (temperature - gasColorProto.GradientMinTemp) /
+                    (gasColorProto.GradientMaxTemp - gasColorProto.GradientMinTemp);
+
+            var colorCount = gasColorProto.ColorGradient.Count;
+            var scaledT = t * (colorCount - 1);
+            var index = (int)scaledT;
             float fraction = scaledT - index;
 
-            if (index >= colorCount - 1) return gasColorProto.ColorGradient[^1];
+            if (index >= colorCount - 1)
+                return gasColorProto.ColorGradient[^1];
 
-            return Color.InterpolateBetween(gasColorProto.ColorGradient[index], gasColorProto.ColorGradient[index + 1], fraction);
+            return Color.InterpolateBetween(gasColorProto.ColorGradient[index],
+                gasColorProto.ColorGradient[index + 1],
+                fraction);
         }
     }
 }

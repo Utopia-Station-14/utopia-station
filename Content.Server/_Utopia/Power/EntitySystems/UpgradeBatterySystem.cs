@@ -7,9 +7,9 @@ using Content.Shared.Power.Components;
 namespace Content.Server._Utopia.Power.EntitySystems;
 
 [UsedImplicitly]
-public sealed class UpgradeBatterySystem : EntitySystem
+public sealed partial class UpgradeBatterySystem : EntitySystem
 {
-    [Dependency] private readonly BatterySystem _batterySystem = default!;
+    [Dependency] private BatterySystem _batterySystem = default!;
 
     public override void Initialize()
     {

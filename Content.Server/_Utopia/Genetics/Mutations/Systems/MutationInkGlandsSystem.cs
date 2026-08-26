@@ -9,12 +9,12 @@ using Robust.Shared.Audio.Systems;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationInkGlandsSystem : EntitySystem
+public sealed partial class MutationInkGlandsSystem : EntitySystem
 {
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
-    [Dependency] private readonly PuddleSystem _puddle = default!;
-    [Dependency] private readonly ForensicsSystem _forensics = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private SharedActionsSystem _actions = default!;
+    [Dependency] private PuddleSystem _puddle = default!;
+    [Dependency] private ForensicsSystem _forensics = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
 
     public override void Initialize()
     {

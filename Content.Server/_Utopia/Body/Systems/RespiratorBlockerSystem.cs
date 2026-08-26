@@ -5,7 +5,7 @@ namespace Content.Server._Utopia.RespiratorBlocker;
 
 public sealed partial class RespiratorBlockSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _gameTiming = default!;
+    [Dependency] private IGameTiming _gameTiming = default!;
 
     public override void Initialize()
     {

@@ -3,7 +3,6 @@
   entityMask:
     AsteroidRock: UtopiaAsteroidRockCopper
     WallRock: UtopiaWallRockCopper
-    WallRockBasalt: UtopiaWallRockBasaltCopper
     WallRockChromite: UtopiaWallRockChromiteCopper
     WallRockSand: UtopiaWallRockSandCopper
     WallRockSnow: UtopiaWallRockSnowCopper
@@ -17,7 +16,6 @@
   entityMask:
     AsteroidRock: UtopiaAsteroidRockLead
     WallRock: UtopiaWallRockLead
-    WallRockBasalt: UtopiaWallRockBasaltLead
     WallRockChromite: UtopiaWallRockChromiteLead
     WallRockSand: UtopiaWallRockSandLead
     WallRockSnow: UtopiaWallRockSnowLead
@@ -31,7 +29,6 @@
   entityMask:
     AsteroidRock: UtopiaAsteroidRockBluespace
     WallRock: UtopiaWallRockBluespace
-    WallRockBasalt: UtopiaWallRockBasaltBluespace
     WallRockChromite: UtopiaWallRockChromiteBluespace
     WallRockSand: UtopiaWallRockSandBluespace
     WallRockSnow: UtopiaWallRockSnowBluespace
@@ -45,7 +42,6 @@
   entityMask:
     AsteroidRock: UtopiaAsteroidRockRedspace
     WallRock: UtopiaWallRockRedspace
-    WallRockBasalt: UtopiaWallRockBasaltRedspace
     WallRockChromite: UtopiaWallRockChromiteRedspace
     WallRockSand: UtopiaWallRockSandRedspace
     WallRockSnow: UtopiaWallRockSnowRedspace

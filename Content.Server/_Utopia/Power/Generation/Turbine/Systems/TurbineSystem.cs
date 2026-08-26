@@ -19,27 +19,26 @@ using Robust.Shared.Random;
 
 namespace Content.Server.Power.Turbines;
 
-public sealed class TurbineSystem : EntitySystem
+public sealed partial class TurbineSystem : EntitySystem
 {
     private const string NodeNameTurbine = "turbine";
     private const float UpdateInterval = 1f;
 
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly TransformSystem _transformSystem = default!;
-    [Dependency] private readonly AtmosphereSystem _atmos = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly ExplosionSystem _explosion = default!;
-    [Dependency] private readonly RadioSystem _radioSystem = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private TransformSystem _transformSystem = default!;
+    [Dependency] private AtmosphereSystem _atmos = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private ExplosionSystem _explosion = default!;
+    [Dependency] private RadioSystem _radioSystem = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private EntityQuery<NodeContainerComponent> _nodeContainerQuery = default!;
 
     private float _accumulator;
-    private EntityQuery<NodeContainerComponent> _nodeContainerQuery;
     private static readonly ProtoId<RadioChannelPrototype> Channel = "Engineering";
 
     public override void Initialize()
     {
         base.Initialize();
-        _nodeContainerQuery = GetEntityQuery<NodeContainerComponent>();
 
         Subs.BuiEvents<TurbineConsoleComponent>(TurbineConsoleUiKey.Key, subs =>
         {
@@ -68,7 +67,7 @@ public sealed class TurbineSystem : EntitySystem
                 ProcessTurbine(uid, rotor, group);
 
                 rotor.TalkingTimer += UpdateInterval;
-                if (rotor.TalkingTimer >= 60f) 
+                if (rotor.TalkingTimer >= 60f)
                 {
                     rotor.TalkingTimer = 0f;
                     ProcessTalking(uid, rotor);
@@ -121,7 +120,7 @@ public sealed class TurbineSystem : EntitySystem
             return;
 
         var (inGas, sourcePressure) = CollectGas(inletNode, inlet);
-        
+
         if (inGas.TotalMoles <= 0f)
         {
             ResetRotor(uid, rotor);
@@ -256,7 +255,7 @@ public sealed class TurbineSystem : EntitySystem
 
         var totalDamage = temperatureDamage + pressureDamage + energyDamage;
 
-        const float maxDamagePerSecond = 1f; 
+        const float maxDamagePerSecond = 1f;
         if (totalDamage > maxDamagePerSecond)
         {
             totalDamage = maxDamagePerSecond;
@@ -292,7 +291,7 @@ public sealed class TurbineSystem : EntitySystem
             return;
 
         string message;
-        
+
         if (_random.Prob(0.02f))
             message = Loc.GetString("turbine-pashalka-damage", ("turbine-console-window-label-integrity", rotor.Integrity));
         else if (rotor.PressureDamage > rotor.EnergyDamage && rotor.PressureDamage > rotor.TemperatureDamage)

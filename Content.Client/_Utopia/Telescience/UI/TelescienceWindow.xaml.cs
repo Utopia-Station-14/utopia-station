@@ -10,8 +10,8 @@ namespace Content.Client._Utopia.Telescience.UI;
 [GenerateTypedNameReferences]
 public sealed partial class TelescienceWindow : FancyWindow
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IEntityManager _ent = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IEntityManager _ent = default!;
 
     private TelescienceState _state;
 

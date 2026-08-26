@@ -44,19 +44,18 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
     private float _updateAccumulator = 0f;
     private const float UpdateRate = 1f;
 
-    [Dependency] private readonly IConfigurationManager _config = default!;
-    [Dependency] private readonly IEyeManager _eyeManager = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedPointLightSystem _lights = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
-    [Dependency] private readonly CESharedZLevelsSystem _zLevels = default!;
-    [Dependency] private readonly IMapManager _mapManager = default!;
-    [Dependency] private readonly ITileDefinitionManager _tileDefinition = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
-    [Dependency] private readonly CEZLevelOpeningCache _zCache = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] private IConfigurationManager _config = default!;
+    [Dependency] private IEyeManager _eyeManager = default!;
+    [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedPointLightSystem _lights = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private CESharedZLevelsSystem _zLevels = default!;
+    [Dependency] private ITileDefinitionManager _tileDefinition = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private CEZLevelOpeningCache _zCache = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
 
     private readonly Dictionary<ProjectedLightKey, EntityUid> _projectedLights = new();
     private readonly Dictionary<MergedProjectedLightKey, EntityUid> _mergedProjectedLights = new();
@@ -77,21 +76,15 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
     private readonly List<List<int>> _openingCandidateBucketPool = new();
     private readonly ProjectedLightAlongAxisComparer _alongAxisComparer = new();
 
-    private EntityQuery<CEZProjectedLightComponent> _projectedQuery;
-    private EntityQuery<PointLightComponent> _pointLightQuery;
-    private EntityQuery<MapComponent> _mapQuery;
-    private EntityQuery<TransformComponent> _xformQuery;
-    private EntityQuery<CEZLevelMapComponent> _zMapQuery;
+    [Dependency] private EntityQuery<CEZProjectedLightComponent> _projectedQuery = default!;
+    [Dependency] private EntityQuery<PointLightComponent> _pointLightQuery = default!;
+    [Dependency] private EntityQuery<MapComponent> _mapQuery = default!;
+    [Dependency] private EntityQuery<TransformComponent> _xformQuery = default!;
+    [Dependency] private EntityQuery<CEZLevelMapComponent> _zMapQuery = default!;
 
     public override void Initialize()
     {
         base.Initialize();
-
-        _projectedQuery = GetEntityQuery<CEZProjectedLightComponent>();
-        _pointLightQuery = GetEntityQuery<PointLightComponent>();
-        _mapQuery = GetEntityQuery<MapComponent>();
-        _xformQuery = GetEntityQuery<TransformComponent>();
-        _zMapQuery = GetEntityQuery<CEZLevelMapComponent>();
     }
 
     public override void FrameUpdate(float frameTime)
@@ -107,7 +100,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         _updateAccumulator += frameTime;
         if (_updateAccumulator < UpdateRate)
             return;
-        
+
         _updateAccumulator = 0f;
 
         if (_player.LocalEntity is not { } playerUid ||
@@ -142,11 +135,11 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         Entity<CEZLevelMapComponent?> playerZLevelMap = (playerMapUid, playerZMap);
 
         var activeMaps = new HashSet<MapId> { playerMapComp.MapId };
-        
+
         for (var depthOffset = -maxDepth; depthOffset <= maxDepth; depthOffset++)
         {
             if (depthOffset == 0) continue;
-            
+
             if (_zLevels.TryMapOffset(playerZLevelMap, depthOffset, out var adjacentMap) &&
                 adjacentMap is { } adj &&
                 _mapQuery.TryComp(adj.Owner, out var adjacentMapComp) &&
@@ -269,14 +262,14 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
     private void BuildSourceLightBuckets(Box2Rotated viewBounds, float minEnergy, HashSet<MapId> activeMaps)
     {
         ClearSourceLightBuckets();
-        
-        var aabb = viewBounds.CalcBoundingBox(); 
+
+        var aabb = viewBounds.CalcBoundingBox();
         var maxRadius = Math.Max(0f, _config.GetCVar(UCCVars.CEZProjectedLightMaxRadius));
         var lookupBounds = aabb.Enlarged(maxRadius + ViewBoundsLightPadding);
 
         foreach (var mapId in activeMaps)
         {
-            if (mapId == MapId.Nullspace) 
+            if (mapId == MapId.Nullspace)
                 continue;
 
             var bucket = GetSourceLightBucket(mapId);
@@ -462,7 +455,6 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
                 sourceLight.Radius,
                 _tempOpenings,
                 _openingGrids,
-                _mapManager,
                 _map,
                 _transform,
                 _tileDefinition,
@@ -542,7 +534,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
 
     public bool IsTileTransparent(MapId mapId, Vector2 worldPos)
     {
-        if (!_mapManager.TryFindGridAt(mapId, worldPos, out var gridUid, out var gridComp))
+        if (!_map.TryFindGridAt(mapId, worldPos, out var gridUid, out var gridComp))
             return false;
 
         if (!_map.TryGetTileRef(gridUid, gridComp, worldPos, out var tileRef))
@@ -597,7 +589,6 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
                 0.8f,
                 _tempIntermediateOpenings,
                 _openingGrids,
-                _mapManager,
                 _map,
                 _transform,
                 _tileDefinition,
@@ -874,19 +865,19 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         {
             if (!MathHelper.CloseTo(light.Radius, candidate.ProjectedRadius))
                 _lights.SetRadius(projectedUid, candidate.ProjectedRadius, light);
-                
+
             if (!MathHelper.CloseTo(light.Energy, candidate.ProjectedEnergy))
                 _lights.SetEnergy(projectedUid, candidate.ProjectedEnergy, light);
-                
+
             if (light.Color != candidate.Color)
                 _lights.SetColor(projectedUid, candidate.Color, light);
-                
+
             if (!MathHelper.CloseTo(light.Softness, candidate.Softness))
                 _lights.SetSoftness(projectedUid, candidate.Softness, light);
 
             if (light.CastShadows)
                 _lights.SetCastShadows(projectedUid, false, light);
-                
+
             if (!light.Enabled)
                 _lights.SetEnabled(projectedUid, true, light);
         }

@@ -4,10 +4,10 @@ using Content.Shared.Whitelist;
 
 namespace Content.Shared._Utopia.CantShoot;
 
-public sealed class CantShootSystem : EntitySystem
+public sealed partial class CantShootSystem : EntitySystem
 {
-    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private EntityWhitelistSystem _whitelist = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
 
     public override void Initialize()
     {

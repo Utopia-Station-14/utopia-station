@@ -17,11 +17,11 @@ namespace Content.Server._Utopia.Genetics.Systems;
 
 public sealed partial class GeneticsSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly GeneticShuffleSystem _shuffle = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private GeneticShuffleSystem _shuffle = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     private const string DamageType = "Radiation";
     private const float MinSequenceRevealFraction = 0.45f;
@@ -381,7 +381,7 @@ public sealed partial class GeneticsSystem : EntitySystem
 
     private void RemoveMutationComponents(EntityUid uid, GeneticMutationPrototype proto)
     {
-        foreach (var (comp, _) in proto.Components.Values)
+        foreach (var (comp, _) in proto.Components)
         {
             RemCompDeferred(uid, comp.GetType());
         }

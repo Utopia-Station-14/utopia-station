@@ -12,7 +12,7 @@ namespace Content.Shared._CE.ZLevels.Core.EntitySystems;
 
 public abstract partial class CESharedZLevelsSystem
 {
-    [Dependency] protected readonly TurfSystem Turf = default!;
+    [Dependency] protected TurfSystem Turf = default!;
 
     private void UpdateMovement(EntityUid uid, CEZPhysicsComponent zPhys, TransformComponent xform,
         PhysicsComponent physics, float frameTime)

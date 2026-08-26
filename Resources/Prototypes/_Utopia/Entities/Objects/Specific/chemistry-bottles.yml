@@ -4,11 +4,9 @@
   suffix: Mutadone
   components:
   - type: Label
-    currentLabel: reagent-name-mutadone
-  - type: SolutionContainerManager
-    solutions:
-      drink:
-        maxVol: 30
+    localizedLabel: reagent-name-mutadone
+  - type: Solution
+    solution:
         reagents:
         - ReagentId: Mutadone
           Quantity: 30

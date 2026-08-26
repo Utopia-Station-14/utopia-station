@@ -117,7 +117,7 @@ public abstract partial class CESharedZLevelsSystem
             return false;
 
         var worldPos = _transform.GetWorldPosition(ent);
-        if (!MapManager.TryFindGridAt(mapAboveUid.Value, worldPos, out var gridUid, out var grid))
+        if (!MapSys.TryFindGridAt(mapAboveUid.Value, worldPos, out var gridUid, out var grid))
             return false;
 
         if (MapSys.TryGetTileRef(gridUid, grid, worldPos, out var tileRef) &&

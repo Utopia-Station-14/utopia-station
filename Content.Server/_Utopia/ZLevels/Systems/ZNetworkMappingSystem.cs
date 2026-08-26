@@ -12,19 +12,18 @@ using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
-using Robust.Shared.Serialization.Manager;
 using Robust.Shared.Utility;
 
 namespace Content.Server._Utopia.ZLevels;
 
-public sealed class ZNetworkMappingSystem : EntitySystem
+public sealed partial class ZNetworkMappingSystem : EntitySystem
 {
-    [Dependency] private readonly IResourceManager _resMan = default!;
-    [Dependency] private readonly MapSystem _map = default!;
-    [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
-    [Dependency] private readonly CEZLevelsSystem _zLevels = default!;
-    [Dependency] private readonly TransformSystem _transform = default!;
-    [Dependency] private readonly SharedGridMotionLinkSystem _motionLink = default!;
+    [Dependency] private IResourceManager _resMan = default!;
+    [Dependency] private MapSystem _map = default!;
+    [Dependency] private MapLoaderSystem _mapLoader = default!;
+    [Dependency] private CEZLevelsSystem _zLevels = default!;
+    [Dependency] private TransformSystem _transform = default!;
+    [Dependency] private SharedGridMotionLinkSystem _motionLink = default!;
 
     #region Saving
     public bool TrySaveMap(string path, EntityUid target, [NotNullWhen(false)] out string? error)
@@ -182,7 +181,7 @@ public sealed class ZNetworkMappingSystem : EntitySystem
             data.LevelPaths[depth].Add(gridLevel);
 
             // Save grid itself
-            if (!_mapLoader.TrySaveGrid(item.Owner, new($"{path}/{fileName}")))
+            if (!_mapLoader.TrySaveGrid(map: item.Owner, new($"{path}/{fileName}")))
                 return false;
         }
 

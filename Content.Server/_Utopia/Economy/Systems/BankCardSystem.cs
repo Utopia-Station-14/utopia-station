@@ -21,20 +21,20 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._Utopia.Economy;
 
-public sealed class BankCardSystem : SharedEconomySystem
+public sealed partial class BankCardSystem : SharedEconomySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IConfigurationManager _configManager = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly CargoSystem _cargo = default!;
-    [Dependency] private readonly IPlayerManager _playerManager = default!;
-    [Dependency] private readonly BankCartridgeSystem _bankCartridge = default!;
-    [Dependency] private readonly IdCardSystem _idCardSystem = default!;
-    [Dependency] private readonly GameTicker _gameTicker = default!;
-    [Dependency] private readonly IPrototypeManager _protoMan = default!;
-    [Dependency] private readonly ChatSystem _chatSystem = default!;
-    [Dependency] private readonly JobSystem _job = default!;
-    [Dependency] private readonly StationSystem _station = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IConfigurationManager _configManager = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private CargoSystem _cargo = default!;
+    [Dependency] private IPlayerManager _playerManager = default!;
+    [Dependency] private BankCartridgeSystem _bankCartridge = default!;
+    [Dependency] private IdCardSystem _idCardSystem = default!;
+    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private IPrototypeManager _protoMan = default!;
+    [Dependency] private ChatSystem _chatSystem = default!;
+    [Dependency] private JobSystem _job = default!;
+    [Dependency] private StationSystem _station = default!;
 
     private const string Salaries = "Salaries";
     private const int SalaryDelay = 2700;

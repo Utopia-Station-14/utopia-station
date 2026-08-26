@@ -1,5 +1,4 @@
 using Content.Server.Stack;
-using Content.Server.Store.Components;
 using Content.Shared._Utopia.Economy;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Emag.Components;
@@ -7,6 +6,7 @@ using Content.Shared.Emag.Systems;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
 using Content.Shared.Stacks;
+using Content.Shared.Store.Components;
 using Robust.Server.Containers;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
@@ -16,17 +16,17 @@ using Robust.Shared.Random;
 
 namespace Content.Server._Utopia.Economy;
 
-public sealed class ATMSystem : EntitySystem
+public sealed partial class ATMSystem : EntitySystem
 {
-    [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly BankCardSystem _bankCardSystem = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private readonly StackSystem _stackSystem = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
-    [Dependency] private readonly ContainerSystem _container = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private ItemSlotsSystem _itemSlots = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private BankCardSystem _bankCardSystem = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private StackSystem _stackSystem = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private SharedAudioSystem _audioSystem = default!;
+    [Dependency] private ContainerSystem _container = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
     public override void Initialize()
     {

@@ -6,10 +6,10 @@ using Content.Shared.Chemistry.EntitySystems;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationAdrenalineRushSystem : EntitySystem
+public sealed partial class MutationAdrenalineRushSystem : EntitySystem
 {
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solution = default!;
+    [Dependency] private SharedActionsSystem _actions = default!;
+    [Dependency] private SharedSolutionContainerSystem _solution = default!;
 
     public override void Initialize()
     {

@@ -10,13 +10,15 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Maths;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using Robust.Server.GameObjects;
 
 namespace Content.Server.Atmos.EntitySystems;
 
 public sealed partial class AtmosphereSystem
 {
-    [Dependency] private readonly CESharedZLevelsSystem _zLevels = default!;
-    [Dependency] private readonly TurfSystem _turf = default!;
+    [Dependency] private CESharedZLevelsSystem _zLevels = default!;
+    [Dependency] private TurfSystem _turf = default!;
+    [Dependency] private TransformSystem _transformSystem = default!;
 
     private const float TransferAmount = 1f;
 
@@ -42,7 +44,7 @@ public sealed partial class AtmosphereSystem
     /// <summary>
     /// AtmosphereSystem.LINDA метод ProcessRevalidate.
     /// </summary>
-    private void RefreshZAtmosTransferCandidates(Entity<GridAtmosphereComponent, GasTileOverlayComponent, 
+    private void RefreshZAtmosTransferCandidates(Entity<GridAtmosphereComponent, GasTileOverlayComponent,
         MapGridComponent, TransformComponent> ent, Vector2i indices)
     {
         // При необходимости обновляет кэш или связи для измененного тайла.
@@ -69,8 +71,8 @@ public sealed partial class AtmosphereSystem
     /// </summary>
     private bool ShouldTryZLevelProtectedMixture(Entity<TransformComponent?> ent, EntityUid? gridUid, Vector2i position)
     {
-        return gridUid != null && 
-               TryComp<MapGridComponent>(gridUid.Value, out var gridComp) && 
+        return gridUid != null &&
+               TryComp<MapGridComponent>(gridUid.Value, out var gridComp) &&
                IsZConnectedSpace(gridUid.Value, gridComp, position);
     }
 
@@ -80,15 +82,15 @@ public sealed partial class AtmosphereSystem
     private bool TryGetZLevelProtectedTileMixtureForEntity(Entity<TransformComponent?> ent, bool excite, [NotNullWhen(true)] out GasMixture? mixture)
     {
         mixture = null;
-        
+
         if (ent.Comp?.GridUid == null || !TryComp<MapGridComponent>(ent.Comp.GridUid.Value, out var gridComp))
             return false;
 
         var position = _transformSystem.GetGridTilePositionOrDefault((ent.Owner, ent.Comp));
-        var targetTile = GetZTile(ent.Comp.GridUid.Value, gridComp, position, 1) 
+        var targetTile = GetZTile(ent.Comp.GridUid.Value, gridComp, position, 1)
                       ?? GetZTile(ent.Comp.GridUid.Value, gridComp, position, -1);
 
-        if (targetTile?.Air == null) 
+        if (targetTile?.Air == null)
             return false;
 
         mixture = targetTile.Air;
@@ -118,7 +120,7 @@ public sealed partial class AtmosphereSystem
     /// AtmosphereSystem.Processing метод UpdateTileAir.
     /// </summary>
     private bool TryUpdateZLevelProtectedTileAir(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent, TileAtmosphere tile, float volume)
-        => false; 
+        => false;
 
     /// <summary>
     /// AtmosphereSystem метод OnTileChanged.
@@ -180,7 +182,7 @@ public sealed partial class AtmosphereSystem
         // Если мы идем вверх.
         if (offset == 1)
         {
-            if (_mapManager.TryFindGridAt(targetMap.Value.Owner, worldPos, out var directGridUid, out var directGridComp))
+            if (_map.TryFindGridAt(targetMap.Value.Owner, worldPos, out var directGridUid, out var directGridComp))
             {
                 var directGridXform = Comp<TransformComponent>(directGridUid);
                 var directLocalPos = Vector2.Transform(worldPos, directGridXform.InvLocalMatrix);
@@ -202,13 +204,13 @@ public sealed partial class AtmosphereSystem
                 {
                     for (int y = -1; y <= 1; y++)
                     {
-                        if (x == 0 && y == 0) 
+                        if (x == 0 && y == 0)
                             continue;
 
                         var offsetLocalPos = _mapSystem.GridTileToLocal(ent.Owner, ent.Comp3, indices + new Vector2i(x, y));
                         var offsetWorldPos = _transformSystem.ToMapCoordinates(offsetLocalPos).Position;
 
-                        if (_mapManager.TryFindGridAt(targetMap.Value.Owner, offsetWorldPos, out var nGridUid, out var nGridComp))
+                        if (_map.TryFindGridAt(targetMap.Value.Owner, offsetWorldPos, out var nGridUid, out var nGridComp))
                         {
                             var nGridXform = Comp<TransformComponent>(nGridUid);
                             var nLocalPos = Vector2.Transform(offsetWorldPos, nGridXform.InvLocalMatrix);
@@ -224,7 +226,7 @@ public sealed partial class AtmosphereSystem
                             }
                         }
                     }
-                    if (foundValidTarget) 
+                    if (foundValidTarget)
                         break;
                 }
             }
@@ -238,7 +240,7 @@ public sealed partial class AtmosphereSystem
         }
         else // Логика для движения вниз.
         {
-            if (!_mapManager.TryFindGridAt(targetMap.Value.Owner, worldPos, out targetGridUid, out targetGridComp))
+            if (!_map.TryFindGridAt(targetMap.Value.Owner, worldPos, out targetGridUid, out targetGridComp))
             {
                 HandleSpaceLeak(ent, tile);
                 return;
@@ -247,7 +249,7 @@ public sealed partial class AtmosphereSystem
             var targetGridXform = Comp<TransformComponent>(targetGridUid);
             var targetLocalPos = Vector2.Transform(worldPos, targetGridXform.InvLocalMatrix);
             targetIndices = _mapSystem.LocalToTile(targetGridUid, targetGridComp, new EntityCoordinates(targetGridUid, targetLocalPos));
-            
+
             foundValidTarget = true;
         }
 
@@ -255,7 +257,7 @@ public sealed partial class AtmosphereSystem
             return;
 
         var targetTile = GetZTileAtPosition(targetGridUid, targetGridComp, targetIndices);
-        
+
         if (targetTile?.MapAtmosphere == true || targetTile == null || targetTile.Space)
         {
             HandleSpaceLeak(ent, tile);
@@ -281,7 +283,7 @@ public sealed partial class AtmosphereSystem
             {
                 if (tile.ExcitedGroup != null)
                     tile.ExcitedGroup.DismantleCooldown = 0;
-                
+
                 if (targetTile.ExcitedGroup != null)
                     targetTile.ExcitedGroup.DismantleCooldown = 0;
             }
@@ -330,18 +332,18 @@ public sealed partial class AtmosphereSystem
     /// </summary>
     private bool IsTileBlockingZAir(EntityUid gridUid, MapGridComponent grid, Vector2i indices)
     {
-        var tileRef = grid.GetTileRef(indices);
-        
+        var tileRef = _map.GetTileRef(gridUid, grid, indices);
+
         if (tileRef.Tile.IsEmpty || _turf.IsSpace(tileRef))
             return false;
 
-        if (_tileDefinitionManager.TryGetDefinition(tileRef.Tile.TypeId, out var tileDef) && 
-            tileDef is ContentTileDefinition contentDef && 
+        if (_tileDefinitionManager.TryGetDefinition(tileRef.Tile.TypeId, out var tileDef) &&
+            tileDef is ContentTileDefinition contentDef &&
             contentDef.MapAtmosphere)
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -354,7 +356,7 @@ public sealed partial class AtmosphereSystem
         var localPos = _mapSystem.GridTileToLocal(gridUid, grid, indices);
         var worldPos = _transformSystem.ToMapCoordinates(localPos).Position;
 
-        if (!_mapManager.TryFindGridAt(targetMap.Value.Owner, worldPos, out var targetGridUid, out var targetGridComp))
+        if (!_map.TryFindGridAt(targetMap.Value.Owner, worldPos, out var targetGridUid, out var targetGridComp))
             return null;
 
         var targetGridXform = Comp<TransformComponent>(targetGridUid);

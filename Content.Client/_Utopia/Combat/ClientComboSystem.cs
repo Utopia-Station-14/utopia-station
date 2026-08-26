@@ -2,7 +2,7 @@ using Content.Shared._Utopia.Combat;
 
 namespace Content.Client._Utopia.Combat;
 
-public sealed class ClientComboSystem : EntitySystem
+public sealed partial class ClientComboSystem : EntitySystem
 {
     public override void Initialize()
     {

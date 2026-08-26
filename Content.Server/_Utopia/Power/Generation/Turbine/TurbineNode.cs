@@ -68,17 +68,19 @@ public sealed class TurbineNodeGroup : BaseNodeGroup
 public sealed partial class TurbineNodeInlet : Node
 {
     public override IEnumerable<Node> GetReachableNodes(
-        TransformComponent xform,
+        Entity<TransformComponent> xform,
         EntityQuery<NodeContainerComponent> nodeQuery,
         EntityQuery<TransformComponent> xformQuery,
-        MapGridComponent? grid,
+        Entity<MapGridComponent>? grid,
         IEntityManager entMan)
     {
-        if (!xform.Anchored || grid == null)
+        if (!xform.Comp.Anchored || grid is not { } gridEnt)
             yield break;
 
-        var gridIndex = grid.TileIndicesFor(xform.Coordinates);
-        var forwardDir = xform.LocalRotation.GetDir();
+        var mapSystem = entMan.System<SharedMapSystem>();
+
+        var gridIndex = mapSystem.TileIndicesFor(gridEnt, xform.Comp.Coordinates);
+        var forwardDir = xform.Comp.LocalRotation.GetDir();
         var targetIdx = gridIndex.Offset(forwardDir);
 
         foreach (var node in NodeHelpers.GetNodesInTile(nodeQuery, grid, targetIdx))
@@ -100,17 +102,19 @@ public sealed partial class TurbineNodeInlet : Node
 public sealed partial class TurbineNodeRotor : Node
 {
     public override IEnumerable<Node> GetReachableNodes(
-        TransformComponent xform,
+        Entity<TransformComponent> xform,
         EntityQuery<NodeContainerComponent> nodeQuery,
         EntityQuery<TransformComponent> xformQuery,
-        MapGridComponent? grid,
+        Entity<MapGridComponent>? grid,
         IEntityManager entMan)
     {
-        if (!xform.Anchored || grid == null)
+        if (!xform.Comp.Anchored || grid is not { } gridEnt)
             yield break;
 
-        var gridIndex = grid.TileIndicesFor(xform.Coordinates);
-        var forwardDir = xform.LocalRotation.GetDir();
+        var mapSystem = entMan.System<SharedMapSystem>();
+
+        var gridIndex = mapSystem.TileIndicesFor(gridEnt, xform.Comp.Coordinates);
+        var forwardDir = xform.Comp.LocalRotation.GetDir();
         var backDir = forwardDir.GetOpposite();
 
         var backIdx = gridIndex.Offset(backDir);
@@ -145,17 +149,19 @@ public sealed partial class TurbineNodeRotor : Node
 public sealed partial class TurbineNodeOutlet : Node
 {
     public override IEnumerable<Node> GetReachableNodes(
-        TransformComponent xform,
+        Entity<TransformComponent> xform,
         EntityQuery<NodeContainerComponent> nodeQuery,
         EntityQuery<TransformComponent> xformQuery,
-        MapGridComponent? grid,
+        Entity<MapGridComponent>? grid,
         IEntityManager entMan)
     {
-        if (!xform.Anchored || grid == null)
+        if (!xform.Comp.Anchored || grid is not { } gridEnt)
             yield break;
 
-        var gridIndex = grid.TileIndicesFor(xform.Coordinates);
-        var forwardDir = xform.LocalRotation.GetDir();
+        var mapSystem = entMan.System<SharedMapSystem>();
+
+        var gridIndex = mapSystem.TileIndicesFor(gridEnt, xform.Comp.Coordinates);
+        var forwardDir = xform.Comp.LocalRotation.GetDir();
         var backDir = forwardDir.GetOpposite();
         var targetIdx = gridIndex.Offset(backDir);
 
