@@ -51,7 +51,5 @@ public sealed class AnomalySpawnRule : StationEventSystem<AnomalySpawnRuleCompon
         var targetGrid = mlGrids.ElementAt(_random.Next(mlGrids.Count));
 
         _anomaly.SpawnOnRandomGridLocation(targetGrid, component.AnomalySpawnerPrototype);
-        // Utopia-Tweak : ZLevels
-        // _superMatter.HandleAnomalyEvent();// Utopia-Tweak : Supermatter
     }
 }
