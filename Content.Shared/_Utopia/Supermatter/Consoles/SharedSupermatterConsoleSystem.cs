@@ -1,3 +1,3 @@
-namespace Content.Shared.ADT.Supermatter.Consoles;
-public abstract partial class SharedSupermatterConsoleSystem : EntitySystem
-{ }
+// namespace Content.Shared.ADT.Supermatter.Consoles;
+// public abstract partial class SharedSupermatterConsoleSystem : EntitySystem
+// { }

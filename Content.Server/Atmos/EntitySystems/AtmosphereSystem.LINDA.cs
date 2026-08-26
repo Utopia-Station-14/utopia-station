@@ -101,6 +101,11 @@ namespace Content.Server.Atmos.EntitySystems
             }
             ShareZLevelAtmos(ent, tile, fireCount); // Utopia-Tweak : Z-Levels
 
+            if (tile.Air != null)
+                React(tile.Air, tile);
+
+            InvalidateVisuals(ent, tile);
+
             var remove = true;
 
             if(tile.Air!.Temperature > Atmospherics.MinimumTemperatureStartSuperConduction)

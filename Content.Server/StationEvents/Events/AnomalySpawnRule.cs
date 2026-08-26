@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Content.Server.Anomaly;
 using Content.Server.StationEvents.Components;
+using Content.Server._Utopia.Supermatter.Systems;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Station.Components;
@@ -13,6 +14,7 @@ public sealed class AnomalySpawnRule : StationEventSystem<AnomalySpawnRuleCompon
     [Dependency] private readonly AnomalySystem _anomaly = default!;
     [Dependency] private readonly CESharedZLevelsSystem _zLevels = default!; // Utopia-Tweak : ZLevels
     [Dependency] private readonly IRobustRandom _random = default!; // Utopia-Tweak : ZLevels
+    // [Dependency] private SupermatterSystem _superMatter = default!; // Utopia-Tweak : Supermatter
 
     protected override void Added(EntityUid uid, AnomalySpawnRuleComponent component, GameRuleComponent gameRule, GameRuleAddedEvent args)
     {
@@ -50,5 +52,6 @@ public sealed class AnomalySpawnRule : StationEventSystem<AnomalySpawnRuleCompon
 
         _anomaly.SpawnOnRandomGridLocation(targetGrid, component.AnomalySpawnerPrototype);
         // Utopia-Tweak : ZLevels
+        // _superMatter.HandleAnomalyEvent();// Utopia-Tweak : Supermatter
     }
 }
