@@ -1,0 +1,197 @@
+## BASE REACTIONS
+- type: supermatterGasData
+  id: SmGasDataOxygen
+  targetGas: Oxygen
+  temperatureScaleModificator: 1.2
+  temperatureProtectionModificator: 1
+  energyScaleModificator: 1
+  wasteOutputModificator: 1
+
+- type: supermatterGasData
+  id: SmGasDataNitrogen
+  targetGas: Nitrogen
+  temperatureScaleModificator: 0.8
+  temperatureProtectionModificator: 1
+  energyScaleModificator: 1
+  wasteOutputModificator: 0.8
+
+- type: supermatterGasData
+  id: SmGasDataCarbonDioxide
+  targetGas: CarbonDioxide
+  temperatureScaleModificator: 1
+  temperatureProtectionModificator: 1
+  energyScaleModificator: 1.2
+  wasteOutputModificator: 1
+
+- type: supermatterGasData
+  id: SmGasDataPhoron
+  targetGas: Plasma
+  temperatureScaleModificator: 1.2
+  temperatureProtectionModificator: 1
+  energyScaleModificator: 1.2
+  wasteOutputModificator: 1.2
+
+- type: supermatterGasData
+  id: SmGasDataTritium
+  targetGas: Tritium
+  temperatureScaleModificator: 2
+  temperatureProtectionModificator: 1.2
+  energyScaleModificator: 1.5
+  wasteOutputModificator: 1.5
+
+- type: supermatterGasData
+  id: SmGasDataWaterVapor
+  targetGas: WaterVapor
+  temperatureScaleModificator: 5.0
+  temperatureProtectionModificator: 0.1
+  energyScaleModificator: 10.0
+  wasteOutputModificator: 0.5
+
+- type: supermatterGasData
+  id: SmGasDataFrezon
+  targetGas: Frezon
+  temperatureScaleModificator: 0.2
+  temperatureProtectionModificator: 1.5
+  energyScaleModificator: 0.8
+  wasteOutputModificator: 1
+
+- type: supermatterGasData
+  id: SmGasDataAmmonia
+  targetGas: Ammonia
+  temperatureScaleModificator: 1.2
+  temperatureProtectionModificator: 1
+  energyScaleModificator: 1.2
+  wasteOutputModificator: 1.2
+
+- type: supermatterGasData
+  id: SmGasDataNitrousOxide
+  targetGas: NitrousOxide
+  temperatureScaleModificator: 1
+  temperatureProtectionModificator: 1.2
+  energyScaleModificator: 1.2
+  wasteOutputModificator: 0.8
+
+- type: supermatterGasData
+  id: SmGasDataBZ
+  targetGas: BZ
+  temperatureScaleModificator: 1
+  temperatureProtectionModificator: 0.8
+  energyScaleModificator: 2
+  wasteOutputModificator: 1.5
+
+- type: supermatterGasData
+  id: SmGasDataPluoxium
+  targetGas: Pluoxium
+  temperatureScaleModificator: 0.6
+  temperatureProtectionModificator: 1
+  energyScaleModificator: 0.6
+  wasteOutputModificator: 0.5
+
+- type: supermatterGasData
+  id: SmGasDataHydrogen
+  targetGas: Hydrogen
+  temperatureScaleModificator: 1.2
+  temperatureProtectionModificator: 0.8
+  energyScaleModificator: 1.2
+  wasteOutputModificator: 1
+
+- type: supermatterGasData
+  id: SmGasDataNitrium
+  targetGas: Nitrium
+  temperatureScaleModificator: 1.2
+  temperatureProtectionModificator: 1
+  energyScaleModificator: 1.2
+  wasteOutputModificator: 2
+
+- type: supermatterGasData
+  id: SmGasDataHealium
+  targetGas: Healium
+  # add healing
+  temperatureScaleModificator: 1.4
+  temperatureProtectionModificator: 1.6
+  energyScaleModificator: 1.2
+  wasteOutputModificator: 1.2
+
+- type: supermatterGasData
+  id: SmGasDataHyperNoblium
+  targetGas: HyperNoblium
+  temperatureScaleModificator: 0.2
+  temperatureProtectionModificator: 1
+  energyScaleModificator: 0.4
+  wasteOutputModificator: 0.2
+
+- type: supermatterGasData
+  id: SmGasDataProtoNitrate
+  targetGas: ProtoNitrate
+  # add rad bonus
+  temperatureScaleModificator: 1.5
+  temperatureProtectionModificator: 1
+  energyScaleModificator: 1.5
+  wasteOutputModificator: 1.2
+
+- type: supermatterGasData
+  id: SmGasDataZauker
+  targetGas: Zauker
+  temperatureScaleModificator: 1.666
+  temperatureProtectionModificator: 1.666
+  energyScaleModificator: 1.666
+  wasteOutputModificator: 1.666
+
+- type: supermatterGasData
+  id: SmGasDataHalon
+  targetGas: Halon
+  temperatureScaleModificator: 1
+  temperatureProtectionModificator: 1
+  energyScaleModificator: 1
+  wasteOutputModificator: 1
+
+- type: supermatterGasData
+  id: SmGasDataHelium
+  targetGas: Helium
+  temperatureScaleModificator: 1
+  temperatureProtectionModificator: 1
+  energyScaleModificator: 1
+  wasteOutputModificator: 1
+
+- type: supermatterGasData
+  id: SmGasDataAntiNoblium
+  targetGas: AntiNoblium
+  temperatureScaleModificator: 0.1
+  temperatureProtectionModificator: 10
+  energyScaleModificator: 10
+  wasteOutputModificator: 0.1
+
+## COOL REACTIONS
+- type: supermatterReaction
+  id: SmReactionNobliums
+  composition:
+    HyperNoblium: 0.8
+    AntiNoblium: 0.2
+  tolerance: 0.05
+  temperatureScaleMultiplier: 100
+  temperatureProtectionMultiplier: 100
+  energyScaleMultiplier: 100
+  wasteOutputMultiplier: 100
+
+- type: supermatterReaction
+  id: SmReactionSuper
+  composition:
+    HyperNoblium: 0.8
+    Oxygen: 0.2
+  tolerance: 0.05
+  temperatureScaleMultiplier: 100
+  temperatureProtectionMultiplier: 100
+  energyScaleMultiplier: 100
+  wasteOutputMultiplier: 100
+
+
+- type: supermatterReaction
+  id: SMReactionAmmonia
+  composition:
+    Ammonia: 0.1
+  tolerance: 1
+  modifiersVector: "1, 1, 1, 1"
+  effects:
+  - !type:SupermatterConsumeGasEffect
+    gas: Ammonia
+    energyPerMole: 8
