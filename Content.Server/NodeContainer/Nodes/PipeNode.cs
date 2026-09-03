@@ -180,16 +180,18 @@ namespace Content.Server.NodeContainer.Nodes
                     _alwaysReachable.Remove(pipe);
             }
 
-            if (nodeQuery.TryGetComponent(Owner, out var container))
-            {
-                foreach (var node in container.Nodes.Values)
-                {
-                    if (node == this)
-                        continue;
-                    if (node is PipeNode sibling && sibling.NodeGroupID == NodeGroupID)
-                        yield return sibling;
-                }
-            }
+            // Utopia-Tweak : Что это блять
+            // if (nodeQuery.TryGetComponent(Owner, out var container))
+            // {
+            //     foreach (var node in container.Nodes.Values)
+            //     {
+            //         if (node == this)
+            //             continue;
+            //         if (node is PipeNode sibling && sibling.NodeGroupID == NodeGroupID)
+            //             yield return sibling;
+            //     }
+            // }
+            // Utopia-Tweak : Что это блять
 
             if (!xform.Comp.Anchored || grid is not { } gridEnt)
                 yield break;
