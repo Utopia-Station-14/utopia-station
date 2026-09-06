@@ -1,14 +1,101 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
-  "copyright": "Taken from https://github.com/tgstation/tgstation at commit  17c603f1d037f22081d446b9a3f3ae8d41f52e86",
+  "copyright": "Resprited by M1and1B",
   "size": {
     "x": 32,
     "y": 32
   },
   "states": [
     {
-      "name": "grille"
+      "name": "wall-0"
+    },
+    {
+      "name": "wall-1"
+    },
+    {
+      "name": "wall-2"
+    },
+    {
+      "name": "wall-3"
+    },
+    {
+      "name": "wall-4"
+    },
+    {
+      "name": "wall-5"
+    },
+    {
+      "name": "wall-6"
+    },
+    {
+      "name": "wall-7"
+    },
+    {
+      "name": "wall-10"
+    },
+    {
+      "name": "wall-11"
+    },
+    {
+      "name": "wall-14"
+    },
+    {
+      "name": "wall-15"
+    },
+    {
+      "name": "wall-19"
+    },
+    {
+      "name": "wall-23"
+    },
+    {
+      "name": "wall-27"
+    },
+    {
+      "name": "wall-31"
+    },
+    {
+      "name": "wall-38"
+    },
+    {
+      "name": "wall-39"
+    },
+    {
+      "name": "wall-46"
+    },
+    {
+      "name": "wall-47"
+    },
+    {
+      "name": "wall-55"
+    },
+    {
+      "name": "wall-63"
+    },
+    {
+      "name": "wall-95"
+    },
+    {
+      "name": "wall-110"
+    },
+    {
+      "name": "wall-111"
+    },
+    {
+      "name": "wall-127"
+    },
+    {
+      "name": "wall-155"
+    },
+    {
+      "name": "wall-159"
+    },
+    {
+      "name": "wall-191"
+    },
+    {
+      "name": "wall-255"
     },
     {
       "name": "grille_diagonal"

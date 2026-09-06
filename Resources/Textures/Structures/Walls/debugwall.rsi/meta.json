@@ -1,0 +1,89 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from https://github.com/discordia-space/CEV-Eris/blob/c34c1b30abf18aa552e19294523924c39e5ea127/icons/turf/wall_masks.dmi and modified.",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "wall-0"
+        },
+        {
+            "name": "wall-1"
+        },
+        {
+            "name": "wall-2"
+        },
+        {
+            "name": "wall-3"
+        },
+        {
+            "name": "wall-4"
+        },
+        {
+            "name": "wall-5"
+        },
+        {
+            "name": "wall-6"
+        },
+        {
+            "name": "wall-7"
+        },
+        {
+            "name": "wall-8"
+        },
+        {
+            "name": "wall-9"
+        },
+        {
+            "name": "wall-10"
+        },
+        {
+            "name": "wall-11"
+        },
+        {
+            "name": "wall-12"
+        },
+        {
+            "name": "wall-13"
+        },
+        {
+            "name": "wall-14"
+        },
+        {
+            "name": "wall-15"
+        },
+        {
+            "name": "wall-19"
+        },
+        {
+            "name": "wall-23"
+        },
+        {
+            "name": "wall-27"
+        },
+        {
+            "name": "wall-38"
+        },
+        {
+            "name": "wall-55"
+        },
+        {
+            "name": "wall-63"
+        },
+        {
+            "name": "wall-67"
+        },
+        {
+            "name": "wall-110"
+        },
+        {
+            "name": "wall-155"
+        },
+        {
+            "name": "wall-255"
+        }
+    ]
+}
