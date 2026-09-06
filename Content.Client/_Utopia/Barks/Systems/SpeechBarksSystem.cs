@@ -12,14 +12,13 @@ using Robust.Shared.Random;
 
 namespace Content.Client._Utopia.SpeechBarks;
 
-public sealed class SpeechBarksSystem : EntitySystem
+public sealed partial class SpeechBarksSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly AudioSystem _audio = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private AudioSystem _audio = default!;
+    [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     private const float MinimalVolume = -10f;
     private const float WhisperFade = 4f;
@@ -84,7 +83,7 @@ public sealed class SpeechBarksSystem : EntitySystem
 
     public void PlayDataPreview(string protoId, float pitch, float lowVar, float highVar)
     {
-        if (!_proto.TryIndex<SpeechBarkPrototype>(protoId, out var proto))
+        if (!ProtoMan.TryIndex<SpeechBarkPrototype>(protoId, out var proto))
             return;
 
         var bark = new ActiveBark(null,

@@ -15,7 +15,7 @@ namespace Content.Client._Utopia.Genetics.DnaScannerConsole.UI;
 [GenerateTypedNameReferences]
 public sealed partial class GeneticistsConsoleUniqueEnzymesView : Control
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     private readonly char[] _bases = ['A', 'T', 'G', 'C'];
     private readonly SequencerButton[] _sequencerButtons = new SequencerButton[32];

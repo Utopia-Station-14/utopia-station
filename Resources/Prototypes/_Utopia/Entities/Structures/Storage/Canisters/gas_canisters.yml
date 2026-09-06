@@ -2,615 +2,496 @@
   parent: GasCanister
   id: UtopiaBZCanister
   components:
-  - type: Sprite
-    sprite: Structures/Storage/canister.rsi
-    layers:
-    - state: BZ
-  - type: GasCanister
-    gasMixture:
-      volume: 1000
-      moles:
-      - 0 # oxygen
-      - 0 # nitrogen
-      - 0 # CO2
-      - 0 # Plasma
-      - 0 # Tritium
-      - 0 # Water vapor
-      - 0 # Miasma
-      - 0 # N2O
-      - 0 # Frezon
-      - 1871.71051 # BZ
-      temperature: 293.15
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 600
-      behaviors:
+    - type: Sprite
+      layers:
+      - state: BZ
+      - state: paper
+        visible: false
+        map: [ "enum.PaperLabelVisuals.Layer" ]
+      - state: integrity-unshaded-0
+        map: [ "enum.MaxPressureVisualLayers.BaseUnshaded" ]
+        shader: unshaded
+        visible: false
+      - state: mask-BZ
+        map: [ "enum.MaxPressureVisualLayers.Base" ]
+        visible: false
+    - type: MaxPressureVisuals
+      integrityMask: mask-BZ
+    - type: GasCanister
+      air:
+        volume: 1000
+        moles:
+          BZ: 1871.71051 # BZ
+        temperature: 293.15
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            UtopiaBZCanisterBroken:
+              min: 1
+              max: 1
         - !type:DoActsBehavior
           acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          UtopiaBZCanisterBroken:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:DumpCanisterBehavior
-  - type: Lock
-    locked: true
+        - !type:DumpCanisterBehavior
+    - type: Lock
+      locked: true
 
 - type: entity
   parent: GasCanister
   id: UtopiaPluoxiumCanister
   components:
-  - type: Sprite
-    layers:
-    - state: pluoxium
-  - type: GasCanister
-    gasMixture:
-      volume: 1000
-      moles:
-      - 0 # oxygen
-      - 0 # nitrogen
-      - 0 # CO2
-      - 0 # Plasma
-      - 0 # Tritium
-      - 0 # Water vapor
-      - 0 # Miasma
-      - 0 # N2O
-      - 0 # Frezon
-      - 0 # BZ
-      - 1871.71051 # Pluoxium
-      temperature: 293.15
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 600
-      behaviors:
+    - type: Sprite
+      layers:
+      - state: pluoxium
+      - state: paper
+        visible: false
+        map: [ "enum.PaperLabelVisuals.Layer" ]
+      - state: integrity-unshaded-0
+        map: [ "enum.MaxPressureVisualLayers.BaseUnshaded" ]
+        shader: unshaded
+        visible: false
+      - state: mask-pluoxium
+        map: [ "enum.MaxPressureVisualLayers.Base" ]
+        visible: false
+    - type: MaxPressureVisuals
+      integrityMask: mask-pluoxium
+    - type: GasCanister
+      air:
+        volume: 1000
+        moles:
+          Pluoxium: 1871.71051 # Pluoxium
+        temperature: 293.15
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            UtopiaPluoxiumCanisterBroken:
+              min: 1
+              max: 1
         - !type:DoActsBehavior
           acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          UtopiaPluoxiumCanisterBroken:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:DumpCanisterBehavior
-  - type: Lock
-    locked: true
+        - !type:DumpCanisterBehavior
+    - type: Lock
+      locked: true
 
 - type: entity
   parent: GasCanister
   id: UtopiaHydrogenCanister
   components:
-  - type: Sprite
-    sprite: Structures/Storage/canister.rsi
-    layers:
-    - state: hydrogen
-  - type: GasCanister
-    gasMixture:
-      volume: 1000
-      moles:
-      - 0 # oxygen
-      - 0 # nitrogen
-      - 0 # CO2
-      - 0 # Plasma
-      - 0 # Tritium
-      - 0 # Water vapor
-      - 0 # Miasma
-      - 0 # N2O
-      - 0 # Frezon
-      - 0 # BZ
-      - 0 # Pluoxium
-      - 1871.71051 # Hydrogen
-      temperature: 293.15
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 600
-      behaviors:
+    - type: Sprite
+      layers:
+      - state: hydrogen
+      - state: paper
+        visible: false
+        map: [ "enum.PaperLabelVisuals.Layer" ]
+      - state: integrity-unshaded-0
+        map: [ "enum.MaxPressureVisualLayers.BaseUnshaded" ]
+        shader: unshaded
+        visible: false
+      - state: mask-hydrogen
+        map: [ "enum.MaxPressureVisualLayers.Base" ]
+        visible: false
+    - type: MaxPressureVisuals
+      integrityMask: mask-hydrogen
+    - type: GasCanister
+      air:
+        volume: 1000
+        moles:
+          Hydrogen: 1871.71051 # Hydrogen
+        temperature: 293.15
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            UtopiaHydrogenCanisterBroken:
+              min: 1
+              max: 1
         - !type:DoActsBehavior
           acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          UtopiaHydrogenCanisterBroken:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:DumpCanisterBehavior
-  - type: Lock
-    locked: true
+        - !type:DumpCanisterBehavior
+    - type: Lock
+      locked: true
 
 - type: entity
   parent: GasCanister
   id: UtopiaNitriumCanister
   components:
-  - type: Sprite
-    sprite: Structures/Storage/canister.rsi
-    layers:
-    - state: nitrium
-  - type: GasCanister
-    gasMixture:
-      volume: 1000
-      moles:
-      - 0 # oxygen
-      - 0 # nitrogen
-      - 0 # CO2
-      - 0 # Plasma
-      - 0 # Tritium
-      - 0 # Water vapor
-      - 0 # Miasma
-      - 0 # N2O
-      - 0 # Frezon
-      - 0 # BZ
-      - 0 # Pluoxium
-      - 0 # Hydrogen
-      - 1871.71051 # Nitrium
-      temperature: 293.15
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 600
-      behaviors:
+    - type: Sprite
+      layers:
+      - state: nitrium
+      - state: paper
+        visible: false
+        map: [ "enum.PaperLabelVisuals.Layer" ]
+      - state: integrity-unshaded-0
+        map: [ "enum.MaxPressureVisualLayers.BaseUnshaded" ]
+        shader: unshaded
+        visible: false
+      - state: mask-nitrium
+        map: [ "enum.MaxPressureVisualLayers.Base" ]
+        visible: false
+    - type: MaxPressureVisuals
+      integrityMask: mask-nitrium
+    - type: GasCanister
+      air:
+        volume: 1000
+        moles:
+          Nitrium: 1871.71051 # Nitrium
+        temperature: 293.15
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            UtopiaNitriumCanisterBroken:
+              min: 1
+              max: 1
         - !type:DoActsBehavior
           acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          UtopiaNitriumCanisterBroken:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:DumpCanisterBehavior
-  - type: Lock
-    locked: true
+        - !type:DumpCanisterBehavior
+    - type: Lock
+      locked: true
 
 - type: entity
   parent: GasCanister
   id: UtopiaHealiumCanister
   components:
-  - type: Sprite
-    sprite: Structures/Storage/canister.rsi
-    layers:
-    - state: healium
-  - type: GasCanister
-    gasMixture:
-      volume: 1000
-      moles:
-      - 0 # oxygen
-      - 0 # nitrogen
-      - 0 # CO2
-      - 0 # Plasma
-      - 0 # Tritium
-      - 0 # Water vapor
-      - 0 # Miasma
-      - 0 # N2O
-      - 0 # Frezon
-      - 0 # BZ
-      - 0 # Pluoxium
-      - 0 # Hydrogen
-      - 0 # Nitrium
-      - 1871.71051 # Healium
-      - 0 # Hyper-Noblium
-      - 0 # Proto-Nitrate
-      - 0 # Zauker
-      - 0 # Halon
-      - 0 # Helium
-      - 0 # Anti-Noblium
-      temperature: 293.15
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 600
-      behaviors:
+    - type: Sprite
+      layers:
+      - state: healium
+      - state: paper
+        visible: false
+        map: [ "enum.PaperLabelVisuals.Layer" ]
+      - state: integrity-unshaded-0
+        map: [ "enum.MaxPressureVisualLayers.BaseUnshaded" ]
+        shader: unshaded
+        visible: false
+      - state: mask-healium
+        map: [ "enum.MaxPressureVisualLayers.Base" ]
+        visible: false
+    - type: MaxPressureVisuals
+      integrityMask: mask-healium
+    - type: GasCanister
+      air:
+        volume: 1000
+        moles:
+          Healium: 1871.71051 # Healium
+        temperature: 293.15
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            UtopiaHealiumCanisterBroken:
+              min: 1
+              max: 1
         - !type:DoActsBehavior
           acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          UtopiaHealiumCanisterBroken:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:DumpCanisterBehavior
-  - type: Lock
-    locked: true
+        - !type:DumpCanisterBehavior
+    - type: Lock
+      locked: true
 
 - type: entity
   parent: GasCanister
   id: UtopiaHyperNobliumCanister
   components:
-  - type: Sprite
-    sprite: Structures/Storage/canister.rsi
-    layers:
-    - state: hyper-noblium
-  - type: GasCanister
-    gasMixture:
-      volume: 1000
-      moles:
-      - 0 # oxygen
-      - 0 # nitrogen
-      - 0 # CO2
-      - 0 # Plasma
-      - 0 # Tritium
-      - 0 # Water vapor
-      - 0 # Miasma
-      - 0 # N2O
-      - 0 # Frezon
-      - 0 # BZ
-      - 0 # Pluoxium
-      - 0 # Hydrogen
-      - 0 # Nitrium
-      - 0 # Healium
-      - 1871.71051 # Hyper-Noblium
-      - 0 # Proto-Nitrate
-      - 0 # Zauker
-      - 0 # Halon
-      - 0 # Helium
-      - 0 # Anti-Noblium
-      temperature: 293.15
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 600
-      behaviors:
+    - type: Sprite
+      layers:
+      - state: hyper-noblium
+      - state: paper
+        visible: false
+        map: [ "enum.PaperLabelVisuals.Layer" ]
+      - state: integrity-unshaded-0
+        map: [ "enum.MaxPressureVisualLayers.BaseUnshaded" ]
+        shader: unshaded
+        visible: false
+      - state: mask-hyper-noblium
+        map: [ "enum.MaxPressureVisualLayers.Base" ]
+        visible: false
+    - type: MaxPressureVisuals
+      integrityMask: mask-hyper-noblium
+    - type: GasCanister
+      air:
+        volume: 1000
+        moles:
+          HyperNoblium: 1871.71051 # Hyper-Noblium
+        temperature: 293.15
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            UtopiaHyperNobliumCanisterBroken:
+              min: 1
+              max: 1
         - !type:DoActsBehavior
           acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          UtopiaHyperNobliumCanisterBroken:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:DumpCanisterBehavior
-  - type: Lock
-    locked: true
+        - !type:DumpCanisterBehavior
+    - type: Lock
+      locked: true
 
 - type: entity
   parent: GasCanister
   id: UtopiaProtoNitrateCanister
   components:
-  - type: Sprite
-    sprite: Structures/Storage/canister.rsi
-    layers:
-    - state: proto-nitrate
-  - type: GasCanister
-    gasMixture:
-      volume: 1000
-      moles:
-      - 0 # oxygen
-      - 0 # nitrogen
-      - 0 # CO2
-      - 0 # Plasma
-      - 0 # Tritium
-      - 0 # Water vapor
-      - 0 # Miasma
-      - 0 # N2O
-      - 0 # Frezon
-      - 0 # BZ
-      - 0 # Pluoxium
-      - 0 # Hydrogen
-      - 0 # Nitrium
-      - 0 # Healium
-      - 0 # Hyper-Noblium
-      - 1871.71051 # Proto-Nitrate
-      - 0 # Zauker
-      - 0 # Halon
-      - 0 # Helium
-      - 0 # Anti-Noblium
-      temperature: 293.15
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 600
-      behaviors:
+    - type: Sprite
+      layers:
+      - state: proto-nitrate
+      - state: paper
+        visible: false
+        map: [ "enum.PaperLabelVisuals.Layer" ]
+      - state: integrity-unshaded-0
+        map: [ "enum.MaxPressureVisualLayers.BaseUnshaded" ]
+        shader: unshaded
+        visible: false
+      - state: mask-proto-nitrate
+        map: [ "enum.MaxPressureVisualLayers.Base" ]
+        visible: false
+    - type: MaxPressureVisuals
+      integrityMask: mask-proto-nitrate
+    - type: GasCanister
+      air:
+        volume: 1000
+        moles:
+          ProtoNitrate: 1871.71051 # Proto-Nitrate
+        temperature: 293.15
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            UtopiaProtoNitrateCanisterBroken:
+              min: 1
+              max: 1
         - !type:DoActsBehavior
           acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          UtopiaProtoNitrateCanisterBroken:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:DumpCanisterBehavior
-  - type: Lock
-    locked: true
+        - !type:DumpCanisterBehavior
+    - type: Lock
+      locked: true
 
 - type: entity
   parent: GasCanister
   id: UtopiaZaukerCanister
   components:
-  - type: Sprite
-    sprite: Structures/Storage/canister.rsi
-    layers:
-    - state: zauker
-  - type: GasCanister
-    gasMixture:
-      volume: 1000
-      moles:
-      - 0 # oxygen
-      - 0 # nitrogen
-      - 0 # CO2
-      - 0 # Plasma
-      - 0 # Tritium
-      - 0 # Water vapor
-      - 0 # Miasma
-      - 0 # N2O
-      - 0 # Frezon
-      - 0 # BZ
-      - 0 # Pluoxium
-      - 0 # Hydrogen
-      - 0 # Nitrium
-      - 0 # Healium
-      - 0 # Hyper-Noblium
-      - 0 # Proto-Nitrate
-      - 1871.71051 # Zauker
-      - 0 # Halon
-      - 0 # Helium
-      - 0 # Anti-Noblium
-      temperature: 293.15
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 600
-      behaviors:
+    - type: Sprite
+      layers:
+      - state: zauker
+      - state: paper
+        visible: false
+        map: [ "enum.PaperLabelVisuals.Layer" ]
+      - state: integrity-unshaded-0
+        map: [ "enum.MaxPressureVisualLayers.BaseUnshaded" ]
+        shader: unshaded
+        visible: false
+      - state: mask-zauker
+        map: [ "enum.MaxPressureVisualLayers.Base" ]
+        visible: false
+    - type: MaxPressureVisuals
+      integrityMask: mask-zauker
+    - type: GasCanister
+      air:
+        volume: 1000
+        moles:
+          Zauker: 1871.71051 # Zauker
+        temperature: 293.15
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            UtopiaZaukerCanisterBroken:
+              min: 1
+              max: 1
         - !type:DoActsBehavior
           acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          UtopiaZaukerCanisterBroken:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:DumpCanisterBehavior
-  - type: Lock
-    locked: true
+        - !type:DumpCanisterBehavior
+    - type: Lock
+      locked: true
 
 - type: entity
   parent: GasCanister
   id: UtopiaHalonCanister
   components:
-  - type: Sprite
-    sprite: Structures/Storage/canister.rsi
-    layers:
-    - state: halon
-  - type: GasCanister
-    gasMixture:
-      volume: 1000
-      moles:
-      - 0 # oxygen
-      - 0 # nitrogen
-      - 0 # CO2
-      - 0 # Plasma
-      - 0 # Tritium
-      - 0 # Water vapor
-      - 0 # Miasma
-      - 0 # N2O
-      - 0 # Frezon
-      - 0 # BZ
-      - 0 # Pluoxium
-      - 0 # Hydrogen
-      - 0 # Nitrium
-      - 0 # Healium
-      - 0 # Hyper-Noblium
-      - 0 # Proto-Nitrate
-      - 0 # Zauker
-      - 1871.71051 # Halon
-      - 0 # Helium
-      - 0 # Anti-Noblium
-      temperature: 293.15
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 600
-      behaviors:
+    - type: Sprite
+      layers:
+      - state: halon
+      - state: paper
+        visible: false
+        map: [ "enum.PaperLabelVisuals.Layer" ]
+      - state: integrity-unshaded-0
+        map: [ "enum.MaxPressureVisualLayers.BaseUnshaded" ]
+        shader: unshaded
+        visible: false
+      - state: mask-halon
+        map: [ "enum.MaxPressureVisualLayers.Base" ]
+        visible: false
+    - type: MaxPressureVisuals
+      integrityMask: mask-halon
+    - type: GasCanister
+      air:
+        volume: 1000
+        moles:
+          Halon: 1871.71051 # Halon
+        temperature: 293.15
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            UtopiaHalonCanisterBroken:
+              min: 1
+              max: 1
         - !type:DoActsBehavior
           acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          UtopiaHalonCanisterBroken:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:DumpCanisterBehavior
-  - type: Lock
-    locked: true
+        - !type:DumpCanisterBehavior
+    - type: Lock
+      locked: true
 
 - type: entity
   parent: GasCanister
   id: UtopiaHeliumCanister
   components:
-  - type: Sprite
-    sprite: Structures/Storage/canister.rsi
-    layers:
-    - state: helium
-  - type: GasCanister
-    gasMixture:
-      volume: 1000
-      moles:
-      - 0 # oxygen
-      - 0 # nitrogen
-      - 0 # CO2
-      - 0 # Plasma
-      - 0 # Tritium
-      - 0 # Water vapor
-      - 0 # Miasma
-      - 0 # N2O
-      - 0 # Frezon
-      - 0 # BZ
-      - 0 # Pluoxium
-      - 0 # Hydrogen
-      - 0 # Nitrium
-      - 0 # Healium
-      - 0 # Hyper-Noblium
-      - 0 # Proto-Nitrate
-      - 0 # Zauker
-      - 0 # Halon
-      - 1871.71051 # Helium
-      - 0 # Anti-Noblium
-      temperature: 293.15
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 600
-      behaviors:
+    - type: Sprite
+      layers:
+      - state: helium
+      - state: paper
+        visible: false
+        map: [ "enum.PaperLabelVisuals.Layer" ]
+      - state: integrity-unshaded-0
+        map: [ "enum.MaxPressureVisualLayers.BaseUnshaded" ]
+        shader: unshaded
+        visible: false
+      - state: mask-helium
+        map: [ "enum.MaxPressureVisualLayers.Base" ]
+        visible: false
+    - type: MaxPressureVisuals
+      integrityMask: mask-helium
+    - type: GasCanister
+      air:
+        volume: 1000
+        moles:
+          Helium: 1871.71051 # Helium
+        temperature: 293.15
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            UtopiaHeliumCanisterBroken:
+              min: 1
+              max: 1
         - !type:DoActsBehavior
           acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          UtopiaHeliumCanisterBroken:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:DumpCanisterBehavior
-  - type: Lock
-    locked: true
+        - !type:DumpCanisterBehavior
+    - type: Lock
+      locked: true
 
 - type: entity
   parent: GasCanister
   id: UtopiaAntiNobliumCanister
   components:
-  - type: Sprite
-    sprite: Structures/Storage/canister.rsi
-    layers:
-    - state: anti-noblium
-  - type: GasCanister
-    gasMixture:
-      volume: 1000
-      moles:
-      - 0 # oxygen
-      - 0 # nitrogen
-      - 0 # CO2
-      - 0 # Plasma
-      - 0 # Tritium
-      - 0 # Water vapor
-      - 0 # Miasma
-      - 0 # N2O
-      - 0 # Frezon
-      - 0 # BZ
-      - 0 # Pluoxium
-      - 0 # Hydrogen
-      - 0 # Nitrium
-      - 0 # Healium
-      - 0 # Hyper-Noblium
-      - 0 # Proto-Nitrate
-      - 0 # Zauker
-      - 0 # Halon
-      - 0 # Helium
-      - 1871.71051 # Anti-Noblium
-      temperature: 293.15
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 600
-      behaviors:
+    - type: Sprite
+      layers:
+      - state: anti-noblium
+      - state: paper
+        visible: false
+        map: [ "enum.PaperLabelVisuals.Layer" ]
+      - state: integrity-unshaded-0
+        map: [ "enum.MaxPressureVisualLayers.BaseUnshaded" ]
+        shader: unshaded
+        visible: false
+      - state: mask-anti-noblium
+        map: [ "enum.MaxPressureVisualLayers.Base" ]
+        visible: false
+    - type: MaxPressureVisuals
+      integrityMask: mask-anti-noblium
+    - type: GasCanister
+      air:
+        volume: 1000
+        moles:
+          AntiNoblium: 1871.71051 # Anti-Noblium
+        temperature: 293.15
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalBreak
+        - !type:SpawnEntitiesBehavior
+          spawn:
+            UtopiaAntiNobliumCanisterBroken:
+              min: 1
+              max: 1
         - !type:DoActsBehavior
           acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          UtopiaAntiNobliumCanisterBroken:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:DumpCanisterBehavior
-  - type: Lock
-    locked: true
+        - !type:DumpCanisterBehavior
+    - type: Lock
+      locked: true
 
 # А дальше сломанные
 

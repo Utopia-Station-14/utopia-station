@@ -1,0 +1,13 @@
+- type: stack
+  id: BluespaceCrystal
+  name: stack-bluespacecrystal
+  icon: { sprite: _Utopia/Objects/Materials/Crystal/bs_crystal.rsi, state: crystal }
+  spawn: UtopiaMaterialBluespaceCrystal1
+  maxCount: 3
+
+- type: stack
+  id: RedspaceCrystal
+  name: stack-redspacecrystal
+  icon: { sprite: _Utopia/Objects/Materials/Crystal/rs_crystal.rsi, state: crystal }
+  spawn: UtopiaMaterialRedspaceCrystal1
+  maxCount: 3

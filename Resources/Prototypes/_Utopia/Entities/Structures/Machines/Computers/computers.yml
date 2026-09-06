@@ -17,6 +17,8 @@
     - map: ["computerLayerScreen"]
       sprite: _Utopia/Structures/Machines/computers.rsi
       state: salary
+  - type: Computer
+    board: UtopiaSalaryConsoleCircuitboard
   - type: ActivatableUI
     key: enum.SalaryConsoleUiKey.Key
   - type: UserInterface
@@ -56,6 +58,8 @@
     - map: ["computerLayerScreen"]
       sprite: _Utopia/Structures/Machines/computers.rsi
       state: accounts
+  - type: Computer
+    board: UtopiaEconomicRecordsConsoleCircuitboard
   - type: ActivatableUI
     key: enum.EconomicRecordsConsoleKey.Key
   - type: UserInterface
@@ -112,3 +116,45 @@
   - type: Tag
     tags:
     - AccessBreakerImmune
+
+- type: entity
+  parent: BaseComputerAiAccess
+  id: UtopiaComputerTelescienceConsole
+  name: telepad control console
+  description: A computer used to control teleportation.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: teleport
+    - map: ["computerLayerKeys"]
+      state: teleport_key
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: TelescienceComputer
+  - type: DeviceList
+  - type: DeviceNetwork
+    deviceNetId: Wired
+  - type: DeviceLinkSource
+    range: 5
+    ports:
+    - Output
+  - type: ActivatableUI
+    key: enum.TelescienceUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.TelescienceUiKey.Key:
+        type: TelescienceConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: ApcPowerReceiver
+    powerLoad: 50
+  - type: PowerState
+    idlePowerDraw: 50
+    workingPowerDraw: 1000
+  - type: Computer
+    board: UtopiaTelescienceComputerCircuitboard

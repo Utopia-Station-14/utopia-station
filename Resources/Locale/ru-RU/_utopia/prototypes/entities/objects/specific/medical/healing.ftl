@@ -1,6 +1,6 @@
-ent-PillCanisterMutadone = баночка для таблеток
-    .suffix = Мутадон 15 ед
+ent-UtopiaPillCanisterMutadone = баночка для таблеток
+    .suffix = Мутадон 20 ед
     .desc = { ent-PillCanister.desc }
-ent-PillMutadone = таблетка
-    .suffix = Мутадон 15 ед
+ent-UtopiaPillMutadone = таблетка
+    .suffix = Мутадон 20 ед
     .desc = { ent-Pill.desc }

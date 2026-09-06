@@ -1,12 +1,12 @@
 ent-BaseUtopiaDNAInjectorSyringe = ДНК-инъектор
     .desc = Одноразовый шприц с предварительно загруженной генетической последовательностью.
-ent-UtopiaDNAInjectorEmpty = ДНК-инъектор (пустой)
+ent-UtopiaDNAInjectorEmpty = { ent-BaseUtopiaDNAInjectorSyringe }
     .desc = { ent-BaseUtopiaDNAInjectorSyringe.desc }
 ent-UtopiaDNAInjectorGenericActivator = ДНК-активатор
     .desc = { ent-BaseUtopiaDNAInjectorSyringe.desc }
 ent-UtopiaDNAInjectorGenericMutator = ДНК-мутатор
     .desc = { ent-BaseUtopiaDNAInjectorSyringe.desc }
-ent-UtopiaDNAActivatorPacifist = ДНК-активатор(Пацифизм)
+ent-UtopiaDNAActivatorPacifist = ДНК-активатор (Пацифизм)
     .desc = { ent-BaseUtopiaDNAInjectorSyringe.desc }
 ent-UtopiaDNAMutatorPacifist = ДНК-мутатор (Пацифизм)
     .desc = { ent-BaseUtopiaDNAInjectorSyringe.desc }

@@ -1,0 +1,78 @@
+- type: entity
+  parent: [ BaseMachinePowered, SmallConstructibleMachine ]
+  id: UtopiaMachineTelescience
+  name: telescience telepad
+  description: A platform for harnessing the power of teleportation.
+  components:
+  - type: Sprite
+    sprite: _Utopia/Structures/Machines/teleporter.rsi
+    drawdepth: HighFloorObjects
+    noRot: true
+    layers:
+    - state: icon
+    - state: teleporter
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+    - state: teleporter-open
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+      visible: false
+  - type: Physics
+    bodyType: Static
+    canCollide: true
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        mask:
+        - Impassable
+        - HighImpassable
+        - MidImpassable
+      fix2:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - Impassable
+        - MidImpassable
+        - LowImpassable
+        - BulletImpassable
+        hard: False
+  - type: Transform
+    anchored: true
+  - type: ApcPowerReceiver
+    powerLoad: 50
+  - type: PowerState
+    idlePowerDraw: 50
+    workingPowerDraw: 12000
+  - type: TelescienceTeleporter
+  - type: DeviceNetwork
+    deviceNetId: Wired
+    receiveFrequencyId: BasicDevice
+  - type: DeviceList
+  - type: DeviceLinkSink
+    ports:
+    - Input
+  - type: Machine
+    board: UtopiaTelescienceTeleporterMachineCircuitboard
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#02BCFAff"
+  - type: LitOnPowered
+  - type: Appearance
+  - type: WiresVisuals
+  - type: WiresPanel
+    openingTool: Screwing
+  - type: UpgradePowerDraw
+    powerDrawMultiplier: 0.85
+    scaling: Exponential
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }

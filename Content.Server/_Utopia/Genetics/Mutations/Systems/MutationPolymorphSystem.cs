@@ -4,9 +4,9 @@ using Content.Server.Polymorph.Systems;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationPolymorphSystem : EntitySystem
+public sealed partial class MutationPolymorphSystem : EntitySystem
 {
-    [Dependency] private readonly PolymorphSystem _polymorph = default!;
+    [Dependency] private PolymorphSystem _polymorph = default!;
 
     public override void Initialize()
     {

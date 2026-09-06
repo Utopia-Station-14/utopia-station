@@ -10,7 +10,7 @@ namespace Content.Client._Utopia.Genetics.DnaScannerConsole.UI;
 [GenerateTypedNameReferences]
 public sealed partial class GeneticistsConsoleWindow : FancyWindow
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     private readonly GeneticistsConsoleUniqueEnzymesView _enzymesView = null!;
     private readonly GeneticistsConsoleStorageView _storageView = null!;

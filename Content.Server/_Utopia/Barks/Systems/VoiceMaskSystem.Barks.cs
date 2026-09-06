@@ -17,7 +17,7 @@ public partial class VoiceMaskSystem
 
     private void OnSpeakerVoiceTransform(EntityUid uid, VoiceMaskComponent component, ref InventoryRelayedEvent<TransformSpeakerBarkEvent> args)
     {
-        if (!_proto.TryIndex<SpeechBarkPrototype>(component.BarkId, out var proto))
+        if (!ProtoMan.TryIndex<SpeechBarkPrototype>(component.BarkId, out var proto))
             return;
 
         args.Args.Data.Pitch = Math.Clamp(component.BarkPitch, _cfgManager.GetCVar(UCCVars.BarksMinPitch),
@@ -28,7 +28,7 @@ public partial class VoiceMaskSystem
 
     private void OnChangeBark(EntityUid uid, VoiceMaskComponent component, VoiceMaskChangeBarkMessage message)
     {
-        if (!_proto.HasIndex<SpeechBarkPrototype>(message.Proto))
+        if (!ProtoMan.HasIndex<SpeechBarkPrototype>(message.Proto))
         {
             _popupSystem.PopupEntity(Loc.GetString("voice-mask-voice-popup-invalid"), uid);
             return;

@@ -20,3 +20,51 @@
           availableMoves:
           - BlackFlash
           - FinalBlackFlash
+
+- type: entity
+  parent: BaseItem
+  id: CQCManual
+  name: CQC manual
+  description: A one-off manual teaching the user CQC techniques.
+  components:
+    - type: Sprite
+      sprite: _Utopia/Objects/Specific/MaterialArts/cqc-manual.rsi
+      state: icon
+    - type: SpawnItemsOnUse
+      items:
+      - id: Ash
+      sound:
+        path: /Audio/Items/Lighters/lighter3.ogg
+    - type: AddComponentsOnUse
+      components:
+        - type: Combo
+          availableMoves:
+          - CQCKick
+          - CQCSlam
+          - CQCPressure
+          - CQCConsecutive
+
+- type: entity
+  parent: BaseItem
+  id: SleepingCarpScroll
+  name: scroll of the sleeping carp
+  description: A mystical scroll containing the techniques of the Sleeping Carp martial arts style.
+  components:
+    - type: Sprite
+      sprite: Objects/Magic/magicactions.rsi
+      layers:
+      - state: spell_default
+    - type: SpawnItemsOnUse
+      items:
+      - id: Ash
+      sound:
+        path: /Audio/Items/Lighters/lighter3.ogg
+    - type: AddComponentsOnUse
+      components:
+        - type: Combo
+          availableMoves:
+          - Keelhaul
+          - CrashingWaves
+          - Teeth
+        - type: Reflect
+          reflectProb: 1.0

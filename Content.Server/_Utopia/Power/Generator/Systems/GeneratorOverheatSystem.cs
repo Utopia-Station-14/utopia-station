@@ -13,13 +13,13 @@ using Robust.Shared.Maths;
 
 namespace Content.Server._Utopia.Power.Generator;
 
-public sealed class GeneratorOverheatSystem : EntitySystem
+public sealed partial class GeneratorOverheatSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly GeneratorSystem _generator = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly ExplosionSystem _explosion = default!;
-    [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private GeneratorSystem _generator = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private ExplosionSystem _explosion = default!;
+    [Dependency] private AtmosphereSystem _atmosphere = default!;
 
     private const float UpdateInterval = 1f;
     private float _accumulator;

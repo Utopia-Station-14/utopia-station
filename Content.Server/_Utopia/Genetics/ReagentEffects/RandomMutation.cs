@@ -8,7 +8,7 @@ namespace Content.Server._Utopia.Genetics.ReagentEffects;
 
 public sealed partial class RandomMutationSystem : EntityEffectSystem<GeneticsComponent, RandomMutation>
 {
-    [Dependency] private readonly IEntityManager _entMan = default!;
+    [Dependency] private IEntityManager _entMan = default!;
 
     protected override void Effect(Entity<GeneticsComponent> entity, ref EntityEffectEvent<RandomMutation> args)
     {

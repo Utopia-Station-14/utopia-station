@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Content.Server._Utopia.Genetics.Systems;
 
-public sealed class GeneticShuffleSystem : EntitySystem
+public sealed partial class GeneticShuffleSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
     private const int MaxShuffledBlocks = 150;
 

@@ -13,6 +13,15 @@ public sealed partial class PanelButton : Button
     {
         RobustXamlLoader.Load(this);
         MouseFilter = MouseFilterMode.Stop;
+
+        TextLabel.Visible = false;
+        TextLabel.ReservesSpace = false;
+    }
+
+    public new string? Text
+    {
+        get => TextLabel.Text;
+        set => TextLabel.Text = value;
     }
 
     protected override void DrawModeChanged()

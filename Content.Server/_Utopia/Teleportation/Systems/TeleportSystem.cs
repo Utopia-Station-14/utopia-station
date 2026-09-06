@@ -1,31 +1,32 @@
 using Content.Server.Administration.Logs;
 using Content.Server.Stack;
+using Content.Shared_Utopia.Effects;
 using Content.Shared.Database;
 using Content.Shared.Interaction.Events;
+using Content.Shared.Throwing;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Physics;
 using Content.Shared.Stacks;
+using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Random;
-using Robust.Server.GameObjects;
 
-namespace Content.Server.Teleportation;
+namespace Content.Server._Utopia.Teleportation;
 
-public sealed class TeleportSystem : EntitySystem
+public sealed partial class TeleportSystem : EntitySystem
 {
-    [Dependency] private readonly IMapManager _mapManager = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
-    [Dependency] private readonly MapSystem _map = default!;
-    [Dependency] private readonly PullingSystem _pullingSystem = default!;
-    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly StackSystem _stack = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedTransformSystem _xform = default!;
+    [Dependency] private MapSystem _map = default!;
+    [Dependency] private PullingSystem _pullingSystem = default!;
+    [Dependency] private IAdminLogManager _adminLogger = default!;
+    [Dependency] private StackSystem _stack = default!;
 
     private EntityQuery<PhysicsComponent> _physicsQuery;
 
@@ -46,29 +47,31 @@ public sealed class TeleportSystem : EntitySystem
         if (!TryComp<RandomTeleportComponent>(uid, out var teleport))
             return;
 
+        RandomTeleport(args.User, teleport);
+
         _adminLogger.Add(LogType.Action, LogImpact.Low,
             $"{ToPrettyString(args.User):actor} teleported with {ToPrettyString(uid)}");
 
-        RandomTeleport(args.User, teleport);
+        args.Handled = true;
 
-        if (!component.ConsumeOnUse)
-            return;
-
-        if (TryComp<StackComponent>(uid, out var stack))
+        if (component.ConsumeOnUse)
         {
-            _stack.SetCount((uid, stack), stack.Count - 1);
-            return;
-        }
+            if (TryComp<StackComponent>(uid, out var stack))
+            {
+                _stack.SetCount((uid, stack), stack.Count - 1);
+                return;
+            }
 
-        QueueDel(uid);
+            QueueDel(uid);
+        }
     }
 
     public void RandomTeleport(EntityUid uid, RandomTeleportComponent component)
     {
-        RandomTeleport(uid, component.TeleportRadius, component.TeleportSound, component.TeleportAttempts);
+        RandomTeleport(uid, component.TeleportRadius, component.ArrivalSound, component.TeleportAttempts);
     }
 
-    public void RandomTeleport(EntityUid uid, float radius, SoundSpecifier sound, int attempts)
+    public void RandomTeleport(EntityUid uid, float radius, SoundSpecifier audio, int attempts)
     {
         if (TryComp<PullableComponent>(uid, out var pull) && _pullingSystem.IsPulled(uid, pull))
         {
@@ -84,7 +87,7 @@ public sealed class TeleportSystem : EntitySystem
             var distance = radius * MathF.Sqrt(_random.NextFloat());
             targetCoords = entityCoords.Offset(_random.NextAngle().ToVec() * distance);
 
-            if (!_mapManager.TryFindGridAt(targetCoords, out var gridUid, out var grid))
+            if (!_map.TryFindGridAt(targetCoords, out var gridUid, out var grid))
                 continue;
 
             var valid = true;
@@ -105,7 +108,8 @@ public sealed class TeleportSystem : EntitySystem
                 break;
         }
 
+        _audio.PlayPvs(audio, uid);
         _xform.SetWorldPosition(uid, targetCoords.Position);
-        _audio.PlayPvs(sound, uid);
+        _audio.PlayPvs(audio, uid);
     }
 }

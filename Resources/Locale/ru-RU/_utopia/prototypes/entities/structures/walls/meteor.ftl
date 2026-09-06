@@ -1,0 +1,12 @@
+ent-UtopiaMeteorRockCopper = { ent-MeteorRock }
+    .desc = Рудная жила, богатая медью.
+    .suffix = Медь
+ent-UtopiaMeteorRockLead = { ent-MeteorRock }
+    .desc = Рудная жила, богатая свинцом.
+    .suffix = Свинец
+ent-UtopiaMeteorRockBluespace = { ent-MeteorRock }
+    .desc = Рудная жила, богатая блюспейс рудой.
+    .suffix = Блюспейс
+ent-UtopiaMeteorRockRedspace = { ent-MeteorRock }
+    .desc = Рудная жила, богатая редспейс рудой.
+    .suffix = Редспейс

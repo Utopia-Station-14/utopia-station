@@ -11,9 +11,6 @@ mutation-desc-pirate-accent = Субъект говорит как прокля�
 mutation-name-german-accent = Изменение лобной извилины типа G
 mutation-desc-german-accent = Субъект говорит с сильным немецким акцентом.
 
-mutation-name-italian-accent = Изменение лобной извилины типа I
-mutation-desc-italian-accent = Субъект говорит с драматическим итальянским акцентом.
-
 mutation-name-french-accent = Изменение лобной извилины типа FR
 mutation-desc-french-accent = Субъект говорит с изысканным французским акцентом.
 
@@ -41,23 +38,6 @@ mutation-desc-paracusia = Субъект слышит фантомные зву�
 
 mutation-name-apian-honey-glands = Медоносные железы
 mutation-desc-apian-honey-glands = Слюнные железы субъекта гиперсекретируют густое, питательное вещество.
-
-mutation-name-moth-stomach = Чешуекрылое пищеварение
-mutation-desc-moth-stomach = Пищеварительная система субъекта адаптирована для расщепления целлюлозы и волокон ткани.
-
-mutation-name-reptilian-stomach = Рептильное пищеварение
-mutation-desc-reptilian-stomach = Желудок субъекта приобрел способность растворять жесткие и неудобоваримые материалы.
-
-mutation-name-carnivore-stomach = Плотоядное пищеварение
-mutation-desc-carnivore-stomach = Желудок субъекта развил экстремальную кислотность и ферментативную активность.
-
-mutation-name-human-stomach = Всеядное пищеварение
-mutation-desc-human-stomach = Субъект обладает обобщенной всеядной пищеварительной системой.
-
-mutation-name-nitrogen-breathing = Азотное дыхание
-mutation-desc-nitrogen-breathing = Субъект обладает воксоподобными лёгкими.
-mutation-name-phoron-breathing = Фороновое дыхание
-mutation-desc-phoron-breathing = Субъект обладает фороновыми лёгкими.
 
 # === Beneficial Mutations ===
 mutation-name-alcohol-immunity = Иммунитет к алкоголю
@@ -117,8 +97,6 @@ mutation-desc-musculature-enhancement = Улучшает способность 
 mutation-name-enhanced-physical-conditioning = Улучшенная физическая подготовка
 mutation-desc-enhanced-physical-conditioning = Субъект обладает естественно повышенной сердечно-сосудистой и мышечной выносливостью.
 
-mutation-name-radiation-resistance = Устойчивость к ионизирующему излучению
-mutation-desc-radiation-resistance = Клеточные механизмы восстановления субъекта обеспечивают надежную защиту от повреждений ионизирующим излучением.
 
 mutation-name-regeneration = Ускоренная регенерация тканей
 mutation-desc-regeneration = Клеточные процессы физической регенерации субъекта чрезвычайно активны.

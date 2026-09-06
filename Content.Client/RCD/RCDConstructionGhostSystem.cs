@@ -15,19 +15,17 @@ namespace Content.Client.RCD;
 /// <summary>
 /// System for handling structure ghost placement in places where RCD can create objects.
 /// </summary>
-public sealed class RCDConstructionGhostSystem : EntitySystem
+public sealed partial class RCDConstructionGhostSystem : EntitySystem
 {
     private const string PlacementMode = nameof(AlignRCDConstruction);
     private const string RpdPlacementMode = nameof(AlignRPDAtmosPipeLayers); // Utopia-Tweak : RPD
 
-    [Dependency] private readonly IPlayerManager _playerManager = default!;
-    [Dependency] private readonly IPlacementManager _placementManager = default!;
-    [Dependency] private readonly IPrototypeManager _protoManager = default!;
-    [Dependency] private readonly HandsSystem _hands = default!;
+    [Dependency] private IPlayerManager _playerManager = default!;
+    [Dependency] private IPlacementManager _placementManager = default!;
+    [Dependency] private HandsSystem _hands = default!;
 
     // Utopia-Tweak : RPD
     private bool _useMirrorPrototype = false;
-    public event EventHandler? FlipConstructionPrototype;
     // Utopia-Tweak : RPD
     private Direction _placementDirection = default;
 
@@ -109,7 +107,7 @@ public sealed class RCDConstructionGhostSystem : EntitySystem
         var prototype = wantMirror ? cachedProto.MirrorPrototype : cachedProto.Prototype;
 
         var isLayered = rcd.IsRpd
-            && _protoManager.TryIndex<RCDPrototype>(cachedProto.ID, out var rcdProto)
+            && ProtoMan.TryIndex<RCDPrototype>(cachedProto.ID, out var rcdProto)
             && rcdProto.HasLayers;
 
         var desiredMode = isLayered ? RpdPlacementMode : PlacementMode;

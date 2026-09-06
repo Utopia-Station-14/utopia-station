@@ -1,4 +1,10 @@
 - type: sourcePort
+  id: ExplosionBeaconConsoleSender
+  name: signal-port-name-explosion-beacon-console-sender
+  description: signal-port-description-explosion-beacon-console-sender
+  defaultLinks: [ ExplosionBeaconReceiver ]
+
+- type: sourcePort
   id: DnaConsole
   name: signal-port-name-dna-scanner
   description: signal-port-description-dna-scanner

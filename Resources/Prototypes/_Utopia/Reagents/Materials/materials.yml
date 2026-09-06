@@ -2,6 +2,7 @@
   id: Copper
   stackEntity: UtopiaSheetCopper1
   name: materials-copper
+  unit: materials-unit-bar
   icon: { sprite: Objects/Materials/ingots.rsi, state: copper }
   color: "#dd7d00"
   price: 0.075
@@ -12,5 +13,23 @@
   name: materials-lead
   unit: materials-unit-bar
   icon: { sprite: _Utopia/Objects/Materials/Sheets/metal.rsi, state: lead }
-  color: "#08287a"
+  color: "#59577e"
   price: 0
+
+- type: material
+  id: BluespaceCrystal
+  stackEntity: UtopiaMaterialBluespaceCrystal1
+  name: materials-bluespacecrystal
+  unit: materials-unit-piece
+  icon: { sprite: _Utopia/Objects/Materials/Crystal/bs_crystal.rsi, state: crystal }
+  color: "#1d55c4"
+  price: 1
+
+- type: material
+  id: RedspaceCrystal
+  stackEntity: UtopiaMaterialRedspaceCrystal1
+  name: materials-redspacecrystal
+  unit: materials-unit-piece
+  icon: { sprite: _Utopia/Objects/Materials/Crystal/rs_crystal.rsi, state: crystal }
+  color: "#c81616"
+  price: 1

@@ -8,9 +8,9 @@ using Robust.Shared.Console;
 namespace Content.Server._Utopia.Audio.Commands;
 
 [AdminCommand(AdminFlags.Fun)]
-public sealed class LobbyMusicCommand : LocalizedEntityCommands
+public sealed partial class LobbyMusicCommand : LocalizedEntityCommands
 {
-    [Dependency] private readonly ContentAudioSystem _audio = default!;
+    [Dependency] private ContentAudioSystem _audio = default!;
 
     public override string Command => "lobbymusic";
 

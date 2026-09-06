@@ -4,9 +4,9 @@ using Content.Shared.Movement.Systems;
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
 [Access(typeof(MovementSpeedModifierSystem))]
-public sealed class MutationSpeedBoostSystem : EntitySystem
+public sealed partial class MutationSpeedBoostSystem : EntitySystem
 {
-    [Dependency] private readonly MovementSpeedModifierSystem _moveSpeedSystem = default!;
+    [Dependency] private MovementSpeedModifierSystem _moveSpeedSystem = default!;
 
     public override void Initialize()
     {

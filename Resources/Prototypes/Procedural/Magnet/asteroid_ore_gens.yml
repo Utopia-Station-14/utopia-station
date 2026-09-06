@@ -4,15 +4,19 @@
     OreIron: 1.0
     OreQuartz: 1.0
     OreCoal: 0.33
-    OreSalt: 0.25
+    OreSalt: 0.20
     OreGold: 0.25
     OreSilver: 0.25
     OrePlasma: 0.20
     OreUranium: 0.20
     OreArtifactFragment: 0.10
     OreBananium: 0.10
-    UtopiaOreCopper: 1.0 # Utopia-Tweak : Ores
-    UtopiaOreLead: 0.5 # Utopia-Tweak : Ores
+
+    # Utopia-Tweak : Ores
+    OreCopper: 1.0
+    OreLead: 0.30
+    BluespaceOre: 0.20
+    # Utopia-Tweak : Ores
 
 - type: oreDunGen
   id: OreIron

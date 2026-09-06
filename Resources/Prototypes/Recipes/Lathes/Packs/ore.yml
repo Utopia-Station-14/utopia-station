@@ -12,6 +12,13 @@
   - MaterialBananium1
   - MaterialDiamond
 
+  # Utopia-Tweak : Materials
+  - SheetCopper
+  - SheetLead
+  - MaterialBluespaceCrystal
+  - MaterialRedspaceCrystal
+  # Utopia-Tweak : Materials
+
 - type: latheRecipePack
   id: RGlassSmelting
   recipes:

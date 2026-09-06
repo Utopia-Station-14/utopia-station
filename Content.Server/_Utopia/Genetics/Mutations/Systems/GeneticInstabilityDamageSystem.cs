@@ -8,10 +8,9 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class GeneticsInstabilityDamageSystem : EntitySystem
+public sealed partial class GeneticsInstabilityDamageSystem : EntitySystem
 {
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
 
     private const int InstabilityThreshold = 150;
     private const float DamagePerTick = 1f;
@@ -41,7 +40,7 @@ public sealed class GeneticsInstabilityDamageSystem : EntitySystem
             if (genetics.GeneticInstability <= InstabilityThreshold)
                 continue;
 
-            var damage = new DamageSpecifier(_prototypeManager.Index<DamageTypePrototype>(DamageType), DamagePerTick);
+            var damage = new DamageSpecifier(ProtoMan.Index<DamageTypePrototype>(DamageType), DamagePerTick);
             _damageable.TryChangeDamage(uid, damage, true);
         }
     }

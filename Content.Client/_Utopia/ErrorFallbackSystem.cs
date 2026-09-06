@@ -3,9 +3,9 @@ using Robust.Shared.Utility;
 
 namespace Content.Client._Utopia;
 
-public sealed class ErrorFallbackSystem : EntitySystem
+public sealed partial class ErrorFallbackSystem : EntitySystem
 {
-    [Dependency] private readonly IResourceCache _resourceCache = default!;
+    [Dependency] private IResourceCache _resourceCache = default!;
 
     private const string UtopiaErrorPath = "/Textures/_Utopia/error.rsi";
     private static readonly ResPath FallbackPath = new("/Textures/error.rsi");

@@ -10,7 +10,6 @@ using static Robust.Client.UserInterface.Controls.BoxContainer;
 
 namespace Content.Client._Utopia.Genetics.GeneticAnalyzer;
 
-[Virtual]
 [GenerateTypedNameReferences]
 public sealed partial class GeneticAnalyzerWindow : FancyWindow
 {

@@ -1,3 +1,5 @@
+ent-BaseMeteorRockDestructible = { "" }
+    .desc = { "" }
 ent-MeteorRock = метеоритный камень
     .desc = Остатки метеорита.
 ent-MeteorRockCoal = { ent-MeteorRock }
@@ -11,7 +13,7 @@ ent-MeteorRockDiamond = { ent-MeteorRock }
     .suffix = Алмаз
 ent-MeteorRockPlasma = { ent-MeteorRock }
     .desc = Рудная жила, богатая фороном.
-    .suffix = форон
+    .suffix = Форон
 ent-MeteorRockQuartz = { ent-MeteorRock }
     .desc = Рудная жила, богатая кварцем.
     .suffix = Кварц

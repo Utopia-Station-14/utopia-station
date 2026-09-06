@@ -1,15 +1,15 @@
 using Content.Server._Utopia.Genetics.Mutations.Components;
-using Content.Server.Teleportation;
+using Content.Server._Utopia.Teleportation;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 
 namespace Content.Server._Utopia.Genetics.Mutations.Systems;
 
-public sealed class MutationSpatialDestabilizationSystem : EntitySystem
+public sealed partial class MutationSpatialDestabilizationSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly TeleportSystem _teleport = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private  IRobustRandom _random = default!;
+    [Dependency] private  TeleportSystem _teleport = default!;
 
     public override void Initialize()
     {

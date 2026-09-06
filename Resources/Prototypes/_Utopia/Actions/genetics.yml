@@ -88,17 +88,3 @@
     checkCanAccess: false
   - type: WorldTargetAction
     event: !type:OpticBlastActionEvent
-
-- type: entity
-  categories: [ HideSpawnMenu ]
-  id: ActionTrichochromaticShift
-  name: Trichochromatic Shift
-  description: Shift your hair to a random color.
-  components:
-  - type: Action
-    useDelay: 5
-    icon:
-      sprite: Objects/Misc/ParcelWrap/parcel_wrap_trash.rsi
-      state: brown
-  - type: InstantAction
-    event: !type:TrichochromaticShiftActionEvent

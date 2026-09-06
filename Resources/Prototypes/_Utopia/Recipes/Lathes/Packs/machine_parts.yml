@@ -16,3 +16,13 @@
   - PicoManipulatorStockPart
   - PhasicScanningModuleStockPart
   - UltraHighPowerMicroLaserStockPart
+
+- type: latheRecipePack
+  id: BluespaceMachineParts
+  recipes:
+  - BluespaceRPED
+  - QuadraticCapacitorStockPart
+  - FemtoManipulatorStockPart
+  - BluespaceMatterBinStockPart
+  - TriphasicScanningModuleStockPart
+  - QuadUltraMicroLaserStockPart

@@ -9,7 +9,7 @@
     Steel: 200
 
 - type: latheRecipe
-  id: UtopiaDNAInjector
+  id: DNAInjector
   result: UtopiaDNAInjectorEmpty
   completetime: 1
   materials:

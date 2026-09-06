@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-NC-SA-3.0",
-  "copyright": "sprites by M1and1B and Unlumy",
+  "copyright": "sprites by M1and1B and Unlumy, based on tg at https://github.com/tgstation/tgstation/blob/master/icons/obj/stack_objects.dmi",
   "size": {
     "x": 32,
     "y": 32
@@ -27,6 +27,28 @@
       },
       {
         "name": "lead-inhand-left",
+        "directions": 4
+      },
+      {
+        "name": "bluespace"
+      },
+      {
+        "name": "bluespace-inhand-right",
+        "directions": 4
+      },
+      {
+        "name": "bluespace-inhand-left",
+        "directions": 4
+      },
+      {
+        "name": "redspace"
+      },
+      {
+        "name": "redspace-inhand-right",
+        "directions": 4
+      },
+      {
+        "name": "redspace-inhand-left",
         "directions": 4
       }
   ]

@@ -1,3 +1,4 @@
+# Machine Parts
 stack-capacitor = конденсатор
 stack-matter-bin = ёмкость материи
 stack-scanning-module = сканирующий модуль
@@ -17,3 +18,11 @@ stack-bluespace-manipulator = фемто-манипулятор
 stack-bluespace-matter-bin = блюспейс ёмкость материи
 stack-triphasic-scanning-module = трёхфазовый сканирующий модуль
 stack-quad-ultra-micro-laser = квад-ультра микролазер
+# Ores
+stack-copper-ore = руда меди
+stack-lead-ore = руда свинца
+stack-bluespacecrystal-ore = блюспейс руда
+stack-redspacecrystal-ore = редспейс руда
+# Misc
+stack-bluespacecrystal = блюспейс кристалл
+stack-redspacecrystal = редспейс кристалл

@@ -1,5 +1,5 @@
 - type: oreDunGen
-  id: UtopiaOreCopper
+  id: OreCopper
   replacement: AsteroidRock
   entity: UtopiaAsteroidRockCopper
   count: 5
@@ -7,9 +7,25 @@
   maxGroupSize: 7
 
 - type: oreDunGen
-  id: UtopiaOreLead
+  id: OreLead
   replacement: AsteroidRock
   entity: UtopiaAsteroidRockLead
   count: 5
   minGroupSize: 5
   maxGroupSize: 7
+
+- type: oreDunGen
+  id: OreBluespace
+  replacement: AsteroidRock
+  entity: UtopiaAsteroidRockBluespace
+  count: 3
+  minGroupSize: 3
+  maxGroupSize: 5
+
+- type: oreDunGen
+  id: OreRedspace
+  replacement: AsteroidRock
+  entity: UtopiaAsteroidRockRedspace
+  count: 3
+  minGroupSize: 2
+  maxGroupSize: 3

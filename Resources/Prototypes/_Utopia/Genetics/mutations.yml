@@ -35,18 +35,6 @@
   - type: GermanAccent
 
 - type: geneticMutation
-  id: ItalianAccent
-  name: mutation-name-italian-accent
-  desc: mutation-desc-italian-accent
-  instability: 0
-  conflicts:
-    - CowboyAccent
-    - LiarAccent
-  components:
-  - type: ReplacementAccent
-    accent: italian
-
-- type: geneticMutation
   id: FrenchAccent
   name: mutation-name-french-accent
   desc: mutation-desc-french-accent
@@ -137,102 +125,6 @@
     minInterval: 90
     maxInterval: 240
     chance: 0.75
-
-- type: geneticMutation
-  id: MothStomach
-  name: mutation-name-moth-stomach
-  desc: mutation-desc-moth-stomach
-  popupText: mutation-popup-moth-stomach
-  instability: 0
-  entityWhitelist:
-    - MobMoth
-    - BaseMobMoth
-  conflicts:
-    - ReptilianStomach
-    - CarnivoreStomach
-    - HumanStomach
-  components:
-  - type: MutationStomachSwap
-    newStomachPrototype: OrganMothStomach
-
-- type: geneticMutation
-  id: ReptilianStomach
-  name: mutation-name-reptilian-stomach
-  desc: mutation-desc-reptilian-stomach
-  popupText: mutation-popup-reptilian-stomach
-  instability: 0
-  entityWhitelist:
-    - MobReptilian
-    - BaseMobReptilian
-  conflicts:
-    - MothStomach
-    - CarnivoreStomach
-    - HumanStomach
-  components:
-  - type: MutationStomachSwap
-    newStomachPrototype: OrganReptilianStomach
-
-- type: geneticMutation
-  id: CarnivoreStomach
-  name: mutation-name-carnivore-stomach
-  desc: mutation-desc-carnivore-stomach
-  popupText: mutation-popup-carnivore-stomach
-  instability: 0
-  entityWhitelist:
-    - BaseMobVulpkanin
-    - MobFelinidBase
-  conflicts:
-    - MothStomach
-    - ReptilianStomach
-    - HumanStomach
-  components:
-  - type: MutationStomachSwap
-    newStomachPrototype: OrganVulpkaninStomach
-
-- type: geneticMutation
-  id: HumanStomach
-  name: mutation-name-human-stomach
-  desc: mutation-desc-human-stomach
-  popupText: mutation-popup-human-stomach
-  instability: 0
-  entityWhitelist:
-    - MobHuman
-    - BaseMobHuman
-  conflicts:
-    - MothStomach
-    - ReptilianStomach
-    - CarnivoreStomach
-  components:
-  - type: MutationStomachSwap
-    newStomachPrototype: OrganHumanStomach
-
-- type: geneticMutation
-  id: NitrogenBreathingMutation
-  name: mutation-name-nitrogen-breathing
-  desc: mutation-desc-nitrogen-breathing
-  popupText: mutation-popup-nitrogen-breathing
-  instability: 0
-  entityWhitelist:
-    - MobVox
-    - BaseMobVox
-  conflicts:
-    - PhoronBreathingMutation
-  components:
-  - type: MutationLungSwap
-    newLungPrototype: OrganVoxLungs
-
-- type: geneticMutation
-  id: PhoronBreathingMutation
-  name: mutation-name-phoron-breathing
-  desc: mutation-desc-phoron-breathing
-  popupText: mutation-popup-phoron-breathing
-  instability: 0
-  probabilityWeight: 5
-  conflicts:
-    - NitrogenBreathingMutation
-  components:
-  - type: MutationLungSwap
-    newLungPrototype: UtopiaOrganPhoronLungs
 
 - type: geneticMutation
   id: AlcoholImmunity
@@ -541,20 +433,6 @@
   components:
   - type: MutationIncreaseStaminaCritThreshold
     thresholdBonus: 30
-
-- type: geneticMutation
-  id: RadiationResistance
-  name: mutation-name-radiation-resistance
-  desc: mutation-desc-radiation-resistance
-  popupText: mutation-popup-radiation-resistance
-  instability: 25
-  sequencerResistant: true
-  scrambleResistant: true
-  probabilityWeight: 5
-  researchPoints: 900
-  components:
-  - type: MutationRadiationResistance
-    modifier: RadiationResistance
 
 - type: geneticMutation
   id: Regeneration
@@ -928,36 +806,6 @@
     energy: 0.5
 
 - type: geneticMutation
-  id: VulpkaninTailMutation
-  name: mutation-name-vulpkanin-tail-mutation
-  desc: mutation-desc-vulpkanin-tail-mutation
-  popupText: mutation-popup-vulpkanin-tail-mutation
-  instability: 5
-  researchPoints: 600
-  strictEntityWhitelist:
-    - BaseMobSpeciesOrganic
-  conflicts:
-    - ReptilianTailMutation
-  components:
-  - type: MutationTailSwap
-    newTailMarking: VulpTail
-
-- type: geneticMutation
-  id: ReptilianTailMutation
-  name: mutation-name-reptilian-tail-mutation
-  desc: mutation-desc-reptilian-tail-mutation
-  popupText: mutation-popup-reptilian-tail-mutation
-  instability: 5
-  researchPoints: 600
-  strictEntityWhitelist:
-    - BaseMobSpeciesOrganic
-  conflicts:
-    - VulpkaninTailMutation
-  components:
-  - type: MutationTailSwap
-    newTailMarking: LizardTailSmooth
-
-- type: geneticMutation
   id: SpiderWeb
   name: mutation-name-spider-web
   desc: mutation-desc-spider-web
@@ -1059,18 +907,6 @@
   components:
   - type: MutationOpticEnergizer
     actionId: ActionOpticBlast
-
-- type: geneticMutation
-  id: TrichochromaticShift
-  name: mutation-name-trichochromatic-shift
-  desc: mutation-desc-trichochromatic-shift
-  popupText: mutation-popup-trichochromatic-shift
-  instability: 6
-  probabilityWeight: 9
-  researchPoints: 700
-  components:
-  - type: MutationTrichochromaticShift
-    actionId: ActionTrichochromaticShift
 
 - type: geneticMutation
   id: GeneticMonkeyMorph

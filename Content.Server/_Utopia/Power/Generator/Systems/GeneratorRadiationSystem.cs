@@ -7,12 +7,12 @@ using Robust.Shared.Random;
 
 namespace Content.Server._Utopia.Power.Generator;
 
-public sealed class GeneratorRadiationSystem : EntitySystem
+public sealed partial class GeneratorRadiationSystem : EntitySystem
 {
     private float _accumulator;
 
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly AppearanceSystem _appearance = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private AppearanceSystem _appearance = default!;
 
     public override void Initialize()
     {

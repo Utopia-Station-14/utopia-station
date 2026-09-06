@@ -1,7 +1,7 @@
 - type: entity
   name: shower
   id: UtopiaShower
-  parent: [ BaseStructure ]
+  parent: [ BaseStructure, SolutionTank ]
   placement:
     mode: SnapgridCenter
     snap:
@@ -60,15 +60,13 @@
       maxExternalPressure: 102
       spawnAmount: 0.2
     - type: AtmosDevice
-    - type: SolutionContainerManager
+    - type: SolutionManager
       solutions:
-        showerWater:
-          maxVol: 200
+      - SolutionLarge
     - type: SolutionRegeneration
-      solution: showerWater
       generated:
         reagents:
         - ReagentId: Water
           Quantity: 5
     - type: DrainableSolution
-      solution: showerWater
+      solution: tank

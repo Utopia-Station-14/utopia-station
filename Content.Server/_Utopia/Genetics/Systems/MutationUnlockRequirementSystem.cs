@@ -7,11 +7,11 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._Utopia.Genetics.Systems;
 
-public sealed class MutationUnlockTriggerSystem : EntitySystem
+public sealed partial class MutationUnlockTriggerSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly GeneticShuffleSystem _shuffle = default!;
-    [Dependency] private readonly SharedMutationDiscoverySystem _discovery = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private GeneticShuffleSystem _shuffle = default!;
+    [Dependency] private SharedMutationDiscoverySystem _discovery = default!;
 
     private readonly List<MutationUnlockTriggerPrototype> _triggers = new();
 

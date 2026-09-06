@@ -31,24 +31,23 @@ using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
-using Robust.Shared.Prototypes;
-
 namespace Content.Shared.Movement.Pulling.Systems;
 
 public abstract partial class PullingSystem
 {
-    [Dependency] private readonly SharedCombatModeSystem _combat = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly StandingStateSystem _standing = default!;
-    [Dependency] private readonly SharedGravitySystem _gravity = default!;
-    [Dependency] private readonly ThrownItemSystem _thrown = default!;
-    [Dependency] private readonly SharedStaminaSystem _stamina = default!;
-    [Dependency] private readonly ThrowingSystem _throwing = default!;
+    [Dependency] private SharedCombatModeSystem _combat = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private INetManager _net = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
+    [Dependency] private StandingStateSystem _standing = default!;
+    [Dependency] private SharedGravitySystem _gravity = default!;
+    [Dependency] private ThrownItemSystem _thrown = default!;
+    [Dependency] private SharedStaminaSystem _stamina = default!;
+    [Dependency] private ThrowingSystem _throwing = default!;
+
+    public const string DamageType = "Blunt";
 
     private void InitializeGrab()
     {
@@ -238,7 +237,7 @@ public abstract partial class PullingSystem
         var stunTime = TimeSpan.FromSeconds(2);
 
         _audio.PlayPredicted(new SoundCollectionSpecifier("TrayHit"), uid, args.PuttingOnTable);
-        _damageable.TryChangeDamage(uid, new(_proto.Index<DamageTypePrototype>("Blunt"), 17));
+        _damageable.TryChangeDamage(uid, new(ProtoMan.Index<DamageTypePrototype>(DamageType), 17));
 
         _stun.TryUpdateParalyzeDuration(uid, stunTime);
         TryStopPull(uid, comp);
@@ -283,7 +282,7 @@ public abstract partial class PullingSystem
                 Dirty(uid, comp);
             }
 
-            _popup.PopupPredicted(Loc.GetString("grab-escape-attempt-popup-self"), Loc.GetString("grab-escape-attempt-popup-others", ("pullable", Identity.Entity(uid, EntityManager))), uid, uid, PopupType.Small);
+            _popup.PopupEntity(Loc.GetString("grab-escape-attempt-popup-self"), Loc.GetString("grab-escape-attempt-popup-others", ("pullable", Identity.Entity(uid, EntityManager))), uid, uid, PopupType.Small);
             if (args.DoAfter.Id == comp.EscapeAttemptDoAfter)
             {
                 args.Repeat = true;
@@ -292,7 +291,7 @@ public abstract partial class PullingSystem
         else
         {
             comp.EscapeAttemptCounter = 1;
-            _popup.PopupPredicted(Loc.GetString("grab-escape-success-popup-self"), Loc.GetString("grab-escape-success-popup-others", ("pullable", Identity.Entity(uid, EntityManager))), uid, uid, PopupType.Small);
+            _popup.PopupEntity(Loc.GetString("grab-escape-success-popup-self"), Loc.GetString("grab-escape-success-popup-others", ("pullable", Identity.Entity(uid, EntityManager))), uid, uid, PopupType.Small);
             TryLowerGrabStage((comp.Puller.Value, puller), (uid, comp), uid);
             args.Repeat = false;
             comp.EscapeAttemptDoAfter = null;
@@ -346,7 +345,7 @@ public abstract partial class PullingSystem
         if (TryComp<PhysicsComponent>(args.Target, out var physics) && physics.BodyType == BodyType.Static)
         {
             var stunTime = TimeSpan.FromSeconds(1);
-            _damageable.TryChangeDamage(uid, new(_proto.Index<DamageTypePrototype>("Blunt"), 8));
+            _damageable.TryChangeDamage(uid, new(ProtoMan.Index<DamageTypePrototype>(DamageType), 8));
             _stun.TryUpdateParalyzeDuration(uid, stunTime);
             _audio.PlayPredicted(new SoundCollectionSpecifier("MetalThud"), uid, uid);
         }
@@ -411,6 +410,21 @@ public abstract partial class PullingSystem
     #endregion
 
     #region Pulic functions
+
+    public void StopAllPulls(EntityUid uid, bool stopPullable = true, bool stopPuller = true)
+    {
+        if (stopPullable && TryComp<PullableComponent>(uid, out var pullable) && IsPulled(uid, pullable))
+        {
+            TryStopPull(uid, pullable);
+        }
+
+        if (stopPuller && TryComp<PullerComponent>(uid, out var puller)
+        && TryComp(puller.Pulling, out PullableComponent? pullableEnt))
+        {
+            TryStopPull(puller.Pulling.Value, pullableEnt);
+        }
+    }
+
     public bool TryStartPullingOrGrab(Entity<PullerComponent> puller, Entity<PullableComponent> pullable)
     {
         if (puller.Comp.Pulling == pullable.Owner)
@@ -481,7 +495,7 @@ public abstract partial class PullingSystem
         puller.Comp.NextStageChange = _timing.CurTime + TimeSpan.FromSeconds(1f);
 
         puller.Comp.GrabbingDirection = 1;
-        _modifierSystem.RefreshMovementSpeedModifiers(puller);
+        _modifierSystem.RefreshMovementSpeedModifiers(puller.Owner);
 
         // Raise the grab stage changed event
         var message = new GrabStageChangedEvent(puller, pullable, puller.Comp.Stage, puller.Comp.Stage + 1);
@@ -510,7 +524,7 @@ public abstract partial class PullingSystem
 
         puller.Comp.NextStageChange = _timing.CurTime + TimeSpan.FromSeconds(1f);
         puller.Comp.GrabbingDirection = -1;
-        _modifierSystem.RefreshMovementSpeedModifiers(puller);
+        _modifierSystem.RefreshMovementSpeedModifiers(puller.Owner);
 
         // Raise the grab stage changed event
         var message = new GrabStageChangedEvent(puller, pullable, puller.Comp.Stage, puller.Comp.Stage - 1);
@@ -603,7 +617,7 @@ public abstract partial class PullingSystem
         pullable.Comp.LastEscapeAttempt = _timing.CurTime;
 
         // Do escape effects
-        _popup.PopupPredicted(Loc.GetString("grab-escape-attempt-popup-self"), Loc.GetString("grab-escape-attempt-popup-others", ("pullable", Identity.Entity(pullable, EntityManager))), pullable, pullable, PopupType.Small);
+        _popup.PopupEntity(Loc.GetString("grab-escape-attempt-popup-self"), Loc.GetString("grab-escape-attempt-popup-others", ("pullable", Identity.Entity(pullable, EntityManager))), pullable, pullable, PopupType.Small);
 
         if (!_net.IsServer)
             return true;
