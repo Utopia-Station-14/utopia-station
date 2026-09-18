@@ -1,0 +1,171 @@
+## GASES
+- type: supermatterReagentData
+  id: SmReagentDataOxygen
+  targetReagent: Oxygen
+  temperatureScaleModifier: 1.2
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 1
+  wasteOutputModifier: 1
+
+- type: supermatterReagentData
+  id: SmReagentDataNitrogen
+  targetReagent: Nitrogen
+  temperatureScaleModifier: 0.8
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 2
+  wasteOutputModifier: 0.8
+
+- type: supermatterReagentData
+  id: SmReagentDataCarbonDioxide
+  targetReagent: CarbonDioxide
+  temperatureScaleModifier: 1
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 1.2
+  wasteOutputModifier: 1
+
+- type: supermatterReagentData
+  id: SmReagentDataPhoron
+  targetReagent: Plasma
+  temperatureScaleModifier: 1.2
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 1.2
+  wasteOutputModifier: 1.2
+
+- type: supermatterReagentData
+  id: SmReagentDataTritium
+  targetReagent: Tritium
+  temperatureScaleModifier: 2
+  temperatureProtectionModifier: 1.2
+  energyScaleModifier: 1.5
+  wasteOutputModifier: 1.5
+
+- type: supermatterReagentData
+  id: SmReagentDataWaterVapor
+  targetReagent: WaterVapor
+  temperatureScaleModifier: 5.0
+  temperatureProtectionModifier: 0.1
+  energyScaleModifier: 10.0
+  wasteOutputModifier: 0.5
+
+- type: supermatterReagentData
+  id: SmReagentDataFrezon
+  targetReagent: Frezon
+  temperatureScaleModifier: 0.2
+  temperatureProtectionModifier: 1.5
+  energyScaleModifier: 0.8
+  wasteOutputModifier: 1
+
+- type: supermatterReagentData
+  id: SmReagentDataAmmonia
+  targetReagent: Ammonia
+  temperatureScaleModifier: 1.2
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 1.2
+  wasteOutputModifier: 1.2
+
+- type: supermatterReagentData
+  id: SmReagentDataNitrousOxide
+  targetReagent: NitrousOxide
+  temperatureScaleModifier: 1
+  temperatureProtectionModifier: 1.2
+  energyScaleModifier: 1.2
+  wasteOutputModifier: 0.8
+
+- type: supermatterReagentData
+  id: SmReagentDataBZ
+  targetReagent: BZ
+  temperatureScaleModifier: 1
+  temperatureProtectionModifier: 0.8
+  energyScaleModifier: 2
+  wasteOutputModifier: 1.5
+
+- type: supermatterReagentData
+  id: SmReagentDataPluoxium
+  targetReagent: Pluoxium
+  temperatureScaleModifier: 0.6
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 0.6
+  wasteOutputModifier: 0.5
+
+- type: supermatterReagentData
+  id: SmReagentDataHydrogen
+  targetReagent: Hydrogen
+  temperatureScaleModifier: 1.2
+  temperatureProtectionModifier: 0.8
+  energyScaleModifier: 1.2
+  wasteOutputModifier: 1
+
+- type: supermatterReagentData
+  id: SmReagentDataNitrium
+  targetReagent: Nitrium
+  temperatureScaleModifier: 1.2
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 1.2
+  wasteOutputModifier: 2
+
+- type: supermatterReagentData
+  id: SmReagentDataHealium
+  targetReagent: Healium
+  # add healing
+  temperatureScaleModifier: 1.4
+  temperatureProtectionModifier: 1.6
+  energyScaleModifier: 1.2
+  wasteOutputModifier: 1.2
+
+- type: supermatterReagentData
+  id: SmReagentDataHyperNoblium
+  targetReagent: HyperNoblium
+  temperatureScaleModifier: 0.2
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 0.4
+  wasteOutputModifier: 0.2
+
+- type: supermatterReagentData
+  id: SmReagentDataProtoNitrate
+  targetReagent: ProtoNitrate
+  # add rad bonus
+  temperatureScaleModifier: 1.5
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 1.5
+  wasteOutputModifier: 1.2
+
+- type: supermatterReagentData
+  id: SmReagentDataZauker
+  targetReagent: Zauker
+  temperatureScaleModifier: 1.666
+  temperatureProtectionModifier: 1.666
+  energyScaleModifier: 1.666
+  wasteOutputModifier: 1.666
+
+- type: supermatterReagentData
+  id: SmReagentDataHalon
+  targetReagent: Halon
+  temperatureScaleModifier: 1
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 1
+  wasteOutputModifier: 1
+
+- type: supermatterReagentData
+  id: SmReagentDataHelium
+  targetReagent: Helium
+  temperatureScaleModifier: 1
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 1
+  wasteOutputModifier: 1
+
+- type: supermatterReagentData
+  id: SmReagentDataAntiNoblium
+  targetReagent: AntiNoblium
+  temperatureScaleModifier: 0.1
+  temperatureProtectionModifier: 10
+  energyScaleModifier: 10
+  wasteOutputModifier: 0.1
+
+## BIOLOGICAL
+- type: supermatterReagentData
+  id: SmReagentDataBlood
+  targetReagent: Blood
+  temperatureScaleModifier: 1
+  temperatureProtectionModifier: 1
+  energyScaleModifier: 5
+  wasteOutputModifier: 2

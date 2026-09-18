@@ -4,7 +4,7 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared._Utopia.Supermatter.Prototypes;
 
-[Prototype("supermatterGasData")]
+[Prototype]
 public sealed partial class SupermatterGasDataPrototype : IPrototype
 {
     [IdDataField]
@@ -14,14 +14,14 @@ public sealed partial class SupermatterGasDataPrototype : IPrototype
     public Gas TargetGas;
 
     [DataField]
-    public float TemperatureScaleModificator;
+    public float TemperatureScaleModifier;
 
     [DataField]
-    public float TemperatureProtectionModificator;
+    public float TemperatureProtectionModifier;
 
     [DataField]
-    public float EnergyScaleModificator;
+    public float EnergyScaleModifier;
 
     [DataField]
-    public float WasteOutputModificator;
+    public float WasteOutputModifier;
 }

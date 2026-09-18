@@ -7,20 +7,31 @@ using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
 using Robust.Shared.Player;
+using Content.Server._Utopia.Audio.Systems;
+using Robust.Shared.Audio;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
 
-public sealed partial class SupermatterSystem : EntitySystem
+public sealed partial class SupermatterSystem
 {
     [Dependency] private SharedExplosionSystem _explosionSystem = default!;
     [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private NowPlayingServerSystem _nowPlay = default!;
 
-    private float TimerModificator = 0f;
+    private SoundSpecifier CascadeMusic = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/thecascade.ogg");
+    private static readonly ProtoId<DamageTypePrototype> RadiationDamageType = "Radiation";
+    private EntProtoId SupermatterKudzu = "SupermatterKudzu";
+    private const string SupermatterHzKakNazvat = "SupermatterHzKakNazvat";
+    private const float MusicRadius = 150f;
+    private float TimerModificator = 1f;
     private EntProtoId SingularityPrototype = "Singularity";
     private EntProtoId TeslaPrototype = "TeslaEnergyBall";
 
     public void SwitchDelamination(Entity<SupermatterComponent> sm)
-        => sm.Comp.Delamination = !sm.Comp.Delamination;
+    {
+        sm.Comp.Delamination = !sm.Comp.Delamination;
+        ProcessDelaminationAnnouncement(sm);
+    }
 
     public DelaminationType GetDelaminationType(Entity<SupermatterComponent> sm)
     {
@@ -61,6 +72,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void CancelDelamination(Entity<SupermatterComponent> sm)
     {
+        _alert.SetLevel(sm, AlertCodeYellow, true, true, true, false);
         SwitchDelamination(sm);
         TimerModificator += 2f;
     }
@@ -72,13 +84,15 @@ public sealed partial class SupermatterSystem : EntitySystem
         switch (sm.Comp.DelaminationType)
         {
             case DelaminationType.Cascade:
-                ProcessCascade(sm);
+                // ProcessCascade(sm);
                 break;
             case DelaminationType.Singularity:
-                SpawnCatastrophe(sm, coords, SingularityPrototype);
+                SpawnAtPosition(SingularityPrototype, coords);
+                _alert.SetLevel(sm, AlertCodeYellow, true, true, true, false);
                 break;
             case DelaminationType.Tesla:
-                SpawnCatastrophe(sm, coords, TeslaPrototype);
+                SpawnAtPosition(TeslaPrototype, coords);
+                _alert.SetLevel(sm, AlertCodeYellow, true, true, true, false);
                 break;
             default:
                 ProcessExplosion(sm, coords);
@@ -91,34 +105,29 @@ public sealed partial class SupermatterSystem : EntitySystem
         var power = sm.Comp.TotalEnergy;
         if (TryComp<ExplosiveComponent>(sm, out var explosion))
         {
-            ProcessPlayers(sm);
+            var mapUid = Transform(sm).MapUid;
+            var damage = new DamageSpecifier(_prototypeManager.Index(RadiationDamageType), 50);
+            var query = EntityQueryEnumerator<ActorComponent, TransformComponent>();
+
+            while (query.MoveNext(out var uid, out var actor, out var transform))
+            {
+                if (transform.MapUid != mapUid)
+                    continue;
+
+                _damageable.TryChangeDamage(uid, damage, ignoreResistances: true);
+            }
+
             _explosionSystem.TriggerExplosive(sm, explosion, true, power, 100f);
         }
     }
 
-    private void SpawnCatastrophe(Entity<SupermatterComponent> sm, EntityCoordinates coords, EntProtoId entity)
-    {
-        EntityManager.SpawnEntity(entity, coords);
-    }
+    // private void ProcessCascade(Entity<SupermatterComponent> sm)
+    // {
+    //     if (TryComp(sm, out TransformComponent? xform) && xform.GridUid is { } gridUid)
+    //     {
+    //         _anomaly.SpawnOnRandomGridLocation(gridUid, SupermatterHzKakNazvat);
+    //     }
 
-    private void ProcessCascade(Entity<SupermatterComponent> sm)
-    { }
-
-    private void ProcessPlayers(Entity<SupermatterComponent> sm)
-    {
-        var mapUid = Transform(sm).MapUid;
-
-        var radType = _prototypeManager.Index<DamageTypePrototype>("Radiation");
-        var damageToDeal = new DamageSpecifier(radType, 50);
-
-        var query = EntityQueryEnumerator<ActorComponent, TransformComponent>();
-
-        while (query.MoveNext(out var uid, out var actor, out var transform))
-        {
-            if (transform.MapUid != mapUid)
-                continue;
-
-            _damageable.TryChangeDamage(uid, damageToDeal, ignoreResistances: false);
-        }
-    }
+    //     _nowPlay.NotifyNowPlaying(sm, CascadeMusic, MusicRadius);
+    // }
 }

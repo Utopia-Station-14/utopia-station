@@ -6,7 +6,7 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared._Utopia.Supermatter.Prototypes;
 
-[Prototype("supermatterReaction")]
+[Prototype]
 public sealed partial class SupermatterReactionPrototype : IPrototype
 {
     [IdDataField]

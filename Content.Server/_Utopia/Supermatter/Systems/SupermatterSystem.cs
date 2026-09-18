@@ -7,6 +7,7 @@ using Content.Shared._Utopia.Supermatter.Prototypes;
 using Content.Shared.Examine;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using System.Numerics;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
 
@@ -88,6 +89,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnMapInit(Entity<SupermatterComponent> sm, ref MapInitEvent args)
     {
+        SetInitGases(sm);
         SetWasteGases(sm);
 
         sm.Comp.VisualState = GetVisualState(sm);
@@ -102,9 +104,19 @@ public sealed partial class SupermatterSystem : EntitySystem
             SendMessage(sm, Loc.GetString("supermatter-off"));
 
         sm.Comp.Active = !sm.Comp.Active;
+        Dirty(sm);
     }
 
-    public void SetWasteGases(Entity<SupermatterComponent> sm)
+    public float GetIntegrityModifier(Entity<SupermatterComponent> sm)
+        => 100f / sm.Comp.Integrity;
+
+    private void SetInitGases(Entity<SupermatterComponent> sm)
+    {
+        sm.Comp.AtmosGas.SetMoles(Gas.Oxygen, 5f);
+        sm.Comp.AtmosGas.SetMoles(Gas.Nitrogen, 15f);
+    }
+
+    private void SetWasteGases(Entity<SupermatterComponent> sm)
     {
         sm.Comp.WasteGas.SetMoles(Gas.Oxygen, 0.8f);
         sm.Comp.WasteGas.SetMoles(Gas.Plasma, 0.2f);
@@ -116,7 +128,7 @@ public sealed partial class SupermatterSystem : EntitySystem
             return;
 
         ProcessGases(sm, args.dt);
-        ProcessReagents(sm, args.dt);
+        // ProcessReagents(sm, args.dt);
         ProcessEnergy(sm, args.dt);
         ProcessRadiation(sm, args.dt);
         ProcessLightning(sm);
@@ -127,11 +139,6 @@ public sealed partial class SupermatterSystem : EntitySystem
         ProcessAnomaly(sm);
         ProcessDelamination(sm);
         ProcessVisual(sm);
-    }
-
-    public float GetIntegrityModificator(Entity<SupermatterComponent> sm)
-    {
-        return 100f / sm.Comp.Integrity;
     }
 
     private void RandomizeDescription(Entity<SupermatterComponent> sm, ref ExaminedEvent args)
@@ -161,4 +168,24 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         return SupermatterStatus.Stable;
     }
+
+    private static void ApplyModifiersLerp(SupermatterComponent comp, Vector4 target, float rate)
+    {
+        var step = MathF.Max(0f, MathF.Min(rate, 1f));
+
+        comp.TemperatureScaleModifier = MathHelper.CloseTo(comp.TemperatureScaleModifier, target.X, 0.001f)
+            ? target.X : MathHelper.Lerp(comp.TemperatureScaleModifier, target.X, step);
+
+        comp.TemperatureProtectionModifier = MathHelper.CloseTo(comp.TemperatureProtectionModifier, target.Y, 0.001f)
+            ? target.Y : MathHelper.Lerp(comp.TemperatureProtectionModifier, target.Y, step);
+
+        comp.EnergyScaleModifier = MathHelper.CloseTo(comp.EnergyScaleModifier, target.Z, 0.001f)
+            ? target.Z : MathHelper.Lerp(comp.EnergyScaleModifier, target.Z, step);
+
+        comp.WasteOutputModifier = MathHelper.CloseTo(comp.WasteOutputModifier, target.W, 0.001f)
+            ? target.W : MathHelper.Lerp(comp.WasteOutputModifier, target.W, step);
+    }
+
+    private static void DecayModifiers(SupermatterComponent comp, float frameTime)
+    => ApplyModifiersLerp(comp, Vector4.One * comp.BaseModifier, comp.ModifierDecayRate * frameTime);
 }

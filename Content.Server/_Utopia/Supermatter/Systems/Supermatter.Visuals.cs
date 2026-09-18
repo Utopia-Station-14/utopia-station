@@ -26,4 +26,9 @@ public sealed partial class SupermatterSystem
         sm.Comp.VisualState = state;
         _appearance.SetData(sm, SupermatterVisuals.Status, state);
     }
+
+    private void ProcessShining(Entity<SupermatterComponent> sm)
+    {
+
+    }
 }

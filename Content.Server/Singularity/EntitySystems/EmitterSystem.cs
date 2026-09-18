@@ -245,7 +245,7 @@ namespace Content.Server.Singularity.EntitySystems
                 return;
 
             var xform = Transform(uid);
-            var ent = Spawn(component.BoltType, xform.Coordinates);
+            var ent = Spawn(component.CurrentBoltType, xform.Coordinates); // Utopia-Tweak : Supermatter
             var proj = EnsureComp<ProjectileComponent>(ent);
             _projectile.SetShooter(ent, proj, uid);
 
@@ -343,12 +343,27 @@ namespace Content.Server.Singularity.EntitySystems
             }
 
             var fireRateTier = args.PartTiers[component.MachinePartFireRate];
+            var energyTier = args.PartTiers[component.MachinePartEnergyRate];
 
             component.FireInterval = component.BaseFireInterval * MathF.Pow(component.FireRateMultiplier, fireRateTier - 1);
             component.FireBurstDelayMin = component.BaseFireBurstDelayMin * MathF.Pow(component.FireRateMultiplier, fireRateTier - 1);
             component.FireBurstDelayMax = component.BaseFireBurstDelayMax * MathF.Pow(component.FireRateMultiplier, fireRateTier - 1);
 
+            component.CurrentBoltType = ChangeProjectile(component, energyTier);
             SwitchOn(uid, component);
+        }
+
+        private EntProtoId ChangeProjectile(EmitterComponent comp, float tier)
+        {
+            var proto = tier switch
+            {
+                2 => comp.SecondBoltType,
+                3 => comp.ThirdBoltType,
+                4 => comp.FourthBoltType,
+                _ => comp.BoltType
+            };
+
+            return proto;
         }
 
         private void OnUpgradeExamine(EntityUid uid, EmitterComponent component, UpgradeExamineEvent args)

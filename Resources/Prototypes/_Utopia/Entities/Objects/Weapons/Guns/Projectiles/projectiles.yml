@@ -1,0 +1,26 @@
+- type: entity
+  parent: EmitterBolt
+  name: emitter bolt
+  id: SecondEmitterBolt
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SupermatterFood
+    energy: 200
+
+- type: entity
+  parent: EmitterBolt
+  name: emitter bolt
+  id: ThirdEmitterBolt
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SupermatterFood
+    energy: 300
+
+- type: entity
+  parent: EmitterBolt
+  name: emitter bolt
+  id: FourthSecondEmitterBolt
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SupermatterFood
+    energy: 450

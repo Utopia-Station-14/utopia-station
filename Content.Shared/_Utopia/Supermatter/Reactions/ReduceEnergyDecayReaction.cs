@@ -8,8 +8,13 @@ public sealed partial class SupermatterReduceEnergyDecayEffect : SupermatterGasR
     [DataField(required: true)]
     public Gas Gas;
 
+    private const float MinMoles = 15f;
+
     public override void Effect(SupermatterGasReactionEffectArgs args)
     {
+        if (args.TotalMoles < MinMoles)
+            return;
 
+        args.Supermatter.Comp.EnergyReductionModifier += args.TotalMoles;
     }
 }

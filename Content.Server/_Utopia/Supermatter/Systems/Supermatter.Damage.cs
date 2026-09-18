@@ -1,12 +1,16 @@
+using System.Diagnostics;
 using Content.Shared._Utopia.Supermatter.Components;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
 
+/// <summary>
+/// Часть кода Суперматерии, которая отвечает за обработку урона.
+/// </summary>
 public sealed partial class SupermatterSystem
 {
     public void ProcessHealing(Entity<SupermatterComponent> sm)
     {
-        var baseHealing = BaseHealingPerTick * sm.Comp.HealingModificator;
+        var baseHealing = BaseHealingPerTick * sm.Comp.HealingModifier;
         sm.Comp.CurrentDamage -= baseHealing;
     }
 
@@ -21,18 +25,24 @@ public sealed partial class SupermatterSystem
 
     private void ProcessDamage(Entity<SupermatterComponent> sm)
     {
-        var tempDamage = ProcessTemperatureDamage(sm);
-        var powerDamage = ProcessEnergyDamage(sm);
-        var moleDamage = ProcessMoleDamage(sm);
+        float tempDamage = ProcessTemperatureDamage(sm);
+        float powerDamage = ProcessEnergyDamage(sm);
+        float moleDamage = ProcessMoleDamage(sm);
+        float cascadeDamage = 0f;
 
-        if (tempDamage >= powerDamage && tempDamage >= moleDamage)
+        if (sm.Comp.CascadeModifier > 0)
+        {
+            sm.Comp.DamageType = SupermatterDamageType.Cascade;
+            cascadeDamage = ProcessCascadeDamage(sm);
+        }
+        else if (tempDamage >= powerDamage && tempDamage >= moleDamage)
             sm.Comp.DamageType = SupermatterDamageType.Heat;
         else if (powerDamage >= moleDamage)
             sm.Comp.DamageType = SupermatterDamageType.Energy;
         else
             sm.Comp.DamageType = SupermatterDamageType.Mole;
 
-        var totalDamage = tempDamage + powerDamage + moleDamage;
+        var totalDamage = tempDamage + powerDamage + moleDamage + cascadeDamage;
         if (totalDamage <= 0f)
         {
             ProcessHealing(sm);
@@ -52,10 +62,10 @@ public sealed partial class SupermatterSystem
         var temperature = sm.Comp.CurrentTemperature;
 
         if (temperature > sm.Comp.MaxTemperature)
-            return (temperature - sm.Comp.MaxTemperature) / 150f;
+            return (temperature - sm.Comp.MaxTemperature) / 500f;
 
         else if (temperature < sm.Comp.MinTemperature)
-            return (temperature - sm.Comp.MinTemperature) / 150f;
+            return (temperature - sm.Comp.MinTemperature) / 500f;
 
 
         return 0f;
@@ -77,7 +87,10 @@ public sealed partial class SupermatterSystem
         if (mole <= ToMuchGas)
             return 0f;
 
-        var moleDamage = (mole - ToMuchGas) / 80f;
+        var moleDamage = (mole - ToMuchGas) / 500f;
         return Math.Max(0f, moleDamage);
     }
+
+    private float ProcessCascadeDamage(Entity<SupermatterComponent> sm)
+    => sm.Comp.Integrity > 25f ? 1f : 2f;
 }

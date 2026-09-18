@@ -1,4 +1,5 @@
 using Content.Shared._Utopia.Supermatter.Components;
+using Content.Server.Anomaly;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
@@ -6,8 +7,11 @@ using System.Numerics;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
 
-public sealed partial class SupermatterSystem : EntitySystem
+public sealed partial class SupermatterSystem
 {
+    [Dependency] private AnomalySystem _anomaly = default!;
+
+
     private readonly EntProtoId EnergyAnomaly = "AnomalyElectricity";
     private readonly EntProtoId TemperatureHighAnomaly = "AnomalyPyroclastic";
     private readonly EntProtoId TemperatureLowAnomaly = "AnomalyIce";
@@ -41,6 +45,11 @@ public sealed partial class SupermatterSystem : EntitySystem
                 DeleteAnomaly(spawnedUid);
             });
         }
+    }
+
+    private void ProcessPortals(Entity<SupermatterComponent> sm)
+    {
+
     }
 
     private void DeleteAnomaly(EntityUid anomalyUid)

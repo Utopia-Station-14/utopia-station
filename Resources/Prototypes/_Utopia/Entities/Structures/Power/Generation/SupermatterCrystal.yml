@@ -83,9 +83,12 @@
     layers:
     - state: true-platform
       map: ["enum.SupermatterVisualLayers.Base"]
-      drawdepth: Mobs
+    # - state: shader
+    #   sprite: _Utopia/Structures/Power/Supermatter/shader.rsi
+    #   shader: shining
     - state: inactive
       map: ["enum.SupermatterVisualLayers.Crystal"]
+      shader: unshaded
     - state: glowing-stable
       shader: unshaded
       visible: false
@@ -104,6 +107,8 @@
   - type: SinguloFood
     energy: 10000
   - type: Supermatter
+    internalEnergy: 200
+    externalEnergy: 500
   - type: SupermatterEating
   - type: AtmosDevice
     requireAnchored: false
@@ -176,6 +181,33 @@
   - type: TimedDespawn
     lifetime: 1
 
+- type: entity
+  parent: SupermatterLightning
+  id: SupermatterChargedLightning
+  name: supermatter arc
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: PointLight
+    enabled: true
+    color: "#fbffe8"
+    radius: 3.5
+    softness: 1
+    autoRot: true
+    castShadows: false
+
+- type: entity
+  parent: SupermatterLightning
+  id: SupermatterSuperLightning
+  name: supermatter arc
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: PointLight
+    enabled: true
+    color: "#cff1ff"
+    radius: 3.5
+    softness: 1
+    autoRot: true
+    castShadows: false
 ## Portals
 # - type: entity
 #   id: _UtopiaSupermatterHLRift
@@ -266,3 +298,128 @@
 #   - type: EmitSoundOnSpawn
 #     sound:
 #       path: /Audio/Weapons/Guns/Gunshots/rocket_launcher.ogg
+
+- type: entity
+  parent: [ BaseComputerAiAccess, BaseEngineeringContraband ]
+  id: SupermatterConsole
+  name: supermatter monitoring console
+  description: Used to monitor supermatter crystals.
+  components:
+    - type: Computer
+      board: SpaceVillainArcadeComputerCircuitboard
+    - type: Sprite
+      layers:
+        - map: ["computerLayerBody"]
+          state: computer
+        - map: ["computerLayerKeyboard"]
+          state: generic_keyboard
+        - map: ["computerLayerScreen"]
+          state: alert-0
+        - map: ["computerLayerKeys"]
+          state: atmos_key
+        - map: ["enum.WiresVisualLayers.MaintenancePanel"]
+          state: generic_panel_open
+    - type: GenericVisualizer
+      visuals:
+        enum.ComputerVisuals.Powered:
+          computerLayerScreen:
+            True: { visible: true, shader: unshaded }
+            False: { visible: false }
+          computerLayerKeys:
+            True: { visible: true, shader: unshaded }
+            False: { visible: true, shader: shaded }
+    - type: SupermatterConsole
+    - type: ActivatableUI
+      key: enum.SupermatterConsoleUiKey.Key
+    - type: UserInterface
+      interfaces:
+          enum.SupermatterConsoleUiKey.Key:
+              type: SupermatterConsoleBoundUserInterface
+          enum.WiresUiKey.Key:
+            type: WiresBoundUserInterface
+
+# - type: entity
+#   id: BaseSupermatterKudzu
+#   abstract: true
+#   placement:
+#     mode: SnapgridCenter
+#     snap:
+#       - Center
+#   components:
+#     - type: Appearance
+#     - type: Transform
+#       anchored: true
+#     - type: Physics
+#     - type: SupermatterKudzu
+#     - type: GrowingKudzu
+#     - type: ActiveEdgeSpreader
+#     - type: EdgeSpreader
+#       id: Puddle
+
+# - type: entity
+#   id: SupermatterKudzu
+#   name: tendons
+#   parent: BaseSupermatterKudzu
+#   description: A rapidly growing cluster of meaty tendons. WHY ARE YOU STOPPING TO LOOK AT IT?!
+#   placement:
+#     mode: SnapgridCenter
+#     snap:
+#       - Center
+#   components:
+#     - type: Sprite
+#       sprite: _Utopia/Objects/Misc/supermatter_kudzu.rsi
+#       state: kudzu_11
+#       drawdepth: Overdoors
+#     - type: KudzuVisuals
+#     - type: Fixtures
+#       fixtures:
+#         fix1:
+#           hard: false
+#           density: 7
+#           shape:
+#             !type:PhysShapeAabb
+#             bounds: "-0.5,-0.5,0.5,0.5"
+#           layer:
+#           - MidImpassable
+#     - type: RadiationSource
+#       intensity: 2
+#     - type: SupermatterEating
+#     - type: Edible # что нахуй
+#       delay: 0.5
+#     - type: SolutionContainerManager # TODO: Когда-нибудь в будущем сделать собственный реагент для суперматтер.
+#       solutions:
+#         food:
+#           reagents:
+#           - ReagentId: Radium
+#             Quantity: 50
+
+- type: edgeSpreader
+  id: SupermatterGrowth
+  updatesPerSecond: 16
+  preventSpreadOnSpaced: false
+
+- type: entity
+  id: SupermatterBlob
+  components:
+  - type: Sprite
+    sprite: _Utopia/Objects/Misc/supermatter_kudzu.rsi
+    state: kudzu_11
+    drawdepth: Mobs
+  - type: Appearance
+  - type: Transform
+    anchored: true
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        hard: false
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        layer:
+        - MidImpassable
+  - type: ActiveEdgeSpreader
+  - type: SupermatterEating
+  - type: SupermatterSpreader
+  - type: EdgeSpreader
+    id: MetalFoam

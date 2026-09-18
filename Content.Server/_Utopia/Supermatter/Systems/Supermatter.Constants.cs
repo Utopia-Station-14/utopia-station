@@ -1,5 +1,7 @@
 namespace Content.Server._Utopia.Supermatter.Systems;
 
+using Content.Shared._Utopia.Supermatter;
+
 public sealed partial class SupermatterSystem
 {
     private const float MaxIntegrity = 100f;
@@ -18,11 +20,15 @@ public sealed partial class SupermatterSystem
     #endregion
 
 
+    #region Radiation
+    private const float RadiationOutput = 0.002f;
+    #endregion
+
     #region Lightning
     private const float DelayedLightningChance = 0.3f;
     private const float MinDelaySeconds = 2f;
     private const float MaxDelaySeconds = 4f;
-    private const float MinCooldownSeconds = 10;
+    private const float MinCooldownSeconds = 10f;
     private const float MaxCooldownSeconds = 15f;
     private const float MaxLightningRange = 10f;
     private const float MinLightningRange = 3f;
@@ -33,9 +39,10 @@ public sealed partial class SupermatterSystem
 
     #region Gases
     private const float ToMuchGas = 1800f;
-    private const float MaxOxygenWaste = 0.8f;
-    private const float MinOxygenWaste = 0.2f;
+    private const float MinOxygenWaste = 0.02f;
+    private const float MaxOxygenWaste = 0.08f;
     private const float MaxPhoronWaste = 0.2f;
+    private const float WasteGasHeatingConstant = 10f;
     #endregion
 
 

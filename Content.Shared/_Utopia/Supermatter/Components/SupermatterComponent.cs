@@ -35,6 +35,12 @@ public sealed partial class SupermatterComponent : Component
     /// </summary>
     [DataField]
     public float CurrentTemperature;
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DataField]
+    public int HzKakNazvatInside = 0;
     #endregion
 
 
@@ -52,19 +58,29 @@ public sealed partial class SupermatterComponent : Component
     public float ExternalEnergy = 0f;
 
     /// <summary>
-    /// Коэффициент передачи энергии между внутренней и внешней средой (0.0 - 1.0).
-    /// </summary>
-    [DataField] public float EnergyTransmissionModifier = 0.1f;
-
-    /// <summary>
     /// Коэффициент рассеивания/редукции энергии при нагреве газов и молниях.
     /// </summary>
-    [DataField] public float EnergyReductionModifier = 0.05f;
+    [DataField]
+    public float EnergyReductionModifier = 0.05f;
 
     /// <summary>
     /// Целевое соотношение External / Internal (например, 2.0).
     /// </summary>
-    [DataField] public float TargetEnergyRatio = 2.0f;
+    [DataField]
+    public float TargetEnergyRatio = 2.0f;
+    #endregion
+
+
+    #region Lightning
+    [DataField]
+    public float LightningCooldownModifier = 0f;
+
+    [DataField]
+    public int LightningCountModifier = 0;
+
+    [DataField]
+    public float LightningRangeModifier = 0f;
+
     #endregion
 
 
@@ -144,7 +160,7 @@ public sealed partial class SupermatterComponent : Component
     public float ArchivedDamage;
 
     [DataField]
-    public float HealingModificator = 1f;
+    public float HealingModifier = 1f;
     #endregion
 
 
@@ -166,44 +182,44 @@ public sealed partial class SupermatterComponent : Component
     #endregion
 
 
-    #region Modificators
+    #region Modifiers
     [DataField]
-    public float BaseModificator = 1f; // TODO: по возможности убрать?
+    public float BaseModifier = 1f; // TODO: по возможности убрать?
 
-    public float RadiationModificator = 1;
+    public float RadiationModifier = 1;
 
     /// <summary>
     /// Переменная отвечающая за скорость применения модификаторов кристалла.
     /// </summary>
     [DataField]
-    public float ModificatorDecayRate = 0.05f;
+    public float ModifierDecayRate = 0.05f;
 
     /// <summary>
     /// Модификатор нагревания отходных газов кристалла Суперматерии.
     /// </summary>
     [DataField]
-    public float TemperatureScaleModificator;
+    public float TemperatureScaleModifier = 1f;
 
     /// <summary>
     /// Модификатор, участвующий в рассчётах максимальной температуры, <seealso cref="MaxTemperature"/>
     /// </summary>
     [DataField]
-    public float TemperatureProtectionModificator;
+    public float TemperatureProtectionModifier = 1f;
 
     /// <summary>
     /// Модификатор, участвующий в рассчёте набора энергии кристаллом Суперматерии <seealso cref="TotalEnergy"/>.
     /// </summary>
     [DataField]
-    public float EnergyScaleModificator;
+    public float EnergyScaleModifier = 1f;
 
     /// <summary>
     /// Модификатор, участвующий в рассчёте кол-ва молей отходов кристалла Суперматерии <seealso cref="WasteGas"/>
     /// </summary>
     [DataField]
-    public float WasteOutputModificator;
+    public float WasteOutputModifier = 1f;
 
     [DataField]
-    public float CascadeModificator = 0f;
+    public float CascadeModifier = 0f;
     #endregion
 }
 

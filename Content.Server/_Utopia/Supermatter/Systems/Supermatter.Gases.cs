@@ -8,8 +8,6 @@ namespace Content.Server._Utopia.Supermatter.Systems;
 
 public sealed partial class SupermatterSystem
 {
-    private const float WasteGasHeatingConstant = 1.5f;
-
     private GasMixture CollectGases(Entity<SupermatterComponent> sm)
     {
         var result = new GasMixture();
@@ -56,17 +54,12 @@ public sealed partial class SupermatterSystem
         if (tileMixture != null)
         {
             _atmosphere.Merge(tileMixture, wastes);
-            if (power > 0)
-            {
-                var heatCapacity = _atmosphere.GetHeatCapacity(tileMixture, true);
-                var temp = power / heatCapacity;
 
-                if (heatCapacity > 0)
-                {
-                    tileMixture.Temperature += MathF.Max(tileMixture.Temperature + temp, Atmospherics.TCMB);
-                    ChangeInternalEnergy(sm, -temp);
-                }
-            }
+            var heatCapacity = _atmosphere.GetHeatCapacity(tileMixture, true);
+            var temp = power / heatCapacity;
+
+            tileMixture.Temperature = MathF.Max(tileMixture.Temperature + temp, Atmospherics.TCMB);
+            ProcessGasWasteEnergy(sm, temp);
         }
     }
 
@@ -107,11 +100,11 @@ public sealed partial class SupermatterSystem
 
     private GasMixture ModifyWasteGas(Entity<SupermatterComponent> sm, GasMixture wastes, float power)
     {
-        var heatModifier = WasteGasHeatingConstant * sm.Comp.TemperatureScaleModificator;
+        var heatModifier = WasteGasHeatingConstant * sm.Comp.TemperatureScaleModifier;
         if (power > 0)
         {
-            var plasmaGen = MathF.Max(power * heatModifier * 1f, 0f); // sm.Comp.PlasmaReleaseModifier
-            var oxygenGen = MathF.Max((power + wastes.Temperature * heatModifier - Atmospherics.T0C) * 1f, 0f); //sm.Comp.OxygenReleaseEfficiencyModifier
+            var plasmaGen = Math.Clamp(power > 0 ? 0.1f : 0f, 0f, 0.1f);
+            var oxygenGen = Math.Clamp(power > 0 ? 0.1f : 0f, 0f, 0.1f);
 
             wastes.SetMoles(Gas.Plasma, wastes.GetMoles(Gas.Plasma) + plasmaGen);
             wastes.SetMoles(Gas.Oxygen, wastes.GetMoles(Gas.Oxygen) + oxygenGen);
@@ -120,15 +113,15 @@ public sealed partial class SupermatterSystem
         wastes.Temperature = MathF.Max(wastes.Temperature + heatModifier, Atmospherics.TCMB);
         return wastes;
     }
-
     public void ProcessGases(Entity<SupermatterComponent> sm, float frameTime)
     {
         sm.Comp.AtmosGas = CollectGases(sm);
         var totalMoles = sm.Comp.AtmosGas.TotalMoles;
+        var temp = sm.Comp.AtmosGas.Temperature;
 
         if (totalMoles <= Atmospherics.GasMinMoles)
         {
-            DecayModificators(sm.Comp, frameTime);
+            DecayModifiers(sm.Comp, frameTime);
             return;
         }
 
@@ -148,16 +141,16 @@ public sealed partial class SupermatterSystem
 
             knownGasRatioSum += ratio;
             targetMods += new Vector4(
-                data.TemperatureScaleModificator,
-                data.TemperatureProtectionModificator,
-                data.EnergyScaleModificator,
-                data.WasteOutputModificator
+                data.TemperatureScaleModifier,
+                data.TemperatureProtectionModifier,
+                data.EnergyScaleModifier,
+                data.WasteOutputModifier
             ) * ratio;
         }
 
         var unknownRatio = MathF.Max(0f, 1f - knownGasRatioSum);
         if (unknownRatio > 0f)
-            targetMods += Vector4.One * (sm.Comp.BaseModificator * unknownRatio);
+            targetMods += Vector4.One * (sm.Comp.BaseModifier * unknownRatio);
 
         foreach (var reaction in _reactionsCache)
         {
@@ -170,13 +163,13 @@ public sealed partial class SupermatterSystem
             RaiseLocalEvent(sm, ref ev);
 
             var effectArgs = new SupermatterGasReactionEffectArgs(sm, sm.Comp.AtmosGas, frameTime, totalMoles, EntityManager);
+
             foreach (var effect in reaction.Effects)
-            {
                 effect.Effect(effectArgs);
-            }
         }
 
-        ApplyModifiersLerp(sm.Comp, targetMods, sm.Comp.ModificatorDecayRate * frameTime);
+        ProcessGasEnergy(sm, temp, frameTime);
+        ApplyModifiersLerp(sm.Comp, targetMods, sm.Comp.ModifierDecayRate * frameTime);
         ThrowUp(sm);
     }
 
@@ -196,27 +189,5 @@ public sealed partial class SupermatterSystem
         }
 
         return true;
-    }
-
-    private static void DecayModificators(SupermatterComponent comp, float frameTime)
-    {
-        ApplyModifiersLerp(comp, Vector4.One * comp.BaseModificator, comp.ModificatorDecayRate * frameTime);
-    }
-
-    private static void ApplyModifiersLerp(SupermatterComponent comp, Vector4 target, float rate)
-    {
-        var step = MathF.Max(0f, MathF.Min(rate, 1f));
-
-        comp.TemperatureScaleModificator = MathHelper.CloseTo(comp.TemperatureScaleModificator, target.X, 0.001f)
-            ? target.X : MathHelper.Lerp(comp.TemperatureScaleModificator, target.X, step);
-
-        comp.TemperatureProtectionModificator = MathHelper.CloseTo(comp.TemperatureProtectionModificator, target.Y, 0.001f)
-            ? target.Y : MathHelper.Lerp(comp.TemperatureProtectionModificator, target.Y, step);
-
-        comp.EnergyScaleModificator = MathHelper.CloseTo(comp.EnergyScaleModificator, target.Z, 0.001f)
-            ? target.Z : MathHelper.Lerp(comp.EnergyScaleModificator, target.Z, step);
-
-        comp.WasteOutputModificator = MathHelper.CloseTo(comp.WasteOutputModificator, target.W, 0.001f)
-            ? target.W : MathHelper.Lerp(comp.WasteOutputModificator, target.W, step);
     }
 }

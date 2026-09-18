@@ -31,6 +31,32 @@ public sealed partial class EmitterComponent : Component
     [DataField, AutoNetworkedField]
     public EntProtoId BoltType = "EmitterBolt";
 
+    // Utopia-Tweak : Supermatter
+    /// <summary>
+    /// The entity that is spawned when the emitter fires.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public EntProtoId CurrentBoltType = "EmitterBolt";
+
+    /// <summary>
+    /// The entity that is spawned when the emitter fires.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public EntProtoId SecondBoltType = "SecondEmitterBolt";
+
+    /// <summary>
+    /// The entity that is spawned when the emitter fires.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public EntProtoId ThirdBoltType = "ThirdEmitterBolt";
+
+    /// <summary>
+    /// The entity that is spawned when the emitter fires.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public EntProtoId FourthBoltType = "FourthEmitterBolt";
+    // Utopia-Tweak : Supermatter
+
     [DataField]
     public List<EntProtoId> SelectableTypes = new();
 
@@ -169,6 +195,9 @@ public sealed partial class EmitterComponent : Component
     /// </summary>
     [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
     public string MachinePartFireRate = "Laser";
+
+    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
+    public string MachinePartEnergyRate = "MatterBin";
     // Utopia-Tweak : Machine Parts
 }
 

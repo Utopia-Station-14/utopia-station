@@ -9,7 +9,7 @@ public sealed partial class SupermatterConsumeGasEffect : SupermatterGasReaction
     public Gas Gas;
 
     [DataField]
-    public float AbsorbRatePerSecond = 0.05f;
+    public float AbsorbRatePerSecond = 0.1f;
 
     [DataField]
     public float EnergyPerMole;

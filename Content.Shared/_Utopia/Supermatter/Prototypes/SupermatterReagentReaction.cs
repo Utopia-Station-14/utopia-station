@@ -3,7 +3,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Utopia.Supermatter.Prototypes;
 
-[Prototype("supermatterReagentReaction")]
+[Prototype]
 public sealed partial class SupermatterReagentReactionPrototype : IPrototype
 {
     [IdDataField]

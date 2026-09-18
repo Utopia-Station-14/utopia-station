@@ -3,6 +3,9 @@ using Content.Shared._Utopia.Supermatter.Components;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
 
+/// <summary>
+/// Обработка радиации СМа.
+/// </summary>
 public sealed partial class SupermatterSystem
 {
     public void ProcessRadiation(Entity<SupermatterComponent> sm, float frameTime)
@@ -10,24 +13,27 @@ public sealed partial class SupermatterSystem
         if (!TryComp<RadiationSourceComponent>(sm, out var rad))
             return;
 
-        var power = (sm.Comp.ExternalEnergy * sm.Comp.RadiationModificator);
-        var targetIntensity = rad.Intensity + power;
+        // Интенсивность радиации равна внешней энергии СМа и парочке модификаторов, покрытыми RadiationOutput.
+        var power = (sm.Comp.ExternalEnergy * sm.Comp.RadiationModifier + GetIntegrityModifier(sm)) * RadiationOutput;
 
-        var lerpFactor = 1f - MathF.Exp(-sm.Comp.ModificatorDecayRate * frameTime);
+        var lerpFactor = 1f - MathF.Exp(-sm.Comp.ModifierDecayRate * frameTime);
+        var intensity = MathHelper.Lerp(rad.Intensity, power, lerpFactor);
 
-        var intensity = MathHelper.Lerp(rad.Intensity, targetIntensity, lerpFactor);
-        var slope = GetRadiationSlope(intensity);
+        ProcessRadiationEnergy(sm, power * frameTime); // Забираем энергию за радиоактивность.
 
         if (MathHelper.CloseTo(rad.Intensity, intensity, 0.01f))
             return;
 
         rad.Intensity = intensity;
-        rad.Slope = MathHelper.Lerp(rad.Slope, slope, lerpFactor);
+        rad.Slope = MathHelper.Lerp(rad.Slope, GetRadiationSlope(intensity), lerpFactor);
 
-        ConsumeInternalEnergy(sm, power);
+        sm.Comp.Radiation = rad.Intensity;
     }
 
-    private float GetRadiationSlope(float intensity)
+    /// <summary>
+    /// TODO: Сделать метод более полезным?
+    /// </summary>
+    private static float GetRadiationSlope(float intensity)
     {
         return intensity switch
         {
