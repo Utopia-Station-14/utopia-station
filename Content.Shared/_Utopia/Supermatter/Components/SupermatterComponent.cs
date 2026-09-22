@@ -179,6 +179,9 @@ public sealed partial class SupermatterComponent : Component
 
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan DelaminationEndTime;
+
+    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    public TimeSpan AccentLastTime;
     #endregion
 
 

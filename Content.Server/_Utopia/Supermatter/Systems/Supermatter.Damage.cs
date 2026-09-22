@@ -1,4 +1,4 @@
-using System.Diagnostics;
+using Content.Server._Utopia.Supermatter.Consoles;
 using Content.Shared._Utopia.Supermatter.Components;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
@@ -21,6 +21,9 @@ public sealed partial class SupermatterSystem
 
         sm.Comp.Integrity = integrity;
         sm.Comp.Status = GetStatusType(sm);
+
+        var console = EntityManager.System<SupermatterConsoleSystem>();
+        console.PlayAudio(sm.Comp.Status);
     }
 
     private void ProcessDamage(Entity<SupermatterComponent> sm)

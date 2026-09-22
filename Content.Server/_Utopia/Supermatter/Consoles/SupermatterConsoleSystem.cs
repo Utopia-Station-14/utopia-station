@@ -1,4 +1,8 @@
 using Content.Shared._Utopia.Supermatter.Components;
+using Content.Shared._Utopia.Supermatter.Components;
+using Robust.Shared.Audio.Systems;
+using Content.Server._Utopia.Audio.Systems;
+using Robust.Shared.Audio;
 using Robust.Server.GameObjects;
 
 namespace Content.Server._Utopia.Supermatter.Consoles;
@@ -30,6 +34,14 @@ public sealed partial class SupermatterConsoleSystem : EntitySystem
 
             UpdateUI(uid, console);
         }
+    }
+
+    public void PlayAudio(SupermatterStatus status)
+    {
+        var sound = status switch
+        {
+            SupermatterStatus.Warning =>
+        };
     }
 
     private void OnUiOpened(Entity<SupermatterConsoleComponent> ent, ref BoundUIOpenedEvent args)

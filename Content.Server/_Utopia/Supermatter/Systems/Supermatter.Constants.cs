@@ -1,6 +1,7 @@
-namespace Content.Server._Utopia.Supermatter.Systems;
-
 using Content.Shared._Utopia.Supermatter;
+using Robust.Shared.Audio;
+
+namespace Content.Server._Utopia.Supermatter.Systems;
 
 public sealed partial class SupermatterSystem
 {
@@ -45,6 +46,12 @@ public sealed partial class SupermatterSystem
     private const float WasteGasHeatingConstant = 10f;
     #endregion
 
+
+    #region Audio
+    public float AccentMinCooldown = 2f;
+    public SoundSpecifier CalmAccent = new SoundCollectionSpecifier("SupermatterAccentNormal");
+    public SoundSpecifier DelamAccent = new SoundCollectionSpecifier("SupermatterAccentDelam");
+    #endregion
 
     #region Damage
     private const float BaseHealingPerTick = 0.1f;

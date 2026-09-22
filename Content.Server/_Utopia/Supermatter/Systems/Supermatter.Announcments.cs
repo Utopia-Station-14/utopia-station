@@ -4,6 +4,7 @@ using Content.Shared.Radio;
 using Content.Shared.Chat;
 using Robust.Shared.Prototypes;
 using Content.Server.Radio.EntitySystems;
+using Content.Server.Construction.Completions;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
 
@@ -98,6 +99,14 @@ public sealed partial class SupermatterSystem
         text += Loc.GetString("supermatter-seconds-before-delam", ("time", secondsLeft));
         _alert.SetLevel(sm, alertLevel, true, true, true, false);
         SendAnnouncement(sm, text, GetColor(sm, delaminationType));
+    }
+
+
+    private void HandleCountdown(Entity<SupermatterComponent> sm)
+    {
+        string text;
+        SendMessage(sm, text);
+        PlayAudio(sm, sound, false, false)
     }
 
     public ProtoId<RadioChannelPrototype> GetRadioChannel(Entity<SupermatterComponent> sm)

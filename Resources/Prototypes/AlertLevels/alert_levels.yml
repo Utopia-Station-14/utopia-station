@@ -70,3 +70,17 @@
       emergencyLightColor: DarkViolet
       forceEnableEmergencyLights: true
       shuttleTime: 1200
+    ## Utopia-Tweak : Supermatter
+    cascade:
+      announcement: alert-level-epsilon-announcement
+      selectable: false
+      sound:
+        path: /Audio/Misc/epsilon.ogg
+        params:
+          volume: -2
+      disableSelection: true
+      color: DarkViolet
+      emergencyLightColor: DarkViolet
+      forceEnableEmergencyLights: true
+      shuttleTime: 1200
+    ## Utopia-Tweak : Supermatter

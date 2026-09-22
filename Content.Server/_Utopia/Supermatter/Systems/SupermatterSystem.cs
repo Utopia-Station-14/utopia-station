@@ -128,7 +128,7 @@ public sealed partial class SupermatterSystem : EntitySystem
             return;
 
         ProcessGases(sm, args.dt);
-        // ProcessReagents(sm, args.dt);
+        ProcessReagents(sm, args.dt);
         ProcessEnergy(sm, args.dt);
         ProcessRadiation(sm, args.dt);
         ProcessLightning(sm);

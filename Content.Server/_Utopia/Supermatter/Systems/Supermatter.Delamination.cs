@@ -5,9 +5,9 @@ using Robust.Shared.Prototypes;
 using Content.Shared.Explosion.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
+using Content.Server.Station.Systems;
 using Content.Shared.Damage.Systems;
 using Robust.Shared.Player;
-using Content.Server._Utopia.Audio.Systems;
 using Robust.Shared.Audio;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
@@ -15,17 +15,20 @@ namespace Content.Server._Utopia.Supermatter.Systems;
 public sealed partial class SupermatterSystem
 {
     [Dependency] private SharedExplosionSystem _explosionSystem = default!;
+    [Dependency] private StationSystem _station = default!;
     [Dependency] private DamageableSystem _damageable = default!;
-    [Dependency] private NowPlayingServerSystem _nowPlay = default!;
+
+    private EntProtoId SingularityPrototype = "Singularity";
+    private EntProtoId TeslaPrototype = "TeslaEnergyBall";
+    private EntProtoId SupermatterKudzu = "SupermatterKudzu";
+    private const string SupermatterHzKakNazvat = "SupermatterHzKakNazvat";
+
 
     private SoundSpecifier CascadeMusic = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/thecascade.ogg");
     private static readonly ProtoId<DamageTypePrototype> RadiationDamageType = "Radiation";
-    private EntProtoId SupermatterKudzu = "SupermatterKudzu";
-    private const string SupermatterHzKakNazvat = "SupermatterHzKakNazvat";
     private const float MusicRadius = 150f;
     private float TimerModificator = 1f;
-    private EntProtoId SingularityPrototype = "Singularity";
-    private EntProtoId TeslaPrototype = "TeslaEnergyBall";
+
 
     public void SwitchDelamination(Entity<SupermatterComponent> sm)
     {
@@ -54,6 +57,9 @@ public sealed partial class SupermatterSystem
                 return;
             }
 
+            // if (sm.Comp.DelaminationEndTime <= 5)
+            //     HandleCountdown(sm);
+
             if (_timing.CurTime >= sm.Comp.DelaminationEndTime)
                 ExecuteDelamination(sm);
 
@@ -80,19 +86,28 @@ public sealed partial class SupermatterSystem
     private void ExecuteDelamination(Entity<SupermatterComponent> sm)
     {
         var coords = Transform(sm).Coordinates;
+        var station = _station.GetOwningStation(sm);
+        if (station == null)
+        {
+            ProcessExplosion(sm, coords);
+            return;
+        }
+
+        EntityUid stationId = (EntityUid)station;
 
         switch (sm.Comp.DelaminationType)
         {
             case DelaminationType.Cascade:
-                // ProcessCascade(sm);
+                SpawnAtPosition(SupermatterKudzu, coords);
+                _alert.SetLevel(stationId, AlertCodeCascade, true, true, true, false);
                 break;
             case DelaminationType.Singularity:
                 SpawnAtPosition(SingularityPrototype, coords);
-                _alert.SetLevel(sm, AlertCodeYellow, true, true, true, false);
+                _alert.SetLevel(stationId, AlertCodeYellow, true, true, true, false);
                 break;
             case DelaminationType.Tesla:
                 SpawnAtPosition(TeslaPrototype, coords);
-                _alert.SetLevel(sm, AlertCodeYellow, true, true, true, false);
+                _alert.SetLevel(stationId, AlertCodeYellow, true, true, true, false);
                 break;
             default:
                 ProcessExplosion(sm, coords);
@@ -121,13 +136,8 @@ public sealed partial class SupermatterSystem
         }
     }
 
-    // private void ProcessCascade(Entity<SupermatterComponent> sm)
-    // {
-    //     if (TryComp(sm, out TransformComponent? xform) && xform.GridUid is { } gridUid)
-    //     {
-    //         _anomaly.SpawnOnRandomGridLocation(gridUid, SupermatterHzKakNazvat);
-    //     }
+    private void ProcessCascade(Entity<SupermatterComponent> sm)
+    {
 
-    //     _nowPlay.NotifyNowPlaying(sm, CascadeMusic, MusicRadius);
-    // }
+    }
 }

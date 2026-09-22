@@ -175,10 +175,14 @@
 - type: supermatterReaction
   id: SmReactionNobliums
   composition:
-    HyperNoblium: 0.8
-    AntiNoblium: 0.2
+    HyperNoblium: 1
+    AntiNoblium: 1
   tolerance: 0.05
-  modifiersVector: "100, 100, 100, 100"
+  effects:
+  - !type:SupermatterCascadeEffect
+    AntiNoblium: AntiNoblium
+    HyperNoblium: HyperNoblium
+
 
 - type: supermatterReaction
   id: SmReactionSuper
