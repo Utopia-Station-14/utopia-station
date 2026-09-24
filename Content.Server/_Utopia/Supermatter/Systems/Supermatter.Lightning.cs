@@ -21,6 +21,9 @@ public sealed partial class SupermatterSystem
     {
         power *= 100f; // TODO: Это тотальное говно блять, придумать чё с этим сделать когда-то потом.
         _lightning.ShootRandomLightnings(sm, range, 1, power, GetLightningPrototype(power));
+
+        if (_random.Prob(0.1f))
+            SendMessage(sm, "It`s my PHORONA!", false); // игра для аутистов бтв
     }
 
     /// <summary>

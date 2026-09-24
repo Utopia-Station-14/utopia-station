@@ -180,8 +180,8 @@
   tolerance: 0.05
   effects:
   - !type:SupermatterCascadeEffect
-    AntiNoblium: AntiNoblium
-    HyperNoblium: HyperNoblium
+    gasFirst: AntiNoblium
+    gasSecond: HyperNoblium
 
 
 - type: supermatterReaction

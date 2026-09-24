@@ -4,13 +4,15 @@ using Content.Shared.Radio;
 using Content.Shared.Chat;
 using Robust.Shared.Prototypes;
 using Content.Server.Radio.EntitySystems;
-using Content.Server.Construction.Completions;
+using Content.Server.Station.Systems;
+using Robust.Shared.Audio;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
 
 public sealed partial class SupermatterSystem
 {
     [Dependency] private AlertLevelSystem _alert = default!;
+    [Dependency] private StationSystem _station = default!;
     [Dependency] private SharedChatSystem _chat = default!;
     [Dependency] private RadioSystem _radio = default!;
 
@@ -26,18 +28,34 @@ public sealed partial class SupermatterSystem
 
     private static readonly ProtoId<RadioChannelPrototype> EngiChannel = "Engineering";
     private static readonly ProtoId<RadioChannelPrototype> CommonChannel = "Common";
+    private SoundSpecifier CountdownSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/count1.ogg");
 
-    public void SendMessage(Entity<SupermatterComponent> sm, string text)
+    public void SendMessage(Entity<SupermatterComponent> sm, string text, bool radio)
     {
         _chat.TrySendInGameICMessage(sm, text, InGameICChatType.Speak, hideChat: false, checkRadioPrefix: true);
-        _radio.SendRadioMessage(sm, text, GetRadioChannel(sm), sm);
+
+        if (radio)
+            _radio.SendRadioMessage(sm, text, GetRadioChannel(sm), sm);
     }
 
     public void SendAnnouncement(Entity<SupermatterComponent> sm, string text, Color color)
     {
         var sender = Loc.GetString("supermatter-sender");
         _chat.DispatchStationAnnouncement(sm, text, sender, colorOverride: color);
+    }
 
+    public void ChangeAlertLevel(Entity<SupermatterComponent> sm, string alertLevel, bool locked)
+    {
+        var coords = Transform(sm).Coordinates;
+        var station = _station.GetOwningStation(sm);
+        if (station == null)
+        {
+            ProcessExplosion(sm, coords);
+            return;
+        }
+
+        EntityUid stationId = (EntityUid)station;
+        _alert.SetLevel(stationId, alertLevel, true, true, true, locked);
     }
 
     private void ProcessSpeaking(Entity<SupermatterComponent> sm)
@@ -72,7 +90,7 @@ public sealed partial class SupermatterSystem
         };
 
         if (text != null)
-            SendMessage(sm, text);
+            SendMessage(sm, text, true);
     }
 
     private void ProcessDelaminationAnnouncement(Entity<SupermatterComponent> sm)
@@ -94,19 +112,26 @@ public sealed partial class SupermatterSystem
 
         var remaining = sm.Comp.DelaminationEndTime - _timing.CurTime;
         var secondsLeft = Math.Max(0, remaining.TotalSeconds);
-        var alertLevel = GetAlertLevel(sm, delaminationType);
 
         text += Loc.GetString("supermatter-seconds-before-delam", ("time", secondsLeft));
-        _alert.SetLevel(sm, alertLevel, true, true, true, false);
+
+        ChangeAlertLevel(sm, GetAlertLevel(sm, delaminationType), true);
         SendAnnouncement(sm, text, GetColor(sm, delaminationType));
     }
 
-
-    private void HandleCountdown(Entity<SupermatterComponent> sm)
+    private void HandleCountdown(Entity<SupermatterComponent> sm, int seconds)
     {
-        string text;
-        SendMessage(sm, text);
-        PlayAudio(sm, sound, false, false)
+        var loc = seconds switch
+        {
+            > 5 => "supermatter-seconds-before-delam-countdown",
+            <= 5 => "supermatter-seconds-before-delam-imminent"
+        };
+
+        var message = Loc.GetString(loc, ("seconds", seconds));
+        SendMessage(sm, message, true);
+
+        if (seconds <= 5)
+            PlayAudio(sm, CountdownSound, false, false);
     }
 
     public ProtoId<RadioChannelPrototype> GetRadioChannel(Entity<SupermatterComponent> sm)

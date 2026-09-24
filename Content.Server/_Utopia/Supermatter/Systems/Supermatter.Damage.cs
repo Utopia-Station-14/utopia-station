@@ -22,8 +22,11 @@ public sealed partial class SupermatterSystem
         sm.Comp.Integrity = integrity;
         sm.Comp.Status = GetStatusType(sm);
 
-        var console = EntityManager.System<SupermatterConsoleSystem>();
-        console.PlayAudio(sm.Comp.Status);
+        var consoleSystem = EntityManager.System<SupermatterConsoleSystem>();
+        var query = EntityQueryEnumerator<SupermatterConsoleComponent>();
+
+        while (query.MoveNext(out var uid, out var console))
+            consoleSystem.PlayAudio((uid, console), sm.Comp.Status);
     }
 
     private void ProcessDamage(Entity<SupermatterComponent> sm)

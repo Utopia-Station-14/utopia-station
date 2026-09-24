@@ -100,7 +100,6 @@ public sealed partial class SupermatterSystem
         var moles = sm.Comp.AtmosGas.TotalMoles;
         var baseEnergy = temperature + moles * sm.Comp.EnergyScaleModifier * frameTime;
 
-        // Делим на EnergyReductionModifier: чем больше энергия СМ, тем МЕНЬШЕ энергии она добавляет из газов
         var reduction = MathF.Max(1f, sm.Comp.EnergyReductionModifier);
         var actualEnergy = baseEnergy / reduction;
 

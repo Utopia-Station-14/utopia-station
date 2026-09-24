@@ -5,10 +5,10 @@ namespace Content.Shared._Utopia.Supermatter.Prototypes;
 public sealed partial class SupermatterCascadeEffect : SupermatterGasReactionEffect
 {
     [DataField(required: true)]
-    public Gas AntiNoblium;
+    public Gas GasFirst;
 
     [DataField(required: true)]
-    public Gas HyperNoblium;
+    public Gas GasSecond;
 
     [DataField]
     public float MinHyperRatio = 0.35f;
@@ -20,8 +20,8 @@ public sealed partial class SupermatterCascadeEffect : SupermatterGasReactionEff
     {
         var gasMixture = args.GasMixture;
 
-        var hyperMoles = gasMixture.GetMoles(HyperNoblium);
-        var antiMoles = gasMixture.GetMoles(AntiNoblium);
+        var hyperMoles = gasMixture.GetMoles(GasFirst);
+        var antiMoles = gasMixture.GetMoles(GasSecond);
 
         var totalTargetMoles = hyperMoles + antiMoles;
         if (totalTargetMoles <= 0f)

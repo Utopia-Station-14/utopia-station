@@ -43,6 +43,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<SupermatterComponent, AtmosDeviceUpdateEvent>(OnUpdate);
         SubscribeLocalEvent<SupermatterComponent, ExaminedEvent>(RandomizeDescription);
+        // SubscribeLocalEvent<SupermatterComponent, SupermatterDoAfterEvent>(DoAfter);
     }
 
     public override void Shutdown()
@@ -99,9 +100,9 @@ public sealed partial class SupermatterSystem : EntitySystem
     public void OffOn(Entity<SupermatterComponent> sm)
     {
         if (!sm.Comp.Active)
-            SendMessage(sm, Loc.GetString("supermatter-on"));
+            SendMessage(sm, Loc.GetString("supermatter-on"), true);
         else
-            SendMessage(sm, Loc.GetString("supermatter-off"));
+            SendMessage(sm, Loc.GetString("supermatter-off"), true);
 
         sm.Comp.Active = !sm.Comp.Active;
         Dirty(sm);
@@ -127,19 +128,36 @@ public sealed partial class SupermatterSystem : EntitySystem
         if (!sm.Comp.Active)
             return;
 
+        ProcessAudio(sm);
         ProcessGases(sm, args.dt);
         ProcessReagents(sm, args.dt);
         ProcessEnergy(sm, args.dt);
         ProcessRadiation(sm, args.dt);
         ProcessLightning(sm);
-        // ProcessLight(sm);
-        // ProcessGravity(sm);
+        ProcessGravity(sm);
         ProcessDamage(sm);
         ProcessSpeaking(sm);
         ProcessAnomaly(sm);
         ProcessDelamination(sm);
         ProcessVisual(sm);
     }
+
+    // private void DoAfter(Entity<SupermatterComponent> sm, ref SupermatterDoAfterEvent args)
+    // {
+    //     if (args.Cancelled || !args.Used.HasValue)
+    //         return;
+
+    //     QueueDel(args.Used.Value);
+
+    //     var message = Loc.GetString("supermatter-announcement-setinert");
+    //     SendSupermatterAnnouncement(uid, sm, message, global: false);
+
+    //     sm.HasBeenPowered = false;
+
+    //     _radiation.SetIntensity(uid, 1);
+
+    //     _popup.PopupClient(Loc.GetString("supermatter-inert-end"), uid, args.User);
+    // }
 
     private void RandomizeDescription(Entity<SupermatterComponent> sm, ref ExaminedEvent args)
     {
@@ -166,6 +184,9 @@ public sealed partial class SupermatterSystem : EntitySystem
         if (sm.Comp.Integrity <= IntegrityForDestabilizationStatus)
             return SupermatterStatus.Destabilization;
 
+        if (sm.Comp.Integrity <= IntegrityForWarningStatus)
+            return SupermatterStatus.Warning;
+
         return SupermatterStatus.Stable;
     }
 
@@ -187,5 +208,5 @@ public sealed partial class SupermatterSystem : EntitySystem
     }
 
     private static void DecayModifiers(SupermatterComponent comp, float frameTime)
-    => ApplyModifiersLerp(comp, Vector4.One * comp.BaseModifier, comp.ModifierDecayRate * frameTime);
+        => ApplyModifiersLerp(comp, Vector4.One * comp.BaseModifier, comp.ModifierDecayRate * frameTime);
 }

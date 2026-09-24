@@ -23,7 +23,7 @@ public sealed partial class SupermatterSystem
             _audio.PlayGlobal(sound, sm);
     }
 
-    private void ProcessAudio(Entity<SupermatterComponent> sm, SoundSpecifier sound)
+    private void ProcessAudio(Entity<SupermatterComponent> sm)
     {
         HandleAccent(sm);
     }

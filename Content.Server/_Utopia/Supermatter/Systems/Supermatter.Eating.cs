@@ -11,7 +11,7 @@ using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Projectiles;
 using Content.Server._Utopia.Supermatter.Components;
-using Content.Server._Utopia.Supermatter.Systems;
+using Content.Shared.Kitchen.Components;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
 
@@ -22,8 +22,8 @@ public sealed partial class SupermatterEatingSystem : EntitySystem
     [Dependency] private SupermatterSystem _superMatter = default!;
 
     private const float MinMass = 0f;
-    private EntProtoId _collisionResultPrototype = "Ash";
-    private SoundSpecifier _collisionResultSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/supermatter.ogg");
+    private EntProtoId CollisionResultPrototype = "Ash";
+    private SoundSpecifier CollisionResultSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/supermatter.ogg");
 
     public override void Initialize()
     {
@@ -50,12 +50,30 @@ public sealed partial class SupermatterEatingSystem : EntitySystem
     {
         var targetUid = args.Used;
         ProcessConsumption(ent, targetUid);
+
+        // if (HasComp<SharpComponent>(args.Used))
+        // {
+        //     var doAfterArgs = new DoAfterArgs(EntityManager, args.User, 15f, new SupermatterCoreDoAfterEvent(), args.Target)
+        //     {
+        //         BreakOnDamage = true,
+        //         BreakOnHandChange = false,
+        //         BreakOnWeightlessMove = false,
+        //         NeedHand = true,
+        //         RequireCanInteract = true,
+        //         Used = args.Used,
+        //     };
+        //     _doAfter.TryStartDoAfter(doAfterArgs);
+        //     _popup.PopupClient(Loc.GetString("supermatter-inert-begin"), uid, args.User);
+        // }
     }
 
     private void ProcessConsumption(Entity<SupermatterEatingComponent> eater, EntityUid targetUid)
     {
         var entityEnergy = GetEntityMass(targetUid);
         var entityReagents = GetEntityReagents(targetUid);
+
+        if (HasComp<SupermatterProtectionComponent>(targetUid) || HasComp<GodmodeComponent>(targetUid))
+            return;
 
         if (entityEnergy <= MinMass)
             return;
@@ -74,9 +92,11 @@ public sealed partial class SupermatterEatingSystem : EntitySystem
             _superMatter.AddReagents(uid, matter, reagents);
         }
 
-        _audio.PlayPvs(_collisionResultSound, uid);
         if (!HasComp<ProjectileComponent>(targetEntity))
-            SpawnAtPosition(_collisionResultPrototype, Transform(targetEntity).Coordinates);
+        {
+            _audio.PlayPvs(CollisionResultSound, uid);
+            SpawnAtPosition(CollisionResultPrototype, Transform(targetEntity).Coordinates);
+        }
 
         QueueDel(targetEntity);
     }
@@ -84,9 +104,6 @@ public sealed partial class SupermatterEatingSystem : EntitySystem
     private float GetEntityMass(EntityUid uid)
     {
         var energy = 0f;
-
-        if (HasComp<SupermatterProtectionComponent>(uid) || HasComp<GodmodeComponent>(uid))
-            return energy;
 
         if (TryComp<PhysicsComponent>(uid, out var physic))
             energy += physic.Mass;

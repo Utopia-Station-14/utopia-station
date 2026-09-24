@@ -2,6 +2,7 @@ using Content.Shared.Atmos;
 using Robust.Shared.GameStates;
 using Content.Shared.Chemistry.Components;
 using Robust.Shared.Serialization;
+using Content.Shared.DoAfter;
 
 namespace Content.Shared._Utopia.Supermatter.Components;
 
@@ -40,7 +41,7 @@ public sealed partial class SupermatterComponent : Component
     ///
     /// </summary>
     [DataField]
-    public int HzKakNazvatInside = 0;
+    public int StabilizerInside = 3;
     #endregion
 
 
@@ -277,3 +278,6 @@ public enum SupermatterVisualState : byte
     Stable,
     Destabilization
 }
+
+[Serializable, NetSerializable]
+public sealed partial class SupermatterDoAfterEvent : SimpleDoAfterEvent;

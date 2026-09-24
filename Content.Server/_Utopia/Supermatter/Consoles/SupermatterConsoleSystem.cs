@@ -4,12 +4,20 @@ using Robust.Shared.Audio.Systems;
 using Content.Server._Utopia.Audio.Systems;
 using Robust.Shared.Audio;
 using Robust.Server.GameObjects;
+using Robust.Shared.Random;
 
 namespace Content.Server._Utopia.Supermatter.Consoles;
 
 public sealed partial class SupermatterConsoleSystem : EntitySystem
 {
     [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private IRobustRandom _random = default!;
+
+    private SoundSpecifier WarningSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/status/terminal_alert.ogg");
+    private SoundSpecifier DestabilizationSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/status/engine_alert1.ogg");
+    private SoundSpecifier CatastropheSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/status/engine_alert2.ogg");
+    private SoundSpecifier DelaminationSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/status/ohfuck.ogg");
 
     public override void Initialize()
     {
@@ -36,12 +44,19 @@ public sealed partial class SupermatterConsoleSystem : EntitySystem
         }
     }
 
-    public void PlayAudio(SupermatterStatus status)
+    public void PlayAudio(Entity<SupermatterConsoleComponent> ent, SupermatterStatus status)
     {
         var sound = status switch
         {
-            SupermatterStatus.Warning =>
+            SupermatterStatus.Warning => WarningSound,
+            SupermatterStatus.Destabilization => DestabilizationSound,
+            SupermatterStatus.Catastrophe => CatastropheSound,
+            SupermatterStatus.Delamination => DelaminationSound,
+            _ => null
         };
+
+        if (sound != null && _random.Prob(0.1f))
+            _audio.PlayPvs(sound, ent);
     }
 
     private void OnUiOpened(Entity<SupermatterConsoleComponent> ent, ref BoundUIOpenedEvent args)

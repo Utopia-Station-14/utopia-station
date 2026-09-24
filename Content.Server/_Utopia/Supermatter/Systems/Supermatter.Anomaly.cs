@@ -81,7 +81,7 @@ public sealed partial class SupermatterSystem
     public EntityCoordinates GetSpawnCoords(Entity<SupermatterComponent> sm)
     {
         var xform = Transform(sm);
-        var spawnRange = MinRangeAnomalySpawn + (sm.Comp.TotalEnergy / 1000f);
+        var spawnRange = MinRangeAnomalySpawn + (sm.Comp.TotalEnergy / 500f);
         var offsetX = _random.NextFloat(-spawnRange, spawnRange);
         var offsetY = _random.NextFloat(-spawnRange, spawnRange);
 
