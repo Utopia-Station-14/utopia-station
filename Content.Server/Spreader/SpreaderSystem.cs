@@ -11,6 +11,7 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
+using Content.Server._Utopia.Supermatter.Components;
 
 namespace Content.Server.Spreader;
 
@@ -27,6 +28,7 @@ public sealed partial class SpreaderSystem : EntitySystem
     [Dependency] private EntityQuery<EdgeSpreaderComponent> _edgeSpreaderQuery = default!;
     [Dependency] private EntityQuery<AirtightComponent> _airtightQuery = default!;
     [Dependency] private EntityQuery<DockingComponent> _dockingQuery = default!;
+    [Dependency] private EntityQuery<SupermatterSpreaderComponent> _smKudzuQuery = default!; // Utopia-Tweak : Supermatter
 
     /// <summary>
     /// Cached maximum number of updates per spreader prototype. This is applied per-grid.
@@ -186,6 +188,7 @@ public sealed partial class SpreaderSystem : EntitySystem
         var tile = _map.TileIndicesFor(comp.GridUid.Value, grid, comp.Coordinates);
         var blockedAtmosDirs = AtmosDirection.Invalid;
 
+        var ignoresAirtight = _smKudzuQuery.HasComponent(uid); // Utopia-Tweak : Supermatter
         // Due to docking ports they may not necessarily be opposite directions.
         var neighborTiles = new ValueList<(EntityUid entity, MapGridComponent grid, Vector2i Indices, AtmosDirection OtherDir, AtmosDirection OurDir)>();
 
@@ -209,6 +212,11 @@ public sealed partial class SpreaderSystem : EntitySystem
                     xform.LocalRotation.ToAtmosDirection(),
                     dockedXform.LocalRotation.ToAtmosDirection()));
             }
+
+            // Utopia-Tweak : Supermatter
+            if (ignoresAirtight)
+                continue;
+            // Utopia-Tweak : Supermatter
 
             // If we're on a blocked tile work out which directions we can go.
             if (!_airtightQuery.TryGetComponent(ent, out var airtight) || !airtight.AirBlocked ||
@@ -251,18 +259,21 @@ public sealed partial class SpreaderSystem : EntitySystem
             var directionEnumerator = _map.GetAnchoredEntitiesEnumerator(neighborEnt, neighborGrid, neighborPos);
             var occupied = false;
 
-            while (directionEnumerator.MoveNext(out var ent))
+            if (!ignoresAirtight) // Utopia-Tweak : Supermatter
             {
-                if (!_airtightQuery.TryGetComponent(ent, out var airtight) || !airtight.AirBlocked || _tag.HasTag(ent.Value, IgnoredTag))
+                while (directionEnumerator.MoveNext(out var ent))
                 {
-                    continue;
+                    if (!_airtightQuery.TryGetComponent(ent, out var airtight) || !airtight.AirBlocked || _tag.HasTag(ent.Value, IgnoredTag))
+                    {
+                        continue;
+                    }
+
+                    if ((airtight.AirBlockedDirection & otherAtmosDir) == 0x0)
+                        continue;
+
+                    occupied = true;
+                    break;
                 }
-
-                if ((airtight.AirBlockedDirection & otherAtmosDir) == 0x0)
-                    continue;
-
-                occupied = true;
-                break;
             }
 
             if (occupied)
