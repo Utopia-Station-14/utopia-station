@@ -24,7 +24,7 @@ public sealed partial class SupermatterSystem
 
     private SoundSpecifier CascadeMusic = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/thecascade.ogg");
     private static readonly ProtoId<DamageTypePrototype> RadiationDamageType = "Radiation";
-    private TimeSpan CountdownTimer = TimeSpan.FromSeconds(30);
+    private TimeSpan CountdownTimer = TimeSpan.FromSeconds(90);
     private const float MusicRadius = 150f;
     private float TimerModificator = 1f;
 

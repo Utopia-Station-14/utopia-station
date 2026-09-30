@@ -11,7 +11,6 @@ using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Projectiles;
 using Content.Server._Utopia.Supermatter.Components;
-using Content.Shared.Kitchen.Components;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
 
@@ -50,21 +49,6 @@ public sealed partial class SupermatterEatingSystem : EntitySystem
     {
         var targetUid = args.Used;
         ProcessConsumption(ent, targetUid);
-
-        // if (HasComp<SharpComponent>(args.Used))
-        // {
-        //     var doAfterArgs = new DoAfterArgs(EntityManager, args.User, 15f, new SupermatterCoreDoAfterEvent(), args.Target)
-        //     {
-        //         BreakOnDamage = true,
-        //         BreakOnHandChange = false,
-        //         BreakOnWeightlessMove = false,
-        //         NeedHand = true,
-        //         RequireCanInteract = true,
-        //         Used = args.Used,
-        //     };
-        //     _doAfter.TryStartDoAfter(doAfterArgs);
-        //     _popup.PopupClient(Loc.GetString("supermatter-inert-begin"), uid, args.User);
-        // }
     }
 
     private void ProcessConsumption(Entity<SupermatterEatingComponent> eater, EntityUid targetUid)

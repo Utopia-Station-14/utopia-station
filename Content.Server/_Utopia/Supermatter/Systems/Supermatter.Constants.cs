@@ -7,8 +7,10 @@ public sealed partial class SupermatterSystem
 {
     private const float MaxIntegrity = 100f;
     private const float MinIntegrity = -100f;
-    private const float SpeechCooldown = 5f;
+    private const float SpeechCooldown = 45f;
     private const float MinRadiation = 3f;
+
+    private const float DamagePerSlicing = 15f;
 
     #region Energy
     private const float MinInternalEnergy = 350f;
@@ -22,7 +24,7 @@ public sealed partial class SupermatterSystem
 
 
     #region Radiation
-    private const float RadiationOutput = 0.002f;
+    private const float RadiationOutput = 0.004f;
     #endregion
 
     #region Lightning

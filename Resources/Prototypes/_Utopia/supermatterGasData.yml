@@ -58,6 +58,7 @@
 - type: supermatterGasData
   id: SmGasDataAmmonia
   targetGas: Ammonia
+  # ewww, anyway, SM consume this shit (litteraly shit lmao)
   temperatureScaleModifier: 1.2
   temperatureProtectionModifier: 1
   energyScaleModifier: 1.2
@@ -66,6 +67,7 @@
 - type: supermatterGasData
   id: SmGasDataNitrousOxide
   targetGas: NitrousOxide
+  # fall sm asleep???
   temperatureScaleModifier: 1
   temperatureProtectionModifier: 1.2
   energyScaleModifier: 1.2
@@ -82,6 +84,7 @@
 - type: supermatterGasData
   id: SmGasDataPluoxium
   targetGas: Pluoxium
+  # add something funny to this shit
   temperatureScaleModifier: 0.6
   temperatureProtectionModifier: 1
   energyScaleModifier: 0.6
@@ -90,6 +93,7 @@
 - type: supermatterGasData
   id: SmGasDataHydrogen
   targetGas: Hydrogen
+  # coughing baby vs hydrogen bomb
   temperatureScaleModifier: 1.2
   temperatureProtectionModifier: 0.8
   energyScaleModifier: 1.2
@@ -98,6 +102,7 @@
 - type: supermatterGasData
   id: SmGasDataNitrium
   targetGas: Nitrium
+  # add something funny do this shit
   temperatureScaleModifier: 1.2
   temperatureProtectionModifier: 1
   energyScaleModifier: 1.2
@@ -123,7 +128,7 @@
 - type: supermatterGasData
   id: SmGasDataProtoNitrate
   targetGas: ProtoNitrate
-  # add rad bonus
+  # add rad bonus or goto SupermatterReaction
   temperatureScaleModifier: 1.5
   temperatureProtectionModifier: 1
   energyScaleModifier: 1.5
@@ -140,6 +145,7 @@
 - type: supermatterGasData
   id: SmGasDataHalon
   targetGas: Halon
+  # do nothing to Supermatter, soooo
   temperatureScaleModifier: 1
   temperatureProtectionModifier: 1
   energyScaleModifier: 1
@@ -148,6 +154,7 @@
 - type: supermatterGasData
   id: SmGasDataHelium
   targetGas: Helium
+  # do nothing to Supermatter, soooo
   temperatureScaleModifier: 1
   temperatureProtectionModifier: 1
   energyScaleModifier: 1
@@ -155,6 +162,7 @@
 
 - type: supermatterGasData
   id: SmGasDataAntiNoblium
+  # oh fuck oh fuck
   targetGas: AntiNoblium
   temperatureScaleModifier: 0.1
   temperatureProtectionModifier: 10
@@ -184,6 +192,7 @@
     gasSecond: HyperNoblium
 
 
+# debug
 - type: supermatterReaction
   id: SmReactionSuper
   composition:
