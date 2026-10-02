@@ -1,0 +1,277 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    Title="{Loc 'supermatter-console-menu-title'}"
+    MinSize="700 350"
+    SetSize="980 550">
+    <BoxContainer Orientation="Vertical" VerticalExpand="True">
+        <BoxContainer Orientation="Horizontal"
+                      HorizontalExpand="True"
+                      VerticalExpand="True"
+                      Margin="8 8 8 0">
+
+            <BoxContainer Orientation="Vertical"
+                          HorizontalExpand="True"
+                          VerticalExpand="True"
+                          SizeFlagsStretchRatio="3"
+                          Margin="0 0 4 0">
+                <controls:StripeBack>
+                    <Label Text="{Loc 'supermatter-console-stats-label'}"
+                           HorizontalAlignment="Center"
+                           HorizontalExpand="True"/>
+                </controls:StripeBack>
+                <PanelContainer VerticalExpand="True"
+                                StyleClasses="BackgroundPanelDark"
+                                Margin="0 5 0 0">
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+                        <Label Name="NoneSelectedLabel"
+                               Text="{Loc 'supermatter-console-no-selection'}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               VerticalExpand="True"
+                               Visible="True"/>
+                        <ScrollContainer Name="StatsScroll"
+                                         HScrollEnabled="False"
+                                         HorizontalExpand="True"
+                                         VerticalExpand="True"
+                                         Visible="False"
+                                         Margin="8">
+                            <BoxContainer Name="InfoContainer" Orientation="Vertical" HorizontalExpand="True">
+
+                                <PanelContainer>
+                                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8">
+                                        <BoxContainer HorizontalExpand="True">
+                                            <Label Text="{Loc 'supermatter-console-info-name'}"
+                                                   StyleClasses="highlight"
+                                                   HorizontalExpand="True"/>
+                                            <RichTextLabel Name="NameValueLabel" HorizontalAlignment="Right"/>
+                                        </BoxContainer>
+                                        <BoxContainer HorizontalExpand="True">
+                                            <Label Text="{Loc 'supermatter-console-info-status'}"
+                                                   StyleClasses="highlight"
+                                                   HorizontalExpand="True"/>
+                                            <RichTextLabel Name="StatusValueLabel" HorizontalAlignment="Right"/>
+                                        </BoxContainer>
+                                    </BoxContainer>
+                                </PanelContainer>
+
+                                <PanelContainer StyleClasses="LowDivider" SetHeight="2"/>
+
+                                <PanelContainer>
+                                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8">
+                                        <Label Text="{Loc 'supermatter-console-info-integrity'}"
+                                               StyleClasses="highlight"/>
+                                        <ProgressBar Name="IntegrityBar"
+                                                     MinHeight="20"
+                                                     HorizontalExpand="True">
+                                            <Label Name="IntegrityBarLabel" Margin="4 0"/>
+                                        </ProgressBar>
+                                    </BoxContainer>
+                                </PanelContainer>
+
+                                <PanelContainer StyleClasses="LowDivider" SetHeight="2"/>
+
+                                <PanelContainer>
+                                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8">
+                                        <Label Text="{Loc 'supermatter-console-info-temperature'}"
+                                               StyleClasses="highlight"/>
+                                        <ProgressBar Name="TemperatureBar"
+                                                     MinHeight="20"
+                                                     HorizontalExpand="True">
+                                            <Label Name="TemperatureBarLabel" Margin="4 0"/>
+                                        </ProgressBar>
+                                        <BoxContainer HorizontalExpand="True" Margin="0 4 0 0">
+                                            <Label Text="{Loc 'supermatter-console-info-max-temperature'}"
+                                                   StyleClasses="highlight"
+                                                   HorizontalExpand="True"/>
+                                            <RichTextLabel Name="MaxTemperatureValueLabel" HorizontalAlignment="Right"/>
+                                        </BoxContainer>
+                                        <BoxContainer HorizontalExpand="True">
+                                            <Label Text="{Loc 'supermatter-console-info-min-temperature'}"
+                                                   StyleClasses="highlight"
+                                                   HorizontalExpand="True"/>
+                                            <RichTextLabel Name="MinTemperatureValueLabel" HorizontalAlignment="Right"/>
+                                        </BoxContainer>
+                                    </BoxContainer>
+                                </PanelContainer>
+
+                                <PanelContainer StyleClasses="LowDivider" SetHeight="2"/>
+
+                                <PanelContainer>
+                                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8">
+                                        <BoxContainer HorizontalExpand="True">
+                                            <Label Text="{Loc 'supermatter-console-info-total-energy'}"
+                                                   StyleClasses="highlight"
+                                                   HorizontalExpand="True"/>
+                                            <RichTextLabel Name="TotalEnergyValueLabel" HorizontalAlignment="Right"/>
+                                        </BoxContainer>
+                                        <BoxContainer HorizontalExpand="True">
+                                            <Label Text="{Loc 'supermatter-console-info-internal-energy'}"
+                                                   StyleClasses="highlight"
+                                                   HorizontalExpand="True"/>
+                                            <RichTextLabel Name="InternalEnergyValueLabel" HorizontalAlignment="Right"/>
+                                        </BoxContainer>
+                                        <BoxContainer HorizontalExpand="True">
+                                            <Label Text="{Loc 'supermatter-console-info-external-energy'}"
+                                                   StyleClasses="highlight"
+                                                   HorizontalExpand="True"/>
+                                            <RichTextLabel Name="ExternalEnergyValueLabel" HorizontalAlignment="Right"/>
+                                        </BoxContainer>
+                                    </BoxContainer>
+                                </PanelContainer>
+
+                                <PanelContainer StyleClasses="LowDivider" SetHeight="2"/>
+
+                                <PanelContainer>
+                                    <BoxContainer HorizontalExpand="True" Margin="8">
+                                        <Label Text="{Loc 'supermatter-console-info-radiation'}"
+                                               StyleClasses="highlight"
+                                               HorizontalExpand="True"/>
+                                        <RichTextLabel Name="RadiationValueLabel" HorizontalAlignment="Right"/>
+                                    </BoxContainer>
+                                </PanelContainer>
+
+                            </BoxContainer>
+                        </ScrollContainer>
+                    </BoxContainer>
+                </PanelContainer>
+            </BoxContainer>
+
+            <PanelContainer StyleClasses="LowDivider" VerticalExpand="True" SetWidth="2"/>
+            <BoxContainer Orientation="Vertical"
+                          HorizontalExpand="True"
+                          VerticalExpand="True"
+                          SizeFlagsStretchRatio="2"
+                          MinWidth="200"
+                          MaxWidth="260"
+                          Margin="4 0">
+                <PanelContainer VerticalExpand="True"
+                                StyleClasses="BackgroundPanelDark"
+                                SizeFlagsStretchRatio="3">
+                    <SpriteView Name="SmSprite"
+                                Scale="4 4"
+                                Stretch="Fit"
+                                OverrideDirection="South"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                HorizontalExpand="True"
+                                VerticalExpand="True"
+                                Visible="False"/>
+                    <EntityPrototypeView Name="SmPrototypeView"
+                                Scale="4 4"
+                                Stretch="Fit"
+                                OverrideDirection="South"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                HorizontalExpand="True"
+                                VerticalExpand="True"
+                                Visible="False"/>
+                    <Label Name="SpritePlaceholderLabel"
+                           Text="{Loc 'supermatter-console-no-selection'}"
+                           Align="Center"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+                </PanelContainer>
+
+                <controls:StripeBack Margin="0 5 0 0">
+                    <Label Text="{Loc 'supermatter-console-list-label'}"
+                           HorizontalAlignment="Center"
+                           HorizontalExpand="True"/>
+                </controls:StripeBack>
+                <PanelContainer VerticalExpand="True"
+                                StyleClasses="BackgroundPanelDark"
+                                SizeFlagsStretchRatio="2"
+                                MinHeight="120"
+                                Margin="0 5 0 0">
+                    <ItemList Name="SupermatterList"
+                              HorizontalExpand="True"
+                              VerticalExpand="True"
+                              Margin="4"/>
+                </PanelContainer>
+            </BoxContainer>
+
+            <PanelContainer StyleClasses="LowDivider" VerticalExpand="True" SetWidth="2"/>
+            <BoxContainer Orientation="Vertical"
+                          HorizontalExpand="True"
+                          VerticalExpand="True"
+                          SizeFlagsStretchRatio="3"
+                          Margin="4 0 0 0">
+                <controls:StripeBack>
+                    <Label Text="{Loc 'supermatter-console-gas-label'}"
+                           HorizontalAlignment="Center"
+                           HorizontalExpand="True"/>
+                </controls:StripeBack>
+                <PanelContainer VerticalExpand="True"
+                                StyleClasses="BackgroundPanelDark"
+                                Margin="0 5 0 0">
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+                        <Label Name="GasNoneSelectedLabel"
+                               Text="{Loc 'supermatter-console-no-selection'}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               VerticalExpand="True"/>
+                        <ScrollContainer Name="GasScrollContainer"
+                                         HScrollEnabled="False"
+                                         HorizontalExpand="True"
+                                         VerticalExpand="True"
+                                         Visible="False"
+                                         Margin="8">
+                            <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                                <BoxContainer Name="GasContainer" Orientation="Vertical" HorizontalExpand="True"/>
+
+                                <PanelContainer StyleClasses="LowDivider" SetHeight="2" Margin="0 4 0 8"/>
+
+                                <BoxContainer Name="ModifiersContainer" Orientation="Vertical" HorizontalExpand="True">
+                                    <Label Text="{Loc 'supermatter-console-info-modifiers'}"
+                                           StyleClasses="highlight"
+                                           Margin="0 0 0 4"/>
+                                    <BoxContainer HorizontalExpand="True">
+                                        <Label Text="{Loc 'supermatter-console-info-energy-scale-modifier'}"
+                                               HorizontalExpand="True"/>
+                                        <RichTextLabel Name="EnergyScaleModifierValueLabel" HorizontalAlignment="Right"/>
+                                    </BoxContainer>
+                                    <BoxContainer HorizontalExpand="True">
+                                        <Label Text="{Loc 'supermatter-console-info-energy-reduction-modifier'}"
+                                               HorizontalExpand="True"/>
+                                        <RichTextLabel Name="EnergyReductionModifierValueLabel" HorizontalAlignment="Right"/>
+                                    </BoxContainer>
+                                    <BoxContainer HorizontalExpand="True">
+                                        <Label Text="{Loc 'supermatter-console-info-temperature-scale-modifier'}"
+                                               HorizontalExpand="True"/>
+                                        <RichTextLabel Name="TemperatureScaleModifierValueLabel" HorizontalAlignment="Right"/>
+                                    </BoxContainer>
+                                    <BoxContainer HorizontalExpand="True">
+                                        <Label Text="{Loc 'supermatter-console-info-waste-output-modifier'}"
+                                               HorizontalExpand="True"/>
+                                        <RichTextLabel Name="WasteOutputModifierLabel" HorizontalAlignment="Right"/>
+                                    </BoxContainer>
+                                    <BoxContainer HorizontalExpand="True">
+                                        <Label Text="{Loc 'supermatter-console-info-temperature-protection-modifier'}"
+                                               HorizontalExpand="True"/>
+                                        <RichTextLabel Name="TemperatureProtectionModifierValueLabel" HorizontalAlignment="Right"/>
+                                    </BoxContainer>
+                                </BoxContainer>
+                            </BoxContainer>
+                        </ScrollContainer>
+                    </BoxContainer>
+                </PanelContainer>
+            </BoxContainer>
+        </BoxContainer>
+
+        <BoxContainer Orientation="Vertical" Margin="0 8 0 0">
+            <PanelContainer StyleClasses="LowDivider"/>
+            <BoxContainer Orientation="Horizontal" Margin="10 2 5 0" VerticalAlignment="Bottom">
+                <Label Text="{Loc 'supermatter-console-window-flavor-left'}" StyleClasses="WindowFooterText"/>
+                <Label Text="{Loc 'supermatter-console-window-flavor-right'}"
+                       StyleClasses="WindowFooterText"
+                       HorizontalAlignment="Right"
+                       HorizontalExpand="True"
+                       Margin="0 0 5 0"/>
+                <TextureRect StyleClasses="NTLogoDark"
+                             Stretch="KeepAspectCentered"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Right"
+                             SetSize="19 19"/>
+            </BoxContainer>
+        </BoxContainer>
+    </BoxContainer>
+</controls:FancyWindow>
