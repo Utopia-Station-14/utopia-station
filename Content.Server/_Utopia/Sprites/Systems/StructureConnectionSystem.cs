@@ -6,8 +6,8 @@ namespace Content.Server._Utopia.Walls;
 
 public sealed partial class WallConnectSystem : EntitySystem
 {
-    [Dependency] private readonly SharedMapSystem _map = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
 
     public override void Initialize()
     {
@@ -24,11 +24,6 @@ public sealed partial class WallConnectSystem : EntitySystem
 
     private void OnTerminating(EntityUid uid, WallConnectComponent component, ref EntityTerminatingEvent args)
     {
-        // At this point the entity's own WallConnectComponent/Transform may
-        // still technically be present and anchored (component removal order
-        // means Transform is usually torn down last), so neighbours would
-        // still "see" this wall as connected if we didn't explicitly ignore
-        // it. Pass uid as the entity to ignore when recomputing neighbours.
         UpdateNeighbours(uid, ignore: uid);
     }
 
@@ -37,10 +32,6 @@ public sealed partial class WallConnectSystem : EntitySystem
         UpdateTile(uid);
         UpdateNeighbours(uid);
     }
-
-    // All 8 directions - orthogonal neighbours need updating because their own
-    // orthogonal flags changed, and diagonal neighbours need updating because
-    // their diagonal flags (ne/se/sw/nw) depend on this tile.
     private static readonly Direction[] Directions =
     {
         Direction.North,
@@ -121,26 +112,14 @@ public sealed partial class WallConnectSystem : EntitySystem
 
         var mask = CalculateMask(n, e, s, w, ne, se, sw, nw);
 
-        // Several shapes are just horizontal mirrors of each other (E-only vs
-        // W-only, N+E vs N+W, S+E vs S+W, etc). Rather than requiring art for
-        // both, we pick whichever of {mask, mirrored mask} is numerically
-        // smaller as the "canonical" state, and tell the client to flip the
-        // sprite horizontally when the real mask isn't the canonical one.
         var mirrored = MirrorMaskHorizontal(mask);
         var canonicalMask = Math.Min(mask, mirrored);
         var flip = canonicalMask != mask;
 
-        // Just store the data - the client-side visualizer decides how to
-        // turn this into an actual RSI state, since SpriteComponent/SpriteSystem
-        // only exist on the client.
         _appearance.SetData(uid, WallVisuals.ConnectMask, canonicalMask);
         _appearance.SetData(uid, WallVisuals.FlipX, flip);
     }
 
-    /// <summary>
-    /// Mirrors a connection bitmask left-right: E &lt;-&gt; W, NE &lt;-&gt; NW,
-    /// SE &lt;-&gt; SW. N and S are unaffected since they sit on the mirror axis.
-    /// </summary>
     private static int MirrorMaskHorizontal(int mask)
     {
         var n = mask & 1;

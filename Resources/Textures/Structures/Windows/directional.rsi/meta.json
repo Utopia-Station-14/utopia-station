@@ -8,7 +8,8 @@
   },
   "states": [
     {
-        "name": "window"
+        "name": "window",
+        "directions": 4
     },
     {
         "name": "reinforced_window"
@@ -23,7 +24,8 @@
         "name": "clock_window"
 	},
 	{
-        "name": "plasma_window"
+        "name": "plasma_window",
+        "directions": 4
 	},
     {
         "name": "plasma_reinforced_window"

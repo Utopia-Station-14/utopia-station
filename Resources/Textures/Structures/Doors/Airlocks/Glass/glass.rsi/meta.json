@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
-  "copyright": "RPS-eXtended & unotka DS",
+  "copyright": "M1and1B",
   "size": {
     "x": 32,
     "y": 32
@@ -40,7 +40,6 @@
       "directions": 4
     },
     {
-<<<<<<< HEAD
       "name": "closed-glass",
       "directions": 4
     },
@@ -49,8 +48,6 @@
       "directions": 4
     },
     {
-=======
->>>>>>> 779b71dfc25c9bc69ac9cd2c966eea3e39dc1daf
       "name": "closing",
       "directions": 4,
       "delays": [
@@ -79,12 +76,8 @@
       ]
     },
     {
-<<<<<<< HEAD
-      "name": "closing_panel",
-      "directions": 4,
-=======
       "name": "panel_closing",
->>>>>>> 779b71dfc25c9bc69ac9cd2c966eea3e39dc1daf
+      "directions": 4,
       "delays": [
         [0.1, 0.1, 0.07, 0.07, 0.07, 0.2, 0.2, 0.2], [0.1, 0.1, 0.07, 0.07, 0.07, 0.2, 0.2, 0.2], [0.1, 0.1, 0.07, 0.07, 0.07, 0.2, 0.2, 0.2], [0.1, 0.1, 0.07, 0.07, 0.07, 0.2, 0.2, 0.2]
       ]
@@ -140,12 +133,8 @@
       ]
     },
     {
-<<<<<<< HEAD
-      "name": "opening_panel",
-      "directions": 4,
-=======
       "name": "panel_opening",
->>>>>>> 779b71dfc25c9bc69ac9cd2c966eea3e39dc1daf
+      "directions": 4,
       "delays": [
         [0.1, 0.1, 0.07, 0.07, 0.07, 0.2, 0.2, 0.2], [0.1, 0.1, 0.07, 0.07, 0.07, 0.2, 0.2, 0.2], [0.1, 0.1, 0.07, 0.07, 0.07, 0.2, 0.2, 0.2], [0.1, 0.1, 0.07, 0.07, 0.07, 0.2, 0.2, 0.2]
       ]
