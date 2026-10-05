@@ -1,0 +1,151 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+                      Title="{Loc 'modsuit-ui-title'}"
+                      MinSize="760 400"
+                      SetSize="820 440">
+    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True">
+
+        <BoxContainer Margin="12 10 10 12" SetWidth="220" MaxWidth="220" Orientation="Vertical" VerticalExpand="True">
+            <Label Text="{Loc 'modsuit-ui-modules-header'}" StyleClasses="LabelKeyText" />
+            <customControls:HSeparator StyleClasses="HighDivider" Margin="0 5 0 8" />
+            <PanelContainer VerticalExpand="True" HorizontalExpand="True" RectClipContent="True">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#14141866"
+                                      BorderColor="#FFFFFF1A"
+                                      BorderThickness="1" />
+                </PanelContainer.PanelOverride>
+                <ScrollContainer HScrollEnabled="False" HorizontalExpand="True" VerticalExpand="True" Margin="6">
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                        <Label Name="NoModulesLabel"
+                               Text="{Loc 'modsuit-ui-no-modules'}"
+                               StyleClasses="LabelSubText"
+                               HorizontalAlignment="Center"
+                               Margin="0 12 0 0"
+                               Visible="False" />
+                        <BoxContainer Name="ModulesContainer" Orientation="Vertical" SeparationOverride="4" />
+                    </BoxContainer>
+                </ScrollContainer>
+            </PanelContainer>
+        </BoxContainer>
+
+        <customControls:VSeparator StyleClasses="LowDivider" Margin="0 6 0 6" />
+
+        <BoxContainer Margin="14 10 14 12" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+            <BoxContainer Orientation="Horizontal"
+                          HorizontalExpand="True"
+                          VerticalExpand="True"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          SeparationOverride="32">
+
+                <PanelContainer Name="SchematicPanel" MinSize="150 150" VerticalAlignment="Center">
+                    <PanelContainer.PanelOverride>
+                        <gfx:StyleBoxTexture Modulate="#1B1B1E"
+                                             PatchMarginBottom="10"
+                                             PatchMarginLeft="10"
+                                             PatchMarginRight="10"
+                                             PatchMarginTop="10" />
+                    </PanelContainer.PanelOverride>
+                    <BoxContainer HorizontalExpand="True" VerticalExpand="True" MinSize="150 150">
+                        <SpriteView Name="WearerView"
+                                    Scale="3 3"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    HorizontalExpand="True"
+                                    VerticalExpand="True"
+                                    Visible="False" />
+                        <Label Name="CoreLabel"
+                               Text="{Loc 'modsuit-ui-core-label'}"
+                               StyleClasses="LabelKeyText"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               HorizontalExpand="True" />
+                    </BoxContainer>
+                </PanelContainer>
+
+                <BoxContainer Name="PartSlots"
+                              Orientation="Vertical"
+                              SeparationOverride="8"
+                              VerticalAlignment="Center" />
+            </BoxContainer>
+
+            <Label Name="LockedLabel"
+                   StyleClasses="LabelSubText"
+                   HorizontalAlignment="Center"
+                   Margin="0 0 0 4"
+                   Visible="False" />
+            <Button Name="ToggleAllButton" HorizontalExpand="True" MinHeight="38" />
+        </BoxContainer>
+
+        <customControls:VSeparator StyleClasses="LowDivider" Margin="0 6 0 6" />
+
+        <BoxContainer Margin="10 10 12 12" SetWidth="260" MaxWidth="260" Orientation="Vertical" VerticalExpand="True">
+            <Label Text="{Loc 'modsuit-ui-stats-header'}" StyleClasses="LabelKeyText" />
+            <customControls:HSeparator StyleClasses="HighDivider" Margin="0 5 0 8" />
+
+            <ScrollContainer HScrollEnabled="False" HorizontalExpand="True" VerticalExpand="True">
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="8">
+
+                    <PanelContainer HorizontalExpand="True">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#FFFFFF0D"
+                                              BorderColor="#FFFFFF26"
+                                              BorderThickness="1"
+                                              ContentMarginLeftOverride="10"
+                                              ContentMarginRightOverride="10"
+                                              ContentMarginTopOverride="6"
+                                              ContentMarginBottomOverride="6" />
+                        </PanelContainer.PanelOverride>
+                        <BoxContainer HorizontalExpand="True">
+                            <RichTextLabel Text="{Loc 'modsuit-ui-status-label'}" HorizontalExpand="True" VerticalAlignment="Center" />
+                            <RichTextLabel Name="StatusValueLabel" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                        </BoxContainer>
+                    </PanelContainer>
+
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="4" Margin="2 4 2 0">
+                        <BoxContainer HorizontalExpand="True">
+                            <RichTextLabel Text="{Loc 'modsuit-ui-charge-label'}" HorizontalExpand="True" />
+                            <RichTextLabel Name="ChargeValueLabel" HorizontalAlignment="Right" />
+                        </BoxContainer>
+                        <ProgressBar Name="ChargeBar" SetHeight="14" MaxValue="1" Value="0" />
+                    </BoxContainer>
+
+                    <customControls:HSeparator StyleClasses="LowDivider" Margin="0 2 0 2" />
+
+                    <BoxContainer HorizontalExpand="True" Margin="2 0 2 0">
+                        <RichTextLabel Text="{Loc 'modsuit-ui-parts-label'}" HorizontalExpand="True" />
+                        <RichTextLabel Name="PartsValueLabel" HorizontalAlignment="Right" />
+                    </BoxContainer>
+
+                    <customControls:HSeparator StyleClasses="LowDivider" Margin="0 2 0 2" />
+
+                    <Label Text="{Loc 'modsuit-ui-power-header'}" StyleClasses="LabelKeyText" Margin="2 0 0 0" />
+
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="4" Margin="2 0 2 0">
+                        <BoxContainer HorizontalExpand="True">
+                            <RichTextLabel Text="{Loc 'modsuit-ui-draw-total'}" HorizontalExpand="True" />
+                            <RichTextLabel Name="TotalDrawValueLabel" HorizontalAlignment="Right" />
+                        </BoxContainer>
+
+                        <BoxContainer HorizontalExpand="True">
+                            <RichTextLabel Text="{Loc 'modsuit-ui-draw-base'}" HorizontalExpand="True" />
+                            <RichTextLabel Name="BaseDrawValueLabel" HorizontalAlignment="Right" />
+                        </BoxContainer>
+
+                        <BoxContainer HorizontalExpand="True">
+                            <RichTextLabel Text="{Loc 'modsuit-ui-draw-parts'}" HorizontalExpand="True" />
+                            <RichTextLabel Name="PartsDrawValueLabel" HorizontalAlignment="Right" />
+                        </BoxContainer>
+
+                        <BoxContainer HorizontalExpand="True">
+                            <RichTextLabel Text="{Loc 'modsuit-ui-draw-modules'}" HorizontalExpand="True" />
+                            <RichTextLabel Name="ModulesDrawValueLabel" HorizontalAlignment="Right" />
+                        </BoxContainer>
+                    </BoxContainer>
+                </BoxContainer>
+            </ScrollContainer>
+        </BoxContainer>
+    </BoxContainer>
+</controls:FancyWindow>

@@ -5,6 +5,24 @@ namespace Content.Shared.PowerCell;
 
 public sealed partial class PowerCellSystem
 {
+    // Utopia-Tweak : ModSuits
+    /// <summary>
+    /// Sets the power cell draw rate.
+    /// </summary>
+    [PublicAPI]
+    public void SetDrawRate(Entity<PowerCellDrawComponent?> ent, float drawRate)
+    {
+        if (Resolve(ent, ref ent.Comp, false) && !MathHelper.CloseTo(ent.Comp.DrawRate, drawRate))
+        {
+            ent.Comp.DrawRate = drawRate;
+            Dirty(ent, ent.Comp);
+
+            if (TryGetBatteryFromSlot(ent.Owner, out var battery))
+                _battery.RefreshChargeRate(battery.Value.AsNullable());
+        }
+    }
+    // Utopia-Tweak : ModSuits
+
     /// <summary>
     /// Enables or disables the power cell draw.
     /// </summary>

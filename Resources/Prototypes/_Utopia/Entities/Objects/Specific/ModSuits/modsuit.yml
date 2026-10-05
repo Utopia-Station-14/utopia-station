@@ -1,0 +1,39 @@
+- type: entity
+  parent: [ ClothingBackpack, PowerCellSlotSmallItem ]
+  id: ClothingBackModSuit
+  name: MOD-suit control unit
+  description: A modular exosuit control backpack. Deploy armor parts and manage modules from the built-in interface.
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/Backpacks/backpack.rsi
+    state: icon
+  - type: ModSuit
+    drawPerPart: 0.5
+    helmetPrototype: ClothingHeadHelmetHardsuitEngineering
+    bodyPrototype: ClothingOuterHardsuitEngineering
+    glovesPrototype: ClothingHandsGlovesColorYellow
+    bootsPrototype: ClothingShoesBootsMag
+  - type: PowerCellDraw
+    drawRate: 0.5
+    useRate: 0
+  - type: ContainerContainer
+    containers:
+      modsuit-parts: !type:Container
+        ents: []
+      modsuit-modules: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.ModSuitUiKey.Key:
+        type: ModSuitBoundUserInterface
+
+- type: entity
+  id: UtopiaActionToggleModSuit
+  name: Toggle MOD-suit UI
+  description: Opens the MOD-suit control interface.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Action
+    icon: Interface/Actions/open.svg.192dpi.png
+  - type: InstantAction
+    event: !type:ToggleModSuitUiEvent
