@@ -63,7 +63,7 @@ public sealed partial class SalaryConsoleSystem : EntitySystem
         if (msg.Amount <= 0)
             return;
 
-        if (!_itemSlots.TryGetSlot(ent, SalaryConsoleComponent.BudgetCardSlotId, out var slot))
+        if (!_itemSlots.TryGetSlot(ent.Owner, SalaryConsoleComponent.BudgetCardSlotId, out var slot))
             return;
 
         var cardEntity = slot.Item;
@@ -115,7 +115,7 @@ public sealed partial class SalaryConsoleSystem : EntitySystem
         Dictionary<uint, string>? listing = null;
         GeneralStationRecord? record = null;
 
-        if (!_itemSlots.TryGetSlot(ent, SalaryConsoleComponent.BudgetCardSlotId, out var slot))
+        if (!_itemSlots.TryGetSlot(ent.Owner, SalaryConsoleComponent.BudgetCardSlotId, out var slot))
             return;
 
         if (station != null && TryComp<StationRecordsComponent>(station, out var stationRecords))

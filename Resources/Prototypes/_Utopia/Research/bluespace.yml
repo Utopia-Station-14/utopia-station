@@ -69,17 +69,18 @@
   - SuperParts
 
 - type: technology
-  id: TelescienceBasics
-  name: research-technology-telescience
+  id: TeleSci
+  name: research-technology-telesci
   icon:
-    sprite: _Utopia/Structures/Machines/teleporter.rsi
-    state: icon
+    sprite: Effects/portal.rsi
+    state: portal-artifact
   discipline: Bluespace
   tier: 4
   cost: 20000
   recipeUnlocks:
-  - TelescienceComputerCircuitboard
-  - TelescienceTeleporterMachineCircuitboard
+  - StationTeleportersControlCircuitboard
+  - StationTeleporterMachineCircuitboard
+  - TeleporterChipBlank
   position: 1,0
   technologyPrerequisites:
   - BluespaceParts

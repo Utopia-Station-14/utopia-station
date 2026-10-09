@@ -12,5 +12,4 @@ research-technology-biofabrication = Биофабрикация
 research-technology-crew-monitoring = Мониторинг экипажа
 research-technology-cloning = Технология клонирования
 research-technology-bluespace-parts = Блюспейс компоненты
-research-technology-telescience = Основы Теленауки
 research-technology-washing-machine = Стиральные машины

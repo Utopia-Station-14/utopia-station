@@ -3,8 +3,8 @@ using Content.Shared.Kitchen.EntitySystems;
 using Robust.Shared.Audio;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Shared.Kitchen.Components;
 
@@ -100,14 +100,14 @@ public sealed partial class ReagentGrinderComponent : Component
     [DataField]
     public int BaseStorageMaxEntities = 4;
 
-    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
-    public string MachinePartStorageMax = "MatterBin";
+    [DataField]
+    public ProtoId<MachinePartPrototype> MachinePartStorageMax = "MatterBin";
 
     [DataField]
     public int StoragePerPartTier = 4;
 
-    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
-    public string MachinePartWorkTime = "Manipulator";
+    [DataField]
+    public ProtoId<MachinePartPrototype> MachinePartWorkTime = "Manipulator";
 
     [DataField]
     public float PartTierWorkTimerMulitplier = 0.6f;

@@ -12,6 +12,6 @@ public sealed partial class DnaSequenceInjectorComponent : Component
     [DataField]
     public bool IsMutator = false;
 
-    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
-    public string EntityEmpty = "UtopiaDNAInjectorEmpty";
+    [DataField]
+    public EntProtoId EntityEmpty = "UtopiaDNAInjectorEmpty";
 }

@@ -1,6 +1,6 @@
 using Content.Server._Utopia.Genetics.Mutations.Components;
-using Content.Server.Body.Systems;
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Mobs.Systems;
 

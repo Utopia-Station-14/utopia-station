@@ -5,10 +5,11 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Action
-      icon:
-        sprite: _Utopia/Interface/Actions/kravmaga.rsi
-        state: legsweep
       useDelay: 2
+    - type: Sprite
+      sprite: _Utopia/Interface/Actions/kravmaga.rsi
+      layers:
+      - state: legsweep
     - type: InstantAction
       event: !type:PrepareMoveEvent
         name: подсечку
@@ -27,10 +28,11 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Action
-      icon:
-        sprite: _Utopia/Interface/Actions/kravmaga.rsi
-        state: lungpunch
       useDelay: 3
+    - type: Sprite
+      sprite: _Utopia/Interface/Actions/kravmaga.rsi
+      layers:
+      - state: lungpunch
     - type: InstantAction
       event: !type:PrepareMoveEvent
         name: удар по лёгким
@@ -50,10 +52,11 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Action
-      icon:
-        sprite: _Utopia/Interface/Actions/kravmaga.rsi
-        state: neckchop
       useDelay: 2
+    - type: Sprite
+      sprite: _Utopia/Interface/Actions/kravmaga.rsi
+      layers:
+      - state: neckchop
     - type: InstantAction
       event: !type:PrepareMoveEvent
         name: отбить в горло

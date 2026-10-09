@@ -1,5 +1,4 @@
 using System.Linq;
-using Content.Server.Forensics;
 using Content.Shared._Utopia.WashingMachine;
 using Content.Shared._Utopia.Stains.Components;
 using Content.Shared._Utopia.Stains.Systems;
@@ -11,6 +10,8 @@ using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Destructible;
+using Content.Shared.Forensics.Systems;
+using Content.Shared.Forensics.Components;
 using Content.Shared.Jittering;
 using Content.Shared.Storage.Components;
 using Robust.Shared.Audio;

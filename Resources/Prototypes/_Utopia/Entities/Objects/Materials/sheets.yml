@@ -77,9 +77,6 @@
   - type: Item
     heldPrefix: lead
   - type: Appearance
-  - type: FloorTile
-    outputs:
-    - PlatingBrass
   - type: Extractable
     grindableSolutionName: steel
   - type: SolutionContainerManager

@@ -1,7 +1,7 @@
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Construction.Prototypes;
 using Content.Shared.Storage;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Medical.BiomassReclaimer
 {
@@ -87,8 +87,8 @@ namespace Content.Server.Medical.BiomassReclaimer
         /// <summary>
         /// Machine part whose tier modifies the yield per mass.
         /// </summary>
-        [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
-        public string MachinePartYieldAmount = "Manipulator";
+        [DataField]
+        public ProtoId<MachinePartPrototype> MachinePartYieldAmount = "Manipulator";
 
         /// <summary>
         /// How much the machine part quality affects the yield.
@@ -107,8 +107,8 @@ namespace Content.Server.Medical.BiomassReclaimer
         /// <summary>
         /// The machine part that increses the processing speed.
         /// </summary>
-        [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
-        public string MachinePartProcessingSpeed = "Laser";
+        [DataField]
+        public ProtoId<MachinePartPrototype> MachinePartProcessingSpeed = "Laser";
 
         /// <summary>
         /// How much the machine part quality affects the yield.

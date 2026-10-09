@@ -1,6 +1,6 @@
-ent-PlasmaWindow = плазменное окно
+ent-PlasmaWindow = фороновое окно
     .desc = { ent-BaseWindowStructure.desc }
-ent-PlasmaWindowDirectional = направленное плазменное окно
+ent-PlasmaWindowDirectional = направленное фороновое окно
     .desc = Смотри, не заляпай.
 ent-PlasmaWindowDirectionalCorner = { ent-PlasmaWindowDirectional }
     .desc = { ent-PlasmaWindowDirectional.desc }
