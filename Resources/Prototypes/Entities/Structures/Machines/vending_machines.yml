@@ -1,4 +1,4 @@
-﻿# base
+# base
 
 - type: entity
   abstract: true
@@ -893,6 +893,17 @@
     energy: 3.0
     color: "#b89e2a"
   - type: AmbientMusicMarkerEngineering
+  - type: DyeUi
+    default:
+      backgroundColor: "#c2411b"
+      borderColor: "#ff5e12"
+      lineEditTextColor: "#fffefe"
+      lineEditColor: "#c2411b"
+      textColor: "#fffefe"
+      buttonColor: "#ff5e12"
+      separatorColor: "#ff0101"
+      headerColor: "#fc0101"
+      borderThickness: 1
 
 - type: entity
   parent: VendingMachine
@@ -986,6 +997,17 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
+  - type: DyeUi
+    default:
+      backgroundColor: "#2a8c3a"
+      borderColor: "#66bf39"
+      lineEditColor: "#2a8c3a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#66bf39"
+      separatorColor: "#ff0101"
+      headerColor: "#fc0101"
+      borderThickness: 1
 
 - type: entity
   parent: VendingMachine

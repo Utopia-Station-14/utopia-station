@@ -11,7 +11,7 @@
       noRot: false
     - type: Sprite
       layers:
-        - sprite: _Utopia/Structures/Power/turbine.rsi 
+        - sprite: _Utopia/Structures/Power/turbine.rsi
           state: rotor
     - type: Anchorable
     - type: Pullable
@@ -75,9 +75,9 @@
       noRot: false
     - type: Sprite
       layers:
-        - sprite: _Utopia/Structures/Power/turbine.rsi 
+        - sprite: _Utopia/Structures/Power/turbine.rsi
           state: outlet
-        - sprite: _Utopia/Structures/Power/turbine.rsi 
+        - sprite: _Utopia/Structures/Power/turbine.rsi
           state: fan_stoped
     - type: Appearance
     - type: PointLight
@@ -117,7 +117,7 @@
       noRot: false
     - type: Sprite
       layers:
-        - sprite: _Utopia/Structures/Power/turbine.rsi 
+        - sprite: _Utopia/Structures/Power/turbine.rsi
           state: inlet
     - type: Appearance
     - type: PointLight
@@ -188,3 +188,8 @@
               type: TurbineConsoleBoundUserInterface
           enum.WiresUiKey.Key:
             type: WiresBoundUserInterface
+    - type: DyeUi
+      default:
+        backgroundColor: "#364556"
+        borderColor: "#273647"
+        borderThickness: 2
