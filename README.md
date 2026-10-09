@@ -12,7 +12,7 @@ Space Station 14 это ремейк SS13, который работает на 
 
 <div class="header">
 
-[Steam](https://store.steampowered.com/app/1255460/Space_Station_14/) | [Основной репозиторий](https://github.com/space-wizards/space-station-14)
+[Steam](https://store.steampowered.com/app/1255460/Space_Station_14/) | [Основной репозиторий](https://github.com/space-wizards/space-station-14) | [Discord](https://discord.gg/A67G7WcYZ4)
 
 </div>
 
