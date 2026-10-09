@@ -330,7 +330,7 @@
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
   - type: AmbientMusicMarkerEngineering
-  - type: UiTheme
+  - type: DyeUi
     default:
       backgroundColor: "#af5b14"
       borderColor: "#ffa256"
@@ -542,7 +542,7 @@
   components:
   - type: StationTeleporterConsole
     autoLinkKey: Nanotrasen
-  
+
 - type: entity
   parent: ComputerStationTeleportersControl
   id: ComputerSyndicateTeleportersControl
@@ -568,7 +568,7 @@
     access: [["SyndicateAgent"]]
   - type: StationTeleporterConsole
     portalColor: "#c61414"
-  
+
 - type: entity
   parent: BaseComputerAiAccess
   id: ComputerResearchAndDevelopment
@@ -619,7 +619,7 @@
   - type: GuideHelp
     guides:
     - Science
-  - type: UiTheme
+  - type: DyeUi
     default:
       backgroundColor: "#802590"
       borderColor: "#c040b5"

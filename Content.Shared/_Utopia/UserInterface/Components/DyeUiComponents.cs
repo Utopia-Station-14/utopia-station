@@ -1,21 +1,20 @@
-using Robust.Shared.GameStates;
-using Robust.Shared.Serialization.Manager.Attributes;
-
 namespace Content.Shared._Utopia.UserInterface.Components;
 
 [RegisterComponent]
-public sealed partial class UiThemeComponent : Component
+public sealed partial class DyeUiComponent : Component
 {
     [DataField]
-    public Dictionary<Enum, UiThemeEntry> Themes = new();
+    public Dictionary<Enum, DyedUiEntry> Themes = new();
 
     [DataField]
-    public UiThemeEntry? Default;
+    public DyedUiEntry? Default;
 }
 
 [DataDefinition]
-public sealed partial class UiThemeEntry
+public sealed partial class DyedUiEntry
 {
+    [DataField]
+    public float Alpha = 0.5f;
     [DataField]
     public Color? BackgroundColor;
 
@@ -60,6 +59,9 @@ public sealed partial class UiThemeEntry
 
     [DataField]
     public Color? LineEditColor;
+
+    [DataField]
+    public Color? LineEditTextColor;
 
     [DataField]
     public Color? ProgressBarFgColor;
