@@ -281,6 +281,15 @@
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
       - !type:DumpCanisterBehavior
+  - type: UiTheme
+    default:
+      backgroundColor: "#12539c"
+      borderColor: "#0c3092"
+      textColor: "#98f0ff"
+      # buttonColor: "#183c9d"
+      separatorColor: "#277bc0"
+      headerColor: "#277bc0"
+      borderThickness: 3
 
 - type: entity
   id: LiquidOxygenCanister
