@@ -16,11 +16,15 @@ public sealed partial class AtmosphereSystem
     [Dependency] private TurfSystem _turf = default!;
     [Dependency] private TransformSystem _transformSystem = default!;
 
+    private const float ZVentRatio = 1f; // TODO: remove this shit
+    private const bool GoUp = false;
+
     private sealed class ZState
     {
         public TileAtmosphere? Up;
         public TileAtmosphere? Down;
         public bool OpenAir;
+        public bool Ceiling;
     }
 
     private readonly Dictionary<TileAtmosphere, ZState> _zState = new();
@@ -46,19 +50,17 @@ public sealed partial class AtmosphereSystem
     private void ShareZLevelAtmos(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent,
         TransformComponent> ent, TileAtmosphere tile, int adjacentTileLength)
     {
-        if ((tile.AdjacentBits & AtmosDirection.Vertical) == 0 || !_zState.TryGetValue(tile, out var state))
-        {
-            if (IsOpenAirCell(tile) && tile.Air != null)
-                ShareToSpaceUp(ent.Comp1, tile, adjacentTileLength);
-
+        if (!_zState.TryGetValue(tile, out var state))
             return;
+
+        if ((tile.AdjacentBits & AtmosDirection.Vertical) != 0)
+        {
+            ShareVerticalPair(ent.Comp1, tile, AtmosDirection.Up, state.Up, adjacentTileLength);
+            ShareVerticalPair(ent.Comp1, tile, AtmosDirection.Down, state.Down, adjacentTileLength);
         }
 
-        ShareVerticalPair(ent.Comp1, tile, AtmosDirection.Up, state.Up, adjacentTileLength);
-        ShareVerticalPair(ent.Comp1, tile, AtmosDirection.Down, state.Down, adjacentTileLength);
-
-        if (state.Up == null && IsOpenAirCell(tile) && tile.Air != null)
-            ShareToSpaceUp(ent.Comp1, tile, adjacentTileLength);
+        if (state.Ceiling)
+            VentToCeiling(ent, tile, adjacentTileLength);
     }
 
     // ProcessCell: создание коннектов между Z-тайлами.
@@ -91,23 +93,86 @@ public sealed partial class AtmosphereSystem
         TransformComponent> ent, TileAtmosphere tile)
     {
         var mapUid = ent.Comp4.MapUid;
+
+        var isHole = IsHoleCell(ent.Owner, ent.Comp3, tile.GridIndices);
+        SetOpenAir(tile, isHole);
+
         if (mapUid == null || (!_zLevels.TryMapOffset(mapUid.Value, 1, out _) && !_zLevels.TryMapOffset(mapUid.Value, -1, out _)))
         {
             BreakVerticalLink(tile, AtmosDirection.Up);
             BreakVerticalLink(tile, AtmosDirection.Down);
+            SetOpenCeiling(tile, false);
             return;
         }
 
-        var below = IsOpenAirCell(tile)
-            ? FindZTile(ent.Owner, ent.Comp3, tile.GridIndices, -1)
-            : null;
-        SetVerticalLink(tile, AtmosDirection.Down, below);
+        var belowTile = FindZTile(ent.Owner, ent.Comp3, tile.GridIndices, -1);
+        SetVerticalLink(tile, AtmosDirection.Down, IsOpenAirCell(tile) ? belowTile : null);
 
         var above = FindOrCreateCellAbove(ent.Owner, ent.Comp3, tile);
         SetVerticalLink(tile, AtmosDirection.Up, above != null && IsOpenAirCell(above) ? above : null);
+        SetOpenCeiling(tile, IsCeilingOpen(ent.Owner, ent.Comp3, tile));
 
         if (above != null)
             RefreshZPeerIfStale(above);
+
+        if (belowTile != null)
+            RefreshCeilingIfStale(belowTile);
+    }
+
+    private bool IsCeilingOpen(EntityUid gridUid, MapGridComponent grid, TileAtmosphere tile)
+    {
+        if (tile.Air == null || tile.MapAtmosphere)
+            return false;
+
+        var mapUid = Transform(gridUid).MapUid;
+        if (mapUid == null)
+            return false;
+
+        if (!_zLevels.TryMapOffset(mapUid.Value, 1, out _))
+            return GoUp && _zLevels.TryMapOffset(mapUid.Value, -1, out _);
+
+        if (FindZTile(gridUid, grid, tile.GridIndices, 1) != null)
+            return false;
+
+        if (!TryGetZTarget(gridUid, grid, tile.GridIndices, 1, out var upUid, out var upGrid, out var upIndices))
+            return true;
+
+        return upGrid == null || IsHoleCell(upUid, upGrid, upIndices);
+    }
+
+    private bool HasOpenCeiling(TileAtmosphere tile)
+        => _zState.TryGetValue(tile, out var state) && state.Ceiling;
+
+    private void SetOpenCeiling(TileAtmosphere tile, bool value)
+    {
+        if (value)
+        {
+            var state = GetOrCreateState(tile);
+            if (state.Ceiling)
+                return;
+
+            state.Ceiling = true;
+            WakeTile(tile);
+            return;
+        }
+
+        if (_zState.TryGetValue(tile, out var existing) && existing.Ceiling)
+        {
+            existing.Ceiling = false;
+            CleanupState(tile, existing);
+        }
+    }
+
+    private void RefreshCeilingIfStale(TileAtmosphere peer)
+    {
+        if (!TryGetLiveGridAtmos(peer, out var peerAtmos) ||
+            !TryComp<MapGridComponent>(peer.GridIndex, out var peerGrid))
+        {
+            return;
+        }
+
+        if (IsCeilingOpen(peer.GridIndex, peerGrid, peer) != HasOpenCeiling(peer))
+            InvalidateTile((peer.GridIndex, peerAtmos), peer.GridIndices);
     }
 
     // Создаёт тайл сверху при наличии стены, чтобы сделать газообмен и помечает его на ревалидацию.
@@ -182,6 +247,8 @@ public sealed partial class AtmosphereSystem
         if (!TryGetLiveGridAtmos(other, out var otherAtmos))
         {
             BreakVerticalLink(tile, direction);
+            InvalidateTile((tile.GridIndex, gridAtmosphere), tile.GridIndices);
+
             return;
         }
 
@@ -218,35 +285,25 @@ public sealed partial class AtmosphereSystem
         ExcitedGroupAddTile(group, tile);
     }
 
-    private void ShareToSpaceUp(GridAtmosphereComponent gridAtmosphere, TileAtmosphere tile, int neighbours)
+    private void VentToCeiling(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent,
+        TransformComponent> ent, TileAtmosphere tile, int neighbours)
     {
-        if (tile.Air == null || tile.Air.TotalMoles <= 0)
+        var air = tile.Air;
+        if (air == null || air.Immutable)
             return;
 
-        if (tile.AirArchived == null)
-            Archive(tile, tile.CurrentCycle);
-
-        var movedMoles = 0f;
-        var absMovedMoles = 0f;
-
-        for (var i = 0; i < Atmospherics.TotalNumberOfGases; i++)
-        {
-            var thisValue = tile.Air.Moles[i];
-            var delta = thisValue / (neighbours + 1);
-
-            if (!(MathF.Abs(delta) >= Atmospherics.GasMinMoles))
-                continue;
-
-            tile.Air.Moles[i] -= delta;
-            movedMoles += delta;
-            absMovedMoles += MathF.Abs(delta);
-        }
-
-        if (absMovedMoles <= 0f)
+        var total = air.TotalMoles;
+        if (total <= Atmospherics.GasMinMoles)
             return;
 
-        tile.LastShare = absMovedMoles;
-        AddActiveTile(gridAtmosphere, tile);
+        var moles = total * ZVentRatio / (neighbours + 1);
+        air.Remove(moles);
+
+        AddActiveTile(ent.Comp1, tile);
+        EnsureExcitedGroup(ent.Comp1, tile);
+
+        tile.LastShare = MathF.Max(tile.LastShare, moles);
+        LastShareCheck(tile);
     }
     #endregion
 
@@ -271,7 +328,7 @@ public sealed partial class AtmosphereSystem
 
     private void CleanupState(TileAtmosphere tile, ZState state)
     {
-        if (state.Up == null && state.Down == null && !state.OpenAir)
+        if (state.Up == null && state.Down == null && !state.OpenAir && !state.Ceiling)
             _zState.Remove(tile);
     }
 
