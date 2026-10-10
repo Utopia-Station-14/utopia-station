@@ -2,6 +2,7 @@
   id: Space
   name: tiles-space
   #friction: 0  # Utopia-Tweak: без этого движение по стенам снизу будет ужасным. На космос не повлияет.
+  transparent: true #CrystallEdge
   isSubfloor: true
   isSpace: true
   sturdy: false

@@ -4,6 +4,9 @@ signal-port-description-autoclose = Переключает, должно ли у
 signal-port-name-toggle = Переключить
 signal-port-description-toggle = Переключает состояние устройства.
 
+signal-port-name-dock-toggle = Переключить стыковку
+signal-port-description-dock-toggle = Переключает стыковку, если поступил высокий уровень сигнала.
+
 signal-port-name-on-receiver = Вкл
 signal-port-description-on-receiver = Включает устройство.
 
@@ -92,3 +95,9 @@ signal-port-description-logic-enable = Входной сигнал загруж�
 
 signal-port-name-logic-random-input = Входной сигнал
 signal-port-description-logic-random-input = Получает любой сигнал для события случайного вывода.
+
+signal-port-name-target-receiver = Целевой приемник
+signal-port-description-target-receiver = Получает информацию о цели от устройства обнаружения цели.
+
+signal-port-name-target-source = Целевой отправитель
+signal-port-description-target-source = Отправляет целевую информацию целевому приемнику.

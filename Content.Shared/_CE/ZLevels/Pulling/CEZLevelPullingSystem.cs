@@ -19,12 +19,16 @@ public sealed partial class CEZLevelPullingSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private ActionBlockerSystem _actionBlocker = default!;
-    [Dependency] private EntityQuery<CEZLevelPullingTransitionComponent> _transitionQuery = default!;
-    [Dependency] private EntityQuery<CEZPhysicsComponent> _zPhysicsQuery = default!;
+
+    private EntityQuery<CEZLevelPullingTransitionComponent> _transitionQuery;
+    private EntityQuery<CEZPhysicsComponent> _zPhysicsQuery;
 
     public override void Initialize()
     {
         base.Initialize();
+
+        _transitionQuery = GetEntityQuery<CEZLevelPullingTransitionComponent>();
+        _zPhysicsQuery = GetEntityQuery<CEZPhysicsComponent>();
 
         SubscribeLocalEvent<ActivePullerComponent, CEZLevelBeforeMapMoveEvent>(OnPullerMove);
         SubscribeLocalEvent<CEZLevelPullingTransitionComponent, CEZLevelMapMoveEvent>(OnPulledEntityMove);

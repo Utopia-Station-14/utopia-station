@@ -10,7 +10,6 @@ namespace Content.Server._CE.PVS;
 public sealed partial class CEPvsOverrideSystem : EntitySystem
 {
     [Dependency] private PvsOverrideSystem _pvs = default!;
-
     public override void Initialize()
     {
         SubscribeLocalEvent<CEPvsOverrideComponent, ComponentStartup>(OnPvsStartup);

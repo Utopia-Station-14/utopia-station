@@ -10,3 +10,17 @@
       prototype: UtopiaUniversalPipeDispenser
       requirements:
         Manipulator: 4
+
+- type: entity
+  parent: BaseMachineCircuitboard
+  id: UtopiaWashingMachineCircuitboard
+  name: washing machine board
+  description: A machine printed circuit board for an washing machine.
+  components:
+  - type: MachineBoard
+    prototype: UtopiaWashingMachine
+    requirements:
+      Manipulator: 1
+    stackRequirements:
+      Steel: 1
+      Cable: 1

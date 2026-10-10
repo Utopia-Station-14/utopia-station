@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file is sublicensed under MIT License
  * https://github.com/space-wizards/space-station-14/blob/master/LICENSE.TXT
  */
@@ -36,8 +36,6 @@ public sealed partial class ScalingViewport
     /// </summary>
     public bool TryFindEmptyTiles(EntityUid mapUid)
     {
-        _mapSystem ??= _entityManager.System<SharedMapSystem>();
-
         if (_xformQuery is null || !_xformQuery.Value.TryComp(mapUid, out var xform))
             return true;
 
@@ -70,17 +68,17 @@ public sealed partial class ScalingViewport
         var mapCoordsBottomLeft = new MapCoordinates(new Vector2(minX, minY), mapId);
         var mapCoordsTopRight = new MapCoordinates(new Vector2(maxX, maxY), mapId);
 
-        if (!_mapSystem.TryFindGridAt(mapUid, mapCoordsBottomLeft.Position, out _, out var grid))
+        if (_mapSystem is null || !_mapSystem.TryFindGridAt(mapUid, mapCoordsBottomLeft.Position, out var gridUid, out var grid))
             return true;
 
-        var tileBottomLeft = _mapSystem.TileIndicesFor(mapUid, grid, mapCoordsBottomLeft);
-        var tileTopRight = _mapSystem.TileIndicesFor(mapUid, grid, mapCoordsTopRight);
+        var tileBottomLeft = _mapSystem.TileIndicesFor(gridUid, grid, mapCoordsBottomLeft);
+        var tileTopRight = _mapSystem.TileIndicesFor(gridUid, grid, mapCoordsTopRight);
 
         for (var x = tileBottomLeft.X - 1; x <= tileTopRight.X + 1; x++)
         {
             for (var y = tileBottomLeft.Y - 1; y <= tileTopRight.Y + 1; y++)
             {
-                var tile = _mapSystem.GetTileRef(mapUid, grid, new Vector2i(x, y));
+                var tile = _mapSystem.GetTileRef(gridUid, grid, new Vector2i(x, y));
                 var tileDef = (ContentTileDefinition)_tile[tile.Tile.TypeId];
                 if (tileDef.Transparent || tile.Tile.IsEmpty)
                     return true;
@@ -129,7 +127,7 @@ public sealed partial class ScalingViewport
                 if (!_zLevels.TryMapOffset(playerXform.MapUid.Value, i, out var mapUidBelow))
                     continue;
 
-                checkingMap = mapUidBelow.Value;
+                checkingMap = mapUidBelow;
             }
 
             lowestDepth = i;
@@ -138,59 +136,17 @@ public sealed partial class ScalingViewport
                 break;
         }
 
-
-        // Try to locate the placement overlay so we can temporarily disable it while rendering z-levels.
-        var overlayMgr = IoCManager.Resolve<IOverlayManager>();
-        Overlay? placementOverlay = null;
-
-        // Search for placement overlay by type name
-        foreach (var overlay in overlayMgr.AllOverlays)
-        {
-            if (overlay.GetType().Name == "PlacementOverlay")   // i know this is junky af but i don't have any better solutions
-            {
-                placementOverlay = overlay;
-                break;
-            }
-        }
-
-        var placementRemoved = false;
-
         //From the lowest depth to the highest, render each level
         for (var depth = lowestDepth; depth <= lookUp; depth++)
         {
             if (depth == 0)
-            {
                 viewport.Eye = _fallbackEye;
-
-                // Restore placement overlay for the base layer
-                if (placementRemoved && placementOverlay is not null)
-                {
-                    try
-                    {
-                        overlayMgr.AddOverlay(placementOverlay);
-                        placementRemoved = false;
-                    }
-                    catch { }
-                }
-            }
             else
             {
-                // Remove placement overlay before rendering z-levels so it
-                // doesn't call PixelToMap with this z-level's eye.
-                if (!placementRemoved && placementOverlay is not null)
-                {
-                    try
-                    {
-                        overlayMgr.RemoveOverlay(placementOverlay);
-                        placementRemoved = true;
-                    }
-                    catch { }
-                }
-
                 if (!_zLevels.TryMapOffset(playerXform.MapUid.Value, depth, out var mapUidBelow))
                     continue;
 
-                if (!_mapQuery.Value.TryComp(mapUidBelow.Value, out var mapComp))
+                if (!_mapQuery.Value.TryComp(mapUidBelow, out var mapComp))
                     continue;
 
                 viewport.Eye = new ZEye(lowestDepth, depth, lookUp)
@@ -208,23 +164,12 @@ public sealed partial class ScalingViewport
             viewport.Render();
         }
 
-
-        // Ensure placement overlay is restored
-        if (placementRemoved && placementOverlay is not null)
-        {
-            try
-            {
-                overlayMgr.AddOverlay(placementOverlay);
-            }
-            catch { }
-        }
-
         // Restore the Eye
         Eye = _fallbackEye;
-        viewport.Eye = _fallbackEye;
+        viewport.Eye = Eye;
     }
 
-    public sealed class ZEye(int lowest, int depth, int high) : Robust.Shared.Graphics.Eye
+    public sealed partial class ZEye(int lowest, int depth, int high) : Robust.Shared.Graphics.Eye
     {
         public int LowestDepth = lowest;
         public int Depth = depth;

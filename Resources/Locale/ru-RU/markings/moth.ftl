@@ -38,7 +38,7 @@ marking-MothAntennasOakworm-oakworm = Антенна
 marking-MothAntennasOakworm = Антенны (Дубовый червь)
 
 marking-MothAntennasPlasmafire-plasmafire = Антенна
-marking-MothAntennasPlasmafire = Антенны (Пожар плазмы)
+marking-MothAntennasPlasmafire = Антенны (Пожар форона)
 
 marking-MothAntennasRoyal-royal = Антенна
 marking-MothAntennasRoyal = Антенны (Королевские)
@@ -107,7 +107,7 @@ marking-MothWingsOakworm = Крылья (Дубовый червь)
 
 marking-MothWingsPlasmafire-plasmafire_primary = Основной
 marking-MothWingsPlasmafire-plasmafire_secondary = Вторичный
-marking-MothWingsPlasmafire = Крылья (Пожар плазмы)
+marking-MothWingsPlasmafire = Крылья (Пожар форона)
 
 marking-MothWingsPointy-pointy = Крыло
 marking-MothWingsPointy = Крылья (Заострённые)

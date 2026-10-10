@@ -25,17 +25,16 @@ public sealed partial class CEZLevelHighGroundComponent : Component
     };
 
     /// <summary>
-    /// Forcibly attaches the entity to itself along the z-axis if the character descends smoothly. Needed for prevent falling from staircases.
+    /// Forcibly attaches the entity to itself along the z-axis if the character descends smoothly.
+    /// Needed for prevent falling from staircases.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public bool Stick = false;
-
-    // Utopia-Tweak: Удалил ненужное поле, добавил нужное
-    // :f_aga:
+    public bool Stick;
 
     /// <summary>
-    /// Id of fixture that is used for height curve calculating
+    /// We cant mapping entities rotated by 45 radians, so we just use this.
+    /// La shitcode.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public string FixtureId = "slowdown";
+    public bool Corner;
 }

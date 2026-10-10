@@ -80,7 +80,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
     [Dependency] private EntityQuery<PointLightComponent> _pointLightQuery = default!;
     [Dependency] private EntityQuery<MapComponent> _mapQuery = default!;
     [Dependency] private EntityQuery<TransformComponent> _xformQuery = default!;
-    [Dependency] private EntityQuery<CEZLevelMapComponent> _zMapQuery = default!;
+    [Dependency] private EntityQuery<CEZMapComponent> _zMapQuery = default!;
 
     public override void Initialize()
     {
@@ -132,7 +132,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         _activeThisFrame.Clear();
 
         var viewBounds = _eyeManager.GetWorldViewbounds();
-        Entity<CEZLevelMapComponent?> playerZLevelMap = (playerMapUid, playerZMap);
+        Entity<CEZMapComponent?> playerZLevelMap = (playerMapUid, playerZMap);
 
         var activeMaps = new HashSet<MapId> { playerMapComp.MapId };
 
@@ -158,8 +158,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
                 continue;
 
             if (!_zLevels.TryMapOffset(playerZLevelMap, depthOffset, out var adjacentMap) ||
-                adjacentMap is not { } adj ||
-                !_mapQuery.TryComp(adj.Owner, out var adjacentMapComp) ||
+                !_mapQuery.TryComp(adjacentMap.Owner, out var adjacentMapComp) ||
                 adjacentMapComp.MapId == MapId.Nullspace)
             {
                 continue;
@@ -173,7 +172,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
 
             CollectCandidates(
                 sourceLights,
-                adj,
+                adjacentMap,
                 adjacentMapComp.MapId,
                 playerMapUid,
                 playerMapComp.MapId,
@@ -194,8 +193,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         for (var receivingDepth = -1; receivingDepth >= -maxDepth; receivingDepth--)
         {
             if (!_zLevels.TryMapOffset(playerZLevelMap, receivingDepth, out var receivingMap) ||
-                receivingMap is not { } receiving ||
-                !_mapQuery.TryComp(receiving.Owner, out var receivingMapComp) ||
+                !_mapQuery.TryComp(receivingMap.Owner, out var receivingMapComp) ||
                 receivingMapComp.MapId == MapId.Nullspace)
             {
                 continue;
@@ -205,7 +203,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
             {
                 if (sourceDepth == receivingDepth) continue;
 
-                Entity<CEZLevelMapComponent> sourceMap;
+                Entity<CEZMapComponent> sourceMap;
                 MapComponent sourceMapComp;
                 if (sourceDepth == 0)
                 {
@@ -213,14 +211,13 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
                     sourceMapComp = playerMapComp;
                 }
                 else if (!_zLevels.TryMapOffset(playerZLevelMap, sourceDepth, out var offsetSourceMap) ||
-                         offsetSourceMap is not { } offsetSource ||
-                         !_mapQuery.TryComp(offsetSource.Owner, out var offsetSourceMapComp))
+                         !_mapQuery.TryComp(offsetSourceMap.Owner, out var offsetSourceMapComp))
                 {
                     continue;
                 }
                 else
                 {
-                    sourceMap = offsetSource;
+                    sourceMap = offsetSourceMap;
                     sourceMapComp = offsetSourceMapComp;
                 }
 
@@ -240,7 +237,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
                     sourceLights,
                     sourceMap,
                     sourceMapComp.MapId,
-                    receiving.Owner,
+                    receivingMap.Owner,
                     receivingMapComp.MapId,
                     relativeDepthOffset,
                     attenuationPerDepth,
@@ -424,7 +421,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
 
     private void CollectCandidates(
         List<SourceLight> sourceLights,
-        Entity<CEZLevelMapComponent> adjacentMap,
+        Entity<CEZMapComponent> adjacentMap,
         MapId adjacentMapId,
         EntityUid playerMapUid,
         MapId playerMapId,
@@ -434,7 +431,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         float radiusScale,
         float maxRadius,
         float minEnergy,
-        Entity<CEZLevelMapComponent?> playerZLevelMap,
+        Entity<CEZMapComponent?> playerZLevelMap,
         int startDepth,
         int endDepth)
     {
@@ -477,7 +474,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
                 var rayLength = rayDirection.Length();
                 if (rayLength > 0.01f)
                 {
-                    var ray = new CollisionRay(sourceLight.WorldPosition, rayDirection.Normalized(), (int) CollisionGroup.Opaque);
+                    var ray = new CollisionRay(sourceLight.WorldPosition, rayDirection.Normalized(), (int)CollisionGroup.Opaque);
                     var blocked = false;
                     foreach (var _ in _physics.IntersectRay(adjacentMapId, ray, rayLength, ignoredEnt: sourceLight.Entity, returnOnFirstHit: true))
                     {
@@ -540,12 +537,12 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         if (!_map.TryGetTileRef(gridUid, gridComp, worldPos, out var tileRef))
             return false;
 
-        var tileDef = (ContentTileDefinition) _tileDefinition[tileRef.Tile.TypeId];
+        var tileDef = (ContentTileDefinition)_tileDefinition[tileRef.Tile.TypeId];
         return tileDef.Transparent;
     }
 
     private bool AreIntermediateLevelsOpen(
-        Entity<CEZLevelMapComponent?> playerZLevelMap,
+        Entity<CEZMapComponent?> playerZLevelMap,
         int startDepth,
         int endDepth,
         Vector2 openingCenter)
@@ -558,21 +555,21 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         for (var d = startDepth + step; d != endDepth; d += step)
         {
             EntityUid interOwner;
-            CEZLevelMapComponent? interComp;
+            CEZMapComponent? interComp;
 
             if (d == 0)
             {
                 interOwner = playerZLevelMap.Owner;
                 interComp = playerZLevelMap.Comp;
             }
-            else if (!_zLevels.TryMapOffset(playerZLevelMap, d, out var offsetInterMap) || offsetInterMap is not { } offsetInter)
+            else if (!_zLevels.TryMapOffset(playerZLevelMap, d, out var offsetInterMap))
             {
                 return false;
             }
             else
             {
-                interOwner = offsetInter.Owner;
-                interComp = offsetInter.Comp;
+                interOwner = offsetInterMap.Owner;
+                interComp = offsetInterMap.Comp;
             }
 
             if (interComp == null ||
@@ -602,7 +599,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
     }
 
     private static EntityUid GetOpeningMapForProjection(
-        Entity<CEZLevelMapComponent> sourceMap,
+        Entity<CEZMapComponent> sourceMap,
         EntityUid receivingMap,
         int depthOffset)
     {
@@ -713,8 +710,8 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
     private static OpeningCandidateBucketKey GetOpeningCandidateBucketKey(Vector2 openingCenter)
     {
         return new OpeningCandidateBucketKey(
-            (int) MathF.Floor(openingCenter.X / OpeningConnectionDistance),
-            (int) MathF.Floor(openingCenter.Y / OpeningConnectionDistance));
+            (int)MathF.Floor(openingCenter.X / OpeningConnectionDistance),
+            (int)MathF.Floor(openingCenter.Y / OpeningConnectionDistance));
     }
 
     private static bool AreConnectedOpenings(ProjectedLightCandidate left, ProjectedLightCandidate right)
@@ -742,7 +739,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
 
         var length = maxAlong - minAlong;
         var sampleCount = Math.Clamp(
-            (int) MathF.Ceiling(length / StripSampleSpacing) + 1,
+            (int)MathF.Ceiling(length / StripSampleSpacing) + 1,
             2,
             Math.Min(component.Count, MaxStripSamples));
         var energyScale = 1f / MathF.Sqrt(sampleCount);
@@ -751,7 +748,7 @@ public sealed partial class CEZLevelProjectedLightingSystem : EntitySystem
         {
             var index = sampleCount == 1
                 ? 0
-                : (int) MathF.Round(i * (component.Count - 1) / (sampleCount - 1f));
+                : (int)MathF.Round(i * (component.Count - 1) / (sampleCount - 1f));
             var baseCandidate = component[Math.Clamp(index, 0, component.Count - 1)];
             var candidate = baseCandidate with
             {

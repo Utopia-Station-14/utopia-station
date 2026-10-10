@@ -27,37 +27,6 @@ public sealed partial class CEZFlyerComponent : Component
     public float DefaultGravityIntensity = 1f;
 
     /// <summary>
-    /// Fixture mass at which the configured drain and speeds apply unchanged.
-    /// Heavier flyers drain faster and fly slower; lighter ones the reverse.
-    /// </summary>
-    [DataField]
-    public float ReferenceMass = 70f;
-
-    [DataField]
-    public float MinMassFactor = 0.5f;
-
-    [DataField]
-    public float MaxMassFactor = 2f;
-
-    [DataField]
-    public EntProtoId UpActionProto = "CEActionZFlightUp";
-
-    [DataField, AutoNetworkedField]
-    public EntityUid? ZLevelUpActionEntity;
-
-    [DataField]
-    public EntProtoId DownActionProto = "CEActionZFlightDown";
-
-    [DataField, AutoNetworkedField]
-    public EntityUid? ZLevelDownActionEntity;
-
-    [DataField]
-    public EntProtoId ToggleActionProto = "CEActionZFlightToggle";
-
-    [DataField, AutoNetworkedField]
-    public EntityUid? ZLevelToggleActionEntity;
-
-    /// <summary>
     /// Spawned on client only every tick in flight state
     /// </summary>
     [DataField]
@@ -65,7 +34,4 @@ public sealed partial class CEZFlyerComponent : Component
 
     [DataField]
     public TimeSpan NextVfx = TimeSpan.Zero;
-
-    [DataField]
-    public TimeSpan? StartFlightDoAfter;
 }
