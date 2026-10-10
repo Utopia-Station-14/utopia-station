@@ -10,6 +10,11 @@ namespace Content.Shared.Atmos;
 /// Used for indicating if airflow is allowed/blocked, etc.
 /// Used over <see cref="Direction"/> as it allows us to represent multiple valid directions at once,
 /// plus gives us easy comparisons using bitflags.
+/// <para>
+/// Bits 0-3 are the horizontal (planar) directions, bits 4-5 are the vertical (Z-level) directions.
+/// <see cref="All"/> deliberately stays horizontal-only (15) so that everything that treats it as
+/// "every side of the tile" (airtight blockers, etc.) keeps working unchanged.
+/// </para>
 /// </summary>
 [Flags, Serializable]
 [FlagsFor(typeof(AtmosDirectionFlags))]
@@ -20,15 +25,36 @@ public enum AtmosDirection
     South   = 1 << 1,                   // 2
     East    = 1 << 2,                   // 4
     West    = 1 << 3,                   // 8
-    // If more directions are added, note that AtmosDirectionHelpers.ToOppositeIndex() expects opposite directions
-    // to come in pairs
+
+    // Utopia-Tweak : Z-Levels
+    // Z-level directions.
+    // AtmosDirectionHelpers.ToOppositeIndex() expects opposite directions to come in pairs
+    // (index ^ 1), so Up/Down must stay a pair starting on an even index.
+    Up      = 1 << 4,                   // 16
+    Down    = 1 << 5,                   // 32
+    // Utopia-Tweak : Z-Levels
 
     NorthEast = North | East,           // 5
     SouthEast = South | East,           // 6
     NorthWest = North | West,           // 9
     SouthWest = South | West,           // 10
 
+    // Utopia-Tweak : Z-Levels
+    /// <summary>
+    /// All four horizontal directions. Does NOT include <see cref="Up"/> and <see cref="Down"/>.
+    /// </summary>
     All = North | South | East | West,  // 15
+
+    /// <summary>
+    /// Both Z-level directions.
+    /// </summary>
+    Vertical = Up | Down,               // 48
+
+    /// <summary>
+    /// Every direction a tile can exchange air in, horizontal and vertical.
+    /// </summary>
+    AllWithVertical = All | Vertical,   // 63
+    // Utopia-Tweak : Z-Levels
 }
 
 public static class AtmosDirectionHelpers
@@ -41,6 +67,8 @@ public static class AtmosDirectionHelpers
             AtmosDirection.South => AtmosDirection.North,
             AtmosDirection.East => AtmosDirection.West,
             AtmosDirection.West => AtmosDirection.East,
+            AtmosDirection.Up => AtmosDirection.Down,
+            AtmosDirection.Down => AtmosDirection.Up,
             AtmosDirection.NorthEast => AtmosDirection.SouthWest,
             AtmosDirection.NorthWest => AtmosDirection.SouthEast,
             AtmosDirection.SouthEast => AtmosDirection.NorthWest,
@@ -52,6 +80,7 @@ public static class AtmosDirectionHelpers
     /// <summary>
     /// This returns the index that corresponds to the opposite direction of some other direction index.
     /// I.e., <c>1&lt;&lt;OppositeIndex(i) == (1&lt;&lt;i).GetOpposite()</c>
+    /// Works for the vertical indices too: 4 (Up) &lt;-&gt; 5 (Down).
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ToOppositeIndex(this int index)
@@ -65,6 +94,11 @@ public static class AtmosDirectionHelpers
         return (AtmosDirection) (1 << (index ^ 1));
     }
 
+    /// <summary>
+    /// Converts to a planar <see cref="Direction"/>.
+    /// Throws for <see cref="AtmosDirection.Up"/> and <see cref="AtmosDirection.Down"/>, they have no planar equivalent.
+    /// Check <see cref="IsVertical"/> first if the direction may be vertical.
+    /// </summary>
     public static Direction ToDirection(this AtmosDirection direction)
     {
         return direction switch
@@ -101,6 +135,8 @@ public static class AtmosDirectionHelpers
 
     /// <summary>
     /// Converts a direction to an angle, where angle is -PI to +PI.
+    /// Throws for <see cref="AtmosDirection.Up"/> and <see cref="AtmosDirection.Down"/>: a vertical direction
+    /// has no angle, so anything that pushes entities around (space wind) must skip vertical directions.
     /// </summary>
     /// <param name="direction"></param>
     /// <returns></returns>
@@ -153,7 +189,7 @@ public static class AtmosDirectionHelpers
     /// This is the same as doing <c>(AtmosDirection)(1 &lt;&lt; index)</c>, but reduces RSI from writing loops.
     /// </summary>
     /// <param name="index">The 0-based index of the direction.
-    /// Should be 0 for North, 1 for South, 2 for East, and 3 for West.</param>
+    /// Should be 0 for North, 1 for South, 2 for East, 3 for West, 4 for Up and 5 for Down.</param>
     /// <returns>The <see cref="AtmosDirection"/> corresponding to the given index.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [PublicAPI]
@@ -179,10 +215,61 @@ public static class AtmosDirectionHelpers
     }
 
     /// <summary>
+    /// Whether the direction has an <see cref="AtmosDirection.Up"/> or <see cref="AtmosDirection.Down"/> component.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [PublicAPI]
+    public static bool IsVertical(this AtmosDirection direction)
+    {
+        return (direction & AtmosDirection.Vertical) != 0;
+    }
+
+    /// <summary>
+    /// Whether the direction is non-empty and has no vertical component.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [PublicAPI]
+    public static bool IsHorizontal(this AtmosDirection direction)
+    {
+        return direction != AtmosDirection.Invalid && (direction & AtmosDirection.Vertical) == 0;
+    }
+
+    /// <summary>
+    /// Returns the Z-level offset of a vertical direction:
+    /// +1 for <see cref="AtmosDirection.Up"/>, -1 for <see cref="AtmosDirection.Down"/>, 0 for anything else.
+    /// Matches the offset argument of <c>CESharedZLevelsSystem.TryMapOffset</c>.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [PublicAPI]
+    public static int ToZOffset(this AtmosDirection direction)
+    {
+        var b = (int)direction;
+        return ((b >> 4) & 1) - ((b >> 5) & 1);
+    }
+
+    /// <summary>
+    /// Converts a Z-level offset to <see cref="AtmosDirection.Up"/> (positive), <see cref="AtmosDirection.Down"/> (negative)
+    /// or <see cref="AtmosDirection.Invalid"/> (zero).
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [PublicAPI]
+    public static AtmosDirection ToVerticalDirection(this int zOffset)
+    {
+        return zOffset switch
+        {
+            > 0 => AtmosDirection.Up,
+            < 0 => AtmosDirection.Down,
+            _ => AtmosDirection.Invalid,
+        };
+    }
+
+    /// <summary>
     /// Converts a cardinal direction to a <see cref="Vector2i"/>, where the value is the offset in that direction.
     /// </summary>
     /// <param name="dir">The direction to convert.
-    /// Should be a cardinal direction, but will work with diagonals too.</param>
+    /// Should be a cardinal direction, but will work with diagonals too.
+    /// The vertical part of a direction is ignored, so <see cref="AtmosDirection.Up"/> and
+    /// <see cref="AtmosDirection.Down"/> give (0, 0): they do not move a tile index on the grid.</param>
     /// <returns>A <see cref="Vector2i"/> where the value is the offset in that direction.
     /// E.g., North would be (0, -1), South would be (0, 1), etc.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -203,7 +290,8 @@ public static class AtmosDirectionHelpers
     /// </summary>
     /// <param name="pos">The origin position.</param>
     /// <param name="dir">The direction to offset in.
-    /// Should be a cardinal direction, but will work with diagonals too.</param>
+    /// Should be a cardinal direction, but will work with diagonals too.
+    /// Vertical directions leave the position unchanged.</param>
     /// <returns>>The offset position. E.g., if the direction is North, this will return (pos.X, pos.Y + 1).</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [PublicAPI]

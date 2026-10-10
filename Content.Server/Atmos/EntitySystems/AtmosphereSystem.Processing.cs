@@ -76,10 +76,6 @@ namespace Content.Server.Atmos.EntitySystems
 
                     // Update tile.IsSpace and tile.MapAtmosphere, and tile.AirtightData.
                     UpdateTileData(ent, mapAtmos, tile);
-                    // Utopia-Tweak : Z-Levels
-                    RefreshZAtmosTransferCandidates(ent, indices);
-                    ActivateZAtmosTransferCandidate(atmosphere, tile);
-                    // Utopia-Tweak : Z-Levels
                 }
                 atmosphere.InvalidatedCoords.Clear();
 
@@ -93,6 +89,7 @@ namespace Content.Server.Atmos.EntitySystems
                 DebugTools.Assert(atmosphere.Tiles.GetValueOrDefault(tile.GridIndices) == tile);
                 UpdateAdjacentTiles(ent, tile, activate: true);
                 UpdateTileAir(ent, tile, volume);
+                UpdateZAtmosLinks(ent, tile); // Utopia-Tweak : Z-Levels
                 InvalidateVisuals(ent, tile);
 
                 if (number++ < InvalidCoordinatesLagCheckIterations)
@@ -146,7 +143,7 @@ namespace Content.Server.Atmos.EntitySystems
             foreach (var tile in atmos.PossiblyDisconnectedTiles)
             {
                 tile.TrimQueued = false;
-                if (!tile.NoGridTile)
+                if (!tile.NoGridTile || IsOpenAirCell(tile)) // Utopia-Tweak : Z-Levels
                     continue;
 
                 var connected = false;
@@ -181,6 +178,12 @@ namespace Content.Server.Atmos.EntitySystems
         {
             var idx = tile.GridIndices;
             bool mapAtmosphere;
+
+            // Utopia-Tweak : Z-Levels
+            var openAir = false;
+            var wasOpenAir = IsOpenAirCell(tile);
+            // Utopia-Tweak : Z-Levels
+
             if (_map.TryGetTile(ent.Comp3, idx, out var gTile) && !gTile.IsEmpty)
             {
                 var contentDef = (ContentTileDefinition) _tileDefinitionManager[gTile.TypeId];
@@ -188,30 +191,33 @@ namespace Content.Server.Atmos.EntitySystems
                 tile.ThermalConductivity = contentDef.ThermalConductivity;
                 tile.HeatCapacity = contentDef.HeatCapacity;
                 tile.NoGridTile = false;
+
+                // Utopia-Tweak : Z-Levels
+                if (mapAtmosphere && HasSupportBelow(ent.Owner, ent.Comp3, idx))
+                {
+                    mapAtmosphere = false;
+                    openAir = true;
+                }
+                // Utopia-Tweak : Z-Levels
             }
             else
             {
-                // Utopia-Tweak : ZLevels
-                bool isZTransit = HasAnySolidZLevelTileBelow(ent.Owner, ent.Comp3, idx);
-
-                if (isZTransit)
+                // Utopia-Tweak : Z-Levels
+                openAir = HasSupportBelow(ent.Owner, ent.Comp3, idx);
+                if (openAir)
                 {
-                    mapAtmosphere = false; 
+                    mapAtmosphere = false;
                     tile.ThermalConductivity = 0.5f;
-                    tile.HeatCapacity = 1.0f; 
-
-                    if (!tile.NoGridTile)
-                    {
-                        tile.NoGridTile = true;
-                    }
+                    tile.HeatCapacity = 1.0f;
+                    tile.NoGridTile = true;
                 }
                 else
                 {
                     mapAtmosphere = true;
-                    tile.ThermalConductivity =  0.5f;
+                    tile.ThermalConductivity = 0.5f;
                     tile.HeatCapacity = float.PositiveInfinity;
 
-                    if (!tile.NoGridTile)
+                    if (!tile.NoGridTile || wasOpenAir)
                     {
                         tile.NoGridTile = true;
 
@@ -220,8 +226,10 @@ namespace Content.Server.Atmos.EntitySystems
                         QueueTileTrim(ent.Comp1, tile);
                     }
                 }
-                // Utopia-Tweak : ZLevels
+                // Utopia-Tweak : Z-Levels
             }
+
+            SetOpenAir(tile, openAir); // Utopia-Tweak : Z-Levels
 
             UpdateAirtightData(ent.Owner, ent.Comp1, ent.Comp3, tile);
 
@@ -646,8 +654,6 @@ namespace Content.Server.Atmos.EntitySystems
         private void UpdateProcessing(float frameTime)
         {
             _simulationStopwatch.Restart();
-
-            RunZAtmosProcessing(); // Utopia-Tweak : Z-Levels
 
             if (!_simulationPaused)
             {
