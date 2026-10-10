@@ -24,14 +24,7 @@ namespace Content.Server.Atmos.EntitySystems
                 Archive(tile, fireCount);
 
             tile.CurrentCycle = fireCount;
-            var adjacentTileLength = 0;
-
-            for (var i = 0; i < Atmospherics.Directions; i++)
-            {
-                var direction = (AtmosDirection) (1 << i);
-                if(tile.AdjacentBits.IsFlagSet(direction))
-                    adjacentTileLength++;
-            }
+            var adjacentTileLength = CountAdjacentWithZ(tile); // Utopia-Tweak : Z-Levels
 
             for(var i = 0; i < Atmospherics.Directions; i++)
             {
@@ -99,7 +92,7 @@ namespace Content.Server.Atmos.EntitySystems
                 }
             }
 
-            ShareZLevelAtmos(ent, tile, fireCount); // Utopia-Tweak : Z-Levels
+            ShareZLevelAtmos(ent, tile, adjacentTileLength); // Utopia-Tweak : Z-Levels
 
             var remove = true;
 

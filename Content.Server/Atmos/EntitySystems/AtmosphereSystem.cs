@@ -85,6 +85,7 @@ public sealed partial class AtmosphereSystem : SharedAtmosphereSystem
         foreach (var change in ev.Changes)
         {
             InvalidateTile(ev.Entity.Owner, change.GridIndices);
+            InvalidateZAtmosPeers(ev.Entity.Owner, change.GridIndices); // Utopia-Tweak : Z-Levels
         }
     }
 
