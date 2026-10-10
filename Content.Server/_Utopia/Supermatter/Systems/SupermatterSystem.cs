@@ -1,13 +1,20 @@
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
+using Content.Server.Chat.Managers;
+using Content.Server.Chat.Systems;
+using Content.Shared.Interaction;
 using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.Popups;
 using Content.Shared._Utopia.Supermatter.Components;
 using Content.Shared._Utopia.Supermatter.Prototypes;
 using Content.Shared.Examine;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using System.Numerics;
+using Content.Server._Utopia.Supermatter.Components;
+using Content.Server.DoAfter;
+using Content.Shared.DoAfter;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
 
@@ -16,9 +23,12 @@ public sealed partial class SupermatterSystem : EntitySystem
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private AtmosphereSystem _atmosphere = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private DoAfterSystem _doAfter = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private SharedSolutionContainerSystem _solutionContainer = default!;
     [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private IChatManager _chatManager = default!;
 
     private SupermatterGasDataPrototype?[] _gasDataCache = Array.Empty<SupermatterGasDataPrototype>();
     private readonly List<SupermatterReactionPrototype> _reactionsCache = new();
@@ -26,6 +36,7 @@ public sealed partial class SupermatterSystem : EntitySystem
     private readonly Dictionary<string, SupermatterReagentDataPrototype> _reagentDataCache = new();
     private readonly List<SupermatterReagentReactionPrototype> _reagentReactionsCache = new();
 
+    private EntProtoId SupermatterShard = "SupermatterShard";
     private static readonly (Vector2i Offset, float Ratio)[] TileCollectionRatios =
     {
         (new(0, 0), 0.30f),
@@ -43,7 +54,8 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<SupermatterComponent, AtmosDeviceUpdateEvent>(OnUpdate);
         SubscribeLocalEvent<SupermatterComponent, ExaminedEvent>(RandomizeDescription);
-        // SubscribeLocalEvent<SupermatterComponent, SupermatterDoAfterEvent>(DoAfter);
+        SubscribeLocalEvent<SupermatterComponent, SupermatterDoAfterEvent>(DoAfter);
+        SubscribeLocalEvent<SupermatterComponent, InteractUsingEvent>(OnItemInteract);
     }
 
     public override void Shutdown()
@@ -142,22 +154,55 @@ public sealed partial class SupermatterSystem : EntitySystem
         ProcessVisual(sm);
     }
 
-    // private void DoAfter(Entity<SupermatterComponent> sm, ref SupermatterDoAfterEvent args)
-    // {
-    //     if (args.Cancelled || !args.Used.HasValue)
-    //         return;
+    private void OnItemInteract(Entity<SupermatterComponent> sm, ref InteractUsingEvent args)
+    {
+        if (args.Handled)
+            return;
 
-    //     QueueDel(args.Used.Value);
+        if (HasComp<SupermatterKnifeComponent>(args.Used) || HasComp<SupermatterInertCoreComponent>(args.Used))
+        {
+            var doAfterArgs = new DoAfterArgs(EntityManager, args.User, 10f, new SupermatterDoAfterEvent(), args.Target)
+            {
+                BreakOnDamage = true,
+                BreakOnHandChange = true,
+                BreakOnWeightlessMove = false,
+                NeedHand = true,
+                RequireCanInteract = true,
+                Used = args.Used,
+            };
 
-    //     var message = Loc.GetString("supermatter-announcement-setinert");
-    //     SendSupermatterAnnouncement(uid, sm, message, global: false);
+            _doAfter.TryStartDoAfter(doAfterArgs);
+        }
+        args.Handled = !args.Handled;
+    }
 
-    //     sm.HasBeenPowered = false;
+    private void DoAfter(Entity<SupermatterComponent> sm, ref SupermatterDoAfterEvent args)
+    {
+        if (args.Cancelled || !args.Used.HasValue)
+            return;
 
-    //     _radiation.SetIntensity(uid, 1);
+        if (HasComp<SupermatterInertCoreComponent>(args.Used))
+            InsertInertCore(sm);
+        else
+            GetShard(sm);
 
-    //     _popup.PopupClient(Loc.GetString("supermatter-inert-end"), uid, args.User);
-    // }
+        QueueDel(args.Used.Value);
+    }
+
+    private void GetShard(Entity<SupermatterComponent> sm)
+    {
+        Spawn(SupermatterShard);
+        sm.Comp.Integrity -= DamagePerSlicing;
+
+        SendAnnouncement(sm, Loc.GetString("supermatter-get-shard"), DelaminationCanceled);
+    }
+
+    private void InsertInertCore(Entity<SupermatterComponent> sm)
+    {
+        sm.Comp.StabilizerInside += 1;
+
+        SendAnnouncement(sm, Loc.GetString("supermatter-insert-inert-core"), DelaminationCanceled);
+    }
 
     private void RandomizeDescription(Entity<SupermatterComponent> sm, ref ExaminedEvent args)
     {

@@ -83,9 +83,6 @@
     layers:
     - state: true-platform
       map: ["enum.SupermatterVisualLayers.Base"]
-    # - state: shader
-    #   sprite: _Utopia/Structures/Power/Supermatter/shader.rsi
-    #   shader: shining
     - state: inactive
       map: ["enum.SupermatterVisualLayers.Crystal"]
       shader: unshaded
@@ -115,15 +112,6 @@
     joinSystem: true
   - type: RadiationSource
     intensity: 4
-  # - type: DeviceLinkSource
-  #   ports:
-  #   - SupermatterInactive
-  #   - SupermatterNormal
-  #   - SupermatterCaution
-  #   - SupermatterWarning
-  #   - SupermatterDanger
-  #   - SupermatterEmergency
-  #   - SupermatterDelaminating
 
 - type: entity
   parent: Supermatter
@@ -141,13 +129,6 @@
     offset: -0.015,0.295
     layers:
       - state: supermatter
-  #       map: ["enum.SupermatterVisuals.Crystal"]
-  # - type: SupermatterVisuals
-  #   crystal:
-  #     Normal: { state: supermatter }
-  #     Glow: { state: supermatter-glow }
-  #     GlowEmergency: { state: supermatter-glow-emergency }
-  #     GlowDelam: { state: supermatter-glow-delam }
 
 ## Lighting
 - type: entity
@@ -338,60 +319,6 @@
           enum.WiresUiKey.Key:
             type: WiresBoundUserInterface
 
-# - type: entity
-#   id: BaseSupermatterKudzu
-#   abstract: true
-#   placement:
-#     mode: SnapgridCenter
-#     snap:
-#       - Center
-#   components:
-#     - type: Appearance
-#     - type: Transform
-#       anchored: true
-#     - type: Physics
-#     - type: SupermatterKudzu
-#     - type: GrowingKudzu
-#     - type: ActiveEdgeSpreader
-#     - type: EdgeSpreader
-#       id: Puddle
-
-# - type: entity
-#   id: SupermatterKudzu
-#   name: tendons
-#   parent: BaseSupermatterKudzu
-#   description: A rapidly growing cluster of meaty tendons. WHY ARE YOU STOPPING TO LOOK AT IT?!
-#   placement:
-#     mode: SnapgridCenter
-#     snap:
-#       - Center
-#   components:
-#     - type: Sprite
-#       sprite: _Utopia/Objects/Misc/supermatter_kudzu.rsi
-#       state: kudzu_11
-#       drawdepth: Overdoors
-#     - type: KudzuVisuals
-#     - type: Fixtures
-#       fixtures:
-#         fix1:
-#           hard: false
-#           density: 7
-#           shape:
-#             !type:PhysShapeAabb
-#             bounds: "-0.5,-0.5,0.5,0.5"
-#           layer:
-#           - MidImpassable
-#     - type: RadiationSource
-#       intensity: 2
-#     - type: SupermatterEating
-#     - type: Edible # что нахуй
-#       delay: 0.5
-#     - type: SolutionContainerManager # TODO: Когда-нибудь в будущем сделать собственный реагент для суперматтер.
-#       solutions:
-#         food:
-#           reagents:
-#           - ReagentId: Radium
-#             Quantity: 50
 
 - type: edgeSpreader
   id: SupermatterGrowth
@@ -423,3 +350,44 @@
   - type: SupermatterSpreader
   - type: EdgeSpreader
     id: MetalFoam
+
+- type: entity
+  parent: BaseItem
+  id: SupermatterShard
+  name: SupermatterShard
+  description:
+  components:
+    - type: PointLight
+      enabled: true
+      radius: 3
+      energy: 2
+      color: "#fff633"
+    - type: RadiationSource
+      intensity: .75
+    - type: Icon
+      sprite: _Utopia/Objects/Misc/supermatter_shard.rsi
+      state: shard
+    - type: Sprite
+      sprite: _Utopia/Objects/Misc/supermatter_shard.rsi
+      state: shard
+    - type: Tag
+      tags:
+        - HighRiskItem
+    - type: SupermatterProtection
+
+- type: entity
+  parent: BaseItem
+  id: UtopiaStabilizerCore
+  name: hyper-Noblium Core
+  description: SPEEED SPEEED SPEEED HELL YEAAA :eagle:!!!!
+  components:
+  - type: Item
+    sprite: _Utopia/Objects/Misc/supermatter_stabilizer.rsi
+    state: stabilizer
+    size: Normal
+  - type: Sprite
+    layers:
+    - sprite: _Utopia/Objects/Misc/supermatter_stabilizer.rsi
+      state: stabilizer
+  - type: SupermatterInertCore
+  - type: SupermatterProtection

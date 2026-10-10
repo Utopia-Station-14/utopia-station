@@ -53,12 +53,11 @@ public sealed partial class SupermatterSystem
 
         if (tileMixture != null)
         {
-            _atmosphere.Merge(tileMixture, wastes);
-
-            var heatCapacity = _atmosphere.GetHeatCapacity(tileMixture, true);
+            var heatCapacity = _atmosphere.GetHeatCapacity(wastes, true);
             var temp = power / heatCapacity;
 
-            tileMixture.Temperature = MathF.Max(tileMixture.Temperature + temp, Atmospherics.TCMB);
+            wastes.Temperature = MathF.Max(tileMixture.Temperature + temp, Atmospherics.TCMB);
+            _atmosphere.Merge(tileMixture, wastes);
             ProcessGasWasteEnergy(sm, temp);
         }
     }

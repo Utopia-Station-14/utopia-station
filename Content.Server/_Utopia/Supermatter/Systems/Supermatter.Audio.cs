@@ -1,6 +1,8 @@
 using Content.Shared._Utopia.Supermatter.Components;
 using Robust.Shared.Audio.Systems;
 using Content.Server._Utopia.Audio.Systems;
+using Content.Server.Audio;
+using Content.Shared.Audio;
 using Robust.Shared.Audio;
 using Robust.Shared.Random;
 
@@ -9,18 +11,19 @@ namespace Content.Server._Utopia.Supermatter.Systems;
 public sealed partial class SupermatterSystem
 {
     [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private ServerGlobalSoundSystem _sound = default!;
     [Dependency] private NowPlayingServerSystem _nowPlay = default!;
 
     public void PlayAudio(Entity<SupermatterComponent> sm, SoundSpecifier sound, bool global, bool notify)
     {
-        if (!global)
+        if (global)
         {
-            _audio.PlayPvs(sound, sm);
+            _sound.DispatchStationEventMusic(sm, sound, StationEventMusicType.Nuke);
             if (notify)
                 _nowPlay.NotifyNowPlaying(sm, sound, 500f);
         }
         else
-            _audio.PlayGlobal(sound, sm);
+            _audio.PlayPvs(sound, sm);
     }
 
     private void ProcessAudio(Entity<SupermatterComponent> sm)

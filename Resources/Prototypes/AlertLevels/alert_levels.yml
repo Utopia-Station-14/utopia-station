@@ -74,10 +74,6 @@
     cascade:
       announcement: alert-level-epsilon-announcement
       selectable: false
-      sound:
-        path: /Audio/Misc/epsilon.ogg
-        params:
-          volume: -2
       disableSelection: true
       color: DarkViolet
       emergencyLightColor: DarkViolet

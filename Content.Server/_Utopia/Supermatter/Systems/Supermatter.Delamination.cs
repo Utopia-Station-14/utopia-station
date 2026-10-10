@@ -18,13 +18,13 @@ public sealed partial class SupermatterSystem
 
     private EntProtoId SingularityPrototype = "Singularity";
     private EntProtoId TeslaPrototype = "TeslaEnergyBall";
-    private EntProtoId SupermatterKudzu = "SupermatterKudzu";
-    private const string SupermatterStabilizer= "SupermatterHzKakNazvat";
+    private EntProtoId SupermatterKudzu = "SupermatterBlob";
+    private const string SupermatterStabilizer= "UtopiaStabilizerCore";
 
 
     private SoundSpecifier CascadeMusic = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/thecascade.ogg");
     private static readonly ProtoId<DamageTypePrototype> RadiationDamageType = "Radiation";
-    private TimeSpan CountdownTimer = TimeSpan.FromSeconds(30);
+    private TimeSpan CountdownTimer = TimeSpan.FromSeconds(90);
     private const float MusicRadius = 150f;
     private float TimerModificator = 1f;
 
@@ -41,6 +41,9 @@ public sealed partial class SupermatterSystem
 
     public DelaminationType GetDelaminationType(Entity<SupermatterComponent> sm)
     {
+        if (sm.Comp.CascadeModifier >= 1f)
+            return DelaminationType.Cascade;
+
         if (sm.Comp.AtmosGas.TotalMoles > ToMuchGas)
             return DelaminationType.Singularity;
 
