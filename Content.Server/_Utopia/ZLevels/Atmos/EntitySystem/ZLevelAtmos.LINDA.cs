@@ -522,20 +522,13 @@ public sealed partial class AtmosphereSystem
     private TileAtmosphere? GetZTile(EntityUid gridUid, MapGridComponent grid, Vector2i indices, int offset)
         => FindZTile(gridUid, grid, indices, offset);
 
-    private bool HasZLevelTileBelow(
-        Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent,
-        Vector2i indices)
+    private bool HasZLevelTileBelow(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent, Vector2i indices)
         => FindZTile(ent.Owner, ent.Comp3, indices, -1) != null;
 
     private bool IsZConnectedSpace(EntityUid gridUid, MapGridComponent grid, Vector2i indices)
-        => _gridAtmosQuery.TryComp(gridUid, out var atmos) &&
-           atmos.Tiles.TryGetValue(indices, out var tile) &&
-           (tile.AdjacentBits & AtmosDirection.Vertical) != 0;
+        => _gridAtmosQuery.TryComp(gridUid, out var atmos) && atmos.Tiles.TryGetValue(indices, out var tile) && (tile.AdjacentBits & AtmosDirection.Vertical) != 0;
 
-    private bool TryUpdateZLevelProtectedTileAir(
-        Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent,
-        TileAtmosphere tile,
-        float volume)
+    private bool TryUpdateZLevelProtectedTileAir(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent, TileAtmosphere tile, float volume)
         => false;
 
     #endregion
