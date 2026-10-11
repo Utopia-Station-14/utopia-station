@@ -15,9 +15,13 @@ public sealed partial class AtmosphereSystem
     [Dependency] private CESharedZLevelsSystem _zLevels = default!;
     [Dependency] private TurfSystem _turf = default!;
     [Dependency] private TransformSystem _transformSystem = default!;
+    [Dependency] private ZLevelAtmosSystem _zGas = default!;
 
-    private const float ZVentRatio = 1f; // TODO: remove this shit
+    private readonly float[] _zFlows = new float[Atmospherics.TotalNumberOfGases];
+    private const int ZMixtureMaxDepth = 10; // <see cref="RespiratorSystem.cs"/> <seealso cref="BarotraumaSystem.cs"/>
     private const bool GoUp = false;
+    private const int ZCeilingSearchRadius = 8;
+    private const int ZCeilingRescanCycles = 20;
 
     private sealed class ZState
     {
@@ -25,6 +29,8 @@ public sealed partial class AtmosphereSystem
         public TileAtmosphere? Down;
         public bool OpenAir;
         public bool Ceiling;
+        public TileAtmosphere? CeilingTarget;
+        public int CeilingScanCycle = -1;
     }
 
     private readonly Dictionary<TileAtmosphere, ZState> _zState = new();
@@ -44,7 +50,7 @@ public sealed partial class AtmosphereSystem
     {
     }
 
-    #region For Wizdens Atmos
+    #region Wizden Atmosphere
 
     // ProcessCell: обмен с Z-тайлами после стандартных.
     private void ShareZLevelAtmos(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent,
@@ -59,7 +65,10 @@ public sealed partial class AtmosphereSystem
             ShareVerticalPair(ent.Comp1, tile, AtmosDirection.Down, state.Down, adjacentTileLength);
         }
 
-        if (state.Ceiling)
+        if (!state.Ceiling)
+            return;
+
+        if (!ShareToCeilingTarget(ent, tile, state, adjacentTileLength))
             VentToCeiling(ent, tile, adjacentTileLength);
     }
 
@@ -140,9 +149,6 @@ public sealed partial class AtmosphereSystem
         return upGrid == null || IsHoleCell(upUid, upGrid, upIndices);
     }
 
-    private bool HasOpenCeiling(TileAtmosphere tile)
-        => _zState.TryGetValue(tile, out var state) && state.Ceiling;
-
     private void SetOpenCeiling(TileAtmosphere tile, bool value)
     {
         if (value)
@@ -152,6 +158,8 @@ public sealed partial class AtmosphereSystem
                 return;
 
             state.Ceiling = true;
+            state.CeilingTarget = null;
+            state.CeilingScanCycle = -1;
             WakeTile(tile);
             return;
         }
@@ -159,23 +167,21 @@ public sealed partial class AtmosphereSystem
         if (_zState.TryGetValue(tile, out var existing) && existing.Ceiling)
         {
             existing.Ceiling = false;
+            existing.CeilingTarget = null;
+            existing.CeilingScanCycle = -1;
             CleanupState(tile, existing);
         }
     }
 
     private void RefreshCeilingIfStale(TileAtmosphere peer)
     {
-        if (!TryGetLiveGridAtmos(peer, out var peerAtmos) ||
-            !TryComp<MapGridComponent>(peer.GridIndex, out var peerGrid))
-        {
+        if (!TryGetLiveGridAtmos(peer, out var peerAtmos) || !TryComp<MapGridComponent>(peer.GridIndex, out var peerGrid))
             return;
-        }
 
         if (IsCeilingOpen(peer.GridIndex, peerGrid, peer) != HasOpenCeiling(peer))
             InvalidateTile((peer.GridIndex, peerAtmos), peer.GridIndices);
     }
 
-    // Создаёт тайл сверху при наличии стены, чтобы сделать газообмен и помечает его на ревалидацию.
     private TileAtmosphere? FindOrCreateCellAbove(EntityUid gridUid, MapGridComponent grid, TileAtmosphere tile)
     {
         var existing = FindZTile(gridUid, grid, tile.GridIndices, 1);
@@ -236,7 +242,7 @@ public sealed partial class AtmosphereSystem
 
     #endregion
 
-    #region Gas Share
+    #region Gas Sharing
 
     private void ShareVerticalPair(GridAtmosphereComponent gridAtmosphere, TileAtmosphere tile, AtmosDirection direction,
         TileAtmosphere? other, int neighbours)
@@ -252,7 +258,9 @@ public sealed partial class AtmosphereSystem
             return;
         }
 
-        if (other.Air == null || otherAtmos == null)
+        var tileAir = tile.Air;
+        var otherAir = other.Air;
+        if (tileAir == null || otherAir == null || otherAtmos == null)
             return;
 
         if (otherAtmos.UpdateCounter <= other.CurrentCycle)
@@ -261,18 +269,77 @@ public sealed partial class AtmosphereSystem
         if (other.ArchivedCycle < otherAtmos.UpdateCounter)
             Archive(other, otherAtmos.UpdateCounter);
 
-        if (CompareExchange(tile, other) == GasCompareResult.NoExchange)
+        var tileIsLower = direction == AtmosDirection.Up;
+        var lower = tileIsLower ? tileAir : otherAir;
+        var upper = tileIsLower ? otherAir : tileAir;
+
+        if (!ExchangeVertical(lower, upper, neighbours, true, out var moved))
             return;
 
         AddActiveTile(otherAtmos, other);
         AddActiveTile(gridAtmosphere, tile);
         EnsureExcitedGroup(gridAtmosphere, tile);
         EnsureExcitedGroup(otherAtmos, other);
-        Share(tile, other, neighbours);
+
+        tile.LastShare = MathF.Max(tile.LastShare, moved);
         LastShareCheck(tile);
 
         if (other.ExcitedGroup != null && tile.LastShare > Atmospherics.MinimumAirToSuspend)
             ExcitedGroupResetCooldowns(other.ExcitedGroup);
+    }
+
+
+    private bool ExchangeVertical(GasMixture lower, GasMixture upper, int neighbours, bool allowDown, out float moved)
+    {
+        moved = 0f;
+
+        if (lower.Immutable || upper.Immutable)
+            return false;
+
+        var lowerMoles = lower.Moles;
+        var upperMoles = upper.Moles;
+        var tLower = lower.Temperature;
+        var tUpper = upper.Temperature;
+        var flows = _zFlows;
+        var total = _zGas.ProcessFlows(lowerMoles, tLower, lower.Volume, upperMoles, tUpper, upper.Volume, neighbours, allowDown, flows);
+        var moveGas = total >= _zGas.MinMovedMoles;
+        var capLower = 0f;
+        var capUpper = 0f;
+        var capUp = 0f;
+        var capDown = 0f;
+
+
+        for (var i = 0; i < Atmospherics.TotalNumberOfGases; i++)
+        {
+            var c = _zGas.GetMolarHeatCapacity(i);
+            capLower += lowerMoles[i] * c;
+            capUpper += upperMoles[i] * c;
+
+            if (!moveGas)
+                continue;
+
+            var x = flows[i];
+            if (x > 0f)
+                capUp += x * c;
+            else
+                capDown -= x * c;
+
+            lowerMoles[i] = MathF.Max(0f, lowerMoles[i] - x);
+            upperMoles[i] = MathF.Max(0f, upperMoles[i] + x);
+        }
+
+        _zGas.MixTemperatures(capLower, tLower, capUpper, tUpper, capUp, capDown, neighbours, allowDown,
+            out var newLower, out var newUpper);
+
+        var dynamicMinTempChange = MathF.Max(0.005f, (tLower + tUpper) * 0.0001f);
+        if (!moveGas && MathF.Abs(newLower - tLower) < dynamicMinTempChange && MathF.Abs(newUpper - tUpper) < dynamicMinTempChange)
+            return false;
+
+        lower.Temperature = MathF.Max(newLower, Atmospherics.TCMB);
+        upper.Temperature = MathF.Max(newUpper, Atmospherics.TCMB);
+        moved = moveGas ? total : 0f;
+
+        return true;
     }
 
     private void EnsureExcitedGroup(GridAtmosphereComponent atmos, TileAtmosphere tile)
@@ -292,12 +359,13 @@ public sealed partial class AtmosphereSystem
         if (air == null || air.Immutable)
             return;
 
-        var total = air.TotalMoles;
-        if (total <= Atmospherics.GasMinMoles)
+        if (air.TotalMoles <= Atmospherics.GasMinMoles)
             return;
 
-        var moles = total * ZVentRatio / (neighbours + 1);
-        air.Remove(moles);
+        var dynamicVentRatio = Math.Clamp(air.TotalMoles * 0.0005f / (neighbours + 1), 0.1f, 1f);
+        var moles = _zGas.Vent(air.Moles, dynamicVentRatio);
+        if (moles <= 0f)
+            return;
 
         AddActiveTile(ent.Comp1, tile);
         EnsureExcitedGroup(ent.Comp1, tile);
@@ -305,6 +373,100 @@ public sealed partial class AtmosphereSystem
         tile.LastShare = MathF.Max(tile.LastShare, moles);
         LastShareCheck(tile);
     }
+
+    private bool ShareToCeilingTarget(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent,
+        TransformComponent> ent, TileAtmosphere tile, ZState state, int neighbours)
+    {
+        var counter = ent.Comp1.UpdateCounter;
+
+        if (state.CeilingTarget != null && !IsValidCeilingTarget(state.CeilingTarget))
+        {
+            state.CeilingTarget = null;
+            state.CeilingScanCycle = -1;
+        }
+
+        if (state.CeilingScanCycle < 0 || counter - state.CeilingScanCycle >= ZCeilingRescanCycles)
+        {
+            state.CeilingTarget = FindCeilingTarget(ent.Owner, ent.Comp3, tile);
+            state.CeilingScanCycle = counter;
+        }
+
+        var target = state.CeilingTarget;
+        if (target == null || !TryGetLiveGridAtmos(target, out var targetAtmos) || targetAtmos == null)
+            return false;
+
+        var air = tile.Air;
+        var targetAir = target.Air;
+        if (air == null || targetAir == null)
+            return true;
+
+        if (!ExchangeVertical(air, targetAir, neighbours, false, out var moved))
+            return true;
+
+        AddActiveTile(ent.Comp1, tile);
+        AddActiveTile(targetAtmos, target);
+        EnsureExcitedGroup(ent.Comp1, tile);
+        EnsureExcitedGroup(targetAtmos, target);
+
+        tile.LastShare = MathF.Max(tile.LastShare, moved);
+        LastShareCheck(tile);
+
+        if (target.ExcitedGroup != null && tile.LastShare > Atmospherics.MinimumAirToSuspend)
+            ExcitedGroupResetCooldowns(target.ExcitedGroup);
+
+        return true;
+    }
+
+
+    private TileAtmosphere? FindCeilingTarget(EntityUid gridUid, MapGridComponent grid, TileAtmosphere tile)
+    {
+        var mapUid = Transform(gridUid).MapUid;
+        if (mapUid == null || !_zLevels.TryMapOffset(mapUid.Value, 1, out var upMap))
+            return null;
+
+        var localPos = _mapSystem.GridTileToLocal(gridUid, grid, tile.GridIndices);
+        var worldPos = _transformSystem.ToMapCoordinates(localPos).Position;
+
+        const int radiusSq = ZCeilingSearchRadius * ZCeilingSearchRadius;
+
+        TileAtmosphere? best = null;
+        var bestDist = int.MaxValue;
+        var children = Transform(upMap.Owner).ChildEnumerator;
+
+        while (children.MoveNext(out var childUid))
+        {
+            if (!_gridAtmosQuery.TryComp(childUid, out var upAtmos) || upAtmos.Tiles.Count == 0 || !TryComp<MapGridComponent>(childUid, out var upGrid))
+                continue;
+
+            var upLocal = System.Numerics.Vector2.Transform(worldPos, Transform(childUid).InvLocalMatrix);
+            var center = _mapSystem.LocalToTile(childUid, upGrid, new EntityCoordinates(childUid, upLocal));
+
+            for (var dx = -ZCeilingSearchRadius; dx <= ZCeilingSearchRadius; dx++)
+            {
+                for (var dy = -ZCeilingSearchRadius; dy <= ZCeilingSearchRadius; dy++)
+                {
+                    var dist = dx * dx + dy * dy;
+                    if (dist > radiusSq || dist >= bestDist)
+                        continue;
+
+                    if (!upAtmos.Tiles.TryGetValue(new Vector2i(center.X + dx, center.Y + dy), out var candidate) || !IsFreeCeilingTarget(candidate))
+                        continue;
+
+                    best = candidate;
+                    bestDist = dist;
+                }
+            }
+        }
+
+        return best;
+    }
+
+    private static bool IsFreeCeilingTarget(TileAtmosphere tile)
+        => tile.Air is { Immutable: false } && !tile.MapAtmosphere;
+
+    private bool IsValidCeilingTarget(TileAtmosphere tile)
+        => IsFreeCeilingTarget(tile) && TryGetLiveGridAtmos(tile, out _);
+
     #endregion
 
     #region Connections
@@ -334,12 +496,8 @@ public sealed partial class AtmosphereSystem
 
     private bool TryGetLiveGridAtmos(TileAtmosphere tile, out GridAtmosphereComponent? atmos)
     {
-        if (_gridAtmosQuery.TryComp(tile.GridIndex, out atmos) &&
-            atmos.Tiles.TryGetValue(tile.GridIndices, out var current) &&
-            ReferenceEquals(current, tile))
-        {
+        if (_gridAtmosQuery.TryComp(tile.GridIndex, out atmos) && atmos.Tiles.TryGetValue(tile.GridIndices, out var current) && ReferenceEquals(current, tile))
             return true;
-        }
 
         atmos = null;
         return false;
@@ -445,7 +603,7 @@ public sealed partial class AtmosphereSystem
 
     #endregion
 
-    #region Tiles Lookup
+    #region Tile Lookup
 
     private bool IsHoleCell(EntityUid gridUid, MapGridComponent grid, Vector2i indices)
     {
@@ -530,6 +688,55 @@ public sealed partial class AtmosphereSystem
 
     private bool TryUpdateZLevelProtectedTileAir(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent, TileAtmosphere tile, float volume)
         => false;
+
+    private bool HasOpenCeiling(TileAtmosphere tile)
+        => _zState.TryGetValue(tile, out var state) && state.Ceiling;
+
+    public GasMixture? GetContainingMixtureZ(EntityUid uid, bool excite = false)
+    {
+        var mixture = GetContainingMixture(uid, excite: excite);
+
+        if (mixture == null || !IsSpaceMixture(mixture))
+            return mixture;
+
+        return GetMixtureBelow(uid, excite) ?? mixture;
+    }
+
+    private static bool IsSpaceMixture(GasMixture mixture)
+        => mixture.Immutable && mixture.TotalMoles <= Atmospherics.GasMinMoles;
+
+    private GasMixture? GetMixtureBelow(EntityUid uid, bool excite)
+    {
+        var xform = Transform(uid);
+        if (xform.MapUid is not { } currentMap)
+            return null;
+
+        var worldPos = _transformSystem.GetWorldPosition(xform);
+
+        for (var i = 0; i < ZMixtureMaxDepth; i++)
+        {
+            if (!_zLevels.TryMapOffset(currentMap, -1, out var below))
+                return null;
+
+            currentMap = below.Owner;
+
+            if (!_map.TryFindGridAt(currentMap, worldPos, out var gridUid, out var grid) || !_gridAtmosQuery.TryComp(gridUid, out var atmos))
+                continue;
+
+            var localPos = System.Numerics.Vector2.Transform(worldPos, Transform(gridUid).InvLocalMatrix);
+            var indices = _mapSystem.LocalToTile(gridUid, grid, new EntityCoordinates(gridUid, localPos));
+
+            if (!atmos.Tiles.TryGetValue(indices, out var tile) || tile.Air is not { } air || IsSpaceMixture(air))
+                continue;
+
+            if (excite)
+                AddActiveTile(atmos, tile);
+
+            return air;
+        }
+
+        return null;
+    }
 
     #endregion
 }
