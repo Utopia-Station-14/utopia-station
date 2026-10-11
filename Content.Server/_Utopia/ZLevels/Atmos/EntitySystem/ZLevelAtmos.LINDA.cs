@@ -1,4 +1,8 @@
-using Content.Server.Atmos.Components;
+/*
+ * This file is sublicensed under MIT License
+ * https://github.com/space-wizards/space-station-14/blob/master/LICENSE.TXT
+ */
+
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
@@ -6,7 +10,6 @@ using Content.Shared.Maps;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
-using Robust.Shared.Maths;
 
 namespace Content.Server.Atmos.EntitySystems;
 
