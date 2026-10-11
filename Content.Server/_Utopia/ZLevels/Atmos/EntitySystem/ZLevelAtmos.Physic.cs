@@ -9,7 +9,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server.Atmos.EntitySystems;
 
-public sealed class ZLevelAtmosSystem : EntitySystem
+public sealed partial class ZLevelAtmosSystem : EntitySystem
 {
     [Dependency] private IPrototypeManager _proto = default!;
 
