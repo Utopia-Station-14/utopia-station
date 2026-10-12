@@ -216,3 +216,17 @@
   technologyPrerequisites:
   - GravityManipulation
   # Utopia-Tweak : Research
+
+# - type: technology  # Utopia-Tweak : Research
+#   id: TeleSci
+#   name: research-technology-telesci
+#   icon:
+#     sprite: Effects/portal.rsi
+#     state: portal-artifact
+#   discipline: Experimental
+#   tier: 3
+#   cost: 10000
+#   recipeUnlocks:
+#   - StationTeleportersControlCircuitboard
+#   - StationTeleporterMachineCircuitboard
+#   - TeleporterChipBlank  # Utopia-Tweak : Research

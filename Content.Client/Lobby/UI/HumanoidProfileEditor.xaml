@@ -117,7 +117,7 @@
                                     <Label Text="{Loc 'humanoid-profile-editor-bark-label'}" />
                                     <Control HorizontalExpand="True"/>
                                     <Button Name="BarkProtoButton" HorizontalAlignment="Right" MinWidth="150" />
-									<Button Name="BarkPlayButton" Text="{Loc 'humanoid-profile-editor-voice-play'}" MaxWidth="80" />
+									<Button Name="BarkPlayButton" Text="{Loc 'humanoid-profile-editor-bark-play'}" MaxWidth="80" />
                                 </BoxContainer>
                                 <!-- Utopia-Tweak : Barks -->
                             </BoxContainer>

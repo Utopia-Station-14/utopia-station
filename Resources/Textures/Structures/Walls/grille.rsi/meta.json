@@ -96,24 +96,6 @@
     },
     {
       "name": "wall-255"
-    },
-    {
-      "name": "grille_diagonal"
-    },
-    {
-      "name": "grille_broken"
-    },
-    {
-      "name": "grille_damaged_0"
-    },
-    {
-      "name": "grille_damaged_1"
-    },
-    {
-      "name": "grille_damaged_2"
-    },
-    {
-      "name": "grille_damaged_3"
     }
   ]
 }

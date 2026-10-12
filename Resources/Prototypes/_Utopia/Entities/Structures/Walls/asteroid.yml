@@ -1,7 +1,67 @@
+- type: entity
+  abstract: true
+  id: UtopiaBaseVeinCopper
+  suffix: Copper
+  description: An ore vein rich with copper.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: UtopiaOreCopper
+  - type: Sprite
+    layers:
+    - state: rock_copper
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: UtopiaBaseVeinLead
+  suffix: Lead
+  description: An ore vein rich with copper.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: UtopiaOreLead
+  - type: Sprite
+    layers:
+    - state: rock_lead
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: UtopiaBaseVeinBluespace
+  suffix: Copper
+  description: An ore vein rich with bluespace ore.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: UtopiaOreBluespace
+  - type: Sprite
+    layers:
+    - state: rock_bluespace
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: UtopiaBaseVeinRedspace
+  suffix: Copper
+  description: An ore vein rich with redspace ore.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: UtopiaOreRedspace
+  - type: Sprite
+    layers:
+    - state: rock_redspace
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
 # Copper
 - type: entity
+  parent: [ WallRock, UtopiaBaseVeinCopper ]
   id: UtopiaWallRockCopper
-  parent: WallRock
   description: An ore vein rich with copper.
   suffix: Copper
   components:
@@ -11,162 +71,31 @@
       WallRockChromite: UtopiaWallRockChromiteCopper
       WallRockSand: UtopiaWallRockSandCopper
       WallRockSnow: UtopiaWallRockSnowCopper
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreCopper
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: rock
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_west
-      - state: rock_copper
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ AsteroidRock, UtopiaBaseVeinCopper ]
   id: UtopiaAsteroidRockCopper
-  parent: AsteroidRock
-  description: An ore vein rich with copper.
-  suffix: Copper
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreCopper
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: rock_asteroid
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_asteroid_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_asteroid_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_asteroid_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_asteroid_west
-      - state: rock_copper
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ IronRock, UtopiaBaseVeinCopper ]
   id: UtopiaIronRockCopper
-  parent: IronRock
-  description: An ore vein rich with copper.
-  suffix: Copper
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreCopper
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: ironrock
-      - map: [ "enum.EdgeLayer.South" ]
-        state: ironrock_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: ironrock_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: ironrock_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: ironrock_west
-      - state: rock_copper
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [WallRockSnow, UtopiaBaseVeinCopper ]
   id: UtopiaWallRockSnowCopper
-  parent: WallRockSnow
-  description: An ore vein rich with copper.
-  suffix: Copper
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreCopper
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: rock_snow
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_snow_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_snow_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_snow_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_snow_west
-      - state: rock_copper
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ WallRockSand, UtopiaBaseVeinCopper ]
   id: UtopiaWallRockSandCopper
-  parent: WallRockSand
-  description: An ore vein rich with quartz.
-  suffix: Copper
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreCopper
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: rock_sand
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_sand_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_sand_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_sand_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_sand_west
-      - state: rock_copper
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ WallRockChromite, UtopiaBaseVeinCopper ]
   id: UtopiaWallRockChromiteCopper
-  parent: WallRockChromite
-  description: An ore vein rich with quartz.
-  suffix: Copper
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreCopper
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: rock_chromite
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_chromite_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_chromite_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_chromite_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_chromite_west
-      - state: rock_copper
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 # Lead
 - type: entity
+  parent: [ WallRock, UtopiaBaseVeinLead ]
   id: UtopiaWallRockLead
-  parent: WallRock
-  description: An ore vein rich with lead.
-  suffix: Lead
   components:
   - type: EntityRemap
     mask:
@@ -174,160 +103,31 @@
       WallRockChromite: UtopiaWallRockChromiteLead
       WallRockSand: UtopiaWallRockSandLead
       WallRockSnow: UtopiaWallRockSnowLead
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreLead
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: rock_asteroid
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_asteroid_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_asteroid_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_asteroid_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_asteroid_west
-      - state: rock_lead
 
 - type: entity
+  parent: [ AsteroidRock, UtopiaBaseVeinLead ]
   id: UtopiaAsteroidRockLead
-  parent: AsteroidRock
-  description: An ore vein rich with lead.
-  suffix: Lead
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreLead
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: rock_asteroid
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_asteroid_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_asteroid_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_asteroid_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_asteroid_west
-      - state: rock_lead
 
 - type: entity
+  parent: [ IronRock, UtopiaBaseVeinLead ]
   id: UtopiaIronRockLead
-  parent: IronRock
-  description: An ore vein rich with lead.
-  suffix: Lead
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreLead
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: ironrock
-      - map: [ "enum.EdgeLayer.South" ]
-        state: ironrock_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: ironrock_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: ironrock_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: ironrock_west
-      - state: rock_lead
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ WallRockSnow, UtopiaBaseVeinLead ]
   id: UtopiaWallRockSnowLead
-  parent: WallRockSnow
-  description: An ore vein rich with lead.
-  suffix: Lead
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreLead
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: rock_snow
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_snow_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_snow_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_snow_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_snow_west
-      - state: rock_lead
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ WallRockSand, UtopiaBaseVeinLead ]
   id: UtopiaWallRockSandLead
-  parent: WallRockSand
-  description: An ore vein rich with lead.
-  suffix: Lead
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreLead
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: rock_sand
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_sand_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_sand_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_sand_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_sand_west
-      - state: rock_lead
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ WallRockChromite, UtopiaBaseVeinLead ]
   id: UtopiaWallRockChromiteLead
-  parent: WallRockChromite
-  description: An ore vein rich with lead.
-  suffix: Lead
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreLead
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-      - state: rock_chromite
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_chromite_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_chromite_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_chromite_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_chromite_west
-      - state: rock_lead
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 # Bluespace Ore
 - type: entity
+  parent: [ WallRock, UtopiaBaseVeinBluespace ]
   id: UtopiaWallRockBluespace
-  parent: WallRock
-  description: An ore vein rich with bluespace ore.
-  suffix: Bluespace
   components:
   - type: EntityRemap
     mask:
@@ -335,144 +135,31 @@
       WallRockChromite: UtopiaWallRockChromiteBluespace
       WallRockSand: UtopiaWallRockSandBluespace
       WallRockSnow: UtopiaWallRockSnowBluespace
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreBluespace
-  - type: Sprite
-    layers:
-      - state: rock
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_west
-      - state: rock_bluespace
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ AsteroidRock, UtopiaBaseVeinBluespace ]
   id: UtopiaAsteroidRockBluespace
-  parent: AsteroidRock
-  description:
-  suffix: Bluespace
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreBluespace
-  - type: Sprite
-    layers:
-      - state: rock_asteroid
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_asteroid_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_asteroid_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_asteroid_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_asteroid_west
-      - state: rock_bluespace
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ IronRock, UtopiaBaseVeinBluespace ]
   id: UtopiaIronRockBluespace
-  parent: IronRock
-  description: An ore vein rich with bluespace ore.
-  suffix: Bluespace
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreBluespace
-  - type: Sprite
-    layers:
-    - state: ironrock
-    - map: [ "enum.EdgeLayer.South" ]
-      state: ironrock_south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: ironrock_east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: ironrock_north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: ironrock_west
-    - state: rock_bluespace
-      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ WallRockChromite, UtopiaBaseVeinBluespace ]
   id: UtopiaWallRockChromiteBluespace
-  parent: WallRockChromite
-  description: An ore vein rich with bluespace ore.
-  suffix: Bluespace
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreBluespace
-  - type: Sprite
-    layers:
-      - state: rock_chromite
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_chromite_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_chromite_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_chromite_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_chromite_west
-      - state: rock_bluespace
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ WallRockSand, UtopiaBaseVeinBluespace ]
   id: UtopiaWallRockSandBluespace
-  parent: WallRockSand
-  description: An ore vein rich with bluespace ore.
-  suffix: Bluespace
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreBluespace
-  - type: Sprite
-    layers:
-      - state: rock_sand
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_sand_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_sand_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_sand_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_sand_west
-      - state: rock_bluespace
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ WallRockSnow, UtopiaBaseVeinBluespace ]
   id: UtopiaWallRockSnowBluespace
-  parent: WallRockSnow
-  description: An ore vein rich with bluespace ore.
-  suffix: Bluespace
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreBluespace
-  - type: Sprite
-    layers:
-      - state: rock_snow
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_snow_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_snow_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_snow_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_snow_west
-      - state: rock_bluespace
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 # Redspace Ore
 - type: entity
+  parent: [ WallRock, UtopiaBaseVeinRedspace ]
   id: UtopiaWallRockRedspace
-  parent: WallRock
-  description: An ore vein rich with redspace ore.
-  suffix: Redspace
   components:
   - type: EntityRemap
     mask:
@@ -480,134 +167,23 @@
       WallRockChromite: UtopiaWallRockChromiteRedspace
       WallRockSand: UtopiaWallRockSandRedspace
       WallRockSnow: UtopiaWallRockSnowRedspace
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreRedspace
-  - type: Sprite
-    layers:
-      - state: rock
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_west
-      - state: rock_redspace
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ AsteroidRock, UtopiaBaseVeinRedspace ]
   id: UtopiaAsteroidRockRedspace
-  parent: AsteroidRock
-  description:
-  suffix: Redspace
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreRedspace
-  - type: Sprite
-    layers:
-      - state: rock_asteroid
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_asteroid_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_asteroid_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_asteroid_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_asteroid_west
-      - state: rock_redspace
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ IronRock, UtopiaBaseVeinRedspace ]
   id: UtopiaIronRockRedspace
-  parent: IronRock
-  description: An ore vein rich with redspace ore.
-  suffix: Redspace
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreRedspace
-  - type: Sprite
-    layers:
-    - state: ironrock
-    - map: [ "enum.EdgeLayer.South" ]
-      state: ironrock_south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: ironrock_east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: ironrock_north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: ironrock_west
-    - state: rock_redspace
-      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ WallRockChromite, UtopiaBaseVeinRedspace ]
   id: UtopiaWallRockChromiteRedspace
-  parent: WallRockChromite
-  description: An ore vein rich with redspace ore.
-  suffix: Redspace
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreRedspace
-  - type: Sprite
-    layers:
-      - state: rock_chromite
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_chromite_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_chromite_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_chromite_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_chromite_west
-      - state: rock_redspace
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ WallRockSand, UtopiaBaseVeinRedspace ]
   id: UtopiaWallRockSandRedspace
-  parent: WallRockSand
-  description: An ore vein rich with redspace ore.
-  suffix: Redspace
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreRedspace
-  - type: Sprite
-    layers:
-      - state: rock_sand
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_sand_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_sand_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_sand_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_sand_west
-      - state: rock_redspace
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
 
 - type: entity
+  parent: [ WallRockSnow, UtopiaBaseVeinRedspace ]
   id: UtopiaWallRockSnowRedspace
-  parent: WallRockSnow
-  description: An ore vein rich with redspace ore.
-  suffix: Redspace
-  components:
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: UtopiaOreRedspace
-  - type: Sprite
-    layers:
-      - state: rock_snow
-      - map: [ "enum.EdgeLayer.South" ]
-        state: rock_snow_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: rock_snow_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: rock_snow_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: rock_snow_west
-      - state: rock_redspace
-        map: [ "enum.MiningScannerVisualLayers.Overlay" ]

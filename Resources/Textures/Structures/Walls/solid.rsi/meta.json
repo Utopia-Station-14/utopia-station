@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
-  "copyright": "M1and1B/aka/M&B",
+  "copyright": "M1and1B",
   "size": {
     "x": 32,
     "y": 32
@@ -117,9 +117,6 @@
     },
     {
       "name": "reinf_construct-5"
-    },
-    {
-      "name": "reinf_cult"
     },
     {
       "name": "reinf_over0",

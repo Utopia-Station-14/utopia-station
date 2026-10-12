@@ -6,7 +6,7 @@
 using System.Numerics;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._CE.ZLevels.Core.Events;
-using Content.Shared.Ghost;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Maps;
 using JetBrains.Annotations;
 using Robust.Shared.Map;

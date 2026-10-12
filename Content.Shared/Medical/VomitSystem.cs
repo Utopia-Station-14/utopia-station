@@ -1,3 +1,4 @@
+using Content.Shared._Utopia.Fluids;
 using Content.Shared.Body;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
@@ -11,6 +12,7 @@ using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
+using Content.Shared.Nutrition.Prototypes;
 using Content.Shared.Popups;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -22,15 +24,14 @@ namespace Content.Shared.Medical;
 public sealed partial class VomitSystem : EntitySystem
 {
     [Dependency] private INetManager _netManager = default!;
-    [Dependency] private HungerSystem _hunger = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private MovementModStatusSystem _movementMod = default!;
-    [Dependency] private ThirstSystem _thirst = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
-    [Dependency] private SharedBloodstreamSystem _bloodstream = default!;
-    [Dependency] private SharedForensicsSystem _forensics = default!;
+    [Dependency] private BloodstreamSystem _bloodstream = default!;
+    [Dependency] private ForensicsSystem _forensics = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedPuddleSystem _puddle = default!;
+    [Dependency] private SatiationSystem _satiation = default!;
     [Dependency] private SharedSolutionContainerSystem _solutionContainer = default!;
 
     public override void Initialize()
@@ -86,11 +87,12 @@ public sealed partial class VomitSystem : EntitySystem
             return;
 
         // Vomiting makes you hungrier and thirstier
-        if (TryComp<HungerComponent>(uid, out var hunger))
-            _hunger.ModifyHunger(uid, hungerAdded, hunger);
-
-        if (TryComp<ThirstComponent>(uid, out var thirst))
-            _thirst.ModifyThirst(uid, thirst, thirstAdded);
+        if (TryComp<SatiationComponent>(uid, out var satiation))
+        {
+            Entity<SatiationComponent> entity = (uid, satiation);
+            _satiation.ModifyValue(entity, SatiationSystem.Hunger, hungerAdded);
+            _satiation.ModifyValue(entity, SatiationSystem.Thirst, thirstAdded);
+        }
 
         // It fully empties the stomach, this amount from the chem stream is relatively small
         var solutionSize = (MathF.Abs(thirstAdded) + MathF.Abs(hungerAdded)) / 6;
@@ -119,6 +121,11 @@ public sealed partial class VomitSystem : EntitySystem
             // Makes a vomit solution the size of 90% of the chemicals removed from the chemstream
             solution.AddReagent(new ReagentId(VomitPrototype, _bloodstream.GetEntityBloodData((uid, bloodStream))), vomitAmount);
         }
+
+        // Utopia-Tweak : Stains
+        var stainEv = new SpilledOnEvent(uid, solution.Clone());
+        RaiseLocalEvent(uid, stainEv);
+        // Utopia-Tweak : Stains
 
         if (_puddle.TrySpillAt(uid, solution, out var puddle, false))
         {

@@ -328,6 +328,21 @@
       Steel: 5
 
 - type: entity
+  id: StationTeleporterMachineCircuitboard
+  parent: BaseMachineCircuitboard
+  name: teleporter machine board
+  description: A machine printed circuit board for a bluespace teleporter.
+  components:
+  - type: Sprite
+    state: science
+  - type: MachineBoard
+    prototype: StationTeleporter
+    stackRequirements:
+      Manipulator: 3
+      Cable: 5
+      PlasmaGlass: 10
+
+- type: entity
   parent: BaseMachineCircuitboard
   id: AnomalyVesselCircuitboard
   name: anomaly vessel machine board
@@ -630,7 +645,7 @@
       stackRequirements:
         # Manipulator: 1 # Utopia-Tweak : Machine Parts
         Glass: 1
-        Steel: 3
+        Plastic: 3
       tagRequirements:
         GlassBeaker:
           amount: 2
@@ -778,7 +793,7 @@
         Capacitor: 4 # Utopia-Tweak : Machine Parts
       stackRequirements:
         # Manipulator: 4 # Utopia-Tweak : Machine Parts
-        Steel: 5
+        Plasteel: 5
         Cable: 10
     - type: PhysicalComposition
       materialComposition:
@@ -951,7 +966,7 @@
       Laser: 4 # Utopia-Tweak : Machine Parts
     stackRequirements:
       # Manipulator: 4 # Utopia-Tweak : Machine Parts
-      Steel: 5
+      Plasteel: 5
 
 - type: entity
   id: GyroscopeMachineCircuitboard
@@ -1254,6 +1269,7 @@
         # Manipulator: 2 # Utopia-Tweak : Machine Parts
         CableHV: 5
         Glass: 2
+        Plasteel: 2
 
 - type: entity
   id: SurveillanceCameraRouterCircuitboard
@@ -1355,7 +1371,7 @@
       requirements: # Utopia-Tweak : Machine Parts
         MatterBin: 1 # Utopia-Tweak : Machine Parts
       stackRequirements:
-        Steel: 5
+        Plastic: 5
       tagRequirements:
           GlassBeaker:
             amount: 1
@@ -1390,8 +1406,8 @@
     requirements: # Utopia-Tweak : Machine Parts
       Capacitor: 2 # Utopia-Tweak : Machine Parts
     stackRequirements:
-      # Manipulator: 2 # Utopia-Tweak : Machine Parts
-      Steel: 5
+      Manipulator: 2
+      Plasteel: 5
 
 - type: entity
   id: SodaDispenserMachineCircuitboard
@@ -1406,7 +1422,7 @@
       requirements: # Utopia-Tweak : Machine Parts
         MatterBin: 1 # Utopia-Tweak : Machine Parts
       stackRequirements:
-        Steel: 5
+        Plastic: 5
       tagRequirements:
           GlassBeaker:
             amount: 1
@@ -1475,8 +1491,8 @@
       Capacitor: 4 # Utopia-Tweak : Machine Parts
       MatterBin: 3 # Utopia-Tweak : Machine Parts
     stackRequirements:
-      # Manipulator: 7 # Utopia-Tweak : Machine Parts
-      Steel: 10
+      Manipulator: 7
+      Plasteel: 10
       Glass: 5
       CableHV: 8
       Uranium: 2

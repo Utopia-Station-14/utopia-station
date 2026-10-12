@@ -518,7 +518,9 @@
   popupText: mutation-popup-pressure-resistance
   instability: 15
   components:
-  - type: PressureImmunity
+  - type: PermanentStatusEffects
+    statusEffects:
+    - StatusEffectPressureImmunity
 
 - type: geneticMutation
   id: MinorRegeneration
@@ -633,7 +635,9 @@
   popupText: mutation-popup-dyspraxia
   instability: -10
   components:
-  - type: Clumsy
+  - type: PermanentStatusEffects
+    statusEffects:
+    - StatusEffectClumsyAll
 
 - type: geneticMutation
   id: FrontalGyrusSuspension
@@ -642,7 +646,9 @@
   popupText: mutation-popup-frontal-gyrus-suspension
   instability: -5
   components:
-  - type: Muted
+  - type: PermanentStatusEffects
+    statusEffects:
+    - StatusEffectMuted
 
 - type: geneticMutation
   id: Pacifist
@@ -842,10 +848,22 @@
   probabilityWeight: 7
   researchPoints: 800
   components:
-  - type: EggLayer
-    eggSpawn:
-    - proto: UtopiaFoodEggMystery
-      amount: 1
+  - type: EntityProducer
+    table:
+      id: UtopiaFoodEggMystery
+  - type: ActionGrant
+    actions:
+    - ActionAnimalLayEgg
+  - type: EntityProducerAction
+    insufficientSatiationPopup: action-popup-lay-egg-too-hungry
+    userPopup: action-popup-lay-egg-user
+    othersPopup: action-popup-lay-egg-others
+  - type: SatiationProduction
+    delay: 60
+    delayMax: 120
+    satiationUsage: 60
+    minimumSatiation: 60
+    automaticForPlayers: false
 
 - type: geneticMutation
   id: Firebreath

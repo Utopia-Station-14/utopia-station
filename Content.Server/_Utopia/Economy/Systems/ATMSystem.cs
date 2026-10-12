@@ -52,7 +52,7 @@ public sealed partial class ATMSystem : EntitySystem
 
     private void OnInteractUsing(Entity<ATMComponent> ent, ref InteractUsingEvent args)
     {
-        if (!_itemSlots.TryGetSlot(ent, ent.Comp.SlotId, out var slot))
+        if (!_itemSlots.TryGetSlot(ent.Owner, ent.Comp.SlotId, out var slot))
             return;
 
         if (!TryComp<CurrencyComponent>(args.Used, out var currency) || !currency.Price.Keys.Contains(ent.Comp.CurrencyType))
@@ -115,7 +115,7 @@ public sealed partial class ATMSystem : EntitySystem
 
     private void OnWithdrawRequest(Entity<ATMComponent> ent, ref ATMRequestWithdrawMessage args)
     {
-        if (!_itemSlots.TryGetSlot(ent, ent.Comp.SlotId, out var slot))
+        if (!_itemSlots.TryGetSlot(ent.Owner, ent.Comp.SlotId, out var slot))
             return;
 
         if (!TryComp<BankCardComponent>(slot.Item, out var bankCard)

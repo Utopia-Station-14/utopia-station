@@ -16,7 +16,7 @@ public sealed partial class SalaryConsoleComponent : Component
     public StationRecordsFilter? Filter;
 
     [DataField]
-    public SoundSpecifier SoundDeny = new SoundPathSpecifier("/Audio/_Utopia/Machines/buzz-sigh.ogg");
+    public SoundSpecifier SoundDeny = new SoundPathSpecifier("/Audio/Machines/buzz-sigh.ogg");
 }
 
 [Serializable, NetSerializable]
