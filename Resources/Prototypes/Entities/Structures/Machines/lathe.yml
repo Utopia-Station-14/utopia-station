@@ -270,7 +270,7 @@
     - MedicalBoardsStatic
     - EngineeringBoardsStatic
     # Utopia-Tweak : Research
-    - CommandBoardsStatic
+    - EconomyBoardsStatic
     # Utopia-Tweak : Research
     dynamicPacks:
     - EngineeringBoards
