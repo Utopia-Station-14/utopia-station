@@ -35,10 +35,6 @@
 - type: Tag
   id: UtopiaDepartamentCard
 
-# Shift Schedule
-- type: Tag
-  id: UtopiaShiftScheduleCard
-
 # Heat Exchanger
 - type: Tag
   id: UtopiaHeatExchanger

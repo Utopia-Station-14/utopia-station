@@ -1,12 +1,4 @@
 - type: latheRecipe
-  abstract: true
-  id: BaseCommandComputerRecipeCategory
-  categories:
-  - Computers
-  - Command
-
-# Medical
-- type: latheRecipe
   parent: [ BaseGoldCircuitboardRecipe, BaseMedicalComputerRecipeCategory ]
   id: MedicalScannerMachineCircuitboard
   result: MedicalScannerMachineCircuitboard
@@ -16,13 +8,16 @@
   id: CloningConsoleComputerCircuitboard
   result: CloningConsoleComputerCircuitboard
 
-# Command
 - type: latheRecipe
-  parent: [BaseCircuitboardRecipe, BaseCommandComputerRecipeCategory]
+  parent: [BaseCircuitboardRecipe, BaseGeneralComputerRecipeCategory]
   id: SalaryConsoleCircuitboard
-  result: UtopiaComputerSalaryCircuitboard
+  result: UtopiaSalaryConsoleCircuitboard
 
-# Medical/Science
+- type: latheRecipe
+  parent: [BaseCircuitboardRecipe, BaseGeneralComputerRecipeCategory]
+  id: EconomicRecordsConsoleCircuitboard
+  result: UtopiaEconomicRecordsConsoleCircuitboard
+
 - type: latheRecipe
   parent: [BaseCircuitboardRecipe, BaseMedicalComputerRecipeCategory, BaseResearchComputerRecipeCategory]
   id: DnaManipulatorConsoleCircuitboard

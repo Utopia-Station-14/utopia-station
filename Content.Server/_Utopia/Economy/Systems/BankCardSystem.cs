@@ -3,12 +3,12 @@ using System.Diagnostics.CodeAnalysis;
 using Content.Server.Access.Systems;
 using Content.Server.Cargo.Systems;
 using Content.Server.CartridgeLoader;
+using Content.Server.Chat.Systems;
 using Content.Server.GameTicking;
 using Content.Server.Roles.Jobs;
 using Content.Server.Station.Systems;
 using Content.Shared._Utopia.CCVar;
 using Content.Shared._Utopia.Economy;
-
 using Content.Shared.Cargo.Components;
 using Content.Shared.GameTicking;
 using Content.Shared.Mind;
@@ -32,10 +32,12 @@ public sealed partial class BankCardSystem : SharedEconomySystem
     [Dependency] private IdCardSystem _idCardSystem = default!;
     [Dependency] private GameTicker _gameTicker = default!;
     [Dependency] private IPrototypeManager _protoMan = default!;
+    [Dependency] private ChatSystem _chatSystem = default!;
     [Dependency] private JobSystem _job = default!;
     [Dependency] private StationSystem _station = default!;
 
     private const string Salaries = "Salaries";
+    private const int SalaryDelay = 2700;
     private const int FallbackBase = 100;
 
     private float _salaryTimer;
@@ -59,7 +61,7 @@ public sealed partial class BankCardSystem : SharedEconomySystem
 
         _salaryTimer += frameTime;
 
-        if (_salaryTimer <= _configManager.GetCVar(UCCVars.SalaryDelay))
+        if (_salaryTimer <= SalaryDelay)
             return;
 
         _salaryTimer = 0f;
@@ -97,6 +99,9 @@ public sealed partial class BankCardSystem : SharedEconomySystem
                 TryChangeBalance(account.AccountId, salary.Value.Salary.Value);
             }
         }
+
+        _chatSystem.DispatchGlobalAnnouncement(Loc.GetString("salary-pay-announcement"),
+            colorOverride: Color.FromHex("#18abf5"));
     }
 
     public bool TryChangeBalance(int accountId, int amount)

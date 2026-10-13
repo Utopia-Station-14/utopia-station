@@ -1,6 +1,6 @@
 - type: entity
   parent: BaseComputer
-  id: UtopiaComputerSalary
+  id: UtopiaSalaryConsole
   name: salary console
   description: Used to pay salaries to station employees.
   components:
@@ -18,7 +18,7 @@
       sprite: _Utopia/Structures/Machines/computers.rsi
       state: salary
   - type: Computer
-    board: UtopiaComputerSalaryCircuitboard
+    board: UtopiaSalaryConsoleCircuitboard
   - type: ActivatableUI
     key: enum.SalaryConsoleUiKey.Key
   - type: UserInterface
@@ -41,7 +41,7 @@
 
 - type: entity
   parent: BaseComputerAiAccess
-  id: UtopiaComputerEconomicRecords
+  id: UtopiaEconomicRecordsConsole
   name: economic records computer
   description: Shows crew economic records.
   components:
@@ -59,7 +59,7 @@
       sprite: _Utopia/Structures/Machines/computers.rsi
       state: accounts
   - type: Computer
-    board: UtopiaComputerEconomicRecordsCircuitboard
+    board: UtopiaEconomicRecordsConsoleCircuitboard
   - type: ActivatableUI
     key: enum.EconomicRecordsConsoleKey.Key
   - type: UserInterface
@@ -116,91 +116,3 @@
   - type: Tag
     tags:
     - AccessBreakerImmune
-
-- type: entity
-  parent: [ BaseComputerAiAccess, BaseEngineeringContraband ]
-  id: UtopiaComputerTurbine
-  name: turbine monitoring console
-  description: Used to monitor the status of turbines.
-  components:
-    - type: Computer
-      board: UtopiaComputerTurbineCircuitboard
-    - type: Sprite
-      layers:
-        - map: ["computerLayerBody"]
-          state: computer
-        - map: ["computerLayerKeyboard"]
-          state: generic_keyboard
-        - map: ["computerLayerScreen"]
-          state: turbinecomp
-        - map: ["computerLayerKeys"]
-          state: atmos_key
-        - map: ["enum.WiresVisualLayers.MaintenancePanel"]
-          state: generic_panel_open
-    - type: GenericVisualizer
-      visuals:
-        enum.ComputerVisuals.Powered:
-          computerLayerScreen:
-            True: { visible: true, shader: unshaded }
-            False: { visible: false }
-          computerLayerKeys:
-            True: { visible: true, shader: unshaded }
-            False: { visible: true, shader: shaded }
-        enum.TurbineConsoleVisuals.ComputerLayerScreen:
-          computerLayerScreen:
-            0: { state: alert-0 }
-            1: { state: alert-0 }
-            2: { state: alert-1 }
-            3: { state: alert-2 }
-            4: { state: alert-2 }
-    - type: TurbineConsole
-    - type: ActivatableUI
-      key: enum.TurbineConsoleUiKey.Key
-    - type: UserInterface
-      interfaces:
-        enum.TurbineConsoleUiKey.Key:
-          type: TurbineConsoleBoundUserInterface
-        enum.WiresUiKey.Key:
-          type: WiresBoundUserInterface
-
-- type: entity
-  parent: BaseComputerAiAccess
-  id: UtopiaComputerShiftSchedule
-  name: shift schedule console
-  description: A console for setting timed announcements during the schift.
-  components:
-  - type: Computer
-    board: UtopiaComputerShiftScheduleCircuitboard
-  - type: Sprite
-    layers:
-    - map: ["computerLayerBody"]
-      state: computer
-    - map: ["computerLayerKeyboard"]
-      state: generic_keyboard
-    - map: ["computerLayerScreen"]
-      state: comm
-    - map: ["computerLayerKeys"]
-      state: generic_keys
-    - map: ["enum.WiresVisualLayers.MaintenancePanel"]
-      state: generic_panel_open
-  - type: AccessReader
-    access: [["Captain"]]
-  - type: ShiftScheduleConsole
-  - type: ActivatableUI
-    key: enum.ShiftScheduleConsoleUiKey.Key
-  - type: UserInterface
-    interfaces:
-      enum.ShiftScheduleConsoleUiKey.Key:
-        type: ShiftScheduleConsoleBoundUserInterface
-      enum.WiresUiKey.Key:
-        type: WiresBoundUserInterface
-  - type: ItemSlots
-    slots:
-      card:
-        whitelist:
-          tags:
-          - UtopiaShiftScheduleCard
-  - type: ContainerContainer
-    containers:
-      card: !type:ContainerSlot
-      board: !type:Container
