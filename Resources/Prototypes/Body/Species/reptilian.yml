@@ -164,6 +164,11 @@
       295: 0.8
       285: 0.7
   - type: Wagging
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Speak
+  # Utopia-Tweak : Language
 
 - type: entity
   parent: OrganBaseOrganic

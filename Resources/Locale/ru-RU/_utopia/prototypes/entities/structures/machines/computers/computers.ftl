@@ -1,8 +1,10 @@
-ent-UtopiaSalaryConsole = консоль заработных плат
+ent-UtopiaComputerSalary = консоль заработных плат
     .desc = Консоль, используемая для выплаты заработной платы сотрудникам.
-ent-UtopiaEconomicRecordsConsole = консоль экономических записей
+ent-UtopiaComputerEconomicRecords = консоль экономических записей
     .desc = Консоль, используемая для отображения экономических записей экипажа.
 ent-UtopiaComputerDnaManipulator = консоль управления ДНК
     .desc = Консоль, используемая в связке с медицинским сканером для работы с ДНК.
-ent-UtopiaComputerTelescienceConsole = консоль управления телепадом
-    .desc = Консоль, используемая для управления теленаучным телепадом.
+ent-UtopiaComputerShiftSchedule = консоль расписания смены
+    .desc = Консоль для настройки объявлений по расписанию в течение смены.
+ent-UtopiaComputerTurbine = консоль управления Турбинами
+    .desc = Консоль для мониторинга состояния промышленных турбин.
