@@ -59,7 +59,10 @@ public sealed class UCCVars
 
     // Economy
     public static readonly CVarDef<bool> PaySalary =
-        CVarDef.Create("economy.pay_salary", true, CVar.SERVERONLY);
+        CVarDef.Create("economy.pay_salary", true, CVar.SERVERONLY | CVar.ARCHIVE);
+
+    public static readonly CVarDef<int> SalaryDelay =
+        CVarDef.Create("combat.show_icons", 2700, CVar.SERVERONLY | CVar.ARCHIVE);
 
     // Combat
     public static readonly CVarDef<bool> CombatShowIcons =

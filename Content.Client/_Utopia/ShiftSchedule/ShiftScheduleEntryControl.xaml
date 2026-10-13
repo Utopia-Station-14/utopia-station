@@ -1,0 +1,27 @@
+<BoxContainer xmlns="https://spacestation14.io"
+    Orientation="Vertical"
+    HorizontalExpand="True">
+    <PanelContainer StyleClasses="PanelDark" HorizontalExpand="True">
+        <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="4">
+            <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                <Label Name="TimeLabel" Access="Public"
+                    MinWidth="54"
+                    VerticalAlignment="Center"
+                    StyleClasses="LabelSubText"
+                    ModulateSelfOverride="#83e0c5" />
+                <Label Name="TitleLabel" Access="Public"
+                    HorizontalExpand="True"
+                    VerticalAlignment="Center"
+                    StyleClasses="LabelKeyText" />
+            </BoxContainer>
+            <Label Name="DescriptionLabel" Access="Public"
+                HorizontalExpand="True"
+                StyleClasses="LabelSubText" />
+            <BoxContainer Orientation="Horizontal" HorizontalAlignment="Right" SeparationOverride="6">
+                <Button Name="EditButton" Text="{Loc 'shift-schedule-edit'}" />
+                <Button Name="AnnounceButton" Text="{Loc 'shift-schedule-announce-ahead'}" />
+                <Button Name="RemoveButton" Text="{Loc 'shift-schedule-remove'}" />
+            </BoxContainer>
+        </BoxContainer>
+    </PanelContainer>
+</BoxContainer>

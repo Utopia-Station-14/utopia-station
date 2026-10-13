@@ -1,0 +1,44 @@
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: UtopiaBaseShiftScheduleCard
+  name: shift schedule card
+  description: A single-use card that loads a prepared schedule into a shift schedule console.
+  components:
+  - type: Sprite
+    sprite: _Utopia/Objects/Devices/schedule_card.rsi
+    state: card
+  - type: Item
+    storedRotation: 90
+  - type: Tag
+    tags:
+    - UtopiaShiftScheduleCard
+  - type: ShiftScheduleCard
+
+- type: entity
+  parent: UtopiaBaseShiftScheduleCard
+  id: UtopiaShiftScheduleCard
+  components:
+  - type: ShiftScheduleCard
+    entries:
+    - title: Начало смены
+      timeSeconds: 900
+      description: Приготовления к работе должны быть завершены, и экипаж должен приступать к своим обязанностям.
+    - title: Брифинг глав станции
+      timeSeconds: 1500
+      description: Обязательный брифинг для всех глав станции, чтобы обсудить текущие события и задачи.
+    - title: Обед + выплата аванса
+      timeSeconds: 2700
+      description: В соответствии с трудовым договором, экипажу выделено 15 минут на обед и получение половины заработной платы.
+    - title: Продолжение работы
+      timeSeconds: 3600
+      description: Ваше время на обед подошло к концу. Экипаж должен вернуться к выполнению своих задач.
+    - title: Ужин + выплата остатка зарплаты
+      timeSeconds: 5400
+      description: В соответствии с трудовым договором, экипажу выделено 10 минут на ужин и получение оставшейся части заработной платы.
+    - title: Продолжение работы
+      timeSeconds: 6000
+      description: До конца смены остается 35 минут. Заканчивайте свои задачи и готовьтесь к завершению смены.
+    - title: Окончание смены
+      timeSeconds: 7200
+      description: До конца смены остается 15 минут. Это время выделено на собрание ваших вещей и ожидание эвакуционного шаттла. 

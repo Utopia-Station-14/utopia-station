@@ -1,5 +1,4 @@
 - type: latheRecipePack
-  id: EconomyBoardsStatic
+  id: CommandBoardsStatic
   recipes:
   - SalaryConsoleCircuitboard
-  - EconomicRecordsConsoleCircuitboard
