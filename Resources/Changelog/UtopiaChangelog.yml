@@ -265,12 +265,9 @@ Entries:
       - {message: 'Добавил вам CQC и Свиток Спящего Карпа вам, благодарите', type: Add}
     time: '2026-08-15T09:58:43Z'
     id: 42
-  - author: (ваш сикей/никнейм в гитхабе)
+  - author: KashRas2
     changes:
-      - {message: Добавлено веселье!, type: Add}
       - {message: Убрано веселье!, type: Remove}
-      - {message: Изменено веселье!, type: Tweak}
-      - {message: Исправлено веселье!, type: Fix}
     time: '2026-08-15T13:07:13Z'
     id: 43
   - author: M&B
@@ -280,7 +277,7 @@ Entries:
     id: 44
   - author: M&B
     changes:
-      - {message: 'Самый важный трек для лобби, который мог существовать для УтопияСтейшн',
+      - {message: 'Самый важный трек для лобби, который мог существовать для Утопия Стейшн',
         type: Add}
     time: '2026-08-24T12:23:44Z'
     id: 45
