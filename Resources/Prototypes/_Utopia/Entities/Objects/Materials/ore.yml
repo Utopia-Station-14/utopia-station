@@ -1,5 +1,3 @@
-# Copper and Lead port
-
 - type: entity
   parent: OreBase
   id: UtopiaCopperOre
@@ -72,6 +70,74 @@
 - type: entity
   parent: UtopiaLeadOre
   id: UtopiaLeadOre1
+  suffix: Single
+  components:
+  - type: Stack
+    count: 1
+
+- type: entity
+  parent: OreBase
+  id: UtopiaBluespaceCrystalOre
+  suffix: Full
+  name: bluespace ore
+  components:
+  - type: Stack
+    stackType: BluespaceCrystalOre
+  - type: Sprite
+    sprite: _Utopia/Objects/Materials/ore.rsi
+    layers:
+    - state: bluespace
+  - type: Material
+  - type: PhysicalComposition
+    materialComposition:
+      RawBluespaceCrystal: 100
+  - type: Extractable
+    grindableSolutionName: bluespace
+  - type: Item
+    heldPrefix: bluespace
+  - type: Tag
+    tags:
+      - Ore
+      - UtopiaBluespaceOre
+
+- type: entity
+  parent: UtopiaBluespaceCrystalOre
+  id: UtopiaBluespaceCrystalOre1
+  name: bluespace ore
+  suffix: Single
+  components:
+  - type: Stack
+    count: 1
+
+- type: entity
+  parent: OreBase
+  id: UtopiaRedspaceCrystalOre
+  suffix: Full
+  name: redspace ore
+  components:
+  - type: Stack
+    stackType: RedspaceCrystalOre
+  - type: Sprite
+    sprite: _Utopia/Objects/Materials/ore.rsi
+    layers:
+    - state: redspace
+  - type: Material
+  - type: PhysicalComposition
+    materialComposition:
+      RawRedspaceCrystal: 100
+  - type: Extractable
+    grindableSolutionName: redspace
+  - type: Item
+    heldPrefix: redspace
+  - type: Tag
+    tags:
+      - Ore
+      - UtopiaRedspaceOre
+
+- type: entity
+  parent: UtopiaRedspaceCrystalOre
+  id: UtopiaRedspaceCrystalOre1
+  name: redspace ore
   suffix: Single
   components:
   - type: Stack

@@ -9,7 +9,7 @@ namespace Content.Shared._Utopia.Economy;
 
 public abstract partial class SharedEconomySystem : EntitySystem
 {
-    [Dependency] protected readonly IRobustRandom Random = default!;
+    [Dependency] protected IRobustRandom Random = default!;
 
     protected readonly List<BankAccount> Accounts = new();
 

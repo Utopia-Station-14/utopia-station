@@ -3,7 +3,6 @@
   entityMask:
     AsteroidRock: UtopiaAsteroidRockCopper
     WallRock: UtopiaWallRockCopper
-    WallRockBasalt: UtopiaWallRockBasaltCopper
     WallRockChromite: UtopiaWallRockChromiteCopper
     WallRockSand: UtopiaWallRockSandCopper
     WallRockSnow: UtopiaWallRockSnowCopper
@@ -16,8 +15,7 @@
   id: OreLead
   entityMask:
     AsteroidRock: UtopiaAsteroidRockLead
-    WallRock: UtopiaMeteorRockLead
-    WallRockBasalt: UtopiaWallRockBasaltLead
+    WallRock: UtopiaWallRockLead
     WallRockChromite: UtopiaWallRockChromiteLead
     WallRockSand: UtopiaWallRockSandLead
     WallRockSnow: UtopiaWallRockSnowLead
@@ -25,3 +23,29 @@
   minGroupSize: 10
   maxGroupSize: 15
   radius: 4
+
+- type: biomeMarkerLayer
+  id: OreBluespace
+  entityMask:
+    AsteroidRock: UtopiaAsteroidRockBluespace
+    WallRock: UtopiaWallRockBluespace
+    WallRockChromite: UtopiaWallRockChromiteBluespace
+    WallRockSand: UtopiaWallRockSandBluespace
+    WallRockSnow: UtopiaWallRockSnowBluespace
+  maxCount: 6
+  minGroupSize: 1
+  maxGroupSize: 2
+  radius: 3
+
+- type: biomeMarkerLayer
+  id: OreRedspace
+  entityMask:
+    AsteroidRock: UtopiaAsteroidRockRedspace
+    WallRock: UtopiaWallRockRedspace
+    WallRockChromite: UtopiaWallRockChromiteRedspace
+    WallRockSand: UtopiaWallRockSandRedspace
+    WallRockSnow: UtopiaWallRockSnowRedspace
+  maxCount: 6
+  minGroupSize: 1
+  maxGroupSize: 2
+  radius: 3

@@ -1,0 +1,12 @@
+ent-ActionGeneticFireball = Огненное дыхание
+    .desc = { "" }
+ent-ActionAdrenalineRush = Адреналиновый выброс
+    .desc = Вызывает мощный выброс адреналина.
+ent-ActionGeneticIceball = Криокинез
+    .desc = Выпустите заряд льда из кончиков пальцев.
+ent-ActionInkSpurt = Чернильный выброс
+    .desc = Выбросьте позади себя лужу скользких чёрных чернил.
+ent-ActionOpticBlast = Оптический заряд
+    .desc = { "" }
+ent-ActionTrichochromaticShift = Трихроматический сдвиг
+    .desc = Измените цвет ваших волос на случайный.

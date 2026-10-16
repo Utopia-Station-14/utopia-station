@@ -1,0 +1,54 @@
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: UtopiaComputerSalaryCircuitboard
+  name: salary console board
+  description: A computer printed circuit board for the salary console.
+  components:
+    - type: Sprite
+      state: cpu_command
+    - type: ComputerBoard
+      prototype: UtopiaComputerSalary
+
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: UtopiaComputerEconomicRecordsCircuitboard
+  name: economic records console board
+  description: A computer printed circuit board for the economic records console.
+  components:
+    - type: Sprite
+      state: cpu_command
+    - type: ComputerBoard
+      prototype: UtopiaComputerEconomicRecords
+
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: UtopiaDnaManipulatorConsoleCircuitboard
+  name: dna scanner console board
+  description: A computer printed circuit board for the dna scanner console.
+  components:
+    - type: Sprite
+      state: cpu_medical
+    - type: ComputerBoard
+      prototype: UtopiaComputerDnaManipulator
+
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: UtopiaComputerShiftScheduleCircuitboard
+  name: shift schedule console board
+  description: A computer printed circuit board for the shift schedule console.
+  components:
+    - type: Sprite
+      state: cpu_command
+    - type: ComputerBoard
+      prototype: UtopiaComputerShiftSchedule
+
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: UtopiaComputerTurbineCircuitboard
+  name: turbine monitoring console board
+  description: A computer printed circuit board for the turbine monitoring console.
+  components:
+    - type: Sprite
+      state: cpu_engineering
+    - type: ComputerBoard
+      prototype: UtopiaComputerTurbine

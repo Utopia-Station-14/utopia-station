@@ -479,10 +479,20 @@ public enum LogType
     /// </summary>
     Instrument = 103,
 
+    /// <summary>
+    /// Events related to players connecting/disconnecting.
+    /// </summary>
+    Connection = 104,
+
+    /// <summary>
+    /// Silicon law changes.
+    /// </summary>
+    SiliconLaw = 105,
+
     // Utopia-Tweak : Grab
     /// <summary>
     /// A player grabbed another player
     /// </summary>
-    Grab = 104
+    Grab = 212
     // Utopia-Tweak : Grab
 }

@@ -2,7 +2,7 @@ using Content.Shared.Atmos;
 using Content.Shared.Construction.Prototypes;
 using Content.Shared.Guidebook;
 using Robust.Shared.GameStates;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Atmos.Piping.Unary.Components
 {
@@ -113,14 +113,14 @@ namespace Content.Shared.Atmos.Piping.Unary.Components
         /// <summary>
         ///     The machine part that affects the heat capacity.
         /// </summary>
-        [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
-        public string MachinePartHeatCapacity = "MatterBin";
+        [DataField]
+        public ProtoId<MachinePartPrototype> MachinePartHeatCapacity = "MatterBin";
 
         /// <summary>
         ///     The machine part that affects the temperature range.
         /// </summary>
-        [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
-        public string MachinePartTemperature = "Laser";
+        [DataField]
+        public ProtoId<MachinePartPrototype> MachinePartTemperature = "Laser";
         // Utopia-Tweak : Machine Parts
     }
 }

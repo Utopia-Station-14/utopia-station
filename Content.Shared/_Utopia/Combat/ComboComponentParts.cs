@@ -31,3 +31,6 @@ public enum ComboWeaponState : sbyte
 {
     State,
 }
+
+[ByRefEvent]
+public record struct GetPerformedAttackTypesEvent(List<CombatAction>? AttackTypes = null, List<WeaponCombatAction>? WAttackTypes = null);

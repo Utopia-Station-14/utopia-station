@@ -4,9 +4,9 @@ using Robust.Shared.Configuration;
 
 namespace Content.Client._Baseline.EntityFilter;
 
-public sealed class BaselineSystem : EntitySystem
+public sealed partial class BaselineSystem : EntitySystem
 {
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
 
     public override void Initialize()
     {

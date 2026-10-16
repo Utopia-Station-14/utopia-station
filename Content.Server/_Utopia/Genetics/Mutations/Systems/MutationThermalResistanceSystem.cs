@@ -1,0 +1,43 @@
+using Content.Server._Utopia.Genetics.Mutations.Components;
+
+namespace Content.Server._Utopia.Genetics.Mutations.Systems;
+
+using Content.Shared.Temperature;
+
+public sealed partial class MutationThermalResistanceSystem : EntitySystem
+{
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<MutationThermalResistanceComponent, GetThermalInsulationEvent>(OnGetInsulation);
+        SubscribeLocalEvent<MutationThermalResistanceComponent, BeforeHeatExchangeEvent>(OnModifyTemperature);
+    }
+
+    private void OnGetInsulation(Entity<MutationThermalResistanceComponent> ent, ref GetThermalInsulationEvent args)
+    {
+        var coefficient = args.TemperatureDelta < 0
+            ? ent.Comp.CoolingCoefficient
+            : ent.Comp.HeatingCoefficient;
+
+        args.Coefficient *= coefficient;
+    }
+
+    private void OnModifyTemperature(Entity<MutationThermalResistanceComponent> ent, ref BeforeHeatExchangeEvent args)
+    {
+        var ev = new GetThermalInsulationEvent(1f)
+        {
+            TemperatureDelta = args.HeatTransferModifier
+        };
+
+        RaiseLocalEvent(ent.Owner, ref ev);
+        args.HeatTransferModifier *= ev.Coefficient;
+    }
+}
+
+[ByRefEvent]
+public struct GetThermalInsulationEvent(float coefficient)
+{
+    public float Coefficient = coefficient;
+    public float TemperatureDelta = 0f;
+}

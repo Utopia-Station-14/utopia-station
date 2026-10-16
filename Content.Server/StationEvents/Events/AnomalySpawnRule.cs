@@ -1,13 +1,18 @@
-﻿using Content.Server.Anomaly;
+﻿using System.Linq;
+using Content.Server.Anomaly;
 using Content.Server.StationEvents.Components;
+using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Station.Components;
+using Robust.Shared.Random;
 
 namespace Content.Server.StationEvents.Events;
 
-public sealed class AnomalySpawnRule : StationEventSystem<AnomalySpawnRuleComponent>
+public sealed partial class AnomalySpawnRule : StationEventSystem<AnomalySpawnRuleComponent>
 {
-    [Dependency] private readonly AnomalySystem _anomaly = default!;
+    [Dependency] private AnomalySystem _anomaly = default!;
+    [Dependency] private CESharedZLevelsSystem _zLevels = default!; // Utopia-Tweak : ZLevels
+    [Dependency] private IRobustRandom _random = default!; // Utopia-Tweak : ZLevels
 
     protected override void Added(EntityUid uid, AnomalySpawnRuleComponent component, GameRuleComponent gameRule, GameRuleAddedEvent args)
     {
@@ -36,10 +41,14 @@ public sealed class AnomalySpawnRule : StationEventSystem<AnomalySpawnRuleCompon
         if (grid is null)
             return;
 
-        var amountToSpawn = 1;
-        for (var i = 0; i < amountToSpawn; i++)
-        {
-            _anomaly.SpawnOnRandomGridLocation(grid.Value, component.AnomalySpawnerPrototype);
-        }
+        // Utopia-Tweak : ZLevels
+        var mlGrids = _zLevels.GetTargetGrids(grid.Value);
+        if (mlGrids.Count == 0)
+            return;
+
+        var targetGrid = mlGrids.ElementAt(_random.Next(mlGrids.Count));
+
+        _anomaly.SpawnOnRandomGridLocation(targetGrid, component.AnomalySpawnerPrototype);
+        // Utopia-Tweak : ZLevels
     }
 }

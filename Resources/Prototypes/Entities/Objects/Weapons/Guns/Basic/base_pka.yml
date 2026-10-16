@@ -27,6 +27,9 @@
     projectileSpeed: 25
     showGunEffect: true # Utopia-Tweak : Gun Shoot Effect
   - type: AmmoCounter
+  - type: CustomSpriteAmmoCounter
+    loadedAmmoSprite: Interface/ItemStatus/PKA/not_spent.png
+    spentAmmoSprite: Interface/ItemStatus/PKA/spent.png
   - type: Appearance
   - type: GenericVisualizer
     visuals:

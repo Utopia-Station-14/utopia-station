@@ -8,9 +8,9 @@ namespace Content.Shared.RCD.Systems;
 
 public sealed partial class RCDSystem : EntitySystem
 {
-    [Dependency] private readonly SharedAtmosPipeLayersSystem _pipeLayersSystem = default!;
-    [Dependency] private readonly IEntityManager _entityManager = default!;
-    [Dependency] private readonly PipeRestrictOverlapSystem _pipeOverlap = default!;
+    [Dependency] private SharedAtmosPipeLayersSystem _pipeLayersSystem = default!;
+    [Dependency] private IEntityManager _entityManager = default!;
+    [Dependency] private PipeRestrictOverlapSystem _pipeOverlap = default!;
 
     private void OnStartup(EntityUid uid, RCDComponent component, ComponentStartup args)
     {
@@ -117,7 +117,7 @@ public sealed partial class RCDSystem : EntitySystem
             component.CachedPrototype?.MirrorPrototype != null &&
             component.ProtoId.Id != component.CachedPrototype?.MirrorPrototype)
         {
-            component.CachedPrototype = _protoManager.Index(component.ProtoId);
+            component.CachedPrototype = ProtoMan.Index(component.ProtoId);
         }
     }
 

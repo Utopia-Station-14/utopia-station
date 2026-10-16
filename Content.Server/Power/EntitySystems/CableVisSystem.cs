@@ -9,11 +9,11 @@ using Robust.Shared.Map.Components;
 namespace Content.Server.Power.EntitySystems
 {
     [UsedImplicitly]
-    public sealed class CableVisSystem : EntitySystem
+    public sealed partial class CableVisSystem : EntitySystem
     {
-        [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-        [Dependency] private readonly NodeContainerSystem _nodeContainer = default!;
-        [Dependency] private readonly SharedMapSystem _map = default!;
+        [Dependency] private SharedAppearanceSystem _appearance = default!;
+        [Dependency] private NodeContainerSystem _nodeContainer = default!;
+        [Dependency] private SharedMapSystem _map = default!;
 
         public override void Initialize()
         {
@@ -40,7 +40,14 @@ namespace Content.Server.Power.EntitySystems
                     continue;
 
                 var otherTransform = Transform(reachable.Owner);
-                var otherTile = _map.TileIndicesFor((transform.GridUid.Value, grid), otherTransform.Coordinates);
+
+                // Utopia-Tweak-start
+                if (!TryComp<MapGridComponent>(otherTransform.GridUid, out var otherGrid))
+                    continue;
+
+                var otherTile = _map.TileIndicesFor((otherTransform.GridUid.Value, otherGrid), otherTransform.Coordinates);
+                // Utopia-Tweak-end
+
                 var diff = otherTile - tile;
 
                 mask |= diff switch

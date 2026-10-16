@@ -1,0 +1,76 @@
+- type: entity
+  id: MachineExplosionBeacon
+  parent: [ BaseMachinePowered, SmallConstructibleMachine ]
+  name: explosion beacon
+  description: Measures nearby explosions and reports parameters to a linked console.
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: Structures/Machines/rndpointsource.rsi
+    state: rndpointsource-icon
+  - type: Physics
+    bodyType: Static
+  - type: Transform
+    anchored: true
+  - type: ApcPowerReceiver
+    powerLoad: 50
+  - type: PowerState
+    idlePowerDraw: 50
+    workingPowerDraw: 500
+  - type: ExplosionBeacon
+  - type: DeviceNetwork
+    deviceNetId: Wired
+  - type: DeviceList
+  - type: DeviceLinkSink
+    ports:
+      - ExplosionBeaconReceiver
+  - type: PointLight
+    radius: 1.2
+    energy: 2.5
+    color: "#e67e22"
+
+- type: entity
+  id: ComputerExplosionBeaconConsole
+  parent: BaseComputerAiAccess
+  name: explosion beacon console
+  description: Displays target explosion parameters from a linked explosion beacon. Link with a multitool.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: artifact
+    - map: ["computerLayerKeys"]
+      state: tech_key
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: ExplosionBeaconConsole
+  - type: DeviceList
+  - type: DeviceNetwork
+    deviceNetId: Wired
+  - type: DeviceLinkSource
+    range: 65
+    ports:
+      - ExplosionBeaconConsoleSender
+  - type: ActivatableUI
+    key: enum.ExplosionBeaconConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.ExplosionBeaconConsoleUiKey.Key:
+        type: ExplosionBeaconConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: ApcPowerReceiver
+    powerLoad: 50
+  - type: PowerState
+    idlePowerDraw: 50
+    workingPowerDraw: 300
+  - type: AccessReader
+    access: [["Research"]]
+  - type: PointLight
+    radius: 1.5
+    energy: 3.0
+    color: "#e67e22"

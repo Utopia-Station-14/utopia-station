@@ -118,10 +118,10 @@
   - FauxTileMowedAstroGrass
   - FauxTileJungleAstroGrass
   - FauxTileDarkAstroGrass
-  - FauxTileLightAstroGrass
   - FauxTileAstroIce
   - FauxTileAstroSnow
   - FauxTileAstroAsteroidSand
+  - FauxTileAstroAsteroidSandBorderless
   - FauxTileDesertAstroSand
   - FauxTileAstroIronsand
   - FauxTileAstroIronsandBorderless
@@ -157,7 +157,7 @@
 #   tier: 2
 #   cost: 5000
 #   recipeUnlocks:
-#   - BorgModuleAdvancedChemical
+#   - BorgModuleAdvancedTopical
 #   - AdvancedJetInjector
 # Utopia-Tweak : Research
 
@@ -174,6 +174,7 @@
   - AdvMopItem
   - MegaSprayBottle
   - BorgModuleAdvancedCleaning
+  - TrashBagHolding
   # Utopia-Tweak : Research
   position: 3,-1
   technologyPrerequisites:

@@ -1,0 +1,43 @@
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: MobFleshJared
+  id: UtopiaPolyFleshJared
+  components:
+  - type: StutteringAccent
+    matchRandomProb: 0.1
+    fourRandomProb: 0
+    threeRandomProb: 0
+    cutRandomProb: 0
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: MobFleshClamp
+  id: UtopiaPolyFleshClamp
+  components:
+  - type: StutteringAccent
+    matchRandomProb: 0.1
+    fourRandomProb: 0
+    threeRandomProb: 0
+    cutRandomProb: 0
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: MobFleshLover
+  id: UtopiaPolyFleshLover
+  components:
+  - type: StutteringAccent
+    matchRandomProb: 0.1
+    fourRandomProb: 0
+    threeRandomProb: 0
+    cutRandomProb: 0
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: MobFleshGolem
+  id: UtopiaPolyFleshGolem
+  components:
+  - type: StutteringAccent
+    matchRandomProb: 0.1
+    fourRandomProb: 0
+    threeRandomProb: 0
+    cutRandomProb: 0

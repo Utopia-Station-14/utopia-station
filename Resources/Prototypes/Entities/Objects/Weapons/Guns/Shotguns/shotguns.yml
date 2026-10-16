@@ -30,6 +30,9 @@
     soundEmpty:
       path: /Audio/Weapons/Guns/Empty/empty.ogg
     showGunEffect: true # Utopia-Tweak : Gun Shoot Effect
+  - type: CustomSpriteAmmoCounter
+    loadedAmmoSprite: Interface/ItemStatus/Shotgun_Shells/not_spent.png
+    spentAmmoSprite: Interface/ItemStatus/Shotgun_Shells/spent.png
   - type: BallisticAmmoProvider
     whitelist:
       tags:
@@ -68,6 +71,9 @@
     - Back
     - suitStorage
   - type: AmmoCounter
+  - type: CustomSpriteAmmoCounter
+    loadedAmmoSprite: Interface/ItemStatus/Shotgun_Shells/not_spent.png
+    spentAmmoSprite: Interface/ItemStatus/Shotgun_Shells/spent.png
   - type: GunRequiresWield #remove when inaccuracy on spreads is fixed
   - type: Gun
     fireRate: 2

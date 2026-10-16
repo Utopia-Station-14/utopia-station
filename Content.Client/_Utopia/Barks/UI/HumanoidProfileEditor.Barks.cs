@@ -3,6 +3,7 @@ using System.Numerics;
 using Content.Client._Utopia.Barks;
 using Content.Client._Utopia.SpeechBarks;
 using Content.Client.UserInterface.Controls;
+using Content.Shared._Utopia.CCVar;
 using Content.Shared._Utopia.SpeechBarks;
 
 namespace Content.Client.Lobby.UI;
@@ -55,6 +56,34 @@ public sealed partial class HumanoidProfileEditor
         _barkWindow.OnClose += () => _barkWindow = null;
 
         _barkWindow.OpenCentered();
+    }
+
+    private void SetBarkProto(string prototype)
+    {
+        Profile = Profile?.WithBarkProto(prototype);
+        ReloadPreview();
+        SetDirty();
+    }
+
+    private void SetBarkPitch(float pitch)
+    {
+        Profile = Profile?.WithBarkPitch(Math.Clamp(pitch, _cfgManager.GetCVar(UCCVars.BarksMinPitch), _cfgManager.GetCVar(UCCVars.BarksMaxPitch)));
+        ReloadPreview();
+        SetDirty();
+    }
+
+    private void SetBarkMinVariation(float variation)
+    {
+        Profile = Profile?.WithBarkMinVariation(Math.Clamp(variation, _cfgManager.GetCVar(UCCVars.BarksMinDelay), Profile.Bark.MaxVar));
+        ReloadPreview();
+        SetDirty();
+    }
+
+    private void SetBarkMaxVariation(float variation)
+    {
+        Profile = Profile?.WithBarkMaxVariation(Math.Clamp(variation, Profile.Bark.MinVar, _cfgManager.GetCVar(UCCVars.BarksMaxDelay)));
+        ReloadPreview();
+        SetDirty();
     }
 
     private void OnBarkSelected(string barkId)

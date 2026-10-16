@@ -12,9 +12,9 @@ namespace Content.Client._Utopia.Pulling.Systems;
 
 public sealed partial class ClientPullingSystem : PullingSystem
 {
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly AudioSystem _audio = default!;
-    [Dependency] private readonly ColorFlashEffectSystem _color = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private AudioSystem _audio = default!;
+    [Dependency] private ColorFlashEffectSystem _color = default!;
 
     public override bool TryIncreaseGrabStage(Entity<PullerComponent> puller, Entity<PullableComponent> pullable)
     {
@@ -34,7 +34,7 @@ public sealed partial class ClientPullingSystem : PullingSystem
         var stageName = targetStage.ToString().ToLower();
         var targetName = Identity.Entity(pullable, EntityManager);
 
-        _popup.PopupPredicted(
+        _popup.PopupEntity(
             Loc.GetString($"grab-increase-{stageName}-popup-self", ("target", targetName)),
             Loc.GetString($"grab-increase-{stageName}-popup-others", ("target", targetName), ("puller", targetName)),
             pullable,
@@ -61,7 +61,7 @@ public sealed partial class ClientPullingSystem : PullingSystem
         var stageName = targetStage.ToString().ToLower();
         var targetName = Identity.Entity(pullable, EntityManager);
 
-        _popup.PopupPredicted(
+        _popup.PopupEntity(
             Loc.GetString($"grab-lower-{stageName}-popup-self", ("target", targetName)),
             Loc.GetString($"grab-lower-{stageName}-popup-others", ("target", targetName), ("puller", targetName)),
             pullable,

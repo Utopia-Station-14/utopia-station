@@ -1,3 +1,4 @@
+using System.Globalization;
 using Content.Server.Atmos.Components;
 using Content.Server.Decals;
 using Content.Shared.Atmos;
@@ -32,8 +33,8 @@ public sealed partial class AtmosphereSystem
     /// </summary>
     private static readonly ProtoId<SoundCollectionPrototype> DefaultHotspotSounds = "AtmosHotspot";
 
-    [Dependency] private readonly DecalSystem _decalSystem = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private DecalSystem _decalSystem = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
     /// <summary>
     /// Number of cycles the hotspot system must process before it can play another sound
@@ -87,8 +88,7 @@ public sealed partial class AtmosphereSystem
         if (tile.Hotspot.Temperature < Atmospherics.FireMinimumTemperatureToExist ||
             tile.Hotspot.Volume <= 1f ||
             tile.Air == null ||
-            tile.Air.GetMoles(Gas.Oxygen) < 0.5f ||
-            tile.Air.GetMoles(Gas.Plasma) < 0.5f && tile.Air.GetMoles(Gas.Tritium) < 0.5f && tile.Air.GetMoles(Gas.Hydrogen) < 0.5f && tile.Air.GetMoles(Gas.HyperNoblium) > 5f) // Utopia-Tweak : Gases
+            !IsMixtureIgnitable(tile.Air))
         {
             tile.Hotspot = new Hotspot();
             InvalidateVisuals(ent, tile);
@@ -201,23 +201,16 @@ public sealed partial class AtmosphereSystem
         if (tile.Air == null)
             return;
 
-        var oxygen = tile.Air.GetMoles(Gas.Oxygen);
-
-        if (oxygen < 0.5f)
+        if (!IsMixtureOxidizer(tile.Air))
             return;
 
-        var plasma = tile.Air.GetMoles(Gas.Plasma);
-        var tritium = tile.Air.GetMoles(Gas.Tritium);
-        // Utopia-Tweak : Gases
-        var hydrogen = tile.Air.GetMoles(Gas.Hydrogen);
-        var hypernoblium = tile.Air.GetMoles(Gas.HyperNoblium);
-        // Utopia-Tweak : Gases
+        var isFlammable = IsMixtureFuel(tile.Air);
 
         if (tile.Hotspot.Valid)
         {
             if (soh)
             {
-                if (plasma > 0.5f && hypernoblium < 5f || tritium > 0.5f && hypernoblium < 5f || hydrogen > 0.5f && hypernoblium < 5f) // Utopia-Tweak : Gases
+                if (isFlammable)
                 {
                     tile.Hotspot.Temperature = MathF.Max(tile.Hotspot.Temperature, exposedTemperature);
                     tile.Hotspot.Volume = MathF.Max(tile.Hotspot.Volume, exposedVolume);
@@ -227,13 +220,14 @@ public sealed partial class AtmosphereSystem
             return;
         }
 
-        if ((exposedTemperature > Atmospherics.PlasmaMinimumBurnTemperature) && (plasma > 0.5f && hypernoblium < 5f || tritium > 0.5f && hypernoblium < 5f || hydrogen > 0.5f && hypernoblium < 5f)) // Utopia-Tweak : Gases
+        if (exposedTemperature > Atmospherics.PlasmaMinimumBurnTemperature && isFlammable)
         {
             if (sparkSourceUid.HasValue)
             {
                 _adminLog.Add(LogType.Flammable,
                     LogImpact.High,
-                    $"Heat/spark of {ToPrettyString(sparkSourceUid.Value)} caused atmos ignition of gas: {tile.Air.Temperature.ToString():temperature}K - {oxygen}mol Oxygen, {plasma}mol Plasma, {tritium}mol Tritium, {hydrogen}mol Hydrogen"); // Utopia-Tweak : Gases
+                    $"Heat/spark of {ToPrettyString(sparkSourceUid.Value)} caused atmos ignition of gas: " +
+                    $"{tile.Air.ToPrettyString()}");
             }
 
             tile.Hotspot = new Hotspot

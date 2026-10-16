@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._Utopia.Atmos;
 using Content.Client.Atmos.Components;
 using Content.Client.Atmos.EntitySystems;
 using Content.Shared.Atmos;
@@ -15,18 +16,19 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Robust.Shared.Maths;
 
 namespace Content.Client.Atmos.Overlays
 {
-    public sealed class GasTileOverlay : Overlay
+    public sealed partial class GasTileOverlay : Overlay
     {
         private static readonly ProtoId<ShaderPrototype> UnshadedShader = "unshaded";
 
         private readonly IEntityManager _entManager;
-        private readonly IMapManager _mapManager;
         private readonly SharedAtmosphereSystem _atmosphereSystem;
         private readonly SharedMapSystem _mapSystem;
         private readonly SharedTransformSystem _xformSys;
+        private readonly GasVisualsSystem _gasVisuals; // Utopia-Tweak : Toxicology
 
         public override OverlaySpace Space => OverlaySpace.WorldSpaceEntities | OverlaySpace.WorldSpaceBelowWorld;
         private readonly ShaderInstance _shader;
@@ -35,13 +37,14 @@ namespace Content.Client.Atmos.Overlays
         private readonly float[] _timer;
         private readonly float[][] _frameDelays;
         private readonly int[] _frameCounter;
+        private readonly string[] _gasIds; // Utopia-Tweak : Toxicology
 
         // TODO combine textures into a single texture atlas.
         private readonly Texture[][] _frames;
 
         // Fire overlays
         private const int FireStates = 3;
-        private const string FireRsiPath = "/Textures/Effects/fire.rsi";
+        private const string FireRsiPath = "/Textures/Effects/fire_greyscale.rsi"; // Utopia-Tweak : Toxicology
 
         private readonly float[] _fireTimer = new float[FireStates];
         private readonly float[][] _fireFrameDelays = new float[FireStates][];
@@ -50,14 +53,14 @@ namespace Content.Client.Atmos.Overlays
 
         private int _gasCount;
 
-        public const int GasOverlayZIndex = (int) Shared.DrawDepth.DrawDepth.Effects; // Under ghosts, above mostly everything else
+        public const int GasOverlayZIndex = (int)Shared.DrawDepth.DrawDepth.Effects; // Under ghosts, above mostly everything else
 
         public GasTileOverlay(GasTileOverlaySystem system, IEntityManager entManager, IResourceCache resourceCache, IPrototypeManager protoMan, SpriteSystem spriteSys, SharedTransformSystem xformSys)
         {
             _entManager = entManager;
-            _mapManager = IoCManager.Resolve<IMapManager>();
             _atmosphereSystem = entManager.System<SharedAtmosphereSystem>();
             _mapSystem = entManager.System<SharedMapSystem>();
+            _gasVisuals = entManager.System<GasVisualsSystem>();
             _xformSys = xformSys;
             _shader = protoMan.Index(UnshadedShader).Instance();
             ZIndex = GasOverlayZIndex;
@@ -67,21 +70,14 @@ namespace Content.Client.Atmos.Overlays
             _frameDelays = new float[_gasCount][];
             _frameCounter = new int[_gasCount];
             _frames = new Texture[_gasCount][];
+            _gasIds = new string[_gasCount];
 
             for (var i = 0; i < _gasCount; i++)
             {
                 var gasPrototype = _atmosphereSystem.GetGas(system.VisibleGasId[i]);
+                _gasIds[i] = gasPrototype.ID;
 
-                SpriteSpecifier overlay;
-
-                if (!string.IsNullOrEmpty(gasPrototype.GasOverlaySprite) && !string.IsNullOrEmpty(gasPrototype.GasOverlayState))
-                    overlay = new SpriteSpecifier.Rsi(new (gasPrototype.GasOverlaySprite), gasPrototype.GasOverlayState);
-                else if (!string.IsNullOrEmpty(gasPrototype.GasOverlayTexture))
-                    overlay = new SpriteSpecifier.Texture(new (gasPrototype.GasOverlayTexture));
-                else
-                    continue;
-
-                switch (overlay)
+                switch (gasPrototype.GasOverlaySprite)
                 {
                     case SpriteSpecifier.Rsi animated:
                         var rsi = resourceCache.GetResource<RSIResource>(animated.RsiPath).RSI;
@@ -113,6 +109,7 @@ namespace Content.Client.Atmos.Overlays
                 _fireFrameCounter[i] = 0;
             }
         }
+
         protected override void FrameUpdate(FrameEventArgs args)
         {
             base.FrameUpdate(args);
@@ -168,7 +165,9 @@ namespace Content.Client.Atmos.Overlays
                 _shader,
                 overlayQuery,
                 xformQuery,
-                _xformSys);
+                _xformSys,
+                _gasVisuals,
+                _gasIds);
 
             var mapUid = _mapSystem.GetMapOrInvalid(args.MapId);
 
@@ -178,8 +177,7 @@ namespace Content.Client.Atmos.Overlays
             if (args.Space != OverlaySpace.WorldSpaceEntities)
                 return;
 
-            // TODO: WorldBounds callback.
-            _mapManager.FindGridsIntersecting(args.MapId, args.WorldAABB, ref gridState,
+            _mapSystem.FindGridsIntersecting(args.MapId, args.WorldAABB, ref gridState,
                 static (EntityUid uid, MapGridComponent grid,
                     ref (Box2Rotated WorldBounds,
                         DrawingHandleWorld drawHandle,
@@ -191,22 +189,24 @@ namespace Content.Client.Atmos.Overlays
                         ShaderInstance shader,
                         EntityQuery<GasTileOverlayComponent> overlayQuery,
                         EntityQuery<TransformComponent> xformQuery,
-                        SharedTransformSystem xformSys) state) =>
+                        SharedTransformSystem xformSys,
+                        GasVisualsSystem gasVisuals,
+                        string[] gasIds) state) =>
                 {
                     if (!state.overlayQuery.TryGetComponent(uid, out var comp) ||
                         !state.xformQuery.TryGetComponent(uid, out var gridXform))
-                        {
-                            return true;
-                        }
+                    {
+                        return true;
+                    }
 
                     var (_, _, worldMatrix, invMatrix) = state.xformSys.GetWorldPositionRotationMatrixWithInv(gridXform);
                     state.drawHandle.SetTransform(worldMatrix);
                     var floatBounds = invMatrix.TransformBox(state.WorldBounds).Enlarged(grid.TileSize);
                     var localBounds = new Box2i(
-                        (int) MathF.Floor(floatBounds.Left),
-                        (int) MathF.Floor(floatBounds.Bottom),
-                        (int) MathF.Ceiling(floatBounds.Right),
-                        (int) MathF.Ceiling(floatBounds.Top));
+                        (int)MathF.Floor(floatBounds.Left),
+                        (int)MathF.Floor(floatBounds.Bottom),
+                        (int)MathF.Ceiling(floatBounds.Right),
+                        (int)MathF.Ceiling(floatBounds.Top));
 
                     // Currently it would be faster to group drawing by gas rather than by chunk, but if the textures are
                     // ever moved to a single atlas, that should no longer be the case. So this is just grouping draw calls
@@ -230,7 +230,9 @@ namespace Content.Client.Atmos.Overlays
                             {
                                 var opacity = gas.Opacity[i];
                                 if (opacity > 0)
+                                {
                                     state.drawHandle.DrawTexture(state.frames[i][state.frameCounter[i]], tilePosition, Color.White.WithAlpha(opacity));
+                                }
                             }
                         }
                     }
@@ -252,7 +254,53 @@ namespace Content.Client.Atmos.Overlays
 
                             var fireState = gas.FireState - 1;
                             var texture = state.fireFrames[fireState][state.fireFrameCounter[fireState]];
-                            state.drawHandle.DrawTexture(texture, index);
+
+                            // Utopia-Tweak : Toxicology
+                            var fireColor = Color.White;
+                            float r = 0, g = 0, b = 0, totalWeight = 0;
+                            for (var i = 0; i < state.gasCount; i++)
+                            {
+                                if (gas.Opacity[i] > 0)
+                                {
+                                    var c = state.gasVisuals.GetGasColor(state.gasIds[i], gas.ByteGasTemperature);
+                                    if (c != Color.White)
+                                    {
+                                        float weight = gas.Opacity[i] / 255f;
+                                        r += c.R * weight;
+                                        g += c.G * weight;
+                                        b += c.B * weight;
+                                        totalWeight += weight;
+                                    }
+                                }
+                            }
+
+                            if (totalWeight > 0)
+                            {
+                                fireColor = new Color(r / totalWeight, g / totalWeight, b / totalWeight);
+                            }
+                            else
+                            {
+                                var fallbackCount = 0;
+                                for (var i = 0; i < state.gasCount; i++)
+                                {
+                                    var c = state.gasVisuals.GetGasColor(state.gasIds[i], gas.ByteGasTemperature);
+                                    if (c != Color.White)
+                                    {
+                                        r += c.R;
+                                        g += c.G;
+                                        b += c.B;
+                                        fallbackCount++;
+                                    }
+                                }
+
+                                if (fallbackCount > 0)
+                                {
+                                    fireColor = new Color(r / fallbackCount, g / fallbackCount, b / fallbackCount);
+                                }
+                            }
+
+                            state.drawHandle.DrawTexture(texture, index, fireColor);
+                            // Utopia-Tweak : Toxicology
                         }
                     }
 
@@ -293,7 +341,9 @@ namespace Content.Client.Atmos.Overlays
                         var opacity = atmos.OverlayData.Opacity[i];
 
                         if (opacity > 0)
+                        {
                             handle.DrawTexture(_frames[i][_frameCounter[i]], tilePosition, Color.White.WithAlpha(opacity));
+                        }
                     }
                 }
             }

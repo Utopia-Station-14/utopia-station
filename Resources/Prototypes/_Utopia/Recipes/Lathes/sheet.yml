@@ -6,13 +6,6 @@
     RawCopper: 100
 
 - type: latheRecipe
-  id: SheetCopper30
-  result: UtopiaSheetCopper
-  completetime: 2
-  materials:
-    RawCopper: 3000
-
-- type: latheRecipe
   id: SheetLead
   result: UtopiaSheetLead1
   completetime: 0
@@ -20,8 +13,19 @@
     RawLead: 100
 
 - type: latheRecipe
-  id: SheetLead30
-  result: UtopiaSheetLead
-  completetime: 2
+  id: MaterialBluespaceCrystal
+  result: UtopiaMaterialBluespaceCrystal1
+  applyMaterialDiscount: false
+  maxProductionAmount: 1
+  completetime: 1
   materials:
-    RawLead: 3000
+    RawBluespaceCrystal: 1000
+
+- type: latheRecipe
+  id: MaterialRedspaceCrystal
+  result: UtopiaMaterialRedspaceCrystal1
+  applyMaterialDiscount: false
+  maxProductionAmount: 1
+  completetime: 1
+  materials:
+    RawRedspaceCrystal: 1000

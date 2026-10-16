@@ -1,0 +1,9 @@
+<ui:RadialMenu xmlns="https://spacestation14.io"
+               xmlns:ui="clr-namespace:Content.Client.UserInterface.Controls"
+               MinSize="450 450">
+
+    <ui:RadialContainer Name="Main"
+                        VerticalExpand="True"
+                        HorizontalExpand="True"
+                        InitialRadius="100"/>
+</ui:RadialMenu>

@@ -173,4 +173,13 @@ public sealed partial class StaminaComponent : Component
     public Vector2 StartOffset = Vector2.Zero;
 
     #endregion
+
+    // Utopia-Tweak : Genetics
+    /// <summary>
+    /// A dictionary of active stamina drains, with the key being the source of the drain,
+    /// DrainRate how much it changes per tick, and ModifiesSpeed if it should slow down the user.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public Dictionary<EntityUid, (float DrainRate, bool ModifiesSpeed)> ActiveDrains = new();
+    // Utopia-Tweak : Genetics
 }

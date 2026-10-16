@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Shared.CCVar;
+using Content.Shared.CombatMode;
 using Content.Shared.Movement.Components;
 using Robust.Shared;
 using Robust.Shared.Configuration;
@@ -12,16 +13,17 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared.Movement.Systems;
 
-public abstract class SharedMobCollisionSystem : EntitySystem
+public abstract partial class SharedMobCollisionSystem : EntitySystem
 {
-    [Dependency] protected readonly IConfigurationManager CfgManager = default!;
-    [Dependency] private   readonly IRobustRandom _random = default!;
-    [Dependency] private   readonly MovementSpeedModifierSystem _moveMod = default!;
-    [Dependency] protected readonly SharedPhysicsSystem Physics = default!;
-    [Dependency] private   readonly SharedTransformSystem _xformSystem = default!;
+    [Dependency] protected IConfigurationManager CfgManager = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private MovementSpeedModifierSystem _moveMod = default!;
+    [Dependency] protected SharedPhysicsSystem Physics = default!;
+    [Dependency] private SharedTransformSystem _xformSystem = default!;
+    [Dependency] private SharedCombatModeSystem _combat = default!; // Utopia-Tweak : MobCollision
 
-    protected EntityQuery<MobCollisionComponent> MobQuery;
-    protected EntityQuery<PhysicsComponent> PhysicsQuery;
+    [Dependency] protected EntityQuery<MobCollisionComponent> MobQuery = default!;
+    [Dependency] protected EntityQuery<PhysicsComponent> PhysicsQuery = default!;
 
     /// <summary>
     /// <see cref="CCVars.MovementPushingCap"/>
@@ -64,8 +66,6 @@ public abstract class SharedMobCollisionSystem : EntitySystem
             }, true);
         Subs.CVar(CfgManager, CCVars.MovementPushMassCap, val => _massDiffCap = val, true);
 
-        MobQuery = GetEntityQuery<MobCollisionComponent>();
-        PhysicsQuery = GetEntityQuery<PhysicsComponent>();
         SubscribeAllEvent<MobCollisionMessage>(OnCollision);
         SubscribeLocalEvent<MobCollisionComponent, RefreshMovementSpeedModifiersEvent>(OnMoveModifier);
 
@@ -269,6 +269,16 @@ public abstract class SharedMobCollisionSystem : EntitySystem
             // This is also so we don't have to trigger the speed-cap above.
             // Maybe we just do speedcap and dump this? Though it's less configurable and the cap is just there for cheaters.
             var penDepth = Math.Clamp(0.7f - diff.Length(), 0f, _penCap);
+
+            // Utopia-Tweak : MobCollision
+            var selfCombat = _combat.IsInCombatMode(entity.Owner);
+            var otherCombat = _combat.IsInCombatMode(other);
+
+            if (selfCombat || otherCombat)
+            {
+                penDepth = _penCap;
+            }
+            // Utopia-Tweak : MobCollision
 
             // Sum the strengths so we get pushes back the same amount (impulse-wise, ignoring prediction).
             var mobMovement = penDepth * diff.Normalized() * (entity.Comp1.Strength + otherComp.Strength);

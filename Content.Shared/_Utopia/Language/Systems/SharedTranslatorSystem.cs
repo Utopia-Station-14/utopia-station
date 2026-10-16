@@ -6,10 +6,10 @@ using Content.Shared.Toggleable;
 
 namespace Content.Shared._Utopia.Language;
 
-public abstract class SharedTranslatorSystem : EntitySystem
+public abstract partial class SharedTranslatorSystem : EntitySystem
 {
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
 
     public override void Initialize()
     {

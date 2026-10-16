@@ -1,7 +1,7 @@
 ﻿using Content.Server.Construction.Components;
 using Content.Server.Power.Components;
 using Content.Shared.Construction.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server._Utopia.Power.Components;
 
@@ -23,8 +23,8 @@ public sealed partial class UpgradePowerDrawComponent : Component
     /// <summary>
     /// The machine part that affects the power draw.
     /// </summary>
-    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
-    public string MachinePartPowerDraw = "Capacitor";
+    [DataField]
+    public ProtoId<MachinePartPrototype> MachinePartPowerDraw = "Capacitor";
 
     /// <summary>
     /// The multiplier used for scaling the power draw.

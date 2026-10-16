@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Events;
@@ -14,12 +15,11 @@ using Robust.Shared.Random;
 
 namespace Content.Server.Audio;
 
-public sealed class ContentAudioSystem : SharedContentAudioSystem
+public sealed partial class ContentAudioSystem : SharedContentAudioSystem
 {
-    [Dependency] private readonly AudioSystem _serverAudio = default!;
-    [Dependency] private readonly IRobustRandom _robustRandom = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
+    [Dependency] private AudioSystem _serverAudio = default!;
+    [Dependency] private IRobustRandom _robustRandom = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
 
     private SoundCollectionPrototype? _lobbyMusicCollection = default!;
     private string[]? _lobbyPlaylist;
@@ -36,7 +36,7 @@ public sealed class ContentAudioSystem : SharedContentAudioSystem
             {
                 //Checks to see if the sound collection exists. If it does change it if not defaults to null
                 // as the new _lobbyMusicCollection meaning it wont play anything in the lobby.
-                if(_prototypeManager.TryIndex<SoundCollectionPrototype>(x, out var outputSoundCollection))
+                if(ProtoMan.TryIndex<SoundCollectionPrototype>(x, out var outputSoundCollection))
                 {
                     _lobbyMusicCollection = outputSoundCollection;
                 }
@@ -108,4 +108,67 @@ public sealed class ContentAudioSystem : SharedContentAudioSystem
 
         return playlist;
     }
+
+    // Utopia-Tweak : LobbyMusic-Command
+    public IReadOnlyList<string> GetLobbyMusicTracks()
+    {
+        if (_lobbyMusicCollection == null)
+            return [];
+
+        return _lobbyMusicCollection.PickFiles.Select(x => x.ToString()).ToArray();
+    }
+
+    public bool TrySetLobbyTrack(string query, out string? matchedTrack)
+    {
+        matchedTrack = null;
+
+        if (_lobbyMusicCollection == null)
+            return false;
+
+        var tracks = _lobbyMusicCollection.PickFiles.Select(x => x.ToString()).ToList();
+
+        if (int.TryParse(query, out var index) && index >= 0 && index < tracks.Count)
+        {
+            matchedTrack = tracks[index];
+            SetLobbyPlaylistStartingWith(tracks, index);
+            return true;
+        }
+
+        var exact = tracks.FirstOrDefault(t => t.Equals(query, StringComparison.OrdinalIgnoreCase));
+        if (exact != null)
+        {
+            matchedTrack = exact;
+            SetLobbyPlaylistStartingWith(tracks, tracks.IndexOf(exact));
+            return true;
+        }
+
+        var matches = tracks.Where(t =>
+            Path.GetFileName(t).Contains(query, StringComparison.OrdinalIgnoreCase) ||
+            Path.GetFileNameWithoutExtension(t).Contains(query, StringComparison.OrdinalIgnoreCase)
+        ).ToList();
+
+        if (matches.Count != 1)
+            return false;
+
+        matchedTrack = matches[0];
+        SetLobbyPlaylistStartingWith(tracks, tracks.IndexOf(matches[0]));
+        return true;
+    }
+
+    public bool SkipLobbyTrack()
+    {
+        if (_lobbyPlaylist == null || _lobbyPlaylist.Length <= 1)
+            return false;
+
+        _lobbyPlaylist = _lobbyPlaylist.Skip(1).Concat(_lobbyPlaylist.Take(1)).ToArray();
+        RaiseNetworkEvent(new LobbyPlaylistChangedEvent(_lobbyPlaylist));
+        return true;
+    }
+
+    private void SetLobbyPlaylistStartingWith(List<string> tracks, int startIndex)
+    {
+        _lobbyPlaylist = tracks.Skip(startIndex).Concat(tracks.Take(startIndex)).ToArray();
+        RaiseNetworkEvent(new LobbyPlaylistChangedEvent(_lobbyPlaylist));
+    }
+    // Utopia-Tweak : LobbyMusic-Command
 }

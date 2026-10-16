@@ -1,0 +1,31 @@
+- type: entity
+  parent: PillCanister
+  id: UtopiaPillCanisterMutadone
+  name: pill canister
+  suffix: Mutadone 20u
+  components:
+  - type: Label
+    localizedLabel: pill-label-mutadone-20u
+  - type: StorageFill
+    contents:
+    - id: UtopiaPillMutadone
+      amount: 8
+
+- type: entity
+  parent: Pill
+  id: UtopiaPillMutadone
+  name: pill
+  suffix: Mutadone 20u
+  components:
+  - type: Pill
+    pillType: 8
+  - type: Sprite
+    state: pill17
+  - type: Label
+    localizedLabel: pill-label-mutadone-20u
+  - type: Solution
+    solution:
+        maxVol: 20
+        reagents:
+        - ReagentId: Mutadone
+          Quantity: 20

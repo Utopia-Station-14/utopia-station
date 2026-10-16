@@ -1,0 +1,48 @@
+- type: construction
+  id: HeatExchangingPipe
+  graph: HeatBinary
+  startNode: start
+  targetNode: heradiator
+  category: construction-category-utilities
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+
+- type: construction
+  id: HeatExchangingPipeBend
+  name: construction-recipe-heat-exchanger-bend
+  graph: HeatBinary
+  startNode: start
+  targetNode: hebendradiator
+  category: construction-category-utilities
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+
+- type: construction
+  id: HeatExchangingPipeConnector
+  name: construction-recipe-heat-exchanger-connector
+  graph: HeatBinary
+  startNode: start
+  targetNode: heconnectorradiator
+  category: construction-category-utilities
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+
+- type: construction
+  id: HeatExchangingPipeFourway
+  name: construction-recipe-heat-exchanger-fourway
+  graph: HeatBinary
+  startNode: start
+  targetNode: hefourwayradiator
+  category: construction-category-utilities
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+
+- type: construction
+  id: HeatExchangingPipeTJunction
+  name: construction-recipe-heat-exchanger-tjunc
+  graph: HeatBinary
+  startNode: start
+  targetNode: hetjuncradiator
+  category: construction-category-utilities
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false

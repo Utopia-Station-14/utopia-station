@@ -75,10 +75,10 @@ public sealed partial class ConstructionSystem
         // Utopia-Tweak : Machine Parts
         foreach (var (part, amount) in machineBoard.Requirements)
         {
-            var partProto = _prototypeManager.Index(part);
+            var partProto = ProtoMan.Index(part);
             for (var i = 0; i < amount; i++)
             {
-                var p = EntityManager.SpawnEntity(partProto.StockPartPrototype, xform.Coordinates);
+                var p = Spawn(partProto.StockPartPrototype, xform.Coordinates);
 
                 if (!_container.Insert(p, partContainer))
                     throw new Exception($"Couldn't insert machine part of type {part} to machine with prototype {partProto.StockPartPrototype.ToString() ?? "N/A"}!");

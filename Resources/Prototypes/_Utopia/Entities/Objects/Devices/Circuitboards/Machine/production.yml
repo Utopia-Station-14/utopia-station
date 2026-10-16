@@ -1,6 +1,6 @@
 - type: entity
-  id: UtopiaUniversalPipeDispenserCircuitboard
   parent: BaseMachineCircuitboard
+  id: UtopiaUniversalPipeDispenserCircuitboard
   name: universal pipe dispenser board
   description: A machine circuit board for a universal pipe dispenser. Exists in a single copy.
   components:
@@ -8,5 +8,19 @@
       state: engineering
     - type: MachineBoard
       prototype: UtopiaUniversalPipeDispenser
-      requirements: 
+      requirements:
         Manipulator: 4
+
+- type: entity
+  parent: BaseMachineCircuitboard
+  id: UtopiaWashingMachineCircuitboard
+  name: washing machine board
+  description: A machine printed circuit board for an washing machine.
+  components:
+  - type: MachineBoard
+    prototype: UtopiaWashingMachine
+    requirements:
+      Manipulator: 1
+    stackRequirements:
+      Steel: 1
+      Cable: 1

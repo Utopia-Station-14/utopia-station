@@ -3,11 +3,16 @@
   name: species-name-dwarf
   roundStart: true
   prototype: MobDwarf
-  sprites: MobHumanSprites
-  markingLimits: MobHumanMarkingLimits
-  dollPrototype: MobDwarfDummy
+  dollPrototype: AppearanceDwarf
   skinColoration: HumanToned
   # Utopia-Tweak : Language
   defaultLanguages:
   - GalacticCommon
   # Utopia-Tweak : Language
+  defaultSoundsBySex:
+  - UnisexDwarf
+  - FemaleDwarf
+  - UnisexDwarf
+  voices:
+  - UnisexDwarf
+  - FemaleDwarf

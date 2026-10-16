@@ -1,0 +1,48 @@
+using Content.Server._Utopia.Genetics.Mutations.Components;
+using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
+using Content.Shared.Damage.Prototypes;
+using Robust.Shared.Random;
+using Robust.Shared.Timing;
+
+namespace Content.Server._Utopia.Genetics.Mutations.Systems;
+
+public sealed partial class MutationBloodToxificationSystem : EntitySystem
+{
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<MutationBloodToxificationComponent, ComponentInit>(OnInit);
+    }
+
+    private void OnInit(EntityUid uid, MutationBloodToxificationComponent comp, ComponentInit args)
+    {
+        comp.NextTick = _timing.CurTime + TimeSpan.FromSeconds(comp.Interval);
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        var query = EntityQueryEnumerator<MutationBloodToxificationComponent, DamageableComponent>();
+        while (query.MoveNext(out var uid, out var comp, out var _))
+        {
+            if (_timing.CurTime < comp.NextTick)
+                continue;
+
+            comp.NextTick += TimeSpan.FromSeconds(comp.Interval);
+
+            if (!_random.Prob(comp.Chance))
+                continue;
+
+            var damage = new DamageSpecifier(ProtoMan.Index<DamageTypePrototype>(comp.DamageType), comp.ToxinAmount);
+            _damageable.TryChangeDamage(uid, damage, true);
+        }
+    }
+}

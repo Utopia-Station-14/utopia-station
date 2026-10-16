@@ -1,25 +1,27 @@
 using Content.Server.Station.Systems;
-using Content.Server.StationRecords.Systems;
 using Content.Shared._Utopia.Economy;
 using Content.Shared.StationRecords;
+using Content.Shared.StationRecords.Events;
+using Content.Shared.StationRecords.Components;
+using Content.Shared.StationRecords.Systems;
 using Robust.Server.GameObjects;
 
 namespace Content.Server._Utopia.Economy;
 
-public sealed class EconomicRecordsConsoleSystem : EntitySystem
+public sealed partial class EconomicRecordsConsoleSystem : EntitySystem
 {
-    [Dependency] private readonly StationSystem _station = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly BankCardSystem _bankCard = default!;
-    [Dependency] private readonly StationRecordsSystem _stationRecords = default!;
-    [Dependency] private readonly StationRecordKeyStorageSystem _keyStorage = default!;
+    [Dependency] private StationSystem _station = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private BankCardSystem _bankCard = default!;
+    [Dependency] private StationRecordsSystem _stationRecords = default!;
+    [Dependency] private StationRecordKeyStorageSystem _keyStorage = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<EconomicRecordsConsoleComponent, RecordModifiedEvent>(UpdateUserInterface);
-        SubscribeLocalEvent<EconomicRecordsConsoleComponent, AfterGeneralRecordCreatedEvent>(UpdateUserInterface);
+        SubscribeLocalEvent<EconomicRecordsConsoleComponent, GeneralRecordCreatedEvent>(UpdateUserInterface);
         SubscribeLocalEvent<EconomicRecordsConsoleComponent, RecordRemovedEvent>(UpdateUserInterface);
 
         Subs.BuiEvents<EconomicRecordsConsoleComponent>(EconomicRecordsConsoleKey.Key, subs =>
@@ -39,8 +41,7 @@ public sealed class EconomicRecordsConsoleSystem : EntitySystem
 
     private void OnFiltersChanged(Entity<EconomicRecordsConsoleComponent> ent, ref SetStationRecordFilter msg)
     {
-        if (ent.Comp.Filter == null ||
-            ent.Comp.Filter.Type != msg.Type || ent.Comp.Filter.Value != msg.Value)
+        if (ent.Comp.Filter == null || ent.Comp.Filter.Type != msg.Type || ent.Comp.Filter.Value != msg.Value)
         {
             ent.Comp.Filter = new StationRecordsFilter(msg.Type, msg.Value);
             UpdateUserInterface(ent);

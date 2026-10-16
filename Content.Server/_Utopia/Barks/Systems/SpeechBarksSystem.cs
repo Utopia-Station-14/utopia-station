@@ -1,4 +1,3 @@
-using Robust.Shared.Prototypes;
 using Content.Shared._Utopia.SpeechBarks;
 using Content.Shared.Chat;
 using Robust.Shared.Configuration;
@@ -8,13 +7,13 @@ using Robust.Shared.Player;
 
 namespace Content.Server._Utopia.SpeechBarks;
 
-public sealed class SpeechBarksSystem : EntitySystem
+public sealed partial class SpeechBarksSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly MindSystem _mind = default!;
-    [Dependency] private readonly ISharedPlayerManager _player = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private MindSystem _mind = default!;
+    [Dependency] private ISharedPlayerManager _player = default!;
+
     private bool _isEnabled = false;
 
     public override void Initialize()
@@ -35,7 +34,7 @@ public sealed class SpeechBarksSystem : EntitySystem
         RaiseLocalEvent(uid, ev);
 
         var message = args.ObfuscatedMessage ?? args.Message;
-        var soundSpecifier = ev.Data.Sound ?? _proto.Index(ev.Data.Proto).Sound;
+        var soundSpecifier = ev.Data.Sound ?? ProtoMan.Index(ev.Data.Proto).Sound;
 
         foreach (var ent in _lookup.GetEntitiesInRange(Transform(uid).Coordinates, 10f))
         {

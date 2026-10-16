@@ -1,0 +1,61 @@
+- type: combatMove
+  id: CQCKick
+  actionsNeeds:
+    - Hit
+    - Hit
+  comboEvent:
+    - !type:ComboDamageEffect
+      damage:
+        types:
+          Blunt: 10
+    - !type:ComboThrowTargetEffect
+      thrownSpeed: 30
+    - !type:ComboFallEffect
+      dropItems: true
+    - !type:ComboStaminaDamageEffect
+      staminaDamage: 25
+    - !type:ComboMoreStaminaDamageToDownedEffect
+      damage: 40
+    - !type:ComboStunEffect
+      stunTime: 5
+      fall: true
+      dropItems: false
+
+- type: combatMove
+  id: CQCSlam
+  actionsNeeds:
+    - Grab
+    - Hit
+  comboEvent:
+    - !type:ComboEffectToStanding
+      comboEvents:
+      - !type:ComboStaminaDamageEffect
+        staminaDamage: 25
+      - !type:ComboFallEffect
+        dropItems: true
+
+- type: combatMove
+  id: CQCPressure
+  actionsNeeds:
+    - Disarm
+    - Grab
+  comboEvent:
+    - !type:ComboStaminaDamageEffect
+      staminaDamage: 40
+    - !type:ComboHandsRetakeEffect
+
+- type: combatMove
+  id: CQCConsecutive
+  actionsNeeds:
+    - Disarm
+    - Disarm
+    - Hit
+  comboEvent:
+    - !type:ComboDamageEffect
+      damage:
+        types:
+          Blunt: 20
+    - !type:ComboStaminaDamageEffect
+      staminaDamage: 70
+    - !type:ComboMuteEffect
+      time: 15

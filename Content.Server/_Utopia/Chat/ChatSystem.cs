@@ -2,7 +2,7 @@ using System.Linq;
 using Content.Server._Utopia.Chat;
 using Content.Shared._Utopia.Language;
 using Content.Shared.Chat;
-using Content.Shared.Ghost;
+using Content.Shared.Ghost.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 
@@ -79,7 +79,7 @@ public sealed partial class ChatSystem
         string wrappedMessage, string wrappedobfuscatedMessage, string wrappedUnknownMessage,
         string wrappedLanguageMessage, string wrappedobfuscatedLanguageMessage, string wrappedUnknownLanguageMessage)
     {
-        var lang = _prototypeManager.Index(language);
+        var lang = ProtoMan.Index(language);
 
         foreach (var (session, data) in GetWhisperRecipients(source, WhisperClearRange, WhisperMuffledRange))
         {

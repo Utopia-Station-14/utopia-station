@@ -1,15 +1,15 @@
 using System.Linq;
-using Content.Shared.Humanoid;
+using Content.Shared.Body;
 using Content.Shared.Weapons.Melee.Events;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Shared._Utopia.Combat;
 
-public abstract class SharedWeaponComboSystem : EntitySystem
+public abstract partial class SharedWeaponComboSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
 
     public override void Initialize()
     {
@@ -32,7 +32,7 @@ public abstract class SharedWeaponComboSystem : EntitySystem
         if (!args.IsHit || !args.HitEntities.Any())
             return;
 
-        if (!HasComp<HumanoidAppearanceComponent>(args.HitEntities[0]))
+        if (!HasComp<VisualBodyComponent>(args.HitEntities[0]))
             return;
 
         var move = GetWeaponAction(args.Iswide, entity.Comp.CurrentStand);

@@ -1,4 +1,7 @@
-﻿using Content.Shared.Construction.Prototypes;
+using Content.Shared.Construction.Prototypes;
+using Content.Shared.Damage;
+using Content.Shared.Damage.Prototypes;
+using Content.Shared.FixedPoint;
 using Content.Shared.Whitelist;
 using JetBrains.Annotations;
 using Robust.Shared.Audio;
@@ -145,21 +148,39 @@ public sealed partial class MaterialReclaimerComponent : Component
     /// How quickly it takes to consume X amount of materials per second.
     /// For example, with a rate of 50, an entity with 100 total material takes 2 seconds to process.
     /// </summary>
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float BaseMaterialProcessRate = 100f;
 
     /// <summary>
     /// Machine part whose tier modifies <see cref="MaterialProcessRate"/>
     /// </summary>
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public ProtoId<MachinePartPrototype> MachinePartProcessRate = "Manipulator";
 
     /// <summary>
     /// How much the machine part quality affects the <see cref="MaterialProcessRate"/>
     /// </summary>
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float PartTierProcessRateMultiplier = 1.5f;
     // Utopia-Tweak : Machine Parts
+
+    /// <summary>
+    /// Damage that gets dealt when a creature is in the emagged recycler.
+    /// </summary>
+    [DataField]
+    public DamageSpecifier? DamageOnEmag = new DamageSpecifier
+    {
+        DamageDict = new Dictionary<ProtoId<DamageTypePrototype>, FixedPoint2>
+        {
+            ["Slash"] = 35.0,
+        },
+    };
+
+    /// <summary>
+    /// If it should gib creatures when they enter and the machine is emagged
+    /// </summary>
+    [DataField]
+    public bool GibOnEmag = true;
 }
 
 [NetSerializable, Serializable]

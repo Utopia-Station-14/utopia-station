@@ -163,7 +163,7 @@ public sealed partial class ComboPopupEffect : IComboEffect
     public void DoEffect(EntityUid user, EntityUid target, IEntityManager entMan)
     {
         var popup = entMan.System<SharedPopupSystem>();
-        popup.PopupPredicted(Loc.GetString(LocaleText, ("user", Identity.Entity(user, entMan)), ("target", target)),
+        popup.PopupEntity(Loc.GetString(LocaleText, ("user", Identity.Entity(user, entMan)), ("target", target)),
             target, target, PopupType.LargeCaution);
     }
 }
@@ -285,10 +285,10 @@ public sealed partial class ComboFlashEffect : IComboEffect
 
     public void DoEffect(EntityUid user, EntityUid target, IEntityManager entMan)
     {
-        var status = entMan.System<StatusEffectsSystem>();
+        var status = entMan.System<StatusEffectNew.StatusEffectsSystem>();
         var blind = entMan.System<BlindableSystem>();
 
-        status.TryAddStatusEffect<FlashedComponent>(target, "Flashed", TimeSpan.FromSeconds(Duration), true);
+        status.TryAddStatusEffectDuration(target, "Flashed", TimeSpan.FromSeconds(Duration));
         blind.AdjustEyeDamage(target, 1);
     }
 }

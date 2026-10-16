@@ -1,0 +1,29 @@
+- type: entity
+  id: DnaDiscoveredIcon
+  name: dna discovered icon
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: /Textures/_Utopia/Interface/Genetics/dna_seq.rsi
+    layers:
+    - state: dna_discovered
+
+- type: entity
+  id: DnaUndiscoveredIcon
+  name: dna undiscovered icon
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: /Textures/_Utopia/Interface/Genetics/dna_seq.rsi
+    layers:
+    - state: dna_undiscovered
+
+- type: entity
+  id: DnaExtraIcon
+  name: dna extra icon
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: /Textures/_Utopia/Interface/Genetics/dna_seq.rsi
+    layers:
+    - state: dna_extra

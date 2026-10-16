@@ -1,0 +1,18 @@
+# Tier 2
+
+- type: technology
+  id: WashingMachine
+  name: research-technology-washing-machine
+  icon:
+    sprite: _Utopia/Structures/Machines/washing_machine.rsi
+    state: base
+  discipline: CivilianServices
+  tier: 2
+  cost: 5000
+  recipeUnlocks:
+  - UtopiaWashingMachineCircuitboard
+  position: 4,-1
+  technologyPrerequisites:
+  - AdvancedCleaning
+
+

@@ -1,0 +1,12 @@
+- type: entity
+  parent: BaseChemistryBottleFilled
+  id: UtopiaChemistryBottleMutadone
+  suffix: Mutadone
+  components:
+  - type: Label
+    localizedLabel: reagent-name-mutadone
+  - type: Solution
+    solution:
+        reagents:
+        - ReagentId: Mutadone
+          Quantity: 30

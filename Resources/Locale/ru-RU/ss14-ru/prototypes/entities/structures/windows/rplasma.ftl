@@ -1,7 +1,10 @@
 ent-ReinforcedPlasmaWindow = фороновое бронеокно
-    .desc = { ent-BaseDeltaPressureReinforcedPlasma.desc }
+    .desc = { ent-BaseWindowStructure.desc }
 ent-PlasmaReinforcedWindowDirectional = направленное фороновое бронеокно
-    .desc = Смотри, не заляпай.
+    .desc = { ent-BaseWindowStructureDirectional.desc }
+ent-PlasmaReinforcedWindowDirectionalCorner = { ent-PlasmaReinforcedWindowDirectional }
+    .desc = { ent-PlasmaReinforcedWindowDirectional.desc }
+    .suffix = Угол
 ent-ReinforcedPlasmaWindowDiagonal = { ent-ReinforcedPlasmaWindow }
-    .suffix = Диагональ
     .desc = { ent-ReinforcedPlasmaWindow.desc }
+    .suffix = Диагональ

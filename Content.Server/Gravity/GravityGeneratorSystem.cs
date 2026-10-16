@@ -1,13 +1,15 @@
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
+using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared.Gravity;
 
 namespace Content.Server.Gravity;
 
-public sealed class GravityGeneratorSystem : SharedGravityGeneratorSystem
+public sealed partial class GravityGeneratorSystem : SharedGravityGeneratorSystem
 {
-    [Dependency] private readonly GravitySystem _gravitySystem = default!;
-    [Dependency] private readonly SharedPointLightSystem _lights = default!;
+    [Dependency] private GravitySystem _gravitySystem = default!;
+    [Dependency] private SharedPointLightSystem _lights = default!;
+    [Dependency] private CESharedZLevelsSystem _zLevels = default!; // Utopia-Tweak : ZLevels
 
     public override void Initialize()
     {
@@ -40,10 +42,15 @@ public sealed class GravityGeneratorSystem : SharedGravityGeneratorSystem
 
         var xform = Transform(ent);
 
-        if (TryComp(xform.ParentUid, out GravityComponent? gravity))
+        // Utopia-Tweak : ZLevels
+        foreach (var gridUid in _zLevels.GetTargetGrids(xform.ParentUid))
         {
-            _gravitySystem.EnableGravity(xform.ParentUid, gravity);
+            if (TryComp(gridUid, out GravityComponent? gravity))
+            {
+                _gravitySystem.EnableGravity(gridUid, gravity);
+            }
         }
+        // Utopia-Tweak : ZLevels
     }
 
     private void OnDeactivated(Entity<GravityGeneratorComponent> ent, ref ChargedMachineDeactivatedEvent args)
@@ -53,17 +60,30 @@ public sealed class GravityGeneratorSystem : SharedGravityGeneratorSystem
 
         var xform = Transform(ent);
 
-        if (TryComp(xform.ParentUid, out GravityComponent? gravity))
+        // Utopia-Tweak : ZLevels
+        foreach (var gridUid in _zLevels.GetTargetGrids(xform.ParentUid))
         {
-            _gravitySystem.RefreshGravity(xform.ParentUid, gravity);
+            if (TryComp(gridUid, out GravityComponent? gravity))
+            {
+                _gravitySystem.RefreshGravity(gridUid, gravity);
+            }
         }
+        // Utopia-Tweak : ZLevels
     }
 
     private void OnParentChanged(EntityUid uid, GravityGeneratorComponent component, ref EntParentChangedMessage args)
     {
-        if (component.GravityActive && TryComp(args.OldParent, out GravityComponent? gravity))
+        // Utopia-Tweak : ZLevels
+        if (component.GravityActive && args.OldParent.HasValue)
         {
-            _gravitySystem.RefreshGravity(args.OldParent.Value, gravity);
+            foreach (var gridUid in _zLevels.GetTargetGrids(args.OldParent.Value))
+            {
+                if (TryComp(gridUid, out GravityComponent? gravity))
+                {
+                    _gravitySystem.RefreshGravity(gridUid, gravity);
+                }
+            }
         }
+        // Utopia-Tweak : ZLevels
     }
 }

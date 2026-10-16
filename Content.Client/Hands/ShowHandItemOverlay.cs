@@ -1,24 +1,37 @@
 using System.Numerics;
 using Content.Client.Hands.Systems;
+using Content.Shared._Utopia.CCVar;
+using Content.Shared._Utopia.Combat;
 using Content.Shared.CCVar;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
+using Robust.Client.Player;
+using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
 using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
 using Robust.Shared.Graphics;
 using Robust.Shared.Map;
+using Robust.Shared.Utility;
 using Direction = Robust.Shared.Maths.Direction;
 
 namespace Content.Client.Hands
 {
-    public sealed class ShowHandItemOverlay : Overlay
+    public sealed partial class ShowHandItemOverlay : Overlay
     {
-        [Dependency] private readonly IConfigurationManager _cfg = default!;
-        [Dependency] private readonly IInputManager _inputManager = default!;
-        [Dependency] private readonly IClyde _clyde = default!;
-        [Dependency] private readonly IEntityManager _entMan = default!;
+        [Dependency] private IConfigurationManager _cfg = default!;
+        [Dependency] private IInputManager _inputManager = default!;
+        [Dependency] private IClyde _clyde = default!;
+        [Dependency] private IEntityManager _entMan = default!;
+
+        // Utopia-Tweak : Combat
+        [Dependency] private IPlayerManager _player = default!;
+        [Dependency] private IResourceCache _resourceCache = default!;
+        // Utopia-Tweak : Combat
+
+        private static readonly ResPath ComboAttackRsi =
+            new ResPath("/Textures/_Utopia/Interface/Misc/intents.rsi"); // Utopia-Tweak : Combat
 
         private HandsSystem? _hands;
         private readonly IRenderTexture _renderBackbuffer;
@@ -76,6 +89,36 @@ namespace Content.Client.Hands
 
             _hands ??= _entMan.System<HandsSystem>();
             var handEntity = _hands.GetActiveHandEntity();
+
+            // Utopia-Tweak : Combat
+            if (_player.LocalEntity != null && _cfg.GetCVar(UCCVars.CombatShowIcons))
+            {
+                var comboEv = new GetPerformedAttackTypesEvent(null, null);
+                _entMan.EventBus.RaiseLocalEvent(_player.LocalEntity.Value, ref comboEv);
+
+                if (comboEv.AttackTypes is { Count: > 0 })
+                {
+                    var color = Color.White.WithAlpha(0.75f);
+                    for (var i = 0; i < comboEv.AttackTypes.Count; i++)
+                    {
+                        var rsiActual = _resourceCache.GetResource<RSIResource>(ComboAttackRsi).RSI;
+                        if (!rsiActual.TryGetState(comboEv.AttackTypes[i].ToString().ToLower(), out var state))
+                            continue;
+
+                        var texture = state.Frame0;
+
+                        var size = texture.Size;
+
+                        var offsetVec2 = new Vector2(-offsetVec.X,
+                            (2f * i + 1f - comboEv.AttackTypes.Count) * texture.Size.Y / 1.8f);
+
+                        screen.DrawTextureRect(texture,
+                            UIBox2.FromDimensions(mousePos.Position - size / 2 + offsetVec2, size),
+                            color);
+                    }
+                }
+            }
+            // Utopia-Tweak : Combat
 
             if (handEntity == null || !_entMan.TryGetComponent(handEntity, out SpriteComponent? sprite))
                 return;

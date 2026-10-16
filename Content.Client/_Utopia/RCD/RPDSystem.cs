@@ -8,9 +8,9 @@ using Robust.Shared.Timing;
 
 namespace Content.Client.RCD.Systems;
 
-public sealed class RPDSystem : EntitySystem
+public sealed partial class RPDSystem : EntitySystem
 {
-    [Dependency] private readonly EntityManager _entityManager = default!;
+    [Dependency] private EntityManager _entityManager = default!;
 
     public override void Initialize()
     {

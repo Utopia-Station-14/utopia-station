@@ -3,9 +3,9 @@ using Content.Shared.Wires;
 
 namespace Content.Shared._Utopia.Containers.ItemSlots;
 
-public sealed class ItemSlotsPanelLockSystem : EntitySystem
+public sealed partial class ItemSlotsPanelLockSystem : EntitySystem
 {
-    [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
+    [Dependency] private ItemSlotsSystem _itemSlots = default!;
 
     public override void Initialize()
     {

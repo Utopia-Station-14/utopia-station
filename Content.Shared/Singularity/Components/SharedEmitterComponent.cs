@@ -1,10 +1,9 @@
-﻿using System.Threading;
+using System.Threading;
 using Content.Shared.Construction.Prototypes;
 using Content.Shared.DeviceLinking;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Shared.Singularity.Components;
 
@@ -13,8 +12,6 @@ public sealed partial class EmitterComponent : Component
 {
     public CancellationTokenSource? TimerCancel;
 
-    // whether the power switch is in "on"
-    [ViewVariables] public bool IsOn;
     // Whether the power switch is on AND the machine has enough power (so is actively firing)
     [ViewVariables] public bool IsPowered;
 
@@ -32,12 +29,6 @@ public sealed partial class EmitterComponent : Component
 
     [DataField]
     public List<EntProtoId> SelectableTypes = new();
-
-    /// <summary>
-    /// The current amount of power being used.
-    /// </summary>
-    [DataField]
-    public int PowerUseActive = 600;
 
     /// <summary>
     /// The amount of shots that are fired in a single "burst"
@@ -130,8 +121,8 @@ public sealed partial class EmitterComponent : Component
     /// <summary>
     /// The machine part that affects burst delay.
     /// </summary>
-    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
-    public string MachinePartFireRate = "Laser";
+    [DataField]
+    public ProtoId<MachinePartPrototype> MachinePartFireRate = "Laser";
     // Utopia-Tweak : Machine Parts
 }
 

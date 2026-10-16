@@ -7,11 +7,11 @@ using Robust.Shared.Containers;
 
 namespace Content.Server._Utopia.Power;
 
-public sealed class BatterySlotVisualsSystem : EntitySystem
+public sealed partial class BatterySlotVisualsSystem : EntitySystem
 {
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly SharedBatterySystem _battery = default!;
-    [Dependency] private readonly SharedContainerSystem _container = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedBatterySystem _battery = default!;
+    [Dependency] private SharedContainerSystem _container = default!;
 
     public override void Initialize()
     {

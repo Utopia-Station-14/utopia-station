@@ -67,3 +67,65 @@
     canCollide: True
   - type: Construction
     deconstructionTarget: null
+
+- type: entity
+  parent: GasPipeSansLayers
+  id: UtopiaGasZPipeUp
+  name: UP
+  suffix: Straight
+  placement:
+    mode: AlignAtmosPipeLayers
+  components:
+  - type: NodeContainer
+    nodes:
+      pipe:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+      zUp:
+        !type:ZPipeNode
+        nodeGroupID: Pipe
+        zDirection: Up
+  - type: ZPipe
+  - type: ZLevelTransmitter
+    allowUp: true
+  - type: ZLevelEntityLink
+  - type: AtmosDevice
+  - type: Sprite
+    sprite: Structures/Piping/Atmospherics/pipe.rsi
+    drawdepth: ThinPipe
+    visible: false
+    layers:
+    - state: pipeUp
+      map: [ "enum.PipeVisualLayers.Pipe" ]
+
+- type: entity
+  parent: GasPipeSansLayers
+  id: UtopiaGasZPipeDown
+  name: DOWN
+  suffix: Straight
+  placement:
+    mode: AlignAtmosPipeLayers
+  components:
+  - type: NodeContainer
+    nodes:
+      pipe:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+      zDown:
+        !type:ZPipeNode
+        nodeGroupID: Pipe
+        zDirection: Down
+  - type: ZPipe
+  - type: ZLevelTransmitter
+    allowDown: true
+  - type: ZLevelEntityLink
+  - type: AtmosDevice
+  - type: Sprite
+    sprite: Structures/Piping/Atmospherics/pipe.rsi
+    drawdepth: ThinPipe
+    visible: false
+    layers:
+    - state: pipeDown
+      map: [ "enum.PipeVisualLayers.Pipe" ]

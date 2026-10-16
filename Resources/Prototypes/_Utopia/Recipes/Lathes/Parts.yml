@@ -23,6 +23,19 @@
     Gold: 75
     Copper: 75
 
+- type: latheRecipe
+  abstract: true
+  id: BaseBluespacePartRecipe
+  parent: BaseSuperPartRecipe
+  completetime: 3.5
+  materials:
+    Steel: 300
+    Plastic: 300
+    Plasma: 150
+    Gold: 150
+    Copper: 150
+    BluespaceCrystal: 15
+
 # Recipes
 
 # Rating 1
@@ -48,6 +61,7 @@
   result: MicroLaserStockPart
 
 # Rating 2
+
 - type: latheRecipe
   parent: BaseAdvancedPartRecipe
   id: AdvancedCapacitorStockPart
@@ -74,6 +88,7 @@
   result: HighPowerMicroLaserStockPart
 
 # Rating 3
+
 - type: latheRecipe
   parent: BaseSuperPartRecipe
   id: SuperCapacitorStockPart
@@ -98,3 +113,30 @@
   parent: BaseSuperPartRecipe
   id: UltraHighPowerMicroLaserStockPart
   result: UltraHighPowerMicroLaserStockPart
+
+# Rating 4
+
+- type: latheRecipe
+  parent: BaseBluespacePartRecipe
+  id: QuadraticCapacitorStockPart
+  result: QuadraticCapacitorStockPart
+
+- type: latheRecipe
+  parent: BaseBluespacePartRecipe
+  id: FemtoManipulatorStockPart
+  result: FemtoManipulatorStockPart
+
+- type: latheRecipe
+  parent: BaseBluespacePartRecipe
+  id: BluespaceMatterBinStockPart
+  result: BluespaceMatterBinStockPart
+
+- type: latheRecipe
+  parent: BaseBluespacePartRecipe
+  id: TriphasicScanningModuleStockPart
+  result: TriphasicScanningModuleStockPart
+
+- type: latheRecipe
+  parent: BaseBluespacePartRecipe
+  id: QuadUltraMicroLaserStockPart
+  result: QuadUltraMicroLaserStockPart

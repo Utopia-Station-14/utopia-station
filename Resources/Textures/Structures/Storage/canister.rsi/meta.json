@@ -47,10 +47,16 @@
             "name": "air-1"
         },
         {
+            "name": "mask-air"
+        },
+        {
             "name": "phoron"
         },
         {
             "name": "phoron-1"
+        },
+        {
+            "name": "mask-phoron"
         },
         {
             "name": "nitrogen"
@@ -59,10 +65,16 @@
             "name": "nitrogen-1"
         },
         {
+            "name": "mask-nitrogen"
+        },
+        {
             "name": "nitrous_oxide"
         },
         {
             "name": "nitrous_oxide-1"
+        },
+        {
+            "name": "mask-nitrous_oxide"
         },
         {
             "name": "zauker"
@@ -71,10 +83,16 @@
             "name": "zauker-1"
         },
         {
+            "name": "mask-zauker"
+        },
+        {
             "name": "tritium"
         },
         {
             "name": "tritium-1"
+        },
+        {
+            "name": "mask-tritium"
         },
         {
             "name": "miasma"
@@ -83,10 +101,16 @@
             "name": "miasma-1"
         },
         {
+            "name": "mask-miasma"
+        },
+        {
             "name": "pluoxium"
         },
         {
             "name": "pluoxium-1"
+        },
+        {
+            "name": "mask-pluoxium"
         },
         {
             "name": "freon"
@@ -95,10 +119,16 @@
             "name": "freon-1"
         },
         {
+            "name": "mask-freon"
+        },
+        {
             "name": "water_vapor"
         },
         {
             "name": "water_vapor-1"
+        },
+        {
+            "name": "mask-water_vapor"
         },
         {
             "name": "scrubber-connector"
@@ -125,10 +155,16 @@
             "name": "oxygen-1"
         },
         {
+            "name": "mask-oxygen"
+        },
+        {
             "name": "anti-noblium"
         },
         {
             "name": "anti-noblium-1"
+        },
+        {
+            "name": "mask-anti-noblium"
         },
         {
             "name": "hyper-noblium"
@@ -137,10 +173,16 @@
             "name": "hyper-noblium-1"
         },
         {
+            "name": "mask-hyper-noblium"
+        },
+        {
             "name": "BZ"
         },
         {
             "name": "BZ-1"
+        },
+        {
+            "name": "mask-BZ"
         },
         {
             "name": "proto-nitrate"
@@ -149,10 +191,16 @@
             "name": "proto-nitrate-1"
         },
         {
+            "name": "mask-proto-nitrate"
+        },
+        {
             "name": "halon"
         },
         {
             "name": "halon-1"
+        },
+        {
+            "name": "mask-halon"
         },
         {
             "name": "base"
@@ -161,10 +209,16 @@
             "name": "base-1"
         },
         {
+            "name": "mask-base"
+        },
+        {
             "name": "healium"
         },
         {
             "name": "healium-1"
+        },
+        {
+            "name": "mask-healium"
         },
         {
             "name": "helium"
@@ -173,10 +227,16 @@
             "name": "helium-1"
         },
         {
+            "name": "mask-helium"
+        },
+        {
             "name": "carbon_dioxide"
         },
         {
             "name": "carbon_dioxide-1"
+        },
+        {
+            "name": "mask-carbon_dioxide"
         },
         {
             "name": "nitrium"
@@ -185,16 +245,40 @@
             "name": "nitrium-1"
         },
         {
+            "name": "mask-nitrium"
+        },
+        {
             "name": "hydrogen"
         },
         {
             "name": "hydrogen-1"
         },
         {
+            "name": "mask-hydrogen"
+        },
+        {
             "name": "deuterium"
         },
         {
             "name": "deuterium-1"
+        },
+        {
+            "name": "mask-deuterium"
+        },
+        {
+            "name": "integrity-unshaded-0"
+        },
+        {
+            "name": "integrity-unshaded-1"
+        },
+        {
+            "name": "integrity-unshaded-2"
+        },
+        {
+            "name": "integrity-unshaded-3"
+        },
+        {
+            "name": "integrity-unshaded-4"
         }
     ]
 }
