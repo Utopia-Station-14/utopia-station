@@ -17,12 +17,16 @@ modsuit-ui-part-gloves = Перчатки
 modsuit-ui-part-boots = Ботинки
 modsuit-ui-core-label = МОД
 modsuit-ui-schematic-hint = Блок управления
+modsuit-speed-needs-body = Для работы сервоприводов необходимо активировать основную часть костюма!
+modsuit-ui-speed-title = Сервоприводы
 
 modsuit-ui-power-header = Энергопотребление
 modsuit-ui-draw-total = Общее потребление
 modsuit-ui-draw-base = Базовый расход
 modsuit-ui-draw-parts = Расход на части
-modsuit-ui-draw-modules = Расход на модули
+modsuit-ui-swap-cost = Потребление на элемент
+modsuit-ui-draw-speed = Потребление на сервоприводы
+modsuit-ui-draw-modules = Потребление на модули
 modsuit-ui-watt-value = {$watt} Вт
 modsuit-ui-parts-draw-value = {$total} Вт ({$perPart} Вт/ч)
 
@@ -53,3 +57,6 @@ modsuit-module-installed = Вы установили { $name }.
 modsuit-part-installed = Вы установили { $name }.
 modsuit-part-slot-occupied = Этот слот уже занят.
 
+modsuit-ui-identity-name = Имя: { $name }
+modsuit-ui-identity-job = Должность: { $job }
+modsuit-ui-identity-unknown = неизвестно

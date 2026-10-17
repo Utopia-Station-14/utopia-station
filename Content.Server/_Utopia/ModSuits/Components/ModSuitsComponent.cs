@@ -9,10 +9,19 @@ namespace Content.Server._Utopia.ModSuits.Systems;
 public sealed partial class ModSuitComponent : Component
 {
     [DataField]
-    public float BaseDraw = 0.2f;
+    public float PartSwapCost = 2f;
 
     [DataField]
-    public float DrawPerPart = 0.1f;
+    public float ManualRemoveDelay = 15f;
+
+    [DataField]
+    public float SpeedDraw = 0.5f;
+
+    [DataField]
+    public float SpeedModifier;
+
+    [ViewVariables]
+    public bool SpeedEnabled = false;
 
     [ViewVariables]
     public bool Locked;
@@ -59,6 +68,9 @@ public sealed partial class ModSuitComponent : Component
 
     [ViewVariables]
     public TimeSpan NextUiUpdate;
+
+    [ViewVariables]
+    public ModSuitStatus Status = ModSuitStatus.Inactive;
 
     [DataField]
     public float DeployDelay = 0.5f;

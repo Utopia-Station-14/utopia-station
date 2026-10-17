@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Shared._Utopia.ModSuits;
+using Content.Shared.Access.Systems;
 using Content.Shared.Actions;
 using Content.Shared.DoAfter;
 using Content.Shared.Examine;
@@ -7,6 +8,7 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
+using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Power.EntitySystems;
 using Content.Shared.PowerCell;
@@ -30,6 +32,8 @@ public sealed partial class ModSuitSystem : EntitySystem
     [Dependency] private SharedHandsSystem _hands = default!;
     [Dependency] private SharedToolSystem _tool = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private MovementSpeedModifierSystem _speed = default!;
+    [Dependency] private SharedIdCardSystem _idCard = default!;
 
     private static readonly TimeSpan UiUpdateDelay = TimeSpan.FromSeconds(1);
 
@@ -64,10 +68,13 @@ public sealed partial class ModSuitSystem : EntitySystem
         SubscribeLocalEvent<ModSuitComponent, ToggleModSuitUiEvent>(OnToggleUiAction);
         SubscribeLocalEvent<ModSuitComponent, ModSuitTogglePartMessage>(OnTogglePartMessage);
         SubscribeLocalEvent<ModSuitComponent, ModSuitToggleAllMessage>(OnToggleAllMessage);
+        SubscribeLocalEvent<ModSuitComponent, ModSuitToggleSpeedMessage>(OnToggleSpeedMessage);
+        SubscribeLocalEvent<ModSuitComponent, InventoryRelayedEvent<RefreshMovementSpeedModifiersEvent>>(OnRefreshSpeed);
 
         SubscribeLocalEvent<ModSuitComponent, InteractUsingEvent>(OnInteractUsing);
         SubscribeLocalEvent<ModSuitComponent, ModSuitPanelDoAfterEvent>(OnPanelDoAfter);
         SubscribeLocalEvent<ModSuitComponent, ModSuitDeployDoAfterEvent>(OnDeployDoAfter);
+        SubscribeLocalEvent<ModSuitComponent, ModSuitManualRemoveDoAfterEvent>(OnManualRemoveDoAfter);
         SubscribeLocalEvent<ModSuitComponent, GetVerbsEvent<AlternativeVerb>>(OnGetVerbs);
         SubscribeLocalEvent<ModSuitComponent, ExaminedEvent>(OnExamined);
 
@@ -76,6 +83,7 @@ public sealed partial class ModSuitSystem : EntitySystem
         SubscribeLocalEvent<ModSuitPartComponent, GotUnequippedEvent>(OnPartUnequipped);
     }
 
+    #region Update
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -90,9 +98,12 @@ public sealed partial class ModSuitSystem : EntitySystem
 
             comp.NextUiUpdate = now + UiUpdateDelay;
 
-            if (comp.Locked && HasCharge((uid, comp)))
+            if (comp.Locked && HasEnergy((uid, comp), comp.PartSwapCost))
             {
                 comp.Locked = false;
+                RefreshSpeed((uid, comp));
+                UpdateDraw((uid, comp));
+
                 if (comp.Wearer is { } wearer)
                     _popup.PopupEntity(Loc.GetString("modsuit-recharged"), wearer, wearer);
             }
@@ -100,7 +111,9 @@ public sealed partial class ModSuitSystem : EntitySystem
             UpdateUi((uid, comp));
         }
     }
+    #endregion
 
+    #region Base
     private void ProcessPendingReturns()
     {
         if (_pendingReturn.Count == 0)
@@ -216,4 +229,76 @@ public sealed partial class ModSuitSystem : EntitySystem
             UpdateUi(ent);
         }
     }
+    #endregion
+
+    #region UI
+    private void OnToggleUiAction(Entity<ModSuitComponent> ent, ref ToggleModSuitUiEvent args)
+    {
+        if (args.Handled || ent.Comp.Wearer != args.Performer)
+            return;
+
+        args.Handled = true;
+        UpdateUi(ent);
+        _ui.TryToggleUi(ent.Owner, ModSuitUiKey.Key, args.Performer);
+    }
+
+    private void UpdateUi(Entity<ModSuitComponent> ent)
+    {
+        var parts = new Dictionary<ModSuitPart, ModSuitPartUiState>();
+        foreach (var (part, uid) in ent.Comp.Parts)
+            parts[part] = new ModSuitPartUiState(GetNetEntity(uid), IsDeployed(ent, part));
+
+        var modules = new List<ModSuitModuleUiState>();
+        foreach (var moduleUid in ent.Comp.ModulesContainer.ContainedEntities)
+        {
+            var expenditure = 0f;
+            var active = true;
+
+            if (TryComp<ModSuitModuleComponent>(moduleUid, out var moduleComp))
+            {
+                expenditure = moduleComp.Expenditure;
+                active = moduleComp.Active;
+            }
+
+            modules.Add(new ModSuitModuleUiState(
+                GetNetEntity(moduleUid),
+                Name(moduleUid),
+                expenditure,
+                active));
+        }
+
+        var (totalDraw, modulesDraw, speedDraw) = CalculateDraw(ent);
+
+        string? wearerName = null;
+        string? wearerJob = null;
+
+        if (ent.Comp.Wearer is { } owner
+            && !TerminatingOrDeleted(owner)
+            && _idCard.TryFindIdCard(owner, out var idCard))
+        {
+            if (!string.IsNullOrWhiteSpace(idCard.Comp.FullName))
+                wearerName = idCard.Comp.FullName;
+
+            if (!string.IsNullOrWhiteSpace(idCard.Comp.LocalizedJobTitle))
+                wearerJob = idCard.Comp.LocalizedJobTitle;
+        }
+
+        _ui.SetUiState(ent.Owner, ModSuitUiKey.Key, new ModSuitBoundUiState(
+            ent.Comp.Wearer is { } wearer ? GetNetEntity(wearer) : null,
+            GetCharge(ent),
+            totalDraw,
+            speedDraw,
+            modulesDraw,
+            ent.Comp.PartSwapCost,
+            ent.Comp.SpeedEnabled,
+            ent.Comp.EquippedParts,
+            ent.Comp.Parts.Count,
+            ent.Comp.Locked,
+            GetModSuitStatus(ent),
+            parts,
+            modules,
+            wearerName,
+            wearerJob));
+    }
+    #endregion
 }

@@ -41,22 +41,28 @@ public sealed class ModSuitBoundUiState(
     NetEntity? wearer,
     float? charge,
     float totalDraw,
-    float baseDraw,
-    float drawPerPart,
+    float speedDraw,
     float modulesDraw,
+    float partSwapCost,
+    bool speedEnabled,
     int equippedParts,
     int totalParts,
     bool locked,
     ModSuitStatus status,
     Dictionary<ModSuitPart, ModSuitPartUiState> parts,
-    List<ModSuitModuleUiState> modules) : BoundUserInterfaceState
+    List<ModSuitModuleUiState> modules,
+    string? wearerName = null,
+    string? wearerJob = null) : BoundUserInterfaceState
 {
+    public readonly string? WearerName = wearerName;
+    public readonly string? WearerJob = wearerJob;
     public readonly NetEntity? Wearer = wearer;
     public readonly float? Charge = charge;
     public readonly float TotalDraw = totalDraw;
-    public readonly float BaseDraw = baseDraw;
-    public readonly float DrawPerPart = drawPerPart;
+    public readonly float SpeedDraw = speedDraw;
     public readonly float ModulesDraw = modulesDraw;
+    public readonly float PartSwapCost = partSwapCost;
+    public readonly bool SpeedEnabled = speedEnabled;
     public readonly int EquippedParts = equippedParts;
     public readonly int TotalParts = totalParts;
     public readonly bool Locked = locked;
@@ -87,6 +93,27 @@ public sealed partial class ModSuitDeployDoAfterEvent : DoAfterEvent
     public override DoAfterEvent Clone() => this;
 }
 
+/// <summary>
+/// Ручное снятие части костюма (когда он разряжен и заблокирован).
+/// </summary>
+[Serializable, NetSerializable]
+public sealed partial class ModSuitManualRemoveDoAfterEvent : DoAfterEvent
+{
+    [DataField]
+    public ModSuitPart Part;
+
+    private ModSuitManualRemoveDoAfterEvent()
+    {
+    }
+
+    public ModSuitManualRemoveDoAfterEvent(ModSuitPart part)
+    {
+        Part = part;
+    }
+
+    public override DoAfterEvent Clone() => this;
+}
+
 [Serializable, NetSerializable]
 public sealed class ModSuitTogglePartMessage(ModSuitPart part) : BoundUserInterfaceMessage
 {
@@ -99,6 +126,9 @@ public sealed partial class ModSuitPanelDoAfterEvent : SimpleDoAfterEvent;
 
 [Serializable, NetSerializable]
 public sealed class ModSuitToggleAllMessage : BoundUserInterfaceMessage;
+
+[Serializable, NetSerializable]
+public sealed class ModSuitToggleSpeedMessage : BoundUserInterfaceMessage;
 
 public sealed partial class ToggleModSuitUiEvent : InstantActionEvent;
 

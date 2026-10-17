@@ -4,7 +4,6 @@ using Content.Shared.Actions;
 using Content.Shared.DoAfter;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
-using Content.Shared.PowerCell.Components;
 
 namespace Content.Server._Utopia.ModSuits.Systems;
 
@@ -21,12 +20,18 @@ public sealed partial class ModSuitSystem
 
     private void OnSuitUnequipped(Entity<ModSuitComponent> ent, ref GotUnequippedEvent args)
     {
-        if (ent.Comp.Wearer is { } wearer)
+        var oldWearer = ent.Comp.Wearer;
+
+        if (oldWearer is { } wearer)
             RetractAll(ent, wearer);
 
         ent.Comp.Wearer = null;
+        ent.Comp.SpeedEnabled = false;
         _deploying.Remove(ent);
         _ui.CloseUi(ent.Owner, ModSuitUiKey.Key);
+
+        if (oldWearer is { } w && !TerminatingOrDeleted(w))
+            _speed.RefreshMovementSpeedModifiers(w);
     }
 
     private void OnSuitUnequipAttempt(Entity<ModSuitComponent> ent, ref BeingUnequippedAttemptEvent args)
@@ -52,6 +57,48 @@ public sealed partial class ModSuitSystem
             return;
 
         args.Cancel();
+
+        if (TerminatingOrDeleted(ent.Comp.Suit) || !TryComp<ModSuitComponent>(ent.Comp.Suit, out var suit))
+            return;
+
+        if (!suit.Locked)
+        {
+            args.Reason = "modsuit-part-use-ui";
+            return;
+        }
+
+        if (suit.Wearer is not { } user)
+            return;
+
+        var doAfter = new DoAfterArgs(
+            EntityManager,
+            user,
+            suit.ManualRemoveDelay,
+            new ModSuitManualRemoveDoAfterEvent(ent.Comp.Part),
+            ent.Comp.Suit,
+            target: ent.Comp.Suit)
+        {
+            BreakOnMove = true,
+            BreakOnDamage = true,
+            NeedHand = false,
+        };
+
+        if (_doAfter.TryStartDoAfter(doAfter))
+            args.Reason = "modsuit-manual-remove-started";
+    }
+
+    private void OnManualRemoveDoAfter(Entity<ModSuitComponent> ent, ref ModSuitManualRemoveDoAfterEvent args)
+    {
+        if (args.Cancelled || args.Handled)
+            return;
+
+        args.Handled = true;
+
+        if (!ent.Comp.Locked || ent.Comp.Wearer is not { } wearer)
+            return;
+
+        Retract(ent, wearer, args.Part);
+        UpdateUi(ent);
     }
 
     private void OnPartUnequipped(Entity<ModSuitPartComponent> ent, ref GotUnequippedEvent args)
@@ -68,7 +115,7 @@ public sealed partial class ModSuitSystem
             return;
 
         if (IsDeployed(ent, args.Part))
-            Retract(ent, args.Part);
+            TryRetractPaid(ent, args.Actor, args.Part);
         else
             StartDeploy(ent, args.Actor, args.Part, chain: false);
 
@@ -88,10 +135,32 @@ public sealed partial class ModSuitSystem
         }
         else
         {
-            RetractAll(ent, wearer);
+            foreach (var part in ent.Comp.Parts.Keys.ToArray())
+            {
+                if (!IsDeployed(ent, part))
+                    continue;
+
+                if (!TryRetractPaid(ent, wearer, part))
+                    break;
+            }
         }
 
         UpdateUi(ent);
+    }
+
+    private bool TryRetractPaid(Entity<ModSuitComponent> ent, EntityUid wearer, ModSuitPart part)
+    {
+        if (!HasEnergy(ent, ent.Comp.PartSwapCost))
+        {
+            LockSuit(ent);
+            return false;
+        }
+
+        if (!Retract(ent, wearer, part))
+            return false;
+
+        SpendEnergy(ent, ent.Comp.PartSwapCost);
+        return true;
     }
 
     private bool IsDeployed(Entity<ModSuitComponent> ent, ModSuitPart part)
@@ -111,6 +180,11 @@ public sealed partial class ModSuitSystem
         ent.Comp.EquippedParts = count;
         if (count == 0)
             ent.Comp.Locked = false;
+
+        if (!IsDeployed(ent, ModSuitPart.Boots))
+            ent.Comp.SpeedEnabled = false;
+
+        RefreshSpeed(ent);
         UpdateDraw(ent);
     }
 
@@ -198,9 +272,7 @@ public sealed partial class ModSuitSystem
         if (!TryComp<ModSuitPartComponent>(partUid, out var partComp))
             return false;
 
-        if (!TryComp<PowerCellDrawComponent>(ent, out var draw)
-            || !TryComp<PowerCellSlotComponent>(ent, out var slotComp)
-            || !_cell.HasDrawCharge((ent.Owner, draw, slotComp), user: wearer))
+        if (!HasEnergy(ent, ent.Comp.PartSwapCost))
         {
             _popup.PopupEntity(Loc.GetString("modsuit-no-energy"), wearer, wearer);
             return false;
@@ -234,15 +306,9 @@ public sealed partial class ModSuitSystem
 
         RestoreSuitStorage(wearer, stashed);
         RefreshCount(ent);
+
+        SpendEnergy(ent, ent.Comp.PartSwapCost);
         return true;
-    }
-
-    private bool Retract(Entity<ModSuitComponent> ent, ModSuitPart part)
-    {
-        if (ent.Comp.Wearer is not { } wearer)
-            return false;
-
-        return Retract(ent, wearer, part);
     }
 
     private bool Retract(Entity<ModSuitComponent> ent, EntityUid wearer, ModSuitPart part)
