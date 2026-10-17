@@ -10,10 +10,13 @@ using Robust.Shared.Timing;
 
 namespace Content.Server.Radiation.Systems;
 
-// main algorithm that fire radiation rays to target
 public partial class RadiationSystem
 {
     private List<Entity<MapGridComponent>> _grids = new();
+    private const float BetaMinDistance = 1f;
+    private const float BetaHardRangeMultiplier = 2f;
+    private const float BetaAbsorption = 1.2f;
+    // Utopia-Tweak : Radiation-Updt
 
     private readonly record struct SourceData(
         float Intensity,
@@ -116,7 +119,7 @@ public partial class RadiationSystem
         {
             // update radiation value of receiver
             // if no radiation rays reached target, that will set it to 0
-            receiver.Comp.CurrentRadiation = rads;
+            receiver.Comp.BetaRadiation = rads; // Utopia-Tweak : Radiation-Updt
 
             // also send an event with combination of total rad
             if (rads > 0)
@@ -142,14 +145,14 @@ public partial class RadiationSystem
         // Utopia-Tweak : Radiation-Updt
         // get direction from rad source to destination and its distance
         var dir = destWorld - source.WorldPosition;
-        var dist = Math.Max(dir.Length(), 0.5f);
+        var dist = Math.Max(dir.Length(), BetaMinDistance);
         if (TryComp(source.Entity.Owner, out EventHorizonComponent? horizon)) // if we have a horizon emit radiation from the horizon,
-            dist = Math.Max(dist - horizon.Radius, 0.5f);
+            dist = Math.Max(dist - horizon.Radius, BetaMinDistance);
 
-        // Ray enters terminal decay if the distance between source->receiver >TerminalDecayDistance.
-        // Decays at an additional linear rate of TerminalDecaySlope rads per tile past TerminalDecayDistance ontop of the existing hyperbolic function.
-        // Hyperbolic function
-        var rads = source.Intensity / (dist)
+        if (dist > source.TerminalDecayDistance * BetaHardRangeMultiplier)
+            return null;
+
+        var rads = source.Intensity / (dist * dist)
         // Terminal decay function
         - (dist - source.TerminalDecayDistance > 0 ? (source.TerminalDecaySlope * (dist - source.TerminalDecayDistance)) : 0);
 
@@ -208,7 +211,7 @@ public partial class RadiationSystem
     /// <param name="sourceGridPos">source of the ray, in grid space</param>
     /// <param name="destGridPos"></param>
     /// <returns></returns>
-    private static IEnumerable<(Vector2i cell, float distInCell)> AdvancedGridRaycast(Vector2 sourceGridPos, Vector2 destGridPos)
+    public static IEnumerable<(Vector2i cell, float distInCell)> AdvancedGridRaycast(Vector2 sourceGridPos, Vector2 destGridPos)
     {
         var delta = destGridPos - sourceGridPos;
 
@@ -217,12 +220,12 @@ public partial class RadiationSystem
             yield return (new Vector2i((int)Math.Floor(sourceGridPos.X), (int)Math.Floor(sourceGridPos.Y)), 0f);
             yield break;
         }
-        
+
         var currentX = (int)Math.Floor(sourceGridPos.X);
         var currentY = (int)Math.Floor(sourceGridPos.Y);
         var destX = (int)Math.Floor(destGridPos.X);
         var destY = (int)Math.Floor(destGridPos.Y);
-        
+
         var stepX = 0;
         float tDeltaX = 0, tMaxX = float.MaxValue;
         if (delta.X != 0)
@@ -232,7 +235,7 @@ public partial class RadiationSystem
             tMaxX = (xEdge - sourceGridPos.X) / delta.X;
             tDeltaX = stepX / delta.X;
         }
-        
+
         var stepY = 0;
         float tDeltaY = 0, tMaxY = float.MaxValue;
         if (delta.Y != 0)
@@ -242,16 +245,16 @@ public partial class RadiationSystem
             tMaxY = (yEdge - sourceGridPos.Y) / delta.Y;
             tDeltaY = stepY / delta.Y;
         }
-        
+
         var entry = sourceGridPos;
         var maxIterations = Math.Abs(destX - currentX) + Math.Abs(destY - currentY) + 2;
         var iterations = 0;
-        
+
         while (true)
         {
             if (++iterations > maxIterations)
                 yield break;
-            
+
             var tExit = Math.Min(tMaxX, tMaxY);
             var exitIsX = tMaxX < tMaxY;
             if (tExit > 1f)
@@ -259,10 +262,10 @@ public partial class RadiationSystem
             var exit = sourceGridPos + delta * tExit;
             var cell = new Vector2i(currentX, currentY);
             yield return (cell, (exit - entry).Length());
-            
+
             if (tExit >= 1f - 1e-6f)
                 break;
-                
+
             if (exitIsX)
             {
                 currentX += stepX;
@@ -318,9 +321,7 @@ public partial class RadiationSystem
         {
             if (resistanceMap.TryGetValue(point, out var resData))
             {
-                var passRatioFromRadResistance = (1 / (resData > 2 ? (resData / 2) : 1));
-                var passthroughRatio = MathF.Pow(passRatioFromRadResistance, dist);
-                ray.Rads *= passthroughRatio;
+                ray.Rads *= MathF.Exp(-BetaAbsorption * resData * dist);
 
                 // save data for debug
                 if (saveVisitedTiles)

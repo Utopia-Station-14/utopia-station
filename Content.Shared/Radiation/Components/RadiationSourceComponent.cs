@@ -50,4 +50,16 @@ public sealed partial class RadiationSourceComponent : Component
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public bool Enabled = true;
     // Utopia-Tweak : RadiationUpdt
+    [ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
+    public float GammaIntensity = 0f;
+
+    [ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
+    public float GammaTerminalDecaySlope = 0.02f;
+
+    [ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
+    public float GammaTerminalDecayDistance = 25f;
+    // Utopia-Tweak : RadiationUpdt
 }

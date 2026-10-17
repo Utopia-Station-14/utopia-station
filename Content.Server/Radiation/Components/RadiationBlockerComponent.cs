@@ -21,6 +21,11 @@ public sealed partial class RadiationBlockerComponent : Component
     [DataField("resistance")]
     public float RadResistance = 1f;
 
+    // Utopia-Tweak : RadiationUpdt
+    [DataField("gammaResistance")]
+    public float GammaResistance = 0f;
+    // Utopia-Tweak : RadiationUpdt
+
     /// <summary>
     ///     Current position of the rad blocker in grid coordinates.
     ///     Null if doesn't anchored or doesn't block rads.

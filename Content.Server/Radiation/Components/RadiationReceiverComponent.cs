@@ -1,5 +1,6 @@
 using Content.Server.Radiation.Systems;
 using Content.Shared.Radiation.Components;
+using Content.Server._Utopia.Radiation.Systems;
 
 namespace Content.Server.Radiation.Components;
 
@@ -7,14 +8,21 @@ namespace Content.Server.Radiation.Components;
 ///     Marks component that receive radiation from <see cref="RadiationSourceComponent"/>.
 /// </summary>
 [RegisterComponent]
-[Access(typeof(RadiationSystem))]
+[Access(typeof(RadiationSystem), typeof(GammaRadiationSystem))] // Utopia-Tweak : RadiationUpdt
 public sealed partial class RadiationReceiverComponent : Component
 {
+    // Utopia-Tweak : RadiationUpdt
     /// <summary>
-    ///     Current radiation value in rads per second.
-    ///     Periodically updated by radiation system.
+    ///     Current Beta radiation value in rads per second.
     /// </summary>
     [ViewVariables(VVAccess.ReadOnly)]
-    public float CurrentRadiation;
+    public float BetaRadiation;
+
+    /// <summary>
+    ///     Current Gamma radiation value in rads per second.
+    /// </summary>
+    [ViewVariables(VVAccess.ReadOnly)]
+    public float GammaRadiation;
+    // Utopia-Tweak : RadiationUpdt
 }
 

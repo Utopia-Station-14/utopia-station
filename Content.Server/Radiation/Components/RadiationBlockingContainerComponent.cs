@@ -22,5 +22,10 @@ public sealed partial class RadiationBlockingContainerComponent : Component
     /// </summary>
     [DataField("decay")]
     public float RadDecay = 1f;
+
+    [DataField]
+    public float GammaResistance = 0f;
+    [DataField]
+    public float GammaMultiplier = 1f;
     // Utopia-Tweak : RadiationUpdt
 }

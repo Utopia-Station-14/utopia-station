@@ -52,6 +52,20 @@ public sealed partial class GeigerComponent : Component
         {GeigerDangerLevel.Extreme, new SoundPathSpecifier("/Audio/Items/Geiger/ext.ogg")}
     };
 
+    // Utopia-Tweak : RadiationUpdt
+    [ViewVariables(VVAccess.ReadOnly), AutoNetworkedField]
+    public float BetaRadiation;
+
+    [ViewVariables(VVAccess.ReadOnly), AutoNetworkedField]
+    public float GammaRadiation;
+
+    [ViewVariables(VVAccess.ReadOnly), AutoNetworkedField]
+    public GeigerDangerLevel BetaDangerLevel = GeigerDangerLevel.None;
+
+    [ViewVariables(VVAccess.ReadOnly), AutoNetworkedField]
+    public GeigerDangerLevel GammaDangerLevel = GeigerDangerLevel.None;
+    // Utopia-Tweak : RadiationUpdt
+
     /// <summary>
     ///     Current radiation level in rad per second.
     /// </summary>
