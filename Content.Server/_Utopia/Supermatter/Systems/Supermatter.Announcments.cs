@@ -1,5 +1,5 @@
 using Content.Shared._Utopia.Supermatter.Components;
-using Content.Server.AlertLevel;
+using Content.Shared.AlertLevel;
 using Content.Shared.Radio;
 using Content.Shared.Chat;
 using Robust.Shared.Prototypes;
