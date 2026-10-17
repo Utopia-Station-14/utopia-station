@@ -11,18 +11,27 @@ public abstract class SharedGeigerSystem : EntitySystem
         SubscribeLocalEvent<GeigerComponent, ExaminedEvent>(OnExamine);
     }
 
+    // Utopia-Tweak: RadiationUpdt
     private void OnExamine(EntityUid uid, GeigerComponent component, ExaminedEvent args)
     {
         if (!component.ShowExamine || !component.IsEnabled || !args.IsInDetailsRange)
             return;
 
-        var currentRads = component.CurrentRadiation;
-        var rads = currentRads.ToString("N1");
-        var color = LevelToColor(component.DangerLevel);
-        var msg = Loc.GetString("geiger-component-examine",
-            ("rads", rads), ("color", color));
-        args.PushMarkup(msg);
+        var betaStr = component.BetaRadiation.ToString("N1");
+        var gammaStr = component.GammaRadiation.ToString("N1");
+
+        var betaColor = LevelToColor(component.BetaDangerLevel);
+        var gammaColor = LevelToColor(component.GammaDangerLevel);
+
+        var betaMsg = Loc.GetString("geiger-component-examine-beta",
+            ("rads", betaStr), ("color", betaColor));
+        var gammaMsg = Loc.GetString("geiger-component-examine-gamma",
+            ("rads", gammaStr), ("color", gammaColor));
+
+        args.PushMarkup(betaMsg);
+        args.PushMarkup(gammaMsg);
     }
+    // Utopia-Tweak: RadiationUpdt
 
     public static Color LevelToColor(GeigerDangerLevel level)
     {
