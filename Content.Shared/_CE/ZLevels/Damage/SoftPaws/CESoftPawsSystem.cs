@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file is sublicensed under MIT License
  * https://github.com/space-wizards/space-station-14/blob/master/LICENSE.TXT
  */
@@ -30,14 +30,14 @@ public sealed partial class CESoftPawsSystem : EntitySystem
             args.DamageMultiplier *= ent.Comp.DamageMultiplier;
             args.StunMultiplier *= ent.Comp.StunMultiplier;
 
-            _popup.PopupPredicted(Loc.GetString("ce-soft-paws"), ent, ent);
+            _popup.PopupEntity(Loc.GetString("ce-soft-paws"), ent, ent);
         }
         else
         {
             args.DamageMultiplier *= ent.Comp.DamageHardFallMultiplier;
             args.StunMultiplier *= ent.Comp.StunHardFallMultiplier;
 
-            _popup.PopupPredicted(Loc.GetString("ce-soft-paws-too-high"), ent, ent, PopupType.SmallCaution);
+            _popup.PopupEntity(Loc.GetString("ce-soft-paws-too-high"), ent, ent, PopupType.SmallCaution);
         }
     }
 }

@@ -57,10 +57,7 @@
                     </rsch:DraggablePanel>
                 </PanelContainer>
             </BoxContainer>
-            <PanelContainer SizeFlagsStretchRatio="2">
-                <PanelContainer.PanelOverride>
-                    <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
-                </PanelContainer.PanelOverride>
+            <PanelContainer SizeFlagsStretchRatio="2" StyleClasses="PanelDeep">
                 <BoxContainer Name="InfoContainer"
                     Orientation="Vertical"
                     VerticalExpand="True"

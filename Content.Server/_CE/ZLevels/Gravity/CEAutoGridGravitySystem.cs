@@ -6,8 +6,8 @@ namespace Content.Server._CE.ZLevels.Gravity;
 
 public sealed partial class CEAutoGridGravitySystem : EntitySystem
 {
-    [Dependency] SharedMapSystem _map = default!;
-    [Dependency] SharedTransformSystem _transform = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
 
     public override void Initialize()
     {
@@ -52,6 +52,6 @@ public sealed partial class CEAutoGridGravitySystem : EntitySystem
 
         var xform = Transform(ent);
         _transform.SetLocalRotation(ent, Angle.Zero, xform);
-        xform.NoLocalRotation = true;
+        _transform.SetNoLocalRotation(ent, true);
     }
 }

@@ -114,6 +114,7 @@
   - type: Damageable
     damageModifierSet: Slime
   - type: PassiveDamage # Around 8 damage a minute healed
+    intervalHaltOnDamageTaken: 5s
     allowedStates:
     - Alive
     damage:
@@ -172,6 +173,11 @@
       types:
         Asphyxiation: -1.0
     maxSaturation: 15
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Speak
+  # Utopia-Tweak : Language
 
 - type: entity
   parent: OrganBaseOrganic

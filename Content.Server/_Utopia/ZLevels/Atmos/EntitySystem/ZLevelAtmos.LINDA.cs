@@ -164,7 +164,7 @@ public sealed partial class AtmosphereSystem
         TileAtmosphere tile, Vector2i indices, int offset, int fireCount)
     {
         var mapUid = ent.Comp4.MapUid;
-        if (mapUid == null || !_zLevels.TryMapOffset(mapUid.Value, offset, out var targetMap) || targetMap == null)
+        if (mapUid == null || !_zLevels.TryMapOffset(mapUid.Value, offset, out var targetMap))
             return;
 
         // Проверяем движение вниз.
@@ -182,7 +182,7 @@ public sealed partial class AtmosphereSystem
         // Если мы идем вверх.
         if (offset == 1)
         {
-            if (_map.TryFindGridAt(targetMap.Value.Owner, worldPos, out var directGridUid, out var directGridComp))
+            if (_map.TryFindGridAt(targetMap.Owner, worldPos, out var directGridUid, out var directGridComp))
             {
                 var directGridXform = Comp<TransformComponent>(directGridUid);
                 var directLocalPos = Vector2.Transform(worldPos, directGridXform.InvLocalMatrix);
@@ -210,7 +210,7 @@ public sealed partial class AtmosphereSystem
                         var offsetLocalPos = _mapSystem.GridTileToLocal(ent.Owner, ent.Comp3, indices + new Vector2i(x, y));
                         var offsetWorldPos = _transformSystem.ToMapCoordinates(offsetLocalPos).Position;
 
-                        if (_map.TryFindGridAt(targetMap.Value.Owner, offsetWorldPos, out var nGridUid, out var nGridComp))
+                        if (_map.TryFindGridAt(targetMap.Owner, offsetWorldPos, out var nGridUid, out var nGridComp))
                         {
                             var nGridXform = Comp<TransformComponent>(nGridUid);
                             var nLocalPos = Vector2.Transform(offsetWorldPos, nGridXform.InvLocalMatrix);
@@ -240,7 +240,7 @@ public sealed partial class AtmosphereSystem
         }
         else // Логика для движения вниз.
         {
-            if (!_map.TryFindGridAt(targetMap.Value.Owner, worldPos, out targetGridUid, out targetGridComp))
+            if (!_map.TryFindGridAt(targetMap.Owner, worldPos, out targetGridUid, out targetGridComp))
             {
                 HandleSpaceLeak(ent, tile);
                 return;
@@ -350,13 +350,13 @@ public sealed partial class AtmosphereSystem
     private TileAtmosphere? GetZTile(EntityUid gridUid, MapGridComponent grid, Vector2i indices, int offset)
     {
         var mapUid = Transform(gridUid).MapUid;
-        if (mapUid == null || !_zLevels.TryMapOffset(mapUid.Value, offset, out var targetMap) || targetMap == null)
+        if (mapUid == null || !_zLevels.TryMapOffset(mapUid.Value, offset, out var targetMap))
             return null;
 
         var localPos = _mapSystem.GridTileToLocal(gridUid, grid, indices);
         var worldPos = _transformSystem.ToMapCoordinates(localPos).Position;
 
-        if (!_map.TryFindGridAt(targetMap.Value.Owner, worldPos, out var targetGridUid, out var targetGridComp))
+        if (!_map.TryFindGridAt(targetMap.Owner, worldPos, out var targetGridUid, out var targetGridComp))
             return null;
 
         var targetGridXform = Comp<TransformComponent>(targetGridUid);

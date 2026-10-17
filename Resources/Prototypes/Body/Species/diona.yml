@@ -79,10 +79,12 @@
     damageRecovery:
       types:
         Asphyxiation: -1.0
-  - type: Hunger
-    baseDecayRate: 0.0083
-  - type: Thirst
-    baseDecayRate: 0.0083
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: DionaHunger
+      Thirst:
+        prototype: DionaThirst
   - type: Damageable
     damageModifierSet: Diona
   - type: DamageVisuals
@@ -167,6 +169,11 @@
     allowedStates:
     - Dead
   - type: Rootable
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Speak
+  # Utopia-Tweak : Language
 
 - type: entity
   parent: OrganBaseOrganic

@@ -4,8 +4,6 @@ using Robust.Shared.Utility;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
-using Content.Shared._Utopia.ZLevels.Systems;
-using Content.Server._Utopia.ZLevels.Systems;
 
 namespace Content.Server.Maps;
 
@@ -15,7 +13,6 @@ public sealed partial class GridDraggingSystem : SharedGridDraggingSystem
     [Dependency] private IConGroupController _admin = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedTransformSystem _transformSystem = default!;
-    [Dependency] private GridMotionLinkSystem _gridMotion = default!; // Utopia-Tweak : ZLevels
 
     private readonly HashSet<ICommonSession> _draggers = new();
 
@@ -80,6 +77,6 @@ public sealed partial class GridDraggingSystem : SharedGridDraggingSystem
             return;
         }
 
-        _gridMotion.SetGridPosition(grid, msg.WorldPosition); // Utopia-Tweak : ZLevels - использование системы для многоэтажных гридов
+        _transformSystem.SetWorldPosition(grid, msg.WorldPosition);
     }
 }

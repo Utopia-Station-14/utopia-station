@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file is sublicensed under MIT License
  * https://github.com/space-wizards/space-station-14/blob/master/LICENSE.TXT
  */
@@ -47,7 +47,7 @@ public sealed partial class CEZLevelsSystem
         _nextZLevelViewerUpdate = _timing.CurTime + _zLevelViewerUpdateRate;
 
         var query = EntityQueryEnumerator<CEZLevelViewerComponent, TransformComponent>();
-        while (query.MoveNext(out var uid, out var viewer, out var xform))
+        while (query.MoveNext(out var _, out var viewer, out var xform))
         {
             foreach (var eye in viewer.Eyes)
             {
@@ -61,13 +61,13 @@ public sealed partial class CEZLevelsSystem
         ent.Comp.LookUp = false;
         DirtyField(ent, ent.Comp, nameof(CEZLevelViewerComponent.LookUp));
 
-        _actions.AddAction(ent, ref ent.Comp.ZLevelActionEntity, ent.Comp.ActionProto);
+        _actions.AddAction(ent, ref ent.Comp.ActionEntity, ent.Comp.ActionId);
         _meta.AddFlag(ent, MetaDataFlags.ExtraTransformEvents);
     }
 
     private void OnCompRemove(Entity<CEZLevelViewerComponent> ent, ref ComponentRemove args)
     {
-        _actions.RemoveAction(ent.Comp.ZLevelActionEntity);
+        _actions.RemoveAction(ent.Comp.ActionEntity);
         _meta.RemoveFlag(ent, MetaDataFlags.ExtraTransformEvents);
 
         foreach (var eye in ent.Comp.Eyes)
@@ -117,7 +117,7 @@ public sealed partial class CEZLevelsSystem
             if (!TryMapOffset(map.Value, -i, out var mapUidBelow))
                 break;
 
-            var newEye = SpawnAtPosition(_zEyeProto, new EntityCoordinates(mapUidBelow.Value, globalPos));
+            var newEye = SpawnAtPosition(_zEyeProto, new EntityCoordinates(mapUidBelow, globalPos));
 
             Transform(newEye).GridTraversal = false;
             _viewSubscriber.AddViewSubscriber(newEye, actor.PlayerSession);
@@ -126,7 +126,7 @@ public sealed partial class CEZLevelsSystem
 
         if (TryMapUp(map.Value, out var aboveMapUid))
         {
-            var newEye = SpawnAtPosition(_zEyeProto, new EntityCoordinates(aboveMapUid.Value, globalPos));
+            var newEye = SpawnAtPosition(_zEyeProto, new EntityCoordinates(aboveMapUid, globalPos));
 
             Transform(newEye).GridTraversal = false;
             _viewSubscriber.AddViewSubscriber(newEye, actor.PlayerSession);

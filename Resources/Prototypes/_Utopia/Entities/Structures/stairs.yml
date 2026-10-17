@@ -1,0 +1,95 @@
+- type: entity
+  id: ZLevelStairs
+  parent: Stairs
+  suffix: Steel
+  components:
+  - type: CEZLevelHighGround
+    stick: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.1
+
+- type: entity
+  id: ZLevelStairStage
+  parent: StairStage
+  suffix: Steel, stage
+  components:
+  - type: CEZLevelHighGround
+    stick: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.1
+
+- type: entity
+  id: ZLevelStairWhite
+  parent: StairWhite
+  suffix: White
+  components:
+  - type: CEZLevelHighGround
+    stick: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.1
+
+- type: entity
+  id: ZLevelStairStageWhite
+  parent: StairStageWhite
+  suffix: White, stage
+  components:
+  - type: CEZLevelHighGround
+    stick: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.1
+
+- type: entity
+  id: ZLevelStairDark
+  parent: StairDark
+  suffix: Dark
+  components:
+  - type: CEZLevelHighGround
+    stick: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.1
+
+- type: entity
+  id: ZLevelStairStageDark
+  parent: StairStageDark
+  suffix: Dark, stage
+  components:
+  - type: CEZLevelHighGround
+    stick: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.1
+
+- type: entity
+  id: ZLevelStairWood
+  parent: StairWood
+  suffix: Wood
+  components:
+  - type: CEZLevelHighGround
+    stick: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.1
+
+- type: entity
+  id: ZLevelStairStageWood
+  parent: StairStageWood
+  suffix: Wood, stage
+  components:
+  - type: CEZLevelHighGround
+    stick: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.1

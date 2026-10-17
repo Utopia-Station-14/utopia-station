@@ -149,11 +149,8 @@
     damage:
       types:
         Slash: 5
-  - type: Temperature
-    currentTemperature: 310.15
-    specificHeat: 42
   - type: TemperatureDamage
-    heatDamageThreshold: 400
+    heatDamageThreshold: 321.15
     coldDamageThreshold: 285
     coldDamage:
       types:
@@ -167,6 +164,11 @@
       295: 0.8
       285: 0.7
   - type: Wagging
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Speak
+  # Utopia-Tweak : Language
 
 - type: entity
   parent: OrganBaseOrganic

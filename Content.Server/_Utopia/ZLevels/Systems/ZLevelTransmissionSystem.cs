@@ -303,37 +303,37 @@ public sealed partial class ZLevelTransmissionSystem : EntitySystem
         if (xform.MapUid is not { } mapUid)
             return false;
 
-        if (!TryComp(mapUid, out CEZLevelMapComponent? zMap))
+        if (!TryComp(mapUid, out CEZMapComponent? zMap))
             return false;
 
-        if (!_zLevels.TryGetZNetwork(mapUid, out var net) || net == null)
+        if (!_zLevels.TryGetMapNetwork(mapUid, out var net))
             return false;
 
-        ctx = new ZLevelContext(xform, mapUid, zMap, net.Value.Owner);
+        ctx = new ZLevelContext(xform, mapUid, zMap, net.Owner);
         return true;
     }
 
     private EntityUid? GetNeighborMap(ZLevelContext ctx, int offset)
     {
-        var mapEntity = new Entity<CEZLevelMapComponent?>(ctx.MapUid, ctx.ZMap);
+        var mapEntity = new Entity<CEZMapComponent?>(ctx.MapUid, ctx.ZMap);
 
-        if (!_zLevels.TryMapOffset(mapEntity, offset, out var target) || target == null)
+        if (!_zLevels.TryMapOffset(mapEntity, offset, out var target))
             return null;
 
-        return target.Value.Owner;
+        return target.Owner;
     }
 
     private readonly struct ZLevelContext
     {
         public readonly TransformComponent Transform;
         public readonly EntityUid MapUid;
-        public readonly CEZLevelMapComponent ZMap;
+        public readonly CEZMapComponent ZMap;
         public readonly EntityUid ZNetwork;
 
         public ZLevelContext(
             TransformComponent transform,
             EntityUid mapUid,
-            CEZLevelMapComponent zMap,
+            CEZMapComponent zMap,
             EntityUid zNetwork)
         {
             Transform = transform;

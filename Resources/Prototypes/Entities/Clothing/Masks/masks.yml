@@ -19,6 +19,20 @@
     layers:
       Snout: Mask
     hideOnToggle: true
+  # Utopia-Tweak : Stains
+  - type: Appearance
+  - type: SolutionManager
+    solutions:
+    - SolutionStain
+  - type: Stainable
+    clothingVisuals:
+      mask:
+      - sprite: /Textures/_Utopia/Effects/blood.rsi
+        state: maskblood
+    iconVisuals:
+    - sprite: /Textures/_Utopia/Effects/blood.rsi
+      state: maskbloodicon
+  # Utopia-Tweak : Stains
 
 - type: entity
   parent: [ClothingMaskGas, BaseSecurityContraband]

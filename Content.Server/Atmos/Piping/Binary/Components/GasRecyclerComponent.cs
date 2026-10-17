@@ -1,6 +1,6 @@
 using Content.Shared.Atmos;
 using Content.Shared.Construction.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Atmos.Piping.Binary.Components
 {
@@ -29,8 +29,8 @@ namespace Content.Server.Atmos.Piping.Binary.Components
         [DataField]
         public float BaseMinTemp = 300 + Atmospherics.T0C;
 
-        [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
-        public string MachinePartMinTemp = "Laser";
+        [DataField]
+        public ProtoId<MachinePartPrototype> MachinePartMinTemp = "Laser";
 
         [DataField]
         public float PartTierMinTempMultiplier = 0.95f;
@@ -38,8 +38,8 @@ namespace Content.Server.Atmos.Piping.Binary.Components
         [DataField]
         public float BaseMinPressure = 30 * Atmospherics.OneAtmosphere;
 
-        [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<MachinePartPrototype>))]
-        public string MachinePartMinPressure = "Manipulator";
+        [DataField]
+        public ProtoId<MachinePartPrototype> MachinePartMinPressure = "Manipulator";
 
         [DataField]
         public float PartTierMinPressureMultiplier = 0.8f;

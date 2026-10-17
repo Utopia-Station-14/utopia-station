@@ -9,6 +9,7 @@ using Content.Shared.Chat;
 using Content.Shared.Database;
 using Content.Shared.Radio;
 using Content.Shared.Radio.Components;
+using Content.Shared.Radio.EntitySystems;
 using Content.Shared.Speech;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
@@ -20,10 +21,8 @@ using Robust.Shared.Utility;
 
 namespace Content.Server.Radio.EntitySystems;
 
-/// <summary>
-///     This system handles intrinsic radios and the general process of converting radio messages into chat messages.
-/// </summary>
-public sealed partial class RadioSystem : EntitySystem
+/// <inheritdoc/>
+public sealed partial class RadioSystem : SharedRadioSystem
 {
     [Dependency] private INetManager _netMan = default!;
     [Dependency] private IReplayRecordingManager _replay = default!;
@@ -85,20 +84,8 @@ public sealed partial class RadioSystem : EntitySystem
         _netMan.ServerSendMessage(msg, actor.PlayerSession.Channel);
     }
 
-    /// <summary>
-    /// Send radio message to all active radio listeners
-    /// </summary>
-    public void SendRadioMessage(EntityUid messageSource, string message, ProtoId<RadioChannelPrototype> channel, EntityUid radioSource, bool escapeMarkup = true, LanguagePrototype? language = null) // Utopia-Tweak : Language
-    {
-        SendRadioMessage(messageSource, message, ProtoMan.Index(channel), radioSource, escapeMarkup: escapeMarkup);
-    }
-
-    /// <summary>
-    /// Send radio message to all active radio listeners
-    /// </summary>
-    /// <param name="messageSource">Entity that spoke the message</param>
-    /// <param name="radioSource">Entity that picked up the message and will send it, e.g. headset</param>
-    public void SendRadioMessage(EntityUid messageSource, string message, RadioChannelPrototype channel, EntityUid radioSource, bool escapeMarkup = true, LanguagePrototype? languageOverride = null) // Utopia-Tweak : Language
+    /// <inheritdoc/>
+    public override void SendRadioMessage(EntityUid messageSource, string message, RadioChannelPrototype channel, EntityUid radioSource, bool escapeMarkup = true, LanguagePrototype? languageOverride = null) // Utopia-Tweak : Language
     {
         // Utopia-Tweak : Language
         var language = languageOverride ?? _language.GetCurrentLanguage(messageSource);
