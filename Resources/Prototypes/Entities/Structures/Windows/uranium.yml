@@ -24,8 +24,6 @@
           ShardGlassUranium:
             min: 1
             max: 2
-  - type: IconSmooth
-    base: uwindow
   - type: Construction
     graph: Window
     node: uraniumWindow
@@ -131,10 +129,6 @@
     tags:
     - Diagonal
     - Window
-  - type: IconSmooth
-    mode: Diagonal
-    key: walls
-    base: state
   - type: Icon
     sprite: Structures/Windows/window-diagonal-uranium.rsi
     state: state0

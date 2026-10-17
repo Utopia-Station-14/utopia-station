@@ -31,8 +31,6 @@
           ShardGlassReinforced:
             min: 1
             max: 2
-  - type: IconSmooth
-    base: rwindow
   - type: Construction
     graph: Window
     node: reinforcedWindow
@@ -135,10 +133,6 @@
     tags:
     - Diagonal
     - Window
-  - type: IconSmooth
-    mode: Diagonal
-    key: walls
-    base: state
   - type: Icon
     sprite: Structures/Windows/window-base-diagonal-reinf.rsi
     state: state0

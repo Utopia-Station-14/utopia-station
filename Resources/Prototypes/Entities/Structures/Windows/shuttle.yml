@@ -30,8 +30,6 @@
           PartRodMetal:
             min: 1
             max: 2
-  - type: IconSmooth
-    base: swindow
   - type: Construction
     graph: Window
     node: shuttleWindow
@@ -62,10 +60,6 @@
     tags:
     - Diagonal
     - Window
-  - type: IconSmooth
-    mode: Diagonal
-    key: walls
-    base: state
   - type: Icon
     sprite: Structures/Windows/window-diagonal-shuttle.rsi
     state: state0

@@ -47,9 +47,6 @@
     delay: 4
     fx: EffectRCDDeconstruct4
   - type: Airtight
-  - type: IconSmooth
-    key: walls
-    base: window
   - type: PlacementReplacement
     key: walls
   - type: InteractionPopup
@@ -81,9 +78,12 @@
   components:
   - type: Sprite
     sprite: Structures/Windows/window-base.rsi
+    layers:
+    - state: wall-0
+      map: ["enum.WallVisualLayers.Base"]
   - type: Icon
     sprite: Structures/Windows/window-base.rsi
-    state: full
+    state: wall-0
   - type: Damageable
     damageModifierSet: GlassMod
   - type: Destructible
@@ -100,6 +100,7 @@
           ShardGlass:
             min: 1
             max: 2
+  - type: WallConnect
 
 - type: entity
   parent: Window
@@ -110,8 +111,6 @@
     sprite: Structures/Windows/window-tinted.rsi
   - type: Icon
     sprite: Structures/Windows/window-tinted.rsi
-  - type: IconSmooth
-    base: twindow
   - type: Construction
     graph: Window
     node: tintedWindow
@@ -319,10 +318,6 @@
     tags:
     - Diagonal
     - Window
-  - type: IconSmooth
-    mode: Diagonal
-    key: walls
-    base: state
   - type: Icon
     sprite: Structures/Windows/window-base-diagonal.rsi
     state: state0

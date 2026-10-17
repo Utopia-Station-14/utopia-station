@@ -9,6 +9,3 @@
   - type: Icon
     sprite: Structures/Windows/exo-resin-borg.rsi
     state: full
-  - type: IconSmooth
-    key: walls
-    base: xenoborg

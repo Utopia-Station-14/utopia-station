@@ -387,10 +387,11 @@
   name: reinforced wall
   components:
   - type: Sprite
-    sprite: Structures/Walls/solid.rsi
+    sprite: Structures/Walls/solid-reinforced.rsi
+    state: wall-0
   - type: Icon
-    sprite: Structures/Walls/solid.rsi
-    state: rgeneric
+    sprite: Structures/Walls/solid-reinforced.rsi
+    state: wall-0
   - type: Construction
     graph: Girder
     node: reinforcedWall
@@ -433,10 +434,11 @@
           !type:PhysShapeAabb
           bounds: "-0.5,-0.5,0.5,0.5"
         mask:
-        - FullTileMask
+          - FullTileMask
         layer:
-        - WallLayer
+          - WallLayer
         density: 2000
+  - type: WallConnect # Utopia-Tweak : Sprites
 
 - type: entity
   parent: WallReinforced
@@ -674,14 +676,18 @@
   id: WallSolid
   name: solid wall
   components:
+  - type: Appearance
   - type: Sprite
     sprite: Structures/Walls/solid.rsi
+    layers:
+    - state: wall-0
   - type: WallReplacementMarker
   - type: Construction
     graph: Girder
     node: wall
   - type: Icon
     sprite: Structures/Walls/solid.rsi
+    state: wall-0
   - type: RCDDeconstructable
     cost: 6
     delay: 8
@@ -699,9 +705,7 @@
       - &SpawnSteel !type:SpawnEntitiesBehavior
         spawn:
           SheetSteel1: *BaseWallSpawn
-  - type: IconSmooth
-    key: walls
-    base: solid
+  - type: WallConnect
 
 - type: entity
   parent: [ WallDiagonalBase, StructureHealthWall ]

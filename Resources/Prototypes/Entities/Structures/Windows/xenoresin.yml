@@ -8,5 +8,3 @@
     sprite: Structures/Windows/exo-resin.rsi
   - type: Icon
     sprite: Structures/Windows/exo-resin.rsi
-  - type: IconSmooth
-    base: xwindow
