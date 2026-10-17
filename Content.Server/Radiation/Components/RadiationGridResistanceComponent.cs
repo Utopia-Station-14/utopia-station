@@ -13,4 +13,6 @@ public sealed partial class RadiationGridResistanceComponent : Component
     ///     Radiation resistance per tile.
     /// </summary>
     public readonly Dictionary<Vector2i, float> ResistancePerTile = new();
+
+    public readonly Dictionary<Vector2i, float> GammaResistancePerTile = new(); // Utopia-Tweak : RadiationUpdt
 }
