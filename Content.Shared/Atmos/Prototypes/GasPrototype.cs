@@ -120,6 +120,11 @@ public sealed partial class GasPrototype : IPrototype
     [DataField]
     public bool IsOxidizer;
 
+    // Utopia-Tweak : ZLevels
+    [DataField]
+    public float Density;
+    // Utopia-Tweak : ZLevels
+
     // Utopia-Tweak : Toxicology
     [DataField]
     public List<Color>? ColorGradient { get; private set; } = null;

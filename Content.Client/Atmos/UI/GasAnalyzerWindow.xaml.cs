@@ -311,6 +311,11 @@ namespace Content.Client.Atmos.UI
                 totalGasAmount += gas.Amount;
             }
 
+            // Utopia-Tweak : Bug-fixes
+            if (totalGasAmount <= 0f)
+                totalGasAmount = 1f;
+            // Utopia-Tweak : Bug-fixes
+
             tableKey.AddChild(new Label
                 { Text = Loc.GetString("gas-analyzer-window-gas-column-name"), Align = Label.AlignMode.Center });
             tableVal.AddChild(new Label
@@ -318,9 +323,23 @@ namespace Content.Client.Atmos.UI
             tablePercent.AddChild(new Label
                 { Text = Loc.GetString("gas-analyzer-window-percentage-column-name"), Align = Label.AlignMode.Center });
 
-            tableKey.AddChild(new StripeBack());
-            tableVal.AddChild(new StripeBack());
-            tablePercent.AddChild(new StripeBack());
+            // Utopia-Tweak : Bug-fixes
+            tableKey.AddChild(new PanelContainer
+            {
+                MinHeight = 2,
+                PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#4f4f4f") }
+            });
+            tableVal.AddChild(new PanelContainer
+            {
+                MinHeight = 2,
+                PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#4f4f4f") }
+            });
+            tablePercent.AddChild(new PanelContainer
+            {
+                MinHeight = 2,
+                PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#4f4f4f") }
+            });
+            // Utopia-Tweak : Bug-fixes
 
             for (var j = 0; j < gasMix.Gases.Length; j++)
             {

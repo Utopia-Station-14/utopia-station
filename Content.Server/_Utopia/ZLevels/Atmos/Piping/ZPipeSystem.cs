@@ -1,3 +1,8 @@
+/*
+ * This file is sublicensed under MIT License
+ * https://github.com/space-wizards/space-station-14/blob/master/LICENSE.TXT
+ */
+
 using Content.Server.Atmos.EntitySystems;
 using Content.Server._Utopia.ZLevels.Nodes;
 using Content.Shared._Utopia.ZLevels.Pipes.Components;
