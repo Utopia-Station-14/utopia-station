@@ -1,5 +1,4 @@
 using Content.Server.Radiation.Components;
-using Content.Server.Radiation.Events;
 using Content.Server.Radiation.Systems;
 using Content.Server.Radiation.Events;
 using Content.Shared.Stacks;
