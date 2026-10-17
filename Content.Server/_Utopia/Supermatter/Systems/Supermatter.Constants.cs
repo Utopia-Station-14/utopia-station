@@ -1,11 +1,16 @@
+using Content.Shared._Utopia.Supermatter;
+using Robust.Shared.Audio;
+
 namespace Content.Server._Utopia.Supermatter.Systems;
 
 public sealed partial class SupermatterSystem
 {
     private const float MaxIntegrity = 100f;
     private const float MinIntegrity = -100f;
-    private const float SpeechCooldown = 5f;
+    private const float SpeechCooldown = 45f;
     private const float MinRadiation = 3f;
+
+    private const float DamagePerSlicing = 15f;
 
     #region Energy
     private const float MinInternalEnergy = 350f;
@@ -18,11 +23,15 @@ public sealed partial class SupermatterSystem
     #endregion
 
 
+    #region Radiation
+    private const float RadiationOutput = 0.004f;
+    #endregion
+
     #region Lightning
     private const float DelayedLightningChance = 0.3f;
     private const float MinDelaySeconds = 2f;
     private const float MaxDelaySeconds = 4f;
-    private const float MinCooldownSeconds = 10;
+    private const float MinCooldownSeconds = 10f;
     private const float MaxCooldownSeconds = 15f;
     private const float MaxLightningRange = 10f;
     private const float MinLightningRange = 3f;
@@ -32,12 +41,19 @@ public sealed partial class SupermatterSystem
 
 
     #region Gases
-    private const float ToMuchGas = 500f;
-    private const float MaxOxygenWaste = 0.8f;
-    private const float MinOxygenWaste = 0.2f;
+    private const float ToMuchGas = 1800f;
+    private const float MinOxygenWaste = 0.02f;
+    private const float MaxOxygenWaste = 0.08f;
     private const float MaxPhoronWaste = 0.2f;
+    private const float WasteGasHeatingConstant = 10f;
     #endregion
 
+
+    #region Audio
+    public float AccentMinCooldown = 2f;
+    public SoundSpecifier CalmAccent = new SoundCollectionSpecifier("SupermatterAccentNormal");
+    public SoundSpecifier DelamAccent = new SoundCollectionSpecifier("SupermatterAccentDelam");
+    #endregion
 
     #region Damage
     private const float BaseHealingPerTick = 0.1f;
@@ -46,4 +62,19 @@ public sealed partial class SupermatterSystem
     private const float IntegrityForCatastropheStatus = 45f;
     private const float IntegrityForDelamination = 0f;
     #endregion Damage
+
+
+    #region Delamination
+    private TimeSpan DelaminationTimer = TimeSpan.FromSeconds(120f);
+    #endregion
+
+
+    #region Anomaly
+    private const float AnomalyTimeBetweenSpawn = 10f;
+    private const float MaxAnomalyTimeLife = 15f;
+    private const float MinAnomalyTimeLife = 4f;
+    private const float IntegrityForAnomalyLow = 75f;
+    private const float IntegrityForAnomalyHight = 25f;
+    private const float MinRangeAnomalySpawn = 8f;
+    #endregion
 }

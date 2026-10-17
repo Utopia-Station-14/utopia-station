@@ -1,5 +1,26 @@
-ent-ComputerSupermatter = консоль мониторинга кристалла Суперматерии
+ent-SupermatterConsole = консоль мониторинга кристалла Суперматерии
     .desc = Используется для сбора данных кристалла Суперматерии.
+
+supermatter-console-menu-title = Мониторинг кристалла Суперматерии
+supermatter-console-list-label = Кристаллы
+supermatter-console-stats-label = Статистика
+supermatter-console-no-selection = Кристалл не выбран
+supermatter-console-info-name = Название:
+supermatter-console-info-status = Статус:
+supermatter-console-info-integrity = Целостность:
+supermatter-console-info-temperature = Температура:
+supermatter-console-info-max-temperature = Максимальная температура:
+supermatter-console-info-min-temperature = Минимальная температура:
+supermatter-console-info-total-energy = Полная энергия:
+supermatter-console-info-internal-energy = Внутренняя энергия:
+supermatter-console-info-external-energy = Внешняя энергия:
+supermatter-console-info-radiation = Радиация:
+supermatter-console-gas-label = Состав газов
+supermatter-console-gas-empty = Газы не обнаружены
+
+supermatter-console-temperature = K
+supermatter-console-energy = КэВ
+supermatter-console-rad = Рад
 
 supermatter-console-window-title = Мониторинг кристалла Суперматерии
 supermatter-console-window-station-name = [color=white][font size=14]{$stationName}[/font][/color]

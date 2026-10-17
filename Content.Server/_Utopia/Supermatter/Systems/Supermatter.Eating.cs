@@ -9,19 +9,20 @@ using Robust.Shared.Prototypes;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reagent;
-
+using Content.Shared.Projectiles;
+using Content.Server._Utopia.Supermatter.Components;
 
 namespace Content.Server._Utopia.Supermatter.Systems;
 
-public sealed class SupermatterEatingSystem : EntitySystem
+public sealed partial class SupermatterEatingSystem : EntitySystem
 {
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutionContainer = default!;
     [Dependency] private SupermatterSystem _superMatter = default!;
 
     private const float MinMass = 0f;
-    private EntProtoId _collisionResultPrototype = "Ash";
-    private SoundSpecifier _collisionResultSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/supermatter.ogg");
+    private EntProtoId CollisionResultPrototype = "Ash";
+    private SoundSpecifier CollisionResultSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/supermatter.ogg");
 
     public override void Initialize()
     {
@@ -52,39 +53,49 @@ public sealed class SupermatterEatingSystem : EntitySystem
 
     private void ProcessConsumption(Entity<SupermatterEatingComponent> eater, EntityUid targetUid)
     {
-        var entityMass = GetEntityMass(targetUid);
+        var entityEnergy = GetEntityMass(targetUid);
         var entityReagents = GetEntityReagents(targetUid);
 
-        if (entityMass <= MinMass)
+        if (HasComp<SupermatterProtectionComponent>(targetUid) || HasComp<GodmodeComponent>(targetUid))
             return;
 
-        ReachForTheSunAndBurnBurnBurn(eater.Owner, targetUid, entityReagents, entityMass);
+        if (entityEnergy <= MinMass)
+            return;
+
+        ReachForTheSunAndBurnBurnBurn(eater.Owner, targetUid, entityReagents, entityEnergy);
     }
 
-    private void ReachForTheSunAndBurnBurnBurn(EntityUid uid, EntityUid targetEntity, IReadOnlyList<ReagentQuantity>? reagents, float mass)
+    private void ReachForTheSunAndBurnBurnBurn(EntityUid uid, EntityUid targetEntity, IReadOnlyList<ReagentQuantity>? reagents, float energy)
     {
         if (TryComp<SupermatterComponent>(uid, out var matter))
         {
             if (!matter.Active)
-                matter.Active = !matter.Active;
+                _superMatter.OffOn((uid, matter));
 
-            _superMatter.ChangeExternalEnergy(matter, mass);
-            _superMatter.AddReagents(matter, reagents);
+            _superMatter.ConsumeExternalEnergy((uid, matter), energy);
+            _superMatter.AddReagents(uid, matter, reagents);
         }
 
-        EntityManager.SpawnEntity(_collisionResultPrototype, Transform(targetEntity).Coordinates);
-        _audio.PlayPvs(_collisionResultSound, uid);
+        if (!HasComp<ProjectileComponent>(targetEntity))
+        {
+            _audio.PlayPvs(CollisionResultSound, uid);
+            SpawnAtPosition(CollisionResultPrototype, Transform(targetEntity).Coordinates);
+        }
 
         QueueDel(targetEntity);
     }
 
     private float GetEntityMass(EntityUid uid)
     {
-        if (!HasComp<SupermatterProtectionComponent>(uid) && !HasComp<GodmodeComponent>(uid)
-        && TryComp<PhysicsComponent>(uid, out var physic))
-        { return physic.Mass; }
+        var energy = 0f;
 
-        return 0f;
+        if (TryComp<PhysicsComponent>(uid, out var physic))
+            energy += physic.Mass;
+
+        if (TryComp<SupermatterFoodComponent>(uid, out var smFood))
+            energy += smFood.Energy;
+
+        return energy;
     }
 
     private IReadOnlyList<ReagentQuantity>? GetEntityReagents(EntityUid uid, string solutionName = "default")

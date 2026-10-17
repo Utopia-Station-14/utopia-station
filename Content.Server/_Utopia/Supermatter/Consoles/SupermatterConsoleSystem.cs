@@ -1,215 +1,121 @@
-// using Content.Shared.ADT.CCVar;
-// using Content.Shared.ADT.Supermatter.Components;
-// using Content.Shared.ADT.Supermatter.Consoles;
-// using Content.Shared.Atmos;
-// using Content.Shared.Radiation.Components;
-// using Robust.Server.GameObjects;
-// using Robust.Shared.Configuration;
-// using System.Linq;
+using Content.Shared._Utopia.Supermatter.Components;
+using Content.Shared._Utopia.Supermatter.Components;
+using Robust.Shared.Audio.Systems;
+using Content.Server._Utopia.Audio.Systems;
+using Robust.Shared.Audio;
+using Robust.Server.GameObjects;
+using Robust.Shared.Random;
 
-// namespace Content.Server.ADT.Supermatter.Console.Systems;
+namespace Content.Server._Utopia.Supermatter.Consoles;
 
-// public sealed class SupermatterConsoleSystem : SharedSupermatterConsoleSystem
-// {
-//     [Dependency] private readonly UserInterfaceSystem _userInterfaceSystem = default!;
-//     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-//     [Dependency] private readonly IConfigurationManager _config = default!;
+public sealed partial class SupermatterConsoleSystem : EntitySystem
+{
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
-//     public override void Initialize()
-//     {
-//         base.Initialize();
+    private SoundSpecifier WarningSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/status/terminal_alert.ogg");
+    private SoundSpecifier DestabilizationSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/status/engine_alert1.ogg");
+    private SoundSpecifier CatastropheSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/status/engine_alert2.ogg");
+    private SoundSpecifier DelaminationSound = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/status/ohfuck.ogg");
 
-//         // Console events
-//         SubscribeLocalEvent<SupermatterConsoleComponent, ComponentInit>(OnConsoleInit);
-//         SubscribeLocalEvent<SupermatterConsoleComponent, EntParentChangedMessage>(OnConsoleParentChanged);
-//         SubscribeLocalEvent<SupermatterConsoleComponent, SupermatterConsoleFocusChangeMessage>(OnFocusChangedMessage);
+    public override void Initialize()
+    {
+        base.Initialize();
 
-//         // Grid events
-//         SubscribeLocalEvent<GridSplitEvent>(OnGridSplit);
-//     }
+        Subs.BuiEvents<SupermatterConsoleComponent>(SupermatterConsoleUiKey.Key, subs =>
+        {
+            subs.Event<BoundUIOpenedEvent>(OnUiOpened);
+            subs.Event<SupermatterConsoleFocusChangeMessage>(OnFocusChange);
+        });
+    }
 
-//     #region Event Handling
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
 
-//     private void OnConsoleInit(EntityUid uid, SupermatterConsoleComponent component, ComponentInit args)
-//     {
-//         InitalizeConsole(uid, component);
-//     }
+        var query = EntityQueryEnumerator<SupermatterConsoleComponent>();
+        while (query.MoveNext(out var uid, out var console))
+        {
+            if (!_ui.IsUiOpen(uid, SupermatterConsoleUiKey.Key))
+                continue;
 
-//     private void OnConsoleParentChanged(EntityUid uid, SupermatterConsoleComponent component, EntParentChangedMessage args)
-//     {
-//         InitalizeConsole(uid, component);
-//     }
+            UpdateUI(uid, console);
+        }
+    }
 
-//     private void OnFocusChangedMessage(EntityUid uid, SupermatterConsoleComponent component, SupermatterConsoleFocusChangeMessage args)
-//     {
-//         component.FocusSupermatter = args.FocusSupermatter;
-//         Dirty(uid, component);
-//     }
+    public void PlayAudio(Entity<SupermatterConsoleComponent> ent, SupermatterStatus status)
+    {
+        var sound = status switch
+        {
+            SupermatterStatus.Warning => WarningSound,
+            SupermatterStatus.Destabilization => DestabilizationSound,
+            SupermatterStatus.Catastrophe => CatastropheSound,
+            SupermatterStatus.Delamination => DelaminationSound,
+            _ => null
+        };
 
-//     private void OnGridSplit(ref GridSplitEvent args)
-//     {
-//         // Collect grids
-//         var allGrids = args.NewGrids.ToList();
+        if (sound != null && _random.Prob(0.1f))
+            _audio.PlayPvs(sound, ent);
+    }
 
-//         if (!allGrids.Contains(args.Grid))
-//             allGrids.Add(args.Grid);
+    private void OnUiOpened(Entity<SupermatterConsoleComponent> ent, ref BoundUIOpenedEvent args)
+    {
+        UpdateUI(ent, ent.Comp);
+    }
 
-//         // Update supermatter monitoring consoles that stand on an updated grid
-//         var query = AllEntityQuery<SupermatterConsoleComponent, TransformComponent>();
-//         while (query.MoveNext(out var ent, out var entConsole, out var entXform))
-//         {
-//             if (entXform.GridUid == null)
-//                 continue;
+    private void OnFocusChange(Entity<SupermatterConsoleComponent> ent, ref SupermatterConsoleFocusChangeMessage args)
+    {
+        ent.Comp.FocusSupermatter = args.NetEntity;
+        Dirty(ent);
+        UpdateUI(ent, ent.Comp);
+    }
 
-//             if (!allGrids.Contains(entXform.GridUid.Value))
-//                 continue;
+    private void UpdateUI(EntityUid uid, SupermatterConsoleComponent console)
+    {
+        if (!_ui.IsUiOpen(uid, SupermatterConsoleUiKey.Key))
+            return;
 
-//             InitalizeConsole(ent, entConsole);
-//         }
-//     }
+        var entries = new List<SupermatterConsoleEntry>();
 
-//     #endregion
+        var smQuery = EntityQueryEnumerator<SupermatterComponent, MetaDataComponent>();
+        while (smQuery.MoveNext(out var smUid, out var sm, out var meta))
+        {
+            entries.Add(new SupermatterConsoleEntry(
+                GetNetEntity(smUid),
+                meta.EntityName,
+                sm.Integrity,
+                sm.Status));
+        }
 
-//     public override void Update(float frameTime)
-//     {
-//         base.Update(frameTime);
+        SupermatterFocusData? focusData = null;
 
-//         // Keep a list of UI entries for each gridUid, in case multiple consoles stand on the same grid
-//         var supermatterEntriesForEachGrid = new Dictionary<EntityUid, SupermatterConsoleEntry[]>();
+        if (console.FocusSupermatter is { } netFocus &&
+            TryGetEntity(netFocus, out var focusUid) &&
+            TryComp<SupermatterComponent>(focusUid, out var focusSm) &&
+            TryComp<MetaDataComponent>(focusUid, out var focusMeta))
+        {
+            focusData = new SupermatterFocusData(
+                netFocus,
+                focusMeta.EntityName,
+                focusMeta.EntityPrototype?.ID,
+                focusSm.Integrity,
+                focusSm.Status,
+                focusSm.CurrentTemperature,
+                focusSm.MinTemperature,
+                focusSm.MaxTemperature,
+                focusSm.TotalEnergy,
+                focusSm.InternalEnergy,
+                focusSm.ExternalEnergy,
+                focusSm.Radiation,
+                focusSm.AtmosGas.Clone(),
+                focusSm.EnergyScaleModifier,
+                focusSm.EnergyReductionModifier,
+                focusSm.TemperatureScaleModifier,
+                focusSm.WasteOutputModifier,
+                focusSm.TemperatureProtectionModifier);
+        }
 
-//         var query = AllEntityQuery<SupermatterConsoleComponent, TransformComponent>();
-//         while (query.MoveNext(out var ent, out var entConsole, out var entXform))
-//         {
-//             if (entXform?.GridUid == null)
-//                 continue;
-
-//             // Make a list of supermatter state data for all the supermatters on the grid
-//             if (!supermatterEntriesForEachGrid.TryGetValue(entXform.GridUid.Value, out var supermatterEntries))
-//             {
-//                 supermatterEntries = GetSupermatterStateData(entXform.GridUid.Value).ToArray();
-//                 supermatterEntriesForEachGrid[entXform.GridUid.Value] = supermatterEntries;
-//             }
-
-//             // Determine the highest level of supermatter status for the console
-//             var highestStatus = SupermatterStatusType.Inactive;
-
-//             foreach (var entry in supermatterEntries)
-//             {
-//                 var status = entry.EntityStatus;
-
-//                 if (status > highestStatus)
-//                     highestStatus = status;
-//             }
-
-//             // Update the appearance of the console based on the highest recorded level of supermatter status
-//             if (TryComp<AppearanceComponent>(ent, out var entAppearance))
-//                 _appearance.SetData(ent, SupermatterConsoleVisuals.ComputerLayerScreen, (int)highestStatus, entAppearance);
-
-//             // If the console UI is open, send UI data to each subscribed session
-//             UpdateUIState(ent, supermatterEntries, entConsole, entXform);
-//         }
-//     }
-
-//     private void UpdateUIState(EntityUid uid, SupermatterConsoleEntry[] supermatterStateData, SupermatterConsoleComponent component, TransformComponent xform)
-//     {
-//         if (!_userInterfaceSystem.IsUiOpen(uid, SupermatterConsoleUiKey.Key))
-//             return;
-
-//         var gridUid = xform.GridUid!.Value;
-
-//         // Gathering remaining data to be send to the client
-//         var focusSupermatterData = GetFocusSupermatterData(GetEntity(component.FocusSupermatter), gridUid);
-
-//         // Set the UI state
-//         _userInterfaceSystem.SetUiState(uid, SupermatterConsoleUiKey.Key,
-//             new SupermatterConsoleBoundInterfaceState(supermatterStateData, focusSupermatterData));
-//     }
-
-//     private List<SupermatterConsoleEntry> GetSupermatterStateData(EntityUid gridUid)
-//     {
-//         var supermatterStateData = new List<SupermatterConsoleEntry>();
-
-//         var querySupermatters = AllEntityQuery<SupermatterComponent, TransformComponent>();
-//         while (querySupermatters.MoveNext(out var ent, out var entSupermatter, out var entXform))
-//         {
-//             if (entXform.GridUid != gridUid)
-//                 continue;
-
-//             if (!entXform.Anchored)
-//                 continue;
-
-//             // Create entry
-//             var netEnt = GetNetEntity(ent);
-
-//             var entry = new SupermatterConsoleEntry(netEnt, MetaData(ent).EntityName, entSupermatter.Status);
-
-//             supermatterStateData.Add(entry);
-//         }
-
-//         return supermatterStateData;
-//     }
-
-//     private SupermatterFocusData? GetFocusSupermatterData(EntityUid? focusSupermatter, EntityUid gridUid)
-//     {
-//         if (focusSupermatter == null)
-//             return null;
-
-//         if (!TryComp(focusSupermatter.Value, out TransformComponent? focusSupermatterXform))
-//             return null;
-
-//         if (!focusSupermatterXform.Anchored ||
-//             focusSupermatterXform.GridUid != gridUid)
-//             return null;
-
-//         if (!TryComp<SupermatterComponent>(focusSupermatter.Value, out var sm))
-//             return null;
-
-//         if (!TryComp<RadiationSourceComponent>(focusSupermatter.Value, out var radiationComp))
-//             return null;
-
-//         var gases = GasMixture.SpaceGas;
-//         if (sm.GasStorage != null)
-//             gases = sm.GasStorage;
-
-//         var tempThreshold = Atmospherics.T0C + _config.GetCVar(ADTCCVars.SupermatterHeatPenaltyThreshold);
-
-//         return new SupermatterFocusData(
-//             GetNetEntity(focusSupermatter.Value),
-//             gases,
-//             GetIntegrity(sm),
-//             GetHeatHealing(sm),
-//             sm.Power,
-//             sm.PowerLoss,
-//             radiationComp.Intensity,
-//             tempThreshold * sm.DynamicHeatResistance,
-//             sm.HeatModifier,
-//             sm.GasHeatModifier,
-//             sm.GasEfficiency * 100);
-//     }
-
-//     private static float GetIntegrity(SupermatterComponent sm)
-//     {
-//         var integrity = sm.Damage / sm.DamageDelaminationPoint;
-//         integrity = (float)Math.Round(100 - integrity * 100, 2);
-//         integrity = integrity < 0 ? 0 : integrity;
-//         return integrity;
-//     }
-
-//     private static float GetHeatHealing(SupermatterComponent sm)
-//     {
-//         var heatHealing = sm.HeatHealing / sm.DamageDelaminationPoint;
-//         heatHealing = (float)Math.Round(heatHealing * 100, 2);
-//         heatHealing = heatHealing > 0 ? 0 : heatHealing;
-//         return heatHealing;
-//     }
-
-//     private void InitalizeConsole(EntityUid uid, SupermatterConsoleComponent component)
-//     {
-//         var xform = Transform(uid);
-
-//         if (xform.GridUid == null)
-//             return;
-
-//         Dirty(uid, component);
-//     }
-// }
+        _ui.SetUiState(uid, SupermatterConsoleUiKey.Key, new SupermatterConsoleBoundInterfaceState(entries.ToArray(), focusData));
+    }
+}
