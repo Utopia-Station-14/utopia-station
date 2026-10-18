@@ -29,7 +29,7 @@ public partial class RadiationSystem
 
     private void OnShutdown(EntityUid uid, RadiationBlockerComponent component, ComponentShutdown args)
     {
-        if (component.Enabled)
+        if (!component.Enabled)
             return;
         RemoveTile(uid, component);
     }
@@ -98,7 +98,7 @@ public partial class RadiationSystem
         }
 
         // check if entity even provide some rad protection
-        if (!component.Enabled || component.RadResistance <= 0)
+        if (!component.Enabled || (component.RadResistance <= 0 && component.GammaResistance <= 0))
             return;
 
         // check if it's on a grid
@@ -109,7 +109,7 @@ public partial class RadiationSystem
         // save resistance into rad protection grid
         var gridId = trs.GridUid.Value;
         var tilePos = _maps.TileIndicesFor((trs.GridUid.Value, grid), trs.Coordinates);
-        AddToTile(gridId, tilePos, component.RadResistance);
+        AddToTile(gridId, tilePos, component.RadResistance, component.GammaResistance);
 
         // and remember it as last valid position
         component.CurrentPosition = (gridId, tilePos);
@@ -123,45 +123,52 @@ public partial class RadiationSystem
         var (gridId, tilePos) = component.CurrentPosition.Value;
 
         // try to remove
-        RemoveFromTile(gridId, tilePos, component.RadResistance);
+        RemoveFromTile(gridId, tilePos, component.RadResistance, component.GammaResistance);
         component.CurrentPosition = null;
     }
 
-    private void AddToTile(EntityUid gridUid, Vector2i tilePos, float radResistance)
+    private void AddToTile(EntityUid gridUid, Vector2i tilePos, float radResistance, float gammaResistance)
     {
         // get existing rad resistance grid or create it if it doesn't exist
         var resistance = EnsureComp<RadiationGridResistanceComponent>(gridUid);
-        var grid = resistance.ResistancePerTile;
 
-        // add to existing cell more rad resistance
-        var newResistance = radResistance;
-        if (grid.TryGetValue(tilePos, out var existingResistance))
-        {
-            newResistance += existingResistance;
-        }
-        grid[tilePos] = newResistance;
+        AddResistance(resistance.ResistancePerTile, tilePos, radResistance);
+        AddResistance(resistance.GammaResistancePerTile, tilePos, gammaResistance);
     }
 
-    private void RemoveFromTile(EntityUid gridUid, Vector2i tilePos, float radResistance)
+    private void RemoveFromTile(EntityUid gridUid, Vector2i tilePos, float radResistance, float gammaResistance)
     {
         // get grid
         if (!TryComp(gridUid, out RadiationGridResistanceComponent? resistance))
             return;
-        var grid = resistance.ResistancePerTile;
 
-        // subtract resistance from tile
-        if (!grid.TryGetValue(tilePos, out var existingResistance))
+        RemoveResistance(resistance.ResistancePerTile, tilePos, radResistance);
+        RemoveResistance(resistance.GammaResistancePerTile, tilePos, gammaResistance);
+
+        // remove component if no resistance left at all
+        if (resistance.ResistancePerTile.Count == 0 && resistance.GammaResistancePerTile.Count == 0)
+            RemComp(gridUid, resistance);
+    }
+
+    private static void AddResistance(Dictionary<Vector2i, float> map, Vector2i tilePos, float value)
+    {
+        if (value <= 0)
             return;
-        existingResistance -= radResistance;
 
-        // remove tile from grid if no resistance left
-        if (existingResistance > 0)
-            grid[tilePos] = existingResistance;
+        // add to existing cell more rad resistance
+        map[tilePos] = map.GetValueOrDefault(tilePos) + value;
+    }
+
+    private static void RemoveResistance(Dictionary<Vector2i, float> map, Vector2i tilePos, float value)
+    {
+        if (value <= 0 || !map.TryGetValue(tilePos, out var existing))
+            return;
+
+        // subtract resistance from tile, remove tile if no resistance left
+        existing -= value;
+        if (existing > 0.0001f)
+            map[tilePos] = existing;
         else
-        {
-            grid.Remove(tilePos);
-            if (grid.Count == 0)
-                RemComp(gridUid, resistance);
-        }
+            map.Remove(tilePos);
     }
 }

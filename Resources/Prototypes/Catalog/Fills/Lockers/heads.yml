@@ -48,6 +48,7 @@
     - id: WeaponDisabler
     - id: ClothingEyesGlassesCommand
     - id: OrganSkeletonPersonHead # A skull to accompany your skeleton crew
+    - id: UtopiaShiftScheduleCard # Utopia-Tweak : Shift Schedule
       conditions:
       - !type:PlayerCountCondition
         max: 15
