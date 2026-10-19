@@ -7,7 +7,7 @@ using Robust.Client.UserInterface.CustomControls;
 
 namespace Content.Client._Utopia.UserInterface.Systems;
 
-public sealed class DyeUISystem : EntitySystem
+public sealed partial class DyeUISystem : EntitySystem
 {
     private const string DyedTabsClass = "DyedUiTabs";
     private static readonly string[] BuiSuffixes = { "BoundUserInterface", "Bui" };
