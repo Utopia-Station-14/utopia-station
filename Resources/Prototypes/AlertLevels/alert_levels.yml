@@ -105,3 +105,18 @@
   color: PaleVioletRed
   emergencyLightColor: PaleVioletRed
   forceEnableEmergencyLights: true
+
+- type: alertLevel
+  id: Cascade
+  name: alert-level-gamma
+  announcement: alert-level-gamma-announcement
+  instructions: alert-level-gamma-instructions
+  selectable: false
+  sound:
+    path: /Audio/Misc/gamma.ogg
+    params:
+      volume: -3
+  disableSelection: true
+  color: PaleVioletRed
+  emergencyLightColor: PaleVioletRed
+  forceEnableEmergencyLights: true
