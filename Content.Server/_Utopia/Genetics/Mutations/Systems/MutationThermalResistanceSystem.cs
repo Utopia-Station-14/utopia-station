@@ -11,7 +11,7 @@ public sealed partial class MutationThermalResistanceSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<MutationThermalResistanceComponent, GetThermalInsulationEvent>(OnGetInsulation);
-        SubscribeLocalEvent<MutationThermalResistanceComponent, ModifyChangedTemperatureEvent>(OnModifyTemperature);
+        SubscribeLocalEvent<MutationThermalResistanceComponent, BeforeHeatExchangeEvent>(OnModifyTemperature);
     }
 
     private void OnGetInsulation(Entity<MutationThermalResistanceComponent> ent, ref GetThermalInsulationEvent args)
@@ -23,15 +23,15 @@ public sealed partial class MutationThermalResistanceSystem : EntitySystem
         args.Coefficient *= coefficient;
     }
 
-    private void OnModifyTemperature(Entity<MutationThermalResistanceComponent> ent, ref ModifyChangedTemperatureEvent args)
+    private void OnModifyTemperature(Entity<MutationThermalResistanceComponent> ent, ref BeforeHeatExchangeEvent args)
     {
         var ev = new GetThermalInsulationEvent(1f)
         {
-            TemperatureDelta = args.TemperatureDelta
+            TemperatureDelta = args.HeatTransferModifier
         };
 
         RaiseLocalEvent(ent.Owner, ref ev);
-        args.TemperatureDelta *= ev.Coefficient;
+        args.HeatTransferModifier *= ev.Coefficient;
     }
 }
 

@@ -25,6 +25,20 @@
     damageProtection:
       flatReductions:
         Heat: 5 # the average lightbulb only does around four damage!
+  # Utopia-Tweak : Stains
+  - type: Appearance
+  - type: Stainable
+    clothingVisuals:
+      gloves:
+      - sprite: /Textures/_Utopia/Effects/blood.rsi
+        state: gloveblood
+    iconVisuals:
+    - sprite: /Textures/_Utopia/Effects/blood.rsi
+      state: glovebloodicon
+  - type: SolutionManager
+    solutions:
+    - SolutionStain
+  # Utopia-Tweak : Stains
 
 - type: entity
   abstract: true

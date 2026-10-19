@@ -291,10 +291,12 @@ namespace Content.Client.Atmos.UI
             });
             // This is the gas bar thingy
             var height = 30;
-            var gasBar = new SplitBar
+            var gasBar = new SegmentedBarChart
             {
+                StyleClasses = { SegmentedBarChart.StyleClassClassicSplitBar },
                 MinHeight = height,
-                MinBarSize = new Vector2(12, 0)
+                MinEntryWidth = 12,
+                Gap = 3
             };
             // Separator
             dataContainer.AddChild(new Control
@@ -309,6 +311,11 @@ namespace Content.Client.Atmos.UI
                 totalGasAmount += gas.Amount;
             }
 
+            // Utopia-Tweak : Bug-fixes
+            if (totalGasAmount <= 0f)
+                totalGasAmount = 1f;
+            // Utopia-Tweak : Bug-fixes
+
             tableKey.AddChild(new Label
                 { Text = Loc.GetString("gas-analyzer-window-gas-column-name"), Align = Label.AlignMode.Center });
             tableVal.AddChild(new Label
@@ -316,18 +323,34 @@ namespace Content.Client.Atmos.UI
             tablePercent.AddChild(new Label
                 { Text = Loc.GetString("gas-analyzer-window-percentage-column-name"), Align = Label.AlignMode.Center });
 
-            tableKey.AddChild(new StripeBack());
-            tableVal.AddChild(new StripeBack());
-            tablePercent.AddChild(new StripeBack());
+            // Utopia-Tweak : Bug-fixes
+            tableKey.AddChild(new PanelContainer
+            {
+                MinHeight = 2,
+                PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#4f4f4f") }
+            });
+            tableVal.AddChild(new PanelContainer
+            {
+                MinHeight = 2,
+                PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#4f4f4f") }
+            });
+            tablePercent.AddChild(new PanelContainer
+            {
+                MinHeight = 2,
+                PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#4f4f4f") }
+            });
+            // Utopia-Tweak : Bug-fixes
 
             for (var j = 0; j < gasMix.Gases.Length; j++)
             {
                 var gasEntry = gasMix.Gases[j];
                 var gasProto = _atmosphere.GetGas(gasEntry.Gas);
+                var localizedName = Loc.GetString(gasProto.Name);
+
                 // Add to the table
                 tableKey.AddChild(new Label
                 {
-                    Text = Loc.GetString(gasProto.Name)
+                    Text = localizedName
                 });
                 tableVal.AddChild(new Label
                 {
@@ -342,11 +365,13 @@ namespace Content.Client.Atmos.UI
                     Align = Label.AlignMode.Right
                 });
 
-                // Add to the gas bar //TODO: highlight the currently hover one
-                gasBar.AddEntry(gasEntry.Amount, gasProto.Color, tooltip: Loc.GetString("gas-analyzer-window-molarity-percentage-text",
-                    ("gasName", Loc.GetString(gasProto.Name)),
+                // Add to the gas bar
+                var tooltip = Loc.GetString("gas-analyzer-window-molarity-percentage-text",
+                    ("gasName", localizedName),
                     ("amount", $"{gasEntry.Amount:0.##}"),
-                    ("percentage", $"{(gasEntry.Amount / totalGasAmount * 100):0.#}")));
+                    ("percentage", $"{(gasEntry.Amount / totalGasAmount * 100):0.#}"));
+
+                gasBar.SetEntry(gasProto.Name, gasEntry.Amount, gasProto.Color, text: localizedName, tooltip: tooltip);
             }
 
             dataContainer.AddChild(gasBar);

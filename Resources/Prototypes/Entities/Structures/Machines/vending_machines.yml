@@ -1,11 +1,11 @@
-﻿# base
+# base
 
 - type: entity
-  id: VendingMachine
-  parent: BaseMachinePowered
+  abstract: true
+  parent: [ BaseMachinePowered, BaseMachineDestructible ]
+  id: BaseVendingMachine
   name: vending machine
   description: Just add capitalism!
-  abstract: true
   components:
   - type: ActionGrant
     actions:
@@ -36,23 +36,19 @@
         layer:
         - MachineLayer
         density: 200
+  - type: Damageable
+    damageModifierSet: GlassReinforcedMod
   - type: Destructible
     thresholds:
-    - trigger: # Excess damage, don't do anything
-        !type:DamageTrigger
-        damage: 200
-      behaviors:
+    - trigger: !type:DamageTrigger
+        damage: 175
+      behaviors: &BehaviorVendorDestroy
       - !type:PlaySoundBehavior
         sound:
           collection: MetalGlassBreak
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 100
-      behaviors:
-      - !type:DoActsBehavior
-        acts: ["Breakage"]
+    - trigger: !type:DamageTrigger
+        damage: 75
+      behaviors: &BehaviorVendorBreak
       - !type:EjectVendorItems
   - type: Repairable
     doAfterDelay: 8
@@ -106,6 +102,10 @@
     price: 100
   - type: Appearance
   - type: WiresVisuals
+  - type: VendingMachineEject
+  - type: VendingMachineDispenseOnHit
+    chance: 0.25
+    threshold: 2
   # Utopia-Tweak : Language
   - type: LanguageSpeaker
     languages:
@@ -113,8 +113,18 @@
   # Utopia-Tweak : Language
 
 - type: entity
+  id: VendingMachine
+  parent: BaseVendingMachine
+  abstract: true
+  components:
+  - type: VendingMachineVisuals
+    offState: off
+    brokenState: broken
+    normalState: normal-unshaded
+
+- type: entity
+  parent: [ BaseWallmountMachine, StructureHealthMachineWeak ]
   id: VendingMachineWallmount
-  parent: BaseWallmountMachine
   name: vending machine
   abstract: true
   components:
@@ -126,29 +136,18 @@
     enabled: false
     sound:
       path: /Audio/Ambience/Objects/vending_machine_hum.ogg
+  - type: Damageable
+    damageModifierSet: GlassReinforcedMod
   - type: Destructible
     thresholds:
     - trigger:
         !type:DamageTrigger
         damage: 100
-      behaviors:
-      - !type:DoActsBehavior
-        acts: ["Breakage"]
-      - !type:EjectVendorItems
+      behaviors: *BehaviorVendorDestroy
     - trigger:
         !type:DamageTrigger
-        damage: 200
-      behaviors:
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          SheetSteel1:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalGlassBreak
+        damage: 50
+      behaviors: *BehaviorVendorBreak
   - type: Repairable
     doAfterDelay: 8
   - type: ActivatableUI
@@ -171,6 +170,15 @@
   - type: LitOnPowered
   - type: Appearance
   - type: WiresVisuals
+  - type: VendingMachineEject
+  - type: VendingMachineDispenseOnHit
+    chance: 0.25
+    threshold: 2
+  - type: VendingMachineVisuals
+    offState: off
+    brokenState: broken
+    normalState: normal-unshaded
+    denyState: deny-unshaded
   - type: Electrified
     enabled: false
     usesApcPower: true
@@ -184,13 +192,14 @@
 # Vending machines
 
 - type: entity
-  parent: VendingMachine
+  parent: BaseVendingMachine
   id: VendingMachineCondiments
   name: condiment station
   description: Slather these thick gooey substances on your food for a full flavor effect.
   components:
   - type: VendingMachine
     pack: CondimentInventory
+  - type: VendingMachineVisuals
     offState: off
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/condiments.rsi
@@ -215,6 +224,17 @@
     pack: GenericVendGoodbyes
   - type: Transform
     noRot: false
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b89e2a"
+      borderColor: "#ffd54f"
+      lineEditColor: "#b89e2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#ffd54f"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -224,9 +244,6 @@
   components:
   - type: VendingMachine
     pack: AmmoVendInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     allForFree: true # Utopia-Tweak : Economy
   - type: DatasetVocalizer
     dataset: CondimentVendAds
@@ -242,6 +259,17 @@
       shader: unshaded
     - state: panel
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b71c1c"
+      borderColor: "#e53935"
+      lineEditColor: "#b71c1c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e53935"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -251,12 +279,10 @@
   components:
   - type: VendingMachine
     pack: BoozeOMatInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    denyState: deny-unshaded
-    loopDeny: false
     allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
+    denyState: deny-unshaded
+    loopDenyAnimation: false
   - type: DatasetVocalizer
     dataset: BoozeOMatAds
   - type: SpeakOnUIClosed
@@ -277,6 +303,17 @@
     guides:
     - Bartender
     - Drinks
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineBooze
@@ -286,12 +323,9 @@
   components:
   - type: VendingMachine
     pack: BoozeOMatInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+  - type: VendingMachineVisuals
     denyState: deny-unshaded
-    loopDeny: false
-    allForFree: true # Utopia-Tweak : Economy
+    loopDenyAnimation: false
   - type: DatasetVocalizer
     dataset: BruiseOMatAds
   - type: SpeakOnUIClosed
@@ -312,6 +346,17 @@
     guides:
     - Bartender
     - Drinks
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b71c1c"
+      borderColor: "#e53935"
+      lineEditColor: "#b71c1c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e53935"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -321,12 +366,10 @@
   components:
   - type: VendingMachine
     pack: PTechInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    allForFree: true # Utopia-Tweak : Economy
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/cart.rsi
     layers:
@@ -343,6 +386,17 @@
     color: "#ffb0b0"
   - type: AccessReader
     access: [["HeadOfPersonnel"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -352,11 +406,9 @@
   components:
   - type: VendingMachine
     pack: ChefvendInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
     allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
+    ejectState: eject-unshaded
   - type: DatasetVocalizer
     dataset: ChefvendAds
   - type: SpeakOnUIClosed
@@ -377,6 +429,17 @@
     radius: 1.5
     energy: 3.0
     color: "#4b93ad"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -386,14 +449,10 @@
   components:
   - type: VendingMachine
     pack: CigaretteMachineInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    priceMultiplier: 1.5 # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    priceMultiplier: 1.5 # Utopia-Tweak : Economy
   - type: DatasetVocalizer
     dataset: CigaretteMachineAds
   - type: SpeakOnUIClosed
@@ -408,6 +467,17 @@
       shader: unshaded
     - state: panel
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -417,9 +487,7 @@
   components:
   - type: VendingMachine
     pack: ClothesMateInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+  - type: VendingMachineVisuals
     denyState: deny-unshaded
   - type: DatasetVocalizer
     dataset: ClothesMateAds
@@ -439,6 +507,17 @@
     radius: 1.8
     energy: 3.0
     color: "#3db83b"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -448,9 +527,7 @@
   components:
   - type: VendingMachine
     pack: WinterDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+  - type: VendingMachineVisuals
     denyState: deny-unshaded
   - type: DatasetVocalizer
     dataset: ClothesMateAds
@@ -470,6 +547,17 @@
     radius: 1.8
     energy: 3.0
     color: "#3db83b"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b3b3b3"
+      borderColor: "#e9e9e9"
+      lineEditColor: "#b3b3b3"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e9e9e9"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -479,18 +567,15 @@
   components:
   - type: VendingMachine
     pack: HotDrinksMachineInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    initialStockQuality: 0.33
+    priceMultiplier: 1.5 # Utopia-Tweak : Economy
+  - type: VendingMachineEject
+    ejectDelay: 5
+    soundVend: /Audio/Machines/machine_vend_hot_drink.ogg
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
     screenState: screen
-    ejectDelay: 5
-    soundVend: /Audio/Machines/machine_vend_hot_drink.ogg
-    initialStockQuality: 0.33
-    priceMultiplier: 1.5 # Utopia-Tweak : Economy
   - type: DatasetVocalizer
     dataset: HotDrinksMachineAds
   - type: SpeakOnUIClosed
@@ -512,6 +597,17 @@
     radius: 1.5
     energy: 2.0
     color: "#ad7c4b"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8d6040"
+      borderColor: "#c49a6c"
+      lineEditColor: "#8d6040"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c49a6c"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -521,16 +617,13 @@
   components:
   - type: VendingMachine
     pack: RobustSoftdrinksInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
-    denyState: deny-unshaded
-    ejectDelay: 1.9
     initialStockQuality: 0.33
     priceMultiplier: 1.5 # Utopia-Tweak : Economy
+  - type: VendingMachineEject
+    ejectDelay: 1.9
+  - type: VendingMachineVisuals
+    ejectState: eject-unshaded
+    denyState: deny-unshaded
   - type: DatasetVocalizer
     dataset: RobustSoftdrinksAds
   - type: SpeakOnUIClosed
@@ -549,6 +642,17 @@
     radius: 1.5
     energy: 3.0
     color: "#3c5eb5"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6661aa"
+      borderColor: "#a599dd"
+      lineEditColor: "#6661aa"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8a80b8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineCola
@@ -569,6 +673,17 @@
     radius: 1.5
     energy: 3.0
     color: "#423438"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2b2326"
+      borderColor: "#6e5a60"
+      lineEditColor: "#2b2326"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#6e5a60"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineCola
@@ -590,6 +705,17 @@
     radius: 1.5
     energy: 3.0
     color: "#A50824"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8e0b20"
+      borderColor: "#d6264a"
+      lineEditColor: "#8e0b20"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#d6264a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineCola
@@ -613,6 +739,17 @@
     radius: 1.5
     energy: 3.0
     color: "#44964A"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2e7d3a"
+      borderColor: "#66c26e"
+      lineEditColor: "#2e7d3a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#66c26e"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineCola
@@ -635,6 +772,19 @@
     radius: 1.5
     energy: 3.0
     color: "#CBC6BE"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7d7a74"
+      borderColor: "#cbc6be"
+      lineEditColor: "#7d7a74"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cbc6be"
+
+
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineCola
@@ -658,6 +808,17 @@
     radius: 1.5
     energy: 3.0
     color: "#D3A44D"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b02e00"
+      borderColor: "#f26a2c"
+      lineEditColor: "#b02e00"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f26a2c"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -667,16 +828,13 @@
   components:
   - type: VendingMachine
     pack: ShamblersJuiceInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
-    denyState: deny-unshaded
-    ejectDelay: 1.9
     initialStockQuality: 0.33
     priceMultiplier: 1.5 # Utopia-Tweak : Economy
+  - type: VendingMachineEject
+    ejectDelay: 1.9
+  - type: VendingMachineVisuals
+    ejectState: eject-unshaded
+    denyState: deny-unshaded
   - type: DatasetVocalizer
     dataset: RobustSoftdrinksAds
   - type: Sprite
@@ -693,6 +851,17 @@
     radius: 1.5
     energy: 3.0
     color: "#66538F"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4e3d70"
+      borderColor: "#8f78c4"
+      lineEditColor: "#4e3d70"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8f78c4"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -702,16 +871,13 @@
   components:
   - type: VendingMachine
     pack: PwrGameInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
-    denyState: deny-unshaded
-    ejectDelay: 1.9
     initialStockQuality: 0.33
     priceMultiplier: 1.5 # Utopia-Tweak : Economy
+  - type: VendingMachineEject
+    ejectDelay: 1.9
+  - type: VendingMachineVisuals
+    ejectState: eject-unshaded
+    denyState: deny-unshaded
   - type: DatasetVocalizer
     dataset: RobustSoftdrinksAds
   - type: SpeakOnUIClosed
@@ -730,6 +896,17 @@
     radius: 1.5
     energy: 3.0
     color: "#6927C5"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4f1d99"
+      borderColor: "#8e5cf0"
+      lineEditColor: "#4f1d99"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8e5cf0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -739,16 +916,13 @@
   components:
   - type: VendingMachine
     pack: DrGibbInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
-    denyState: deny-unshaded
-    ejectDelay: 1.9
     initialStockQuality: 0.33
     priceMultiplier: 1.5 # Utopia-Tweak : Economy
+  - type: VendingMachineEject
+    ejectDelay: 1.9
+  - type: VendingMachineVisuals
+    ejectState: eject-unshaded
+    denyState: deny-unshaded
   - type: DatasetVocalizer
     dataset: DrGibbAds
   - type: SpeakOnUIClosed
@@ -767,6 +941,17 @@
     radius: 1.5
     energy: 3.0
     color: "#D82929"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b01e1e"
+      borderColor: "#f04545"
+      lineEditColor: "#b01e1e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f04545"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -786,15 +971,12 @@
       map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
   - type: VendingMachine
     pack: SmiteInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    initialStockQuality: 0.33
+  - type: VendingMachineEject
+    ejectDelay: 1.9
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    ejectDelay: 1.9
-    initialStockQuality: 0.33
   - type: DatasetVocalizer
     dataset: SmiteAds
   - type: SpeakOnUIClosed
@@ -803,6 +985,17 @@
     radius: 1.5
     energy: 3.0
     color: "#00E645"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#00963b"
+      borderColor: "#33e87a"
+      lineEditColor: "#00963b"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#33e87a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -812,11 +1005,9 @@
   components:
   - type: VendingMachine
     pack: DinnerwareInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
     allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
+    ejectState: eject-unshaded
   - type: DatasetVocalizer
     dataset: DinnerwareAds
   - type: SpeakOnUIClosed
@@ -837,6 +1028,17 @@
     radius: 1.5
     energy: 3.0
     color: "#4b93ad"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#3b7b93"
+      borderColor: "#6bb3cd"
+      lineEditColor: "#3b7b93"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#6bb3cd"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -846,9 +1048,6 @@
   components:
   - type: VendingMachine
     pack: MagiVendInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     allForFree: true # Utopia-Tweak : Economy
   - type: DatasetVocalizer
     dataset: MagiVendAds
@@ -868,6 +1067,17 @@
     radius: 1.5
     energy: 3.0
     color: "#9a18d6"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7b12a8"
+      borderColor: "#c04cf0"
+      lineEditColor: "#7b12a8"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c04cf0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -877,11 +1087,6 @@
   components:
   - type: VendingMachine
     pack: DiscountDansInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     initialStockQuality: 0.33
     priceMultiplier: 1.5 # Utopia-Tweak : Economy
   - type: DatasetVocalizer
@@ -902,6 +1107,17 @@
     radius: 1.5
     energy: 3.0
     color: "#6148c7"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#534594"
+      borderColor: "#9183d3"
+      lineEditColor: "#534594"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#9183d3"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -911,12 +1127,10 @@
   components:
   - type: VendingMachine
     pack: EngiVendInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    allForFree: true # Utopia-Tweak : Economy
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/engivend.rsi
     layers:
@@ -934,6 +1148,17 @@
     energy: 3.0
     color: "#b89e2a"
   - type: AmbientMusicMarkerEngineering
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#c2411b"
+      borderColor: "#ff5e12"
+      lineEditColor: "#c2411b"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#ff5e12"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -943,12 +1168,13 @@
   components:
   - type: VendingMachine
     pack: NanoMedCivilianInventory
+    allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineEject
+    ejectDelay: 0.6
+  - type: VendingMachineVisuals
     offState: off-civilian
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    ejectDelay: 0.6
   - type: DatasetVocalizer
     dataset: NanoMedAds
   - type: SpeakOnUIClosed
@@ -971,6 +1197,17 @@
     guides:
     - MedicalDoctor
   - type: AmbientMusicMarkerMedical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#3a8fa0"
+      borderColor: "#5fc2d4"
+      lineEditColor: "#3a8fa0"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#5fc2d4"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineMedicalBase
@@ -979,8 +1216,9 @@
   components:
   - type: VendingMachine
     pack: NanoMedPlusInventory
-    offState: off
     allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
+    offState: off
   - type: Sprite
     layers:
     - state: "off"
@@ -992,6 +1230,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Medical"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#1e7fa6"
+      borderColor: "#4fc3e8"
+      lineEditColor: "#1e7fa6"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#4fc3e8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1001,12 +1250,10 @@
   components:
   - type: VendingMachine
     pack: NutriMaxInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    allForFree: true # Utopia-Tweak : Economy
   - type: DatasetVocalizer
     dataset: NutriMaxAds
   - type: SpeakOnUIClosed
@@ -1027,6 +1274,17 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2a8c3a"
+      borderColor: "#66bf39"
+      lineEditColor: "#2a8c3a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#66bf39"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1036,12 +1294,10 @@
   components:
   - type: VendingMachine
     pack: SecTechInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    allForFree: true # Utopia-Tweak : Economy
   - type: DatasetVocalizer
     dataset: SecTechAds
   - type: SpeakOnUIClosed
@@ -1066,6 +1322,17 @@
     guides:
     - Security
     - Antagonists
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7a3b3b"
+      borderColor: "#c0605a"
+      lineEditColor: "#7a3b3b"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c0605a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1076,12 +1343,10 @@
   components:
   - type: VendingMachine
     pack: MegaSeedServitorInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    allForFree: true # Utopia-Tweak : Economy
   - type: DatasetVocalizer
     dataset: MegaSeedAds
   - type: SpeakOnUIClosed
@@ -1100,6 +1365,17 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2a6b38"
+      borderColor: "#5fb06e"
+      lineEditColor: "#2a6b38"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#5fb06e"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSeedsUnlocked
@@ -1117,15 +1393,11 @@
   components:
   - type: VendingMachine
     pack: GetmoreChocolateCorpInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
-    denyState: deny-unshaded
     initialStockQuality: 0.33
     priceMultiplier: 1.5 # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
+    ejectState: eject-unshaded
+    denyState: deny-unshaded
   - type: DatasetVocalizer
     dataset: GetmoreChocolateCorpAds
   - type: SpeakOnUIClosed
@@ -1144,6 +1416,17 @@
     radius: 1.5
     energy: 3.0
     color: "#c73434"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#a82a2a"
+      borderColor: "#e05050"
+      lineEditColor: "#a82a2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e05050"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSnack
@@ -1153,11 +1436,7 @@
   components:
   - type: VendingMachine
     pack: SustenanceInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: Sprite
@@ -1174,6 +1453,17 @@
     radius: 1.5
     energy: 3.0
     color: "#737785"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#5a5e6b"
+      borderColor: "#9ca0b0"
+      lineEditColor: "#5a5e6b"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#9ca0b0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSnack
@@ -1194,6 +1484,17 @@
     radius: 1.5
     energy: 3.0
     color: "#3c5eb5"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6661aa"
+      borderColor: "#8a80b8"
+      lineEditColor: "#6661aa"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8a80b8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSnack
@@ -1214,6 +1515,17 @@
     radius: 1.5
     energy: 3.0
     color: "#CE3401"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b02e00"
+      borderColor: "#f26a2c"
+      lineEditColor: "#b02e00"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f26a2c"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSnack
@@ -1234,6 +1546,17 @@
     radius: 1.5
     energy: 3.0
     color: "#5F6A1C"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4c5616"
+      borderColor: "#8fa030"
+      lineEditColor: "#4c5616"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8fa030"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSnack
@@ -1254,25 +1577,32 @@
     radius: 1.5
     energy: 3.0
     color: "#207E79"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#17655f"
+      borderColor: "#3bb5ae"
+      lineEditColor: "#17655f"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#3bb5ae"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
   id: VendingMachineSovietSoda
-  name: ВОДА
+  name: ╨Т╨Ю╨Ф╨Р
   description: An old vending machine containing sweet water.
   suffix: VODA
   components:
   - type: VendingMachine
     pack: BodaInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
-    denyState: deny-unshaded
     initialStockQuality: 0.33
     allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
+    ejectState: eject-unshaded
+    denyState: deny-unshaded
   - type: DatasetVocalizer
     dataset: BodaAds
   - type: SpeakOnUIClosed
@@ -1292,6 +1622,17 @@
     energy: 3.0
     color: "#389690"
   - type: RussianAccent
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4e7d2e"
+      borderColor: "#93c266"
+      lineEditColor: "#4e7d2e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#93c266"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1301,9 +1642,7 @@
   components:
   - type: VendingMachine
     pack: AutoDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
     screenState: screen
@@ -1328,6 +1667,17 @@
     radius: 1.5
     energy: 3.0
     color: "#c73434"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b3263a"
+      borderColor: "#e8546a"
+      lineEditColor: "#b3263a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e8546a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1337,12 +1687,10 @@
   components:
   - type: VendingMachine
     pack: VendomatInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    allForFree: true # Utopia-Tweak : Economy
   - type: DatasetVocalizer
     dataset: VendomatAds
   - type: SpeakOnUIClosed
@@ -1361,6 +1709,17 @@
     radius: 1.5
     energy: 3.0
     color: "#9dc5c9"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4a7a8c"
+      borderColor: "#8fc0d0"
+      lineEditColor: "#4a7a8c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8fc0d0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1370,12 +1729,10 @@
   components:
   - type: VendingMachine
     pack: RoboticsInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    allForFree: true # Utopia-Tweak : Economy
   - type: DatasetVocalizer
     dataset: VendomatAds
   - type: SpeakOnUIClosed
@@ -1399,6 +1756,17 @@
   - type: GuideHelp
     guides:
     - Robotics
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6b6965"
+      borderColor: "#b0ada9"
+      lineEditColor: "#6b6965"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#b0ada9"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1408,9 +1776,7 @@
   components:
   - type: VendingMachine
     pack: YouToolInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+  - type: VendingMachineVisuals
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: Sprite
@@ -1427,6 +1793,17 @@
     radius: 1.5
     energy: 3.0
     color: "#d4ab33"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b88a1c"
+      borderColor: "#f0c040"
+      lineEditColor: "#b88a1c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f0c040"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1436,11 +1813,10 @@
   components:
   - type: VendingMachine
     pack: GoodCleanFunInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
+  - type: VendingMachineEject
     ejectDelay: 1.8
+  - type: VendingMachineVisuals
+    ejectState: eject-unshaded
   - type: DatasetVocalizer
     dataset: GoodCleanFunAds
   - type: SpeakOnUIClosed
@@ -1459,6 +1835,17 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b88a1c"
+      borderColor: "#f0c040"
+      lineEditColor: "#b88a1c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f0c040"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1468,11 +1855,6 @@
   components:
   - type: VendingMachine
     pack: ChangInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     initialStockQuality: 0.33
     priceMultiplier: 1.5 # Utopia-Tweak : Economy
   - type: DatasetVocalizer
@@ -1493,6 +1875,17 @@
     radius: 1.5
     energy: 3.0
     color: "#ffe599"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#c98b3a"
+      borderColor: "#ffe799"
+      lineEditColor: "#c98b3a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#ffe799"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1502,9 +1895,7 @@
   components:
   - type: VendingMachine
     pack: SalvageEquipmentInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+  - type: VendingMachineVisuals
     denyState: deny-unshaded
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/mining.rsi
@@ -1525,6 +1916,17 @@
   - type: GuideHelp
     guides:
     - Salvage
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a6d1e"
+      borderColor: "#d4b440"
+      lineEditColor: "#8a6d1e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#d4b440"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1534,11 +1936,6 @@
   components:
   - type: VendingMachine
     pack: DonutInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     initialStockQuality: 0.33
     priceMultiplier: 1.5 # Utopia-Tweak : Economy
   - type: DatasetVocalizer
@@ -1559,6 +1956,17 @@
     radius: 1.5
     energy: 3.0
     color: "#d4ab33"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#e0709a"
+      borderColor: "#ff9fc0"
+      lineEditColor: "#e0709a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#ff9fc0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 # job clothing
 
@@ -1570,9 +1978,6 @@
   components:
   - type: VendingMachine
     pack: HyDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: HyDrobeAds
   - type: SpeakOnUIClosed
@@ -1593,6 +1998,17 @@
     color: "#326e3f"
   - type: AccessReader
     access: [["Hydroponics"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2e6b2e"
+      borderColor: "#4caf50"
+      lineEditColor: "#2e6b2e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#4caf50"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1602,9 +2018,6 @@
   components:
   - type: VendingMachine
     pack: LawDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: LawDrobeAds
   - type: SpeakOnUIClosed
@@ -1621,6 +2034,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Lawyer"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2b3a67"
+      borderColor: "#5b74b8"
+      lineEditColor: "#2b3a67"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#5b74b8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1630,9 +2054,6 @@
   components:
   - type: VendingMachine
     pack: SecDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: SecDrobeAds
   - type: SpeakOnUIClosed
@@ -1653,6 +2074,17 @@
     color: "#d82929"
   - type: AccessReader
     access: [["Security"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a1f1f"
+      borderColor: "#d84a4a"
+      lineEditColor: "#8a1f1f"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#d84a4a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1662,9 +2094,6 @@
   components:
   - type: VendingMachine
     pack: BarDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: BarDrobeAds
   - type: SpeakOnUIClosed
@@ -1681,6 +2110,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Bar"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a5a2a"
+      borderColor: "#d49a55"
+      lineEditColor: "#8a5a2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#d49a55"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1689,9 +2129,7 @@
   components:
   - type: VendingMachine
     pack: PietyVendInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+  - type: VendingMachineVisuals
     denyState: deny-unshaded
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/chapdrobe.rsi
@@ -1709,6 +2147,17 @@
     radius: 1.5
     energy: 3.0
     color: "#CCCCCC" #The holy C
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1718,9 +2167,6 @@
   components:
   - type: VendingMachine
     pack: CargoDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: CargoDrobeAds
   - type: SpeakOnUIClosed
@@ -1741,6 +2187,17 @@
     color: "#b89e2a"
   - type: AccessReader
     access: [["Cargo"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7a5a2a"
+      borderColor: "#c8964a"
+      lineEditColor: "#7a5a2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c8964a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1750,9 +2207,6 @@
   components:
   - type: VendingMachine
     pack: MediDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: MediDrobeAds
   - type: SpeakOnUIClosed
@@ -1769,6 +2223,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Medical"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#1a5f8a"
+      borderColor: "#42b8d4"
+      lineEditColor: "#1a5f8a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#42b8d4"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1778,9 +2243,6 @@
   components:
   - type: VendingMachine
     pack: ChemDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: ChemDrobeAds
   - type: SpeakOnUIClosed
@@ -1798,6 +2260,17 @@
   - type: AccessReader
     access: [["Chemistry"]]
   - type: AmbientMusicMarkerMedical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#b8601c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#ffb76f"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1807,9 +2280,6 @@
   components:
   - type: VendingMachine
     pack: CuraDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: CuraDrobeAds
   - type: SpeakOnUIClosed
@@ -1826,6 +2296,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Service"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#5a3a2a"
+      borderColor: "#a07858"
+      lineEditColor: "#5a3a2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#a07858"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1835,9 +2316,6 @@
   components:
   - type: VendingMachine
     pack: AtmosDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: AtmosDrobeAds
   - type: SpeakOnUIClosed
@@ -1859,6 +2337,17 @@
   - type: AccessReader
     access: [["Engineering"]]
   - type: AmbientMusicMarkerEngineering
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#1a6b7a"
+      borderColor: "#3cb8cc"
+      lineEditColor: "#1a6b7a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#3cb8cc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1868,9 +2357,6 @@
   components:
   - type: VendingMachine
     pack: EngiDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: EngiDrobeAds
   - type: SpeakOnUIClosed
@@ -1892,6 +2378,17 @@
   - type: AccessReader
     access: [["Engineering"]]
   - type: AmbientMusicMarkerEngineering
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a3a12"
+      borderColor: "#e8601c"
+      lineEditColor: "#8a3a12"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e8601c"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1901,9 +2398,6 @@
   components:
   - type: VendingMachine
     pack: ChefDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: ChefDrobeAds
   - type: SpeakOnUIClosed
@@ -1920,6 +2414,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Kitchen"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1929,9 +2434,6 @@
   components:
   - type: VendingMachine
     pack: DetDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: DetDrobeAds
   - type: SpeakOnUIClosed
@@ -1948,6 +2450,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Detective"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#5a4636"
+      borderColor: "#a68a70"
+      lineEditColor: "#5a4636"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#a68a70"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1957,9 +2470,6 @@
   components:
   - type: VendingMachine
     pack: JaniDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: JaniDrobeAds
   - type: SpeakOnUIClosed
@@ -1980,6 +2490,17 @@
     color: "#6927C5"
   - type: AccessReader
     access: [["Janitor"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7b1fa2"
+      borderColor: "#c04be0"
+      lineEditColor: "#7b1fa2"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c04be0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1989,9 +2510,6 @@
   components:
   - type: VendingMachine
     pack: SciDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: SciDrobeAds
   - type: SpeakOnUIClosed
@@ -2008,6 +2526,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Research"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7a3aa8"
+      borderColor: "#c27af0"
+      lineEditColor: "#7a3aa8"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c27af0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -2017,9 +2546,6 @@
   components:
   - type: VendingMachine
     pack: SyndieDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     allForFree: true # Utopia-Tweak : Economy
   - type: DatasetVocalizer
     dataset: SyndieDrobeAds
@@ -2041,6 +2567,17 @@
     color: "#d82929"
   - type: AccessReader
     access: [["NuclearOperative"], ["SyndicateAgent"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4a0e0e"
+      borderColor: "#a81c1c"
+      lineEditColor: "#4a0e0e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#a81c1c"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -2050,9 +2587,6 @@
   components:
   - type: VendingMachine
     pack: RoboDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: RoboDrobeAds
   - type: SpeakOnUIClosed
@@ -2069,6 +2603,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Research"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4a1a6b"
+      borderColor: "#b0409a"
+      lineEditColor: "#4a1a6b"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#b0409a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -2078,9 +2623,6 @@
   components:
   - type: VendingMachine
     pack: GeneDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: GeneDrobeAds
   - type: SpeakOnUIClosed
@@ -2098,6 +2640,17 @@
   - type: AccessReader
     access: [["Medical"]]
   - type: AmbientMusicMarkerMedical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2a5aa8"
+      borderColor: "#5a8ae0"
+      lineEditColor: "#2a5aa8"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#5a8ae0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -2107,9 +2660,6 @@
   components:
   - type: VendingMachine
     pack: ViroDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: ViroDrobeAds
   - type: SpeakOnUIClosed
@@ -2127,6 +2677,17 @@
   - type: AccessReader
     access: [["Medical"]]
   - type: AmbientMusicMarkerMedical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#3a7a3a"
+      borderColor: "#80c060"
+      lineEditColor: "#3a7a3a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#80c060"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -2136,9 +2697,6 @@
   components:
   - type: VendingMachine
     pack: CentDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     allForFree: true # Utopia-Tweak : Economy
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/centdrobe.rsi
@@ -2156,6 +2714,17 @@
     color: "#48CF48"
   - type: AccessReader
     access: [["CentralCommand"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2a8a2a"
+      borderColor: "#58d458"
+      lineEditColor: "#2a8a2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#58d458"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -2165,15 +2734,12 @@
   components:
   - type: VendingMachine
     pack: HappyHonkDispenserInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    denyState: deny-unshaded
+    initialStockQuality: 1.0 # Nobody knows how Honk does it, but their vending machines always seem well-stocked...
+  - type: VendingMachineEject
     ejectDelay: 1.9
     soundVend: /Audio/Items/bikehorn.ogg
-    initialStockQuality: 1.0 # Nobody knows how Honk does it, but their vending machines always seem well-stocked...
+  - type: VendingMachineVisuals
+    denyState: deny-unshaded
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/happyhonk.rsi
     layers:
@@ -2194,6 +2760,17 @@
     pack: HappyHonkGoodbyes
   - type: AccessReader
     access: [["Kitchen"], ["Theatre"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#c0392b"
+      borderColor: "#f1c40f"
+      lineEditColor: "#c0392b"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f1c40f"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 # Pride Vending Machine
 
@@ -2205,9 +2782,6 @@
   components:
   - type: VendingMachine
     pack: PrideDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     priceMultiplier: 100 # Utopia-Tweak : Economy
   - type: DatasetVocalizer
     dataset: PrideDrobeAds
@@ -2228,11 +2802,22 @@
       shader: unshaded
     - state: panel
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a3a9a"
+      borderColor: "#f06aa0"
+      lineEditColor: "#8a3a9a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f06aa0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 # Gas Tank Dispenser
 
 - type: entity
-  parent: VendingMachine
+  parent: BaseVendingMachine
   id: VendingMachineTankDispenserEVA
   suffix: EVA [O2, N2]
   name: gas tank dispenser
@@ -2244,9 +2829,20 @@
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/tankdispenser.rsi #TODO add visualiser for remaining tanks as layers
     state: dispenser
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#3a5a8a"
+      borderColor: "#6a95d0"
+      lineEditColor: "#3a5a8a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#6a95d0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
-  parent: VendingMachine
+  parent: BaseVendingMachine
   id: VendingMachineTankDispenserEngineering
   suffix: ENG [O2, Plasma]
   name: gas tank dispenser
@@ -2259,6 +2855,17 @@
     layers:
     - state: dispenser
     - state: dispensereng
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a6a1a"
+      borderColor: "#d4a43a"
+      lineEditColor: "#8a6a1a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#d4a43a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -2268,12 +2875,12 @@
   components:
   - type: VendingMachine
     pack: ChemVendInventory
-    offState: off
-    brokenState: broken
+    allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineEject
+    ejectDelay: 2
+  - type: VendingMachineVisuals
     normalState: normal
     denyState: deny
-    ejectDelay: 2
-    allForFree: true # Utopia-Tweak : Economy
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/chemvend.rsi
     layers:
@@ -2290,6 +2897,17 @@
     - Chemicals
     - Chemist
   - type: AmbientMusicMarkerMedical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#b8601c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#ffb76f"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineChemicals
@@ -2299,16 +2917,28 @@
   components:
   - type: VendingMachine
     pack: ChemVendInventorySyndicate
-    offState: off
-    brokenState: broken
+    allForFree: true # Utopia-Tweak : Economy
+  - type: VendingMachineEject
+    ejectDelay: 2
+  - type: VendingMachineVisuals
     normalState: normal
     denyState: deny
-    ejectDelay: 2
-    allForFree: true # Utopia-Tweak : Economy
   - type: AccessReader
     access: [["SyndicateAgent"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b71c1c"
+      borderColor: "#e53935"
+      lineEditColor: "#b71c1c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e53935"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 # wallmount
+
 - type: entity
   parent: VendingMachineWallmount
   id: VendingMachineWallMedicalCivilian
@@ -2317,9 +2947,8 @@
   components:
   - type: VendingMachine
     pack: NanoMedCivilianWallInventory
+  - type: VendingMachineVisuals
     offState: off-civilian
-    brokenState: broken
-    normalState: normal-unshaded
     denyState: deny-unshaded
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/wallmed.rsi
@@ -2338,6 +2967,17 @@
   - type: GuideHelp
     guides:
     - Medical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2a9a88"
+      borderColor: "#58dcc8"
+      lineEditColor: "#2a9a88"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#58dcc8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineWallMedicalCivilian
@@ -2346,6 +2986,7 @@
   components:
   - type: VendingMachine
     pack: NanoMedInventory
+  - type: VendingMachineVisuals
     offState: off
   - type: Sprite
     layers:
@@ -2358,3 +2999,14 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Medical"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#1e7fa6"
+      borderColor: "#4fc3e8"
+      lineEditColor: "#1e7fa6"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#4fc3e8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI

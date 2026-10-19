@@ -21,6 +21,8 @@ salvage-magnet-resources = { $resource ->
     [OreBananium] Бананиум
     [UtopiaOreCopper] Медь
     [UtopiaOreLead] Свинец
+    [UtopiaOreBluespace] Блюспейс руда
+    [UtopiaOreRedspace] Редспейс руда
     *[other] { $resource }
 }
 

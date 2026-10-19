@@ -12,8 +12,3 @@
   parent: [ BaseGoldCircuitboardRecipe, BaseMedicalMachineRecipeCategory ]
   id: CloningPodMachineCircuitboard
   result: CloningPodMachineCircuitboard
-
-- type: latheRecipe
-  parent: [ BaseSilverCircuitboardRecipe, BaseResearchMachineRecipeCategory ]
-  id: TelescienceTeleporterMachineCircuitboard
-  result: UtopiaTelescienceTeleporterMachineCircuitboard

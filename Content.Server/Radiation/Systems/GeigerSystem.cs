@@ -77,25 +77,38 @@ public sealed partial class GeigerSystem : SharedGeigerSystem
     {
         // update only active geiger counters
         // deactivated shouldn't have rad receiver component
+
+        // Utopia-Tweak: RadiationUpdt
         var query = EntityQueryEnumerator<GeigerComponent, RadiationReceiverComponent>();
         while (query.MoveNext(out var uid, out var geiger, out var receiver))
         {
-            var rads = receiver.CurrentRadiation;
-            SetCurrentRadiation(uid, geiger, rads);
+            var betaRads = receiver.BetaRadiation;
+            var gammaRads = receiver.GammaRadiation;
+
+            SetCurrentRadiation(uid, geiger, betaRads, gammaRads);
         }
+        // Utopia-Tweak: RadiationUpdt
     }
 
-    private void SetCurrentRadiation(EntityUid uid, GeigerComponent component, float rads)
+    // Utopia-Tweak: RadiationUpdt
+    private void SetCurrentRadiation(EntityUid uid, GeigerComponent component, float betaRads, float gammaRads)
     {
-        // check that it's approx equal
-        if (MathHelper.CloseTo(component.CurrentRadiation, rads, ApproxEqual))
+        if (MathHelper.CloseTo(component.BetaRadiation, betaRads, ApproxEqual) &&
+            MathHelper.CloseTo(component.GammaRadiation, gammaRads, ApproxEqual))
             return;
 
-        var curLevel = component.DangerLevel;
-        var newLevel = RadsToLevel(rads);
+        component.BetaRadiation = betaRads;
+        component.GammaRadiation = gammaRads;
 
-        component.CurrentRadiation = rads;
+        component.BetaDangerLevel = RadsToLevel(betaRads);
+        component.GammaDangerLevel = RadsToLevel(gammaRads);
+
+        var maxRads = Math.Max(betaRads, gammaRads);
+        var newLevel = RadsToLevel(maxRads);
+
+        var curLevel = component.DangerLevel;
         component.DangerLevel = newLevel;
+        component.CurrentRadiation = maxRads;
 
         if (curLevel != newLevel)
         {
@@ -105,6 +118,7 @@ public sealed partial class GeigerSystem : SharedGeigerSystem
 
         Dirty(uid, component);
     }
+    // Utopia-Tweak: RadiationUpdt
 
     private void SetUser(Entity<GeigerComponent> component, EntityUid? user)
     {
@@ -126,6 +140,8 @@ public sealed partial class GeigerSystem : SharedGeigerSystem
         if (!isEnabled)
         {
             component.CurrentRadiation = 0f;
+            component.BetaRadiation = 0f;
+            component.GammaRadiation = 0f;
             component.DangerLevel = GeigerDangerLevel.None;
         }
 
@@ -157,12 +173,12 @@ public sealed partial class GeigerSystem : SharedGeigerSystem
             return;
 
         var sound = _audio.ResolveSound(sounds);
-        var param = sounds.Params.WithLoop(true).WithVolume(component.Volume);
+        var param = sounds.Params.WithLoop(true).AddVolume(component.Volume);
 
         if (component.BroadcastAudio)
         {
             // For some reason PlayPvs sounds quieter even at distance 0, so we need to boost the volume a bit for consistency
-            param = sounds.Params.WithLoop(true).WithVolume(component.Volume + 1.5f).WithMaxDistance(component.BroadcastRange);
+            param = sounds.Params.WithLoop(true).AddVolume(component.Volume + 1.5f).WithMaxDistance(component.BroadcastRange);
             component.Stream = _audio.PlayPvs(sound, uid, param)?.Entity;
         }
         else if (component.User is not null && _player.TryGetSessionByEntity(component.User.Value, out var session))

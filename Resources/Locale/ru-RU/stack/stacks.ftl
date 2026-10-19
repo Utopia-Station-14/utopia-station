@@ -47,7 +47,7 @@ stack-plasma-glass = { $amount ->
     [1] лист
     [few] листа
     *[other] листов
-} плазменного стекла
+} форонового стекла
 stack-uranium = { $amount ->
     [1] лист
     [few] листа
@@ -67,7 +67,7 @@ stack-reinforced-plasma-glass = { $amount ->
     [1] лист
     [few] листа
     *[other] листов
-} плазменного бронестекла
+} форонового бронестекла
 stack-reinforced-uranium-glass = { $amount ->
     [1] лист
     [few] листа
@@ -217,7 +217,7 @@ stack-plasma = { $amount ->
     [1] лист
     [few] листа
     *[other] листов
-} плазмы
+} форона
 stack-biomass = биомасса
 stack-pyrotton = пирохлопок
 stack-sharkminnow-tooth = { $amount ->
@@ -234,7 +234,7 @@ stack-telecrystal = телекристалл
 stack-gold-ore = золотая руда
 stack-rough-diamond = сырой алмаз
 stack-iron-ore = железная руда
-stack-plasma-ore = плазменная руда
+stack-plasma-ore = фороновая руда
 stack-silver-ore = серебряная руда
 stack-space-quartz = космический кварц
 stack-uranium-ore = урановая руда
@@ -293,6 +293,9 @@ stack-white-steel-slats-tile-continuous = белая сплошная реечн
 stack-steel-dark-checker-tile = тёмная стальная плитка шашечками
 stack-steel-light-checker-tile = светлая стальная плитка шашечками
 stack-steel-tile = стальная плитка
+stack-plastic-tile = пластиковая плитка
+stack-plastic-dark-tile = тёмная пластиковая плитка
+stack-plastic-white-tile = белая пластиковая плитка
 stack-wood-floor = деревянный пол
 stack-techmaint-floor = технический пол
 stack-techmaint-floor-dark = тёмная техническая плитка
@@ -382,8 +385,10 @@ stack-xenoborg = ксеноборг-плитка
 stack-xeno-maint = технический ксенопол
 stack-dark-squiggly = тёмная волнистая стальная плитка
 stack-white-marble-floor = белый мраморный пол
+stack-white-marble-mono-floor = белая мраморная плита
 stack-dark-marble-floor = чёрный мраморный пол
-stack-plasma-marble-floor = плазменный мраморный пол
+stack-dark-marble-mono-floor = чёрная мраморная плита
+stack-plasma-marble-floor = фороновый мраморный пол
 stack-uranium-marble-floor = урановый мраморный пол
 stack-astro-ironsand-floor = астро-железный песок
 stack-astro-ironsand-floor-borderless = безграничный астро-железный песок
