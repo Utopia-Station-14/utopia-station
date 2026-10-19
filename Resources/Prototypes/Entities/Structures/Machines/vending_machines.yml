@@ -224,6 +224,17 @@
     pack: GenericVendGoodbyes
   - type: Transform
     noRot: false
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b89e2a"
+      borderColor: "#ffd54f"
+      lineEditColor: "#b89e2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#ffd54f"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -248,6 +259,17 @@
       shader: unshaded
     - state: panel
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b71c1c"
+      borderColor: "#e53935"
+      lineEditColor: "#b71c1c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e53935"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -281,6 +303,17 @@
     guides:
     - Bartender
     - Drinks
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineBooze
@@ -313,6 +346,17 @@
     guides:
     - Bartender
     - Drinks
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b71c1c"
+      borderColor: "#e53935"
+      lineEditColor: "#b71c1c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e53935"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -342,6 +386,17 @@
     color: "#ffb0b0"
   - type: AccessReader
     access: [["HeadOfPersonnel"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -374,6 +429,17 @@
     radius: 1.5
     energy: 3.0
     color: "#4b93ad"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -401,6 +467,17 @@
       shader: unshaded
     - state: panel
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -430,6 +507,17 @@
     radius: 1.8
     energy: 3.0
     color: "#3db83b"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -459,6 +547,17 @@
     radius: 1.8
     energy: 3.0
     color: "#3db83b"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b3b3b3"
+      borderColor: "#e9e9e9"
+      lineEditColor: "#b3b3b3"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e9e9e9"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -498,6 +597,17 @@
     radius: 1.5
     energy: 2.0
     color: "#ad7c4b"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8d6040"
+      borderColor: "#c49a6c"
+      lineEditColor: "#8d6040"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c49a6c"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -532,6 +642,17 @@
     radius: 1.5
     energy: 3.0
     color: "#3c5eb5"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6661aa"
+      borderColor: "#a599dd"
+      lineEditColor: "#6661aa"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8a80b8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineCola
@@ -552,6 +673,17 @@
     radius: 1.5
     energy: 3.0
     color: "#423438"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2b2326"
+      borderColor: "#6e5a60"
+      lineEditColor: "#2b2326"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#6e5a60"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineCola
@@ -573,6 +705,17 @@
     radius: 1.5
     energy: 3.0
     color: "#A50824"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8e0b20"
+      borderColor: "#d6264a"
+      lineEditColor: "#8e0b20"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#d6264a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineCola
@@ -596,6 +739,17 @@
     radius: 1.5
     energy: 3.0
     color: "#44964A"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2e7d3a"
+      borderColor: "#66c26e"
+      lineEditColor: "#2e7d3a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#66c26e"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineCola
@@ -618,6 +772,19 @@
     radius: 1.5
     energy: 3.0
     color: "#CBC6BE"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7d7a74"
+      borderColor: "#cbc6be"
+      lineEditColor: "#7d7a74"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cbc6be"
+
+
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineCola
@@ -641,6 +808,17 @@
     radius: 1.5
     energy: 3.0
     color: "#D3A44D"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b02e00"
+      borderColor: "#f26a2c"
+      lineEditColor: "#b02e00"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f26a2c"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -673,6 +851,17 @@
     radius: 1.5
     energy: 3.0
     color: "#66538F"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4e3d70"
+      borderColor: "#8f78c4"
+      lineEditColor: "#4e3d70"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8f78c4"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -707,6 +896,17 @@
     radius: 1.5
     energy: 3.0
     color: "#6927C5"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4f1d99"
+      borderColor: "#8e5cf0"
+      lineEditColor: "#4f1d99"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8e5cf0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -741,6 +941,17 @@
     radius: 1.5
     energy: 3.0
     color: "#D82929"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b01e1e"
+      borderColor: "#f04545"
+      lineEditColor: "#b01e1e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f04545"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -774,6 +985,17 @@
     radius: 1.5
     energy: 3.0
     color: "#00E645"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#00963b"
+      borderColor: "#33e87a"
+      lineEditColor: "#00963b"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#33e87a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -806,6 +1028,17 @@
     radius: 1.5
     energy: 3.0
     color: "#4b93ad"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#3b7b93"
+      borderColor: "#6bb3cd"
+      lineEditColor: "#3b7b93"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#6bb3cd"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -834,6 +1067,17 @@
     radius: 1.5
     energy: 3.0
     color: "#9a18d6"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7b12a8"
+      borderColor: "#c04cf0"
+      lineEditColor: "#7b12a8"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c04cf0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -863,6 +1107,17 @@
     radius: 1.5
     energy: 3.0
     color: "#6148c7"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#534594"
+      borderColor: "#9183d3"
+      lineEditColor: "#534594"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#9183d3"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -893,17 +1148,17 @@
     energy: 3.0
     color: "#b89e2a"
   - type: AmbientMusicMarkerEngineering
+  # Utopia-Tweak : Colorful-UI
   - type: DyeUi
     default:
       backgroundColor: "#c2411b"
       borderColor: "#ff5e12"
-      lineEditTextColor: "#fffefe"
       lineEditColor: "#c2411b"
+      lineEditTextColor: "#fffefe"
       textColor: "#fffefe"
       buttonColor: "#ff5e12"
-      separatorColor: "#ff0101"
-      headerColor: "#fc0101"
       borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -942,6 +1197,17 @@
     guides:
     - MedicalDoctor
   - type: AmbientMusicMarkerMedical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#3a8fa0"
+      borderColor: "#5fc2d4"
+      lineEditColor: "#3a8fa0"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#5fc2d4"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineMedicalBase
@@ -964,6 +1230,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Medical"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#1e7fa6"
+      borderColor: "#4fc3e8"
+      lineEditColor: "#1e7fa6"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#4fc3e8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -997,6 +1274,7 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
+  # Utopia-Tweak : Colorful-UI
   - type: DyeUi
     default:
       backgroundColor: "#2a8c3a"
@@ -1005,9 +1283,8 @@
       lineEditTextColor: "#fffefe"
       textColor: "#fffefe"
       buttonColor: "#66bf39"
-      separatorColor: "#ff0101"
-      headerColor: "#fc0101"
       borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1045,6 +1322,17 @@
     guides:
     - Security
     - Antagonists
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7a3b3b"
+      borderColor: "#c0605a"
+      lineEditColor: "#7a3b3b"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c0605a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1077,6 +1365,17 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2a6b38"
+      borderColor: "#5fb06e"
+      lineEditColor: "#2a6b38"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#5fb06e"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSeedsUnlocked
@@ -1117,6 +1416,17 @@
     radius: 1.5
     energy: 3.0
     color: "#c73434"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#a82a2a"
+      borderColor: "#e05050"
+      lineEditColor: "#a82a2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e05050"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSnack
@@ -1143,6 +1453,17 @@
     radius: 1.5
     energy: 3.0
     color: "#737785"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#5a5e6b"
+      borderColor: "#9ca0b0"
+      lineEditColor: "#5a5e6b"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#9ca0b0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSnack
@@ -1163,6 +1484,17 @@
     radius: 1.5
     energy: 3.0
     color: "#3c5eb5"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6661aa"
+      borderColor: "#8a80b8"
+      lineEditColor: "#6661aa"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8a80b8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSnack
@@ -1183,6 +1515,17 @@
     radius: 1.5
     energy: 3.0
     color: "#CE3401"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b02e00"
+      borderColor: "#f26a2c"
+      lineEditColor: "#b02e00"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f26a2c"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSnack
@@ -1203,6 +1546,17 @@
     radius: 1.5
     energy: 3.0
     color: "#5F6A1C"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4c5616"
+      borderColor: "#8fa030"
+      lineEditColor: "#4c5616"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8fa030"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineSnack
@@ -1223,11 +1577,22 @@
     radius: 1.5
     energy: 3.0
     color: "#207E79"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#17655f"
+      borderColor: "#3bb5ae"
+      lineEditColor: "#17655f"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#3bb5ae"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
   id: VendingMachineSovietSoda
-  name: ВОДА
+  name: ╨Т╨Ю╨Ф╨Р
   description: An old vending machine containing sweet water.
   suffix: VODA
   components:
@@ -1257,6 +1622,17 @@
     energy: 3.0
     color: "#389690"
   - type: RussianAccent
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4e7d2e"
+      borderColor: "#93c266"
+      lineEditColor: "#4e7d2e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#93c266"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1291,6 +1667,17 @@
     radius: 1.5
     energy: 3.0
     color: "#c73434"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b3263a"
+      borderColor: "#e8546a"
+      lineEditColor: "#b3263a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e8546a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1322,6 +1709,17 @@
     radius: 1.5
     energy: 3.0
     color: "#9dc5c9"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4a7a8c"
+      borderColor: "#8fc0d0"
+      lineEditColor: "#4a7a8c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#8fc0d0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1358,6 +1756,17 @@
   - type: GuideHelp
     guides:
     - Robotics
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6b6965"
+      borderColor: "#b0ada9"
+      lineEditColor: "#6b6965"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#b0ada9"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1384,6 +1793,17 @@
     radius: 1.5
     energy: 3.0
     color: "#d4ab33"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b88a1c"
+      borderColor: "#f0c040"
+      lineEditColor: "#b88a1c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f0c040"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1415,6 +1835,17 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b88a1c"
+      borderColor: "#f0c040"
+      lineEditColor: "#b88a1c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f0c040"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1444,6 +1875,17 @@
     radius: 1.5
     energy: 3.0
     color: "#ffe599"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#c98b3a"
+      borderColor: "#ffe799"
+      lineEditColor: "#c98b3a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#ffe799"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1474,6 +1916,17 @@
   - type: GuideHelp
     guides:
     - Salvage
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a6d1e"
+      borderColor: "#d4b440"
+      lineEditColor: "#8a6d1e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#d4b440"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1503,6 +1956,17 @@
     radius: 1.5
     energy: 3.0
     color: "#d4ab33"
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#e0709a"
+      borderColor: "#ff9fc0"
+      lineEditColor: "#e0709a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#ff9fc0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 # job clothing
 
@@ -1534,6 +1998,17 @@
     color: "#326e3f"
   - type: AccessReader
     access: [["Hydroponics"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2e6b2e"
+      borderColor: "#4caf50"
+      lineEditColor: "#2e6b2e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#4caf50"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1559,6 +2034,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Lawyer"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2b3a67"
+      borderColor: "#5b74b8"
+      lineEditColor: "#2b3a67"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#5b74b8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1588,6 +2074,17 @@
     color: "#d82929"
   - type: AccessReader
     access: [["Security"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a1f1f"
+      borderColor: "#d84a4a"
+      lineEditColor: "#8a1f1f"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#d84a4a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1613,6 +2110,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Bar"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a5a2a"
+      borderColor: "#d49a55"
+      lineEditColor: "#8a5a2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#d49a55"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1639,6 +2147,17 @@
     radius: 1.5
     energy: 3.0
     color: "#CCCCCC" #The holy C
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1668,6 +2187,17 @@
     color: "#b89e2a"
   - type: AccessReader
     access: [["Cargo"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7a5a2a"
+      borderColor: "#c8964a"
+      lineEditColor: "#7a5a2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c8964a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1693,6 +2223,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Medical"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#1a5f8a"
+      borderColor: "#42b8d4"
+      lineEditColor: "#1a5f8a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#42b8d4"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1719,6 +2260,17 @@
   - type: AccessReader
     access: [["Chemistry"]]
   - type: AmbientMusicMarkerMedical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#b8601c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#ffb76f"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1744,6 +2296,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Service"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#5a3a2a"
+      borderColor: "#a07858"
+      lineEditColor: "#5a3a2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#a07858"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1774,6 +2337,17 @@
   - type: AccessReader
     access: [["Engineering"]]
   - type: AmbientMusicMarkerEngineering
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#1a6b7a"
+      borderColor: "#3cb8cc"
+      lineEditColor: "#1a6b7a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#3cb8cc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1804,6 +2378,17 @@
   - type: AccessReader
     access: [["Engineering"]]
   - type: AmbientMusicMarkerEngineering
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a3a12"
+      borderColor: "#e8601c"
+      lineEditColor: "#8a3a12"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e8601c"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1829,6 +2414,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Kitchen"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#6e6e6e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#cccccc"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1854,6 +2450,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Detective"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#5a4636"
+      borderColor: "#a68a70"
+      lineEditColor: "#5a4636"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#a68a70"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1883,6 +2490,17 @@
     color: "#6927C5"
   - type: AccessReader
     access: [["Janitor"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7b1fa2"
+      borderColor: "#c04be0"
+      lineEditColor: "#7b1fa2"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c04be0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1908,6 +2526,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Research"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#7a3aa8"
+      borderColor: "#c27af0"
+      lineEditColor: "#7a3aa8"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#c27af0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1938,6 +2567,17 @@
     color: "#d82929"
   - type: AccessReader
     access: [["NuclearOperative"], ["SyndicateAgent"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4a0e0e"
+      borderColor: "#a81c1c"
+      lineEditColor: "#4a0e0e"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#a81c1c"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1963,6 +2603,17 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Research"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#4a1a6b"
+      borderColor: "#b0409a"
+      lineEditColor: "#4a1a6b"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#b0409a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -1989,6 +2640,17 @@
   - type: AccessReader
     access: [["Medical"]]
   - type: AmbientMusicMarkerMedical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2a5aa8"
+      borderColor: "#5a8ae0"
+      lineEditColor: "#2a5aa8"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#5a8ae0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -2015,6 +2677,17 @@
   - type: AccessReader
     access: [["Medical"]]
   - type: AmbientMusicMarkerMedical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#3a7a3a"
+      borderColor: "#80c060"
+      lineEditColor: "#3a7a3a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#80c060"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -2041,6 +2714,17 @@
     color: "#48CF48"
   - type: AccessReader
     access: [["CentralCommand"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2a8a2a"
+      borderColor: "#58d458"
+      lineEditColor: "#2a8a2a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#58d458"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -2076,6 +2760,17 @@
     pack: HappyHonkGoodbyes
   - type: AccessReader
     access: [["Kitchen"], ["Theatre"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#c0392b"
+      borderColor: "#f1c40f"
+      lineEditColor: "#c0392b"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f1c40f"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 # Pride Vending Machine
 
@@ -2107,6 +2802,17 @@
       shader: unshaded
     - state: panel
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a3a9a"
+      borderColor: "#f06aa0"
+      lineEditColor: "#8a3a9a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#f06aa0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 # Gas Tank Dispenser
 
@@ -2123,6 +2829,17 @@
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/tankdispenser.rsi #TODO add visualiser for remaining tanks as layers
     state: dispenser
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#3a5a8a"
+      borderColor: "#6a95d0"
+      lineEditColor: "#3a5a8a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#6a95d0"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: BaseVendingMachine
@@ -2138,6 +2855,17 @@
     layers:
     - state: dispenser
     - state: dispensereng
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#8a6a1a"
+      borderColor: "#d4a43a"
+      lineEditColor: "#8a6a1a"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#d4a43a"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachine
@@ -2169,6 +2897,17 @@
     - Chemicals
     - Chemist
   - type: AmbientMusicMarkerMedical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#6e6e6e"
+      borderColor: "#cccccc"
+      lineEditColor: "#b8601c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#ffb76f"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineChemicals
@@ -2186,8 +2925,20 @@
     denyState: deny
   - type: AccessReader
     access: [["SyndicateAgent"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#b71c1c"
+      borderColor: "#e53935"
+      lineEditColor: "#b71c1c"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#e53935"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 # wallmount
+
 - type: entity
   parent: VendingMachineWallmount
   id: VendingMachineWallMedicalCivilian
@@ -2216,6 +2967,17 @@
   - type: GuideHelp
     guides:
     - Medical
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#2a9a88"
+      borderColor: "#58dcc8"
+      lineEditColor: "#2a9a88"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#58dcc8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
 
 - type: entity
   parent: VendingMachineWallMedicalCivilian
@@ -2237,3 +2999,14 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Medical"]]
+  # Utopia-Tweak : Colorful-UI
+  - type: DyeUi
+    default:
+      backgroundColor: "#1e7fa6"
+      borderColor: "#4fc3e8"
+      lineEditColor: "#1e7fa6"
+      lineEditTextColor: "#fffefe"
+      textColor: "#fffefe"
+      buttonColor: "#4fc3e8"
+      borderThickness: 1
+  # Utopia-Tweak : Colorful-UI
