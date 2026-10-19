@@ -267,10 +267,7 @@ public sealed class DyeUISystem : EntitySystem
             foreach (var child in control.Children)
                 ApplyTheme(child, entry, childCtx);
         }
-        catch (InvalidOperationException)
-        {
-            // Безопасная обработка изменений структуры дочерних элементов
-        }
+        catch (InvalidOperationException) { }
     }
 
     private static bool IsIgnored(Control control, DyedUiEntry entry)
