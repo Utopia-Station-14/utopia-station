@@ -77,6 +77,11 @@
           - MobLayer
   - type: TypingIndicator
     proto: gingerbread
+  # Utopia-Tweak : Language
+  - type: LanguageSpeaker
+    languages:
+      GalacticCommon: Speak
+  # Utopia-Tweak : Language
 
 - type: entity
   parent: OrganBaseOrganic

@@ -223,7 +223,7 @@ namespace Content.Server.Atmos.EntitySystems
 
                 var pressure = 1f;
 
-                if (_atmosphereSystem.GetContainingMixture(uid) is {} mixture)
+                if (_atmosphereSystem.GetContainingMixtureZ(uid) is {} mixture) // Utopia-Tweak : Z-Levels
                 {
                     pressure = MathF.Max(mixture.Pressure, 1f);
                 }

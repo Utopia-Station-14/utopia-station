@@ -1,3 +1,9 @@
+// SPDX-FileCopyrightText: 2026 ColonialMarinesUniverse contributors <https://github.com/AU-14/ColonialMarinesUniverse>
+// SPDX-License-Identifier: AGPL-3.0-only
+// Ported from ColonialMarinesUniverse Content.Client/_CMU14/ZLevels/Lighting/CEZLevelProjectedLightingSystem.cs.
+// Client-only fake-light projection: lights on adjacent Z layers spawn PointLights at floor-opening
+// centers on the viewer's map, attenuated by depth and distance. Purely cosmetic.
+
 using System.Numerics;
 using Robust.Shared.Map;
 

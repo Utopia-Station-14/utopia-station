@@ -77,25 +77,38 @@ public sealed partial class GeigerSystem : SharedGeigerSystem
     {
         // update only active geiger counters
         // deactivated shouldn't have rad receiver component
+
+        // Utopia-Tweak: RadiationUpdt
         var query = EntityQueryEnumerator<GeigerComponent, RadiationReceiverComponent>();
         while (query.MoveNext(out var uid, out var geiger, out var receiver))
         {
-            var rads = receiver.CurrentRadiation;
-            SetCurrentRadiation(uid, geiger, rads);
+            var betaRads = receiver.BetaRadiation;
+            var gammaRads = receiver.GammaRadiation;
+
+            SetCurrentRadiation(uid, geiger, betaRads, gammaRads);
         }
+        // Utopia-Tweak: RadiationUpdt
     }
 
-    private void SetCurrentRadiation(EntityUid uid, GeigerComponent component, float rads)
+    // Utopia-Tweak: RadiationUpdt
+    private void SetCurrentRadiation(EntityUid uid, GeigerComponent component, float betaRads, float gammaRads)
     {
-        // check that it's approx equal
-        if (MathHelper.CloseTo(component.CurrentRadiation, rads, ApproxEqual))
+        if (MathHelper.CloseTo(component.BetaRadiation, betaRads, ApproxEqual) &&
+            MathHelper.CloseTo(component.GammaRadiation, gammaRads, ApproxEqual))
             return;
 
-        var curLevel = component.DangerLevel;
-        var newLevel = RadsToLevel(rads);
+        component.BetaRadiation = betaRads;
+        component.GammaRadiation = gammaRads;
 
-        component.CurrentRadiation = rads;
+        component.BetaDangerLevel = RadsToLevel(betaRads);
+        component.GammaDangerLevel = RadsToLevel(gammaRads);
+
+        var maxRads = Math.Max(betaRads, gammaRads);
+        var newLevel = RadsToLevel(maxRads);
+
+        var curLevel = component.DangerLevel;
         component.DangerLevel = newLevel;
+        component.CurrentRadiation = maxRads;
 
         if (curLevel != newLevel)
         {
@@ -105,6 +118,7 @@ public sealed partial class GeigerSystem : SharedGeigerSystem
 
         Dirty(uid, component);
     }
+    // Utopia-Tweak: RadiationUpdt
 
     private void SetUser(Entity<GeigerComponent> component, EntityUid? user)
     {
@@ -126,6 +140,8 @@ public sealed partial class GeigerSystem : SharedGeigerSystem
         if (!isEnabled)
         {
             component.CurrentRadiation = 0f;
+            component.BetaRadiation = 0f;
+            component.GammaRadiation = 0f;
             component.DangerLevel = GeigerDangerLevel.None;
         }
 

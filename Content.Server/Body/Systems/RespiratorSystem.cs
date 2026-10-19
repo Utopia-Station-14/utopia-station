@@ -143,7 +143,7 @@ public sealed partial class RespiratorSystem : EntitySystem
         };
         RaiseLocalEvent(entity, ref ev);
 
-        ev.Gas ??= _atmosSys.GetContainingMixture(entity.Owner, excite: true);
+        ev.Gas ??= _atmosSys.GetContainingMixtureZ(entity.Owner, excite: true); // Utopia-Tweak : Z-Levels
 
         if (ev.Gas is null)
             return;
@@ -169,7 +169,7 @@ public sealed partial class RespiratorSystem : EntitySystem
 
         if (ev.Gas is null)
         {
-            ev.Gas = _atmosSys.GetContainingMixture(entity.Owner, excite: true);
+            ev.Gas = _atmosSys.GetContainingMixtureZ(entity.Owner, excite: true); // Utopia-Tweak : Z-Levels
 
             // Walls and grids without atmos comp return null. I guess it makes sense to not be able to exhale in walls,
             // but this also means you cannot exhale on some grids.
@@ -219,7 +219,7 @@ public sealed partial class RespiratorSystem : EntitySystem
         };
         RaiseLocalEvent(ent, ref ev);
 
-        ev.Gas ??= _atmosSys.GetContainingMixture(ent.Owner, excite: true);
+        ev.Gas ??= _atmosSys.GetContainingMixtureZ(ent.Owner, excite: true); // Utopia-Tweak : Z-Levels
 
         // If there's no air to breathe or we can't metabolize it then internals should be on.
         return ev.Gas is not null && CanMetabolizeInhaledAir(ent, ev.Gas);
