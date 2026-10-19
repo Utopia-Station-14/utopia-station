@@ -188,8 +188,3 @@
               type: TurbineConsoleBoundUserInterface
           enum.WiresUiKey.Key:
             type: WiresBoundUserInterface
-    - type: DyeUi
-      default:
-        backgroundColor: "#364556"
-        borderColor: "#273647"
-        borderThickness: 2
