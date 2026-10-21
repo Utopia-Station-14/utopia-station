@@ -60,3 +60,6 @@ modsuit-part-slot-occupied = Этот слот уже занят.
 modsuit-ui-identity-name = Имя: { $name }
 modsuit-ui-identity-job = Должность: { $job }
 modsuit-ui-identity-unknown = неизвестно
+
+modsuit-ui-module-toggle = Включить / выключить модуль
+modsuit-ui-module-not-toggleable = Этот модуль нельзя выключить

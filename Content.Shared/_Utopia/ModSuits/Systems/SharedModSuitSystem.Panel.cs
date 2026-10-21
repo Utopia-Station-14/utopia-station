@@ -1,14 +1,23 @@
-using Content.Shared._Utopia.ModSuits;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
-using Content.Shared.Inventory;
+using Content.Shared.Storage.EntitySystems;
 using Content.Shared.Verbs;
 
-namespace Content.Server._Utopia.ModSuits.Systems;
+namespace Content.Shared._Utopia.ModSuits;
 
-public sealed partial class ModSuitSystem
+public abstract partial class SharedModSuitSystem
 {
+    private void InitializePanel()
+    {
+        SubscribeLocalEvent<ModSuitComponent, InteractUsingEvent>(
+            OnInteractUsing,
+            before: new[] { typeof(SharedStorageSystem) });
+
+        SubscribeLocalEvent<ModSuitComponent, ExaminedEvent>(OnExamined);
+        SubscribeLocalEvent<ModSuitComponent, GetVerbsEvent<AlternativeVerb>>(OnGetVerbs);
+    }
+
     private void OnInteractUsing(Entity<ModSuitComponent> ent, ref InteractUsingEvent args)
     {
         if (args.Handled)
@@ -20,7 +29,7 @@ public sealed partial class ModSuitSystem
 
             if (ent.Comp.EquippedParts > 0)
             {
-                _popup.PopupEntity(Loc.GetString("modsuit-panel-parts-deployed"), ent, args.User);
+                _popup.PopupClient(Loc.GetString("modsuit-panel-parts-deployed"), ent, args.User);
                 return;
             }
 
@@ -38,27 +47,6 @@ public sealed partial class ModSuitSystem
             return;
 
         args.Handled = TryInstall(ent, args.User, args.Used);
-    }
-
-    private void OnPanelDoAfter(Entity<ModSuitComponent> ent, ref ModSuitPanelDoAfterEvent args)
-    {
-        if (args.Cancelled || args.Handled)
-            return;
-
-        args.Handled = true;
-
-        if (ent.Comp.EquippedParts > 0)
-            return;
-
-        ent.Comp.PanelOpen = !ent.Comp.PanelOpen;
-
-        var msg = ent.Comp.PanelOpen ? "modsuit-panel-opened" : "modsuit-panel-closed";
-        _popup.PopupEntity(Loc.GetString(msg), ent, args.User);
-
-        if (ent.Comp.PanelOpen)
-            _ui.CloseUi(ent.Owner, ModSuitUiKey.Key);
-
-        UpdateUi(ent);
     }
 
     private void OnExamined(Entity<ModSuitComponent> ent, ref ExaminedEvent args)
@@ -106,44 +94,58 @@ public sealed partial class ModSuitSystem
         }
     }
 
+    #region Install / Remove
+
     private bool TryInstall(Entity<ModSuitComponent> ent, EntityUid user, EntityUid item)
     {
         if (HasComp<ModSuitModuleComponent>(item))
-        {
-            if (!_container.Insert(item, ent.Comp.ModulesContainer))
-                return false;
+            return TryInstallModule(ent, user, item);
 
-            _popup.PopupEntity(Loc.GetString("modsuit-module-installed", ("name", Name(item))), ent, user);
-            return true;
-        }
+        return TryInstallPart(ent, user, item);
+    }
 
-        if (!TryComp<ClothingComponent>(item, out var clothing) || !TryGetPartType(clothing.Slots, out var part))
+    private bool TryInstallModule(Entity<ModSuitComponent> ent, EntityUid user, EntityUid module)
+    {
+        if (!_container.Insert(module, ent.Comp.ModulesContainer))
+            return false;
+
+        _popup.PopupClient(Loc.GetString("modsuit-module-installed", ("name", Name(module))), ent, user);
+        return true;
+    }
+
+    private bool TryInstallPart(Entity<ModSuitComponent> ent, EntityUid user, EntityUid item)
+    {
+        if (!TryComp<ClothingComponent>(item, out var clothing) || !ModSuitSlots.TryGetPart(clothing.Slots, out var part))
             return false;
 
         if (ent.Comp.Parts.ContainsKey(part))
         {
-            _popup.PopupEntity(Loc.GetString("modsuit-part-slot-occupied"), ent, user);
+            _popup.PopupClient(Loc.GetString("modsuit-part-slot-occupied"), ent, user);
             return true;
         }
 
         var partComp = EnsureComp<ModSuitPartComponent>(item);
         partComp.Suit = ent;
         partComp.Part = part;
+        Dirty(item, partComp);
+
         ent.Comp.Parts[part] = item;
+        Dirty(ent.Owner, ent.Comp);
 
         if (!_container.Insert(item, ent.Comp.PartsContainer))
         {
             ent.Comp.Parts.Remove(part);
+            Dirty(ent.Owner, ent.Comp);
             RemComp<ModSuitPartComponent>(item);
             return false;
         }
 
-        _popup.PopupEntity(Loc.GetString("modsuit-part-installed", ("name", Name(item))), ent, user);
+        _popup.PopupClient(Loc.GetString("modsuit-part-installed", ("name", Name(item))), ent, user);
         UpdateUi(ent);
         return true;
     }
 
-    private void RemovePart(Entity<ModSuitComponent> ent, EntityUid user, ModSuitPart part)
+    protected void RemovePart(Entity<ModSuitComponent> ent, EntityUid user, ModSuitPart part)
     {
         if (!ent.Comp.PanelOpen || ent.Comp.EquippedParts > 0)
             return;
@@ -155,14 +157,15 @@ public sealed partial class ModSuitSystem
             return;
 
         ent.Comp.Parts.Remove(part);
-        _pendingReturn.Remove(uid);
+        Dirty(ent.Owner, ent.Comp);
+        OnPartDetached(uid);
 
         RemComp<ModSuitPartComponent>(uid);
         _hands.PickupOrDrop(user, uid);
         UpdateUi(ent);
     }
 
-    private void RemoveModule(Entity<ModSuitComponent> ent, EntityUid user, EntityUid module)
+    protected void RemoveModule(Entity<ModSuitComponent> ent, EntityUid user, EntityUid module)
     {
         if (!ent.Comp.PanelOpen || !ent.Comp.ModulesContainer.Contains(module))
             return;
@@ -173,31 +176,5 @@ public sealed partial class ModSuitSystem
         _hands.PickupOrDrop(user, module);
     }
 
-    private static bool TryGetPartType(SlotFlags flags, out ModSuitPart part)
-    {
-        if ((flags & SlotFlags.HEAD) != 0)
-            part = ModSuitPart.Helmet;
-        else if ((flags & SlotFlags.OUTERCLOTHING) != 0)
-            part = ModSuitPart.Body;
-        else if ((flags & SlotFlags.GLOVES) != 0)
-            part = ModSuitPart.Gloves;
-        else if ((flags & SlotFlags.FEET) != 0)
-            part = ModSuitPart.Boots;
-        else
-        {
-            part = default;
-            return false;
-        }
-
-        return true;
-    }
-
-    private bool IsPanelOpen(Entity<ModSuitComponent> ent, EntityUid wearer)
-    {
-        if (!ent.Comp.PanelOpen)
-            return false;
-
-        _popup.PopupEntity(Loc.GetString("modsuit-panel-open-blocked"), wearer, wearer);
-        return true;
-    }
+    #endregion
 }

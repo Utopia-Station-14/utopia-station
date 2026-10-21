@@ -1,0 +1,83 @@
+- type: entity
+  parent: BaseAction
+  id: UtopiaActionToggleModSuitMagnet
+  name: Переключить магнит
+  description: Примагничивает ботинки костюма к поверхности.
+  components:
+  - type: Action
+    icon:
+      sprite: Clothing/Shoes/Boots/magboots.rsi
+      state: icon
+    itemIconStyle: BigAction
+  - type: InstantAction
+    event: !type:ToggleModSuitModuleEvent
+      key: magnet
+
+- type: entity
+  parent: BaseAction
+  id: UtopiaActionToggleModSuitFlashlight
+  name: Переключить фонарик
+  description: Включает или выключает фонарь на шлеме.
+  components:
+  - type: Action
+    icon:
+      sprite: Objects/Tools/flashlight.rsi
+      state: flashlight
+    itemIconStyle: BigAction
+  - type: InstantAction
+    event: !type:ToggleModSuitModuleEvent
+      key: flashlight
+
+- type: entity
+  parent: BaseItem
+  id: UtopiaModSuitModuleMagnet
+  name: магнитный модуль МОД-костюма
+  description: Позволяет примагничиваться к поверхности. Потребляет энергию, пока включён.
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/Boots/magboots.rsi
+    state: icon
+  - type: ModSuitModule
+    complexity: 2
+    expenditure: 0.3
+    enabled: false
+    requiredPart: Boots
+    action: UtopiaActionToggleModSuitMagnet
+    key: magnet
+  - type: ModSuitMagnetModule
+
+- type: entity
+  parent: BaseItem
+  id: UtopiaModSuitModuleFlashlight
+  name: модуль фонаря МОД-костюма
+  description: Добавляет фонарь на шлем костюма.
+  components:
+  - type: Sprite
+    sprite: Objects/Tools/flashlight.rsi
+    state: icon
+  - type: ModSuitModule
+    complexity: 1
+    expenditure: 0.2
+    enabled: false
+    requiredPart: Helmet
+    action: UtopiaActionToggleModSuitFlashlight
+    key: flashlight
+  - type: ModSuitFlashlightModule
+    radius: 6
+    energy: 2
+
+- type: entity
+  parent: BaseItem
+  id: UtopiaModSuitModuleEyeProtection
+  name: модуль защиты глаз МОД-костюма
+  description: Защищает глаза от сварки и вспышек, пока модуль включён.
+  components:
+  - type: Sprite
+    sprite: Clothing/Eyes/Glasses/sunglasses.rsi
+    state: icon
+  - type: ModSuitModule
+    complexity: 1
+    expenditure: 0.1
+    enabled: true
+    requiredPart: Helmet
+  - type: ModSuitEyeProtectionModule

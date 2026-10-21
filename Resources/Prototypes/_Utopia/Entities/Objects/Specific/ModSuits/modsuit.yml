@@ -8,7 +8,6 @@
     sprite: Clothing/Back/Backpacks/backpack.rsi
     state: icon
   - type: ModSuit
-    drawPerPart: 0.5
     helmetPrototype: ClothingHeadHelmetHardsuitEngineering
     bodyPrototype: ClothingOuterHardsuitEngineering
     glovesPrototype: ClothingHandsGlovesColorYellow

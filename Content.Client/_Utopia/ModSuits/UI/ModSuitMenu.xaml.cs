@@ -24,57 +24,47 @@ public sealed partial class ModSuitMenu : FancyWindow
     [Dependency] private IEntityManager _ent = default!;
     [Dependency] private IResourceCache _resCache = default!;
 
-    // Фон схемы (модулируется текстура)
     private static readonly Color IdleModulate = Color.FromHex("#1B1B1E");
     private static readonly Color DeployedModulate = Color.FromHex("#2B3F7A");
     private static readonly Color LockedModulate = Color.FromHex("#5A2222");
-
-    // Слоты частей: фон + рамка
     private static readonly Color SlotIdleBg = Color.FromHex("#18181C");
     private static readonly Color SlotIdleBorder = Color.FromHex("#FFFFFF2E");
     private static readonly Color SlotLockedBg = Color.FromHex("#3A1818");
     private static readonly Color SlotLockedBorder = Color.FromHex("#C04848");
     private static readonly Color SlotEmptyTint = Color.FromHex("#6A6A6A");
-
-    // Выдвинутая часть: фон плавно идёт от тёмно-синего (0 частей) до синего панели (4 части)
     private static readonly Color SlotDeployedBgDark = Color.FromHex("#121A38");
     private static readonly Color SlotDeployedBgFull = DeployedModulate;
     private static readonly Color SlotDeployedBorder = Color.FromHex("#6D93FF");
-
-    // Панель «Активные части»: от фона списка модулей (0 частей) до синего (4 части)
     private static readonly Color PartsPanelIdleBg = Color.FromHex("#0E0E1299");
-
-    // Модули
     private static readonly Color ModuleActiveBg = Color.FromHex("#1C2A22");
     private static readonly Color ModuleActiveBorder = Color.FromHex("#4CAF6E");
     private static readonly Color ModuleOffBg = Color.FromHex("#241A1A");
     private static readonly Color ModuleOffBorder = Color.FromHex("#7A3A3A");
 
-    private static readonly ModSuitPart[] PartOrder =
-    {
-        ModSuitPart.Helmet,
-        ModSuitPart.Body,
-        ModSuitPart.Gloves,
-        ModSuitPart.Boots,
-    };
-
     private readonly Dictionary<ModSuitPart, PartSlot> _slots = new();
-    private readonly Texture _panelTexture;
+    private readonly Dictionary<NetEntity, ModuleRow> _rows = new();
+    private readonly HashSet<NetEntity> _seenModules = new();
+    private readonly List<NetEntity> _staleModules = new();
 
+    private readonly Texture _panelTexture;
+    private readonly SpriteSystem _sprites;
     private readonly StyleBoxFlat _chargeFill = new() { BackgroundColor = Color.Lime };
 
     private EntityUid? _owner;
     private EntityUid? _wearer;
+    private bool _updating;
 
     public event Action<ModSuitPart>? OnPartPressed;
     public event Action? OnToggleAllPressed;
     public event Action? OnToggleSpeedPressed;
+    public event Action<NetEntity>? OnModulePressed;
 
     public ModSuitMenu()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
+        _sprites = _ent.System<SpriteSystem>();
         _panelTexture = _resCache.GetTexture(PanelTexturePath);
 
         if (SchematicPanel.PanelOverride is StyleBoxTexture schematicStyle)
@@ -88,7 +78,7 @@ public sealed partial class ModSuitMenu : FancyWindow
         };
         ChargeBar.ForegroundStyleBoxOverride = _chargeFill;
 
-        foreach (var part in PartOrder)
+        foreach (var part in ModSuitSlots.All)
         {
             var slot = CreateSlot(part);
             _slots[part] = slot;
@@ -96,7 +86,11 @@ public sealed partial class ModSuitMenu : FancyWindow
         }
 
         ToggleAllButton.OnPressed += _ => OnToggleAllPressed?.Invoke();
-        SpeedSwitch.OnToggled += _ => OnToggleSpeedPressed?.Invoke();
+        SpeedSwitch.OnToggled += _ =>
+        {
+            if (!_updating)
+                OnToggleSpeedPressed?.Invoke();
+        };
     }
 
     public void SetOwner(EntityUid owner)
@@ -132,25 +126,136 @@ public sealed partial class ModSuitMenu : FancyWindow
         CoreLabel.Visible = wearer == null;
     }
 
-    private static StyleBoxFlat MakeBox(Color bg, Color border, float margin = 0)
-    {
-        var box = new StyleBoxFlat
-        {
-            BackgroundColor = bg,
-            BorderColor = border,
-            BorderThickness = new Thickness(1),
-        };
+    #region State
 
-        if (margin > 0)
+    public void UpdateState(ModSuitBoundUiState state)
+    {
+        _updating = true;
+
+        try
         {
-            box.ContentMarginLeftOverride = margin;
-            box.ContentMarginRightOverride = margin;
-            box.ContentMarginTopOverride = margin;
-            box.ContentMarginBottomOverride = margin;
+            UpdateSchematic(state);
+            UpdateIdentity(state);
+            UpdateStatus(state);
+            UpdateCharge(state);
+            UpdateStats(state);
+            UpdateControls(state);
+            UpdateModules(state);
+        }
+        finally
+        {
+            _updating = false;
+        }
+    }
+
+    private void UpdateSchematic(ModSuitBoundUiState state)
+    {
+        if (SchematicPanel.PanelOverride is StyleBoxTexture schematic)
+            schematic.Modulate = state.Locked ? LockedModulate : state.EquippedParts > 0 ? DeployedModulate : IdleModulate;
+
+        var deployedT = DeployedFraction(state);
+        var deployedBg = Color.InterpolateBetween(SlotDeployedBgDark, SlotDeployedBgFull, deployedT);
+
+        foreach (var (part, slot) in _slots)
+        {
+            if (state.Parts.TryGetValue(part, out var partState))
+                UpdateSlot(slot, partState.Entity, partState.Deployed, state.Locked, deployedBg);
+            else
+                UpdateSlot(slot, null, false, state.Locked, deployedBg);
         }
 
-        return box;
+        if (PartsPanel.PanelOverride is StyleBoxFlat partsBox)
+            partsBox.BackgroundColor = Color.InterpolateBetween(PartsPanelIdleBg, SlotDeployedBgFull, deployedT);
     }
+
+    private static float DeployedFraction(ModSuitBoundUiState state)
+        => Math.Clamp(state.EquippedParts / (float) ModSuitSlots.All.Length, 0f, 1f);
+
+    private void UpdateIdentity(ModSuitBoundUiState state)
+    {
+        var unknown = Loc.GetString("modsuit-ui-identity-unknown");
+        NameLabel.Text = Loc.GetString("modsuit-ui-identity-name",
+            ("name", string.IsNullOrWhiteSpace(state.WearerName) ? unknown : state.WearerName));
+        JobLabel.Text = Loc.GetString("modsuit-ui-identity-job",
+            ("job", string.IsNullOrWhiteSpace(state.WearerJob) ? unknown : state.WearerJob));
+    }
+
+    private void UpdateStatus(ModSuitBoundUiState state)
+    {
+        var statusColor = state.Status switch
+        {
+            ModSuitStatus.Active => Color.Lime,
+            ModSuitStatus.Charging => Color.Cyan,
+            ModSuitStatus.NeedCharging => Color.Yellow,
+            ModSuitStatus.Dead => Color.Red,
+            ModSuitStatus.SPRINGTRAPPED => Color.DarkRed,
+            _ => Color.Gray,
+        };
+
+        if (StatusPanel.PanelOverride is StyleBoxFlat statusBox)
+        {
+            statusBox.BackgroundColor = statusColor.WithAlpha(0.12f);
+            statusBox.BorderColor = statusColor.WithAlpha(0.65f);
+        }
+
+        StatusValueLabel.SetMarkup(
+            $"[bold][color={statusColor.ToHex()}]{Loc.GetString($"modsuit-ui-status-{state.Status.ToString().ToLowerInvariant()}")}[/color][/bold]");
+    }
+
+    private void UpdateCharge(ModSuitBoundUiState state)
+    {
+        if (state.Charge is not { } charge)
+        {
+            ChargeBar.Visible = false;
+            ChargeValueLabel.SetMarkup(Loc.GetString("modsuit-ui-no-battery"));
+            return;
+        }
+
+        var color = charge switch
+        {
+            >= 0.5f => Color.Lime,
+            >= 0.25f => Color.Yellow,
+            _ => Color.Red,
+        };
+
+        _chargeFill.BackgroundColor = color;
+        ChargeBar.Visible = true;
+        ChargeBar.Value = charge;
+        ChargeValueLabel.SetMarkup(
+            $"[color={color.ToHex()}]{Loc.GetString("modsuit-ui-charge-value", ("percent", (charge * 100).ToString("F0")))}[/color]");
+    }
+
+    private void UpdateStats(ModSuitBoundUiState state)
+    {
+        PartsValueLabel.SetMarkup(Loc.GetString("modsuit-ui-parts-value",
+            ("equipped", state.EquippedParts),
+            ("total", state.TotalParts)));
+
+        TotalDrawValueLabel.SetMarkup(Loc.GetString("modsuit-ui-watt-value", ("watt", state.TotalDraw.ToString("F1"))));
+        SpeedDrawValueLabel.SetMarkup(Loc.GetString("modsuit-ui-watt-value", ("watt", state.SpeedDraw.ToString("F1"))));
+        SwapCostValueLabel.SetMarkup(Loc.GetString("modsuit-ui-charge-units-value", ("value", state.PartSwapCost.ToString("F1"))));
+        ModulesDrawValueLabel.SetMarkup(Loc.GetString("modsuit-ui-watt-value", ("watt", state.ModulesDraw.ToString("F1"))));
+    }
+
+    private void UpdateControls(ModSuitBoundUiState state)
+    {
+        LockedPanel.Visible = state.Locked;
+        if (state.Locked)
+            LockedLabel.Text = Loc.GetString("modsuit-ui-locked");
+
+        ToggleAllButton.Text = state.EquippedParts == 0
+            ? Loc.GetString("modsuit-ui-toggle-all-deploy")
+            : Loc.GetString("modsuit-ui-toggle-all-retract");
+        ToggleAllButton.Disabled = state.Locked && state.EquippedParts == 0;
+
+        var bodyDeployed = state.Parts.TryGetValue(ModSuitPart.Body, out var body) && body.Deployed;
+        SpeedSwitch.Pressed = state.SpeedEnabled;
+        SpeedSwitch.Disabled = state.Locked || (!state.SpeedEnabled && !bodyDeployed);
+    }
+
+    #endregion
+
+    #region Part slots
 
     private PartSlot CreateSlot(ModSuitPart part)
     {
@@ -183,105 +288,6 @@ public sealed partial class ModSuitMenu : FancyWindow
         root.AddChild(button);
 
         return new PartSlot(root, button, icon, style);
-    }
-
-    public void UpdateState(ModSuitBoundUiState state)
-    {
-        if (SchematicPanel.PanelOverride is StyleBoxTexture schematic)
-            schematic.Modulate = state.Locked ? LockedModulate : state.EquippedParts > 0 ? DeployedModulate : IdleModulate;
-
-        // Чем больше частей выдвинуто (0..4), тем ярче синий фон у выдвинутых слотов
-        var deployedT = Math.Clamp(state.EquippedParts / (float) PartOrder.Length, 0f, 1f);
-        var deployedBg = Color.InterpolateBetween(SlotDeployedBgDark, SlotDeployedBgFull, deployedT);
-
-        foreach (var (part, slot) in _slots)
-        {
-            if (state.Parts.TryGetValue(part, out var partState))
-                UpdateSlot(slot, partState.Entity, partState.Deployed, state.Locked, deployedBg);
-            else
-                UpdateSlot(slot, null, false, state.Locked, deployedBg);
-        }
-
-        // Имя и должность владельца (из ID-карты). Нет карты или поля пустое — «неизвестно»
-        var unknown = Loc.GetString("modsuit-ui-identity-unknown");
-        NameLabel.Text = Loc.GetString("modsuit-ui-identity-name",
-            ("name", string.IsNullOrWhiteSpace(state.WearerName) ? unknown : state.WearerName));
-        JobLabel.Text = Loc.GetString("modsuit-ui-identity-job",
-            ("job", string.IsNullOrWhiteSpace(state.WearerJob) ? unknown : state.WearerJob));
-
-        // Статус: цветная плашка
-        var statusColor = state.Status switch
-        {
-            ModSuitStatus.Active => Color.Lime,
-            ModSuitStatus.Charging => Color.Cyan,
-            ModSuitStatus.NeedCharging => Color.Yellow,
-            ModSuitStatus.Dead => Color.Red,
-            ModSuitStatus.SPRINGTRAPPED => Color.DarkRed,
-            _ => Color.Gray,
-        };
-        if (StatusPanel.PanelOverride is StyleBoxFlat statusBox)
-        {
-            statusBox.BackgroundColor = statusColor.WithAlpha(0.12f);
-            statusBox.BorderColor = statusColor.WithAlpha(0.65f);
-        }
-        StatusValueLabel.SetMarkup(
-            $"[bold][color={statusColor.ToHex()}]{Loc.GetString($"modsuit-ui-status-{state.Status.ToString().ToLowerInvariant()}")}[/color][/bold]");
-
-        // Заряд: цвет полосы совпадает с цветом текста
-        if (state.Charge is { } charge)
-        {
-            var color = charge switch
-            {
-                >= 0.5f => Color.Lime,
-                >= 0.25f => Color.Yellow,
-                _ => Color.Red,
-            };
-
-            _chargeFill.BackgroundColor = color;
-            ChargeBar.Visible = true;
-            ChargeBar.Value = charge;
-            ChargeValueLabel.SetMarkup(
-                $"[color={color.ToHex()}]{Loc.GetString("modsuit-ui-charge-value", ("percent", (charge * 100).ToString("F0")))}[/color]");
-        }
-        else
-        {
-            ChargeBar.Visible = false;
-            ChargeValueLabel.SetMarkup(Loc.GetString("modsuit-ui-no-battery"));
-        }
-
-        // Фон панели частей: чем больше частей выдвинуто, тем ближе к синему выдвинутых слотов
-        if (PartsPanel.PanelOverride is StyleBoxFlat partsBox)
-            partsBox.BackgroundColor = Color.InterpolateBetween(PartsPanelIdleBg, SlotDeployedBgFull, deployedT);
-
-        PartsValueLabel.SetMarkup(Loc.GetString("modsuit-ui-parts-value",
-            ("equipped", state.EquippedParts),
-            ("total", state.TotalParts)));
-
-        TotalDrawValueLabel.SetMarkup(Loc.GetString("modsuit-ui-watt-value", ("watt", state.TotalDraw.ToString("F1"))));
-        SpeedDrawValueLabel.SetMarkup(Loc.GetString("modsuit-ui-watt-value", ("watt", state.SpeedDraw.ToString("F1"))));
-        SwapCostValueLabel.SetMarkup(Loc.GetString("modsuit-ui-charge-units-value", ("value", state.PartSwapCost.ToString("F1"))));
-        ModulesDrawValueLabel.SetMarkup(Loc.GetString("modsuit-ui-watt-value", ("watt", state.ModulesDraw.ToString("F1"))));
-
-        LockedPanel.Visible = state.Locked;
-        if (state.Locked)
-            LockedLabel.Text = Loc.GetString("modsuit-ui-locked");
-
-        ToggleAllButton.Text = state.EquippedParts == 0
-            ? Loc.GetString("modsuit-ui-toggle-all-deploy")
-            : Loc.GetString("modsuit-ui-toggle-all-retract");
-        ToggleAllButton.Disabled = state.Locked && state.EquippedParts == 0;
-
-        // Сервер привязывает сервоприводы к части Body
-        var bodyDeployed = state.Parts.TryGetValue(ModSuitPart.Body, out var body) && body.Deployed;
-        SpeedSwitch.Pressed = state.SpeedEnabled;
-        SpeedSwitch.Disabled = state.Locked || (!state.SpeedEnabled && !bodyDeployed);
-
-        ModulesContainer.RemoveAllChildren();
-        NoModulesLabel.Visible = state.Modules.Count == 0;
-        ModulesCountLabel.Text = state.Modules.Count > 0 ? state.Modules.Count.ToString() : string.Empty;
-
-        foreach (var module in state.Modules)
-            ModulesContainer.AddChild(CreateModuleEntry(module));
     }
 
     private void UpdateSlot(PartSlot slot, NetEntity? entity, bool deployed, bool locked, Color deployedBg)
@@ -318,7 +324,45 @@ public sealed partial class ModSuitMenu : FancyWindow
         }
     }
 
-    private Control CreateModuleEntry(ModSuitModuleUiState module)
+    #endregion
+
+    #region Modules
+    private void UpdateModules(ModSuitBoundUiState state)
+    {
+        _seenModules.Clear();
+
+        foreach (var module in state.Modules)
+        {
+            _seenModules.Add(module.Entity);
+
+            if (!_rows.TryGetValue(module.Entity, out var row))
+            {
+                row = CreateModuleRow(module.Entity);
+                _rows[module.Entity] = row;
+                ModulesContainer.AddChild(row.Root);
+            }
+
+            UpdateModuleRow(row, module, state.Locked);
+        }
+
+        _staleModules.Clear();
+        foreach (var key in _rows.Keys)
+        {
+            if (!_seenModules.Contains(key))
+                _staleModules.Add(key);
+        }
+
+        foreach (var key in _staleModules)
+        {
+            ModulesContainer.RemoveChild(_rows[key].Root);
+            _rows.Remove(key);
+        }
+
+        NoModulesLabel.Visible = state.Modules.Count == 0;
+        ModulesCountLabel.Text = state.Modules.Count > 0 ? state.Modules.Count.ToString() : string.Empty;
+    }
+
+    private ModuleRow CreateModuleRow(NetEntity moduleNet)
     {
         var icon = new TextureRect
         {
@@ -327,12 +371,8 @@ public sealed partial class ModSuitMenu : FancyWindow
             VerticalAlignment = VAlignment.Center,
         };
 
-        if (_ent.TryGetEntity(module.Entity, out var uid) && uid is { } moduleUid)
-            icon.Texture = GetItemIcon(moduleUid);
-
         var nameLabel = new Label
         {
-            Text = module.Name,
             VerticalAlignment = VAlignment.Center,
             HorizontalExpand = true,
             ClipText = true,
@@ -340,46 +380,100 @@ public sealed partial class ModSuitMenu : FancyWindow
 
         var powerLabel = new Label
         {
-            Text = module.Active
-                ? Loc.GetString("modsuit-ui-watt-value", ("watt", module.Expenditure.ToString("F1")))
-                : Loc.GetString("modsuit-ui-module-off"),
-            StyleClasses = { module.Active ? "LabelSubText" : "LabelDisabled" },
             VerticalAlignment = VAlignment.Center,
-            HorizontalAlignment = HAlignment.Right
+            HorizontalAlignment = HAlignment.Right,
         };
 
-        var row = new BoxContainer
+        var toggle = new CheckBox
+        {
+            Text = string.Empty,
+            VerticalAlignment = VAlignment.Center,
+        };
+
+        var rowBox = new BoxContainer
         {
             Orientation = BoxContainer.LayoutOrientation.Horizontal,
             SeparationOverride = 6,
         };
-        row.AddChild(icon);
-        row.AddChild(nameLabel);
-        row.AddChild(powerLabel);
+        rowBox.AddChild(icon);
+        rowBox.AddChild(nameLabel);
+        rowBox.AddChild(powerLabel);
+        rowBox.AddChild(toggle);
 
-        var style = MakeBox(
-            module.Active ? ModuleActiveBg : ModuleOffBg,
-            module.Active ? ModuleActiveBorder : ModuleOffBorder,
-            4);
-
+        var style = MakeBox(ModuleOffBg, ModuleOffBorder, 4);
         var panel = new PanelContainer { PanelOverride = style };
-        panel.AddChild(row);
-        return panel;
+        panel.AddChild(rowBox);
+
+        toggle.OnToggled += _ =>
+        {
+            if (!_updating)
+                OnModulePressed?.Invoke(moduleNet);
+        };
+
+        return new ModuleRow(panel, style, icon, nameLabel, powerLabel, toggle);
+    }
+
+    private void UpdateModuleRow(ModuleRow row, ModSuitModuleUiState module, bool locked)
+    {
+        if (row.Icon.Texture == null
+            && _ent.TryGetEntity(module.Entity, out var uid)
+            && uid is { } moduleUid)
+        {
+            row.Icon.Texture = GetItemIcon(moduleUid);
+        }
+
+        row.Name.Text = module.Name;
+
+        row.Power.Text = module.Active
+            ? Loc.GetString("modsuit-ui-watt-value", ("watt", module.Expenditure.ToString("F1")))
+            : Loc.GetString("modsuit-ui-module-off");
+        row.Power.StyleClasses.Clear();
+        row.Power.StyleClasses.Add(module.Active ? "LabelSubText" : "LabelDisabled");
+        row.Toggle.Pressed = module.Enabled;
+        row.Toggle.Disabled = !module.Toggleable || locked;
+        row.Toggle.ToolTip = Loc.GetString(module.Toggleable
+            ? "modsuit-ui-module-toggle"
+            : "modsuit-ui-module-not-toggleable");
+
+        row.Style.BackgroundColor = module.Active ? ModuleActiveBg : ModuleOffBg;
+        row.Style.BorderColor = module.Active ? ModuleActiveBorder : ModuleOffBorder;
+    }
+
+    #endregion
+
+    #region Helpers
+
+    private static StyleBoxFlat MakeBox(Color bg, Color border, float margin = 0)
+    {
+        var box = new StyleBoxFlat
+        {
+            BackgroundColor = bg,
+            BorderColor = border,
+            BorderThickness = new Thickness(1),
+        };
+
+        if (margin > 0)
+        {
+            box.ContentMarginLeftOverride = margin;
+            box.ContentMarginRightOverride = margin;
+            box.ContentMarginTopOverride = margin;
+            box.ContentMarginBottomOverride = margin;
+        }
+
+        return box;
     }
 
     private Texture? GetItemIcon(EntityUid uid)
     {
-        var sprites = _ent.System<SpriteSystem>();
-
         if (_ent.TryGetComponent<IconComponent>(uid, out var icon))
-            return sprites.GetIcon(icon);
+            return _sprites.GetIcon(icon);
 
         if (_ent.TryGetComponent<SpriteComponent>(uid, out var sprite))
             return sprite.Icon?.Default;
 
         if (_ent.TryGetComponent<MetaDataComponent>(uid, out var meta)
             && meta.EntityPrototype is { } proto)
-            return sprites.Frame0(proto);
+            return _sprites.Frame0(proto);
 
         return null;
     }
@@ -389,4 +483,14 @@ public sealed partial class ModSuitMenu : FancyWindow
         TextureButton Button,
         TextureRect Icon,
         StyleBoxFlat Style);
+
+    private sealed record ModuleRow(
+        PanelContainer Root,
+        StyleBoxFlat Style,
+        TextureRect Icon,
+        Label Name,
+        Label Power,
+        CheckBox Toggle);
+
+    #endregion
 }

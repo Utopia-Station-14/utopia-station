@@ -6,8 +6,6 @@
                       MinSize="800 480"
                       SetSize="860 500">
     <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True">
-
-        <!-- ЛЕВАЯ КОЛОНКА: модули -->
         <BoxContainer Margin="12 10 10 12" SetWidth="230" MaxWidth="230" Orientation="Vertical" VerticalExpand="True">
             <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
                 <Label Text="{Loc 'modsuit-ui-modules-header'}" StyleClasses="LabelKeyText" HorizontalExpand="True" />
@@ -36,7 +34,6 @@
 
         <customControls:VSeparator StyleClasses="LowDivider" Margin="0 6 0 6" />
 
-        <!-- ЦЕНТР: схема костюма -->
         <BoxContainer Margin="14 10 14 12" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
             <BoxContainer Orientation="Horizontal"
                           HorizontalExpand="True"
@@ -46,7 +43,6 @@
                           Margin="0 4 0 0"
                           SeparationOverride="28">
 
-                <!-- Человек + имя и должность -->
                 <BoxContainer Orientation="Vertical" VerticalAlignment="Top" SeparationOverride="8">
                     <PanelContainer Name="SchematicPanel" MinSize="170 230">
                         <PanelContainer.PanelOverride>
@@ -73,8 +69,6 @@
                         </BoxContainer>
                     </PanelContainer>
 
-                    <!-- Имя и должность из ID-карты. Контейнеры НЕ центрируем: Label с ClipText
-                         схлопывается до нуля, если ему не отдана ширина родителя -->
                     <controls:StripeBack>
                         <PanelContainer>
                             <BoxContainer Orientation="Vertical" Margin="8 5 8 3">
@@ -89,7 +83,6 @@
                     </controls:StripeBack>
                 </BoxContainer>
 
-                <!-- Слоты частей, выровнены по центру панели с человеком -->
                 <BoxContainer MinSize="0 230" VerticalAlignment="Top">
                     <BoxContainer Name="PartSlots"
                                   Orientation="Vertical"
@@ -114,8 +107,6 @@
             </PanelContainer>
 
             <Button Name="ToggleAllButton" HorizontalExpand="True" MinHeight="40" />
-
-            <!-- Выключатель сервоприводов -->
             <controls:StripeBack HorizontalExpand="True" Margin="0 5 0 0">
                 <PanelContainer>
                     <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="10 6 10 4">
@@ -131,8 +122,6 @@
         </BoxContainer>
 
         <customControls:VSeparator StyleClasses="LowDivider" Margin="0 6 0 6" />
-
-        <!-- ПРАВАЯ КОЛОНКА: статистика -->
         <BoxContainer Margin="10 10 12 12" SetWidth="270" MaxWidth="270" Orientation="Vertical" VerticalExpand="True">
             <controls:StripeBack Margin="0 0 0 8">
                 <PanelContainer>
@@ -147,7 +136,6 @@
             <ScrollContainer HScrollEnabled="False" HorizontalExpand="True" VerticalExpand="True">
                 <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="8">
 
-                    <!-- Статус (цвет рамки меняется из кода) -->
                     <PanelContainer Name="StatusPanel" HorizontalExpand="True">
                         <PanelContainer.PanelOverride>
                             <gfx:StyleBoxFlat BackgroundColor="#FFFFFF0D"
@@ -164,7 +152,6 @@
                         </BoxContainer>
                     </PanelContainer>
 
-                    <!-- Заряд -->
                     <PanelContainer HorizontalExpand="True">
                         <PanelContainer.PanelOverride>
                             <gfx:StyleBoxFlat BackgroundColor="#FFFFFF08"
@@ -184,7 +171,6 @@
                         </BoxContainer>
                     </PanelContainer>
 
-                    <!-- Части (цвет фона меняется из кода: от фона списка модулей до синего) -->
                     <PanelContainer Name="PartsPanel" HorizontalExpand="True">
                         <PanelContainer.PanelOverride>
                             <gfx:StyleBoxFlat BackgroundColor="#0E0E1299"
@@ -201,7 +187,6 @@
                         </BoxContainer>
                     </PanelContainer>
 
-                    <!-- Энергопотребление: заголовок на полосе, ниже фон как у списка модулей -->
                     <controls:StripeBack>
                         <PanelContainer>
                             <Label Text="{Loc 'modsuit-ui-power-header'}"

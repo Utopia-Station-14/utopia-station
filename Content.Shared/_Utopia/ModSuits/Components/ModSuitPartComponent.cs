@@ -1,15 +1,15 @@
-using Content.Shared._Utopia.ModSuits;
 using Robust.Shared.Containers;
+using Robust.Shared.GameStates;
 
-namespace Content.Server._Utopia.ModSuits.Systems;
+namespace Content.Shared._Utopia.ModSuits;
 
-[RegisterComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class ModSuitPartComponent : Component
 {
-    [ViewVariables]
+    [ViewVariables, AutoNetworkedField]
     public EntityUid Suit;
 
-    [ViewVariables]
+    [ViewVariables, AutoNetworkedField]
     public ModSuitPart Part;
 
     [ViewVariables]

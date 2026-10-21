@@ -1,24 +1,6 @@
-using Content.Shared.Actions;
-using Robust.Shared.Network;
-using Content.Shared.DoAfter;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared._Utopia.ModSuits;
-
-[Serializable, NetSerializable]
-public enum ModSuitPart : byte
-{
-    Helmet,
-    Body,
-    Gloves,
-    Boots
-}
-
-[Serializable, NetSerializable]
-public enum ModSuitUiKey : byte
-{
-    Key
-}
 
 [Serializable, NetSerializable]
 public sealed class ModSuitPartUiState(NetEntity? entity, bool deployed)
@@ -28,12 +10,20 @@ public sealed class ModSuitPartUiState(NetEntity? entity, bool deployed)
 }
 
 [Serializable, NetSerializable]
-public sealed class ModSuitModuleUiState(NetEntity entity, string name, float expenditure, bool active)
+public sealed class ModSuitModuleUiState(
+    NetEntity entity,
+    string name,
+    float expenditure,
+    bool active,
+    bool enabled = true,
+    bool toggleable = false)
 {
     public readonly NetEntity Entity = entity;
     public readonly string Name = name;
     public readonly float Expenditure = expenditure;
     public readonly bool Active = active;
+    public readonly bool Enabled = enabled;
+    public readonly bool Toggleable = toggleable;
 }
 
 [Serializable, NetSerializable]
@@ -71,48 +61,6 @@ public sealed class ModSuitBoundUiState(
     public readonly List<ModSuitModuleUiState> Modules = modules;
 }
 
-[Serializable, NetSerializable]
-public sealed partial class ModSuitDeployDoAfterEvent : DoAfterEvent
-{
-    [DataField]
-    public ModSuitPart Part;
-
-    [DataField]
-    public bool Chain;
-
-    private ModSuitDeployDoAfterEvent()
-    {
-    }
-
-    public ModSuitDeployDoAfterEvent(ModSuitPart part, bool chain)
-    {
-        Part = part;
-        Chain = chain;
-    }
-
-    public override DoAfterEvent Clone() => this;
-}
-
-/// <summary>
-/// Ручное снятие части костюма (когда он разряжен и заблокирован).
-/// </summary>
-[Serializable, NetSerializable]
-public sealed partial class ModSuitManualRemoveDoAfterEvent : DoAfterEvent
-{
-    [DataField]
-    public ModSuitPart Part;
-
-    private ModSuitManualRemoveDoAfterEvent()
-    {
-    }
-
-    public ModSuitManualRemoveDoAfterEvent(ModSuitPart part)
-    {
-        Part = part;
-    }
-
-    public override DoAfterEvent Clone() => this;
-}
 
 [Serializable, NetSerializable]
 public sealed class ModSuitTogglePartMessage(ModSuitPart part) : BoundUserInterfaceMessage
@@ -120,26 +68,14 @@ public sealed class ModSuitTogglePartMessage(ModSuitPart part) : BoundUserInterf
     public readonly ModSuitPart Part = part;
 }
 
-
 [Serializable, NetSerializable]
-public sealed partial class ModSuitPanelDoAfterEvent : SimpleDoAfterEvent;
+public sealed class ModSuitToggleModuleMessage(NetEntity module) : BoundUserInterfaceMessage
+{
+    public readonly NetEntity Module = module;
+}
 
 [Serializable, NetSerializable]
 public sealed class ModSuitToggleAllMessage : BoundUserInterfaceMessage;
 
 [Serializable, NetSerializable]
 public sealed class ModSuitToggleSpeedMessage : BoundUserInterfaceMessage;
-
-public sealed partial class ToggleModSuitUiEvent : InstantActionEvent;
-
-
-[Serializable, NetSerializable]
-public enum ModSuitStatus
-{
-    Inactive,
-    Active,
-    Charging,
-    NeedCharging,
-    Dead,
-    SPRINGTRAPPED,
-}

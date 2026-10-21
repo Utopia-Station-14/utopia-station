@@ -20,9 +20,11 @@ public sealed class ModSuitBoundUserInterface : BoundUserInterface
 
         _menu = this.CreateWindowCenteredLeft<ModSuitMenu>();
         _menu.SetOwner(Owner);
+
         _menu.OnPartPressed += part => SendMessage(new ModSuitTogglePartMessage(part));
         _menu.OnToggleAllPressed += () => SendMessage(new ModSuitToggleAllMessage());
         _menu.OnToggleSpeedPressed += () => SendMessage(new ModSuitToggleSpeedMessage());
+        _menu.OnModulePressed += module => SendMessage(new ModSuitToggleModuleMessage(module));
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)
