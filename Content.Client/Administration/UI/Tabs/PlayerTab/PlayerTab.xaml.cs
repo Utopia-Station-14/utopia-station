@@ -248,10 +248,28 @@ public sealed partial class PlayerTab : Control
             Header.RoleType => y.SortWeight != x.SortWeight
                 ? y.SortWeight - x.SortWeight
                 : string.Compare(x.RoleProto?.Id ?? "", y.RoleProto?.Id ?? "", StringComparison.Ordinal),
+            Header.Sponsor => Compare(x.Sponsor?.Tier, y.Sponsor?.Tier), // Utopia-Tweak : Sponsors
             Header.Playtime => TimeSpan.Compare(x.OverallPlaytime ?? default, y.OverallPlaytime ?? default),
             _ => 1
         };
     }
+
+    // Utopia-Tweak : Sponsors
+    private int Compare(int? x, int? y)
+    {
+        if (!x.HasValue)
+            return -1;
+        if (!y.HasValue)
+            return 1;
+
+        if (x == y)
+            return 0;
+        else if (x > y)
+            return 1;
+        else
+            return -1;
+    }
+    // Utopia-Tweak : Sponsors
 
     private int Compare(string x, string y)
     {

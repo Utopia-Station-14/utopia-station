@@ -129,6 +129,14 @@ public sealed partial class SpeciesPrototype : IPrototype
     [DataField]
     public int MaxLanguages = 3;
     // Utopia-Tweak : Language
+
+    // Utopia-Tweak : Sponsors
+    /// <summary>
+    /// Whether the species is available only for sponsors
+    /// </summary>
+    [DataField]
+    public bool SponsorOnly { get; private set; } = false;
+    // Utopia-Tweak : Sponsors
 }
 
 public enum SpeciesNaming : byte

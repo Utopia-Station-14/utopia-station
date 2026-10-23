@@ -98,6 +98,7 @@ public sealed partial class PlayerTabEntry : PanelContainer
 
         if (colorRoles)
             RoleTypeLabel.FontColorOverride = rolePrototype?.Color ?? RoleTypePrototype.FallbackColor;
+        SponsorLabel.Text = Loc.GetString(player.Sponsor != null ? "player-tab-is-sponsor-yes" : "player-tab-is-sponsor-no"); // Utopia-Tweak : Sponsors
         BackgroundColorPanel.PanelOverride = styleBoxFlat;
         OverallPlaytimeLabel.Text = player.PlaytimeString;
     }

@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Content.Client._Utopia.Sponsors;
 using Content.Shared.CCVar;
 using Content.Shared.Players;
 using Content.Shared.Players.JobWhitelist;
@@ -23,6 +24,7 @@ public sealed partial class JobRequirementsManager : ISharedPlaytimeManager
     [Dependency] private IEntityManager _entManager = default!;
     [Dependency] private IPlayerManager _playerManager = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private SponsorsManager _sponsorsManager = default!; // Utopia-Tweak : Sponsors
 
     private readonly Dictionary<string, TimeSpan> _roles = new();
     private readonly List<ProtoId<JobPrototype>> _jobBans = new();
@@ -142,6 +144,18 @@ public sealed partial class JobRequirementsManager : ISharedPlaytimeManager
             reason = FormattedMessage.FromUnformatted(Loc.GetString("role-ban"));
             return false;
         }
+
+        // Utopia-Tweak : Sponsors
+        var info = _sponsorsManager.TryGetInfo(out var sponsorInfo);
+        if (info && sponsorInfo != null)
+        {
+            if (sponsorInfo.AllowJob)
+            {
+                reason = null;
+                return true;
+            }
+        }
+        // Utopia-Tweak : Sponsors
 
         // Check whitelist requirements
         if (!CheckWhitelist(job, out reason))

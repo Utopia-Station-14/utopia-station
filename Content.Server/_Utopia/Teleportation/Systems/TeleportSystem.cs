@@ -1,6 +1,6 @@
 using Content.Server.Administration.Logs;
 using Content.Server.Stack;
-using Content.Shared_Utopia.Effects;
+using Content.Shared._Utopia.Effects;
 using Content.Shared.Database;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Throwing;

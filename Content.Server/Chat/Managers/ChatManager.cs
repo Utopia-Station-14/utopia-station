@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server.Administration.Systems;
+using Content.Server._Utopia.Sponsors;
 using Content.Server.Discord.DiscordLink;
 using Content.Server.Ghost;
 using Content.Server.Players.RateLimiting;
@@ -49,6 +50,7 @@ internal sealed partial class ChatManager : IChatManager
     [Dependency] private DiscordChatLink _discordLink = default!;
     [Dependency] private ILogManager _logManager = default!;
     [Dependency] private ILocalizationManager _localizationManager = default!;
+    [Dependency] private SponsorsManager _sponsorsManager = default!; // Corvax-Sponsors
 
     private ISawmill? _sawmill = default!;
 
@@ -123,7 +125,7 @@ internal sealed partial class ChatManager : IChatManager
         // _sawmill might have not been initialized when DispatchServerAnnouncement is called
         // during server setup when some cvars are changed
         _sawmill?.Info(message);
-        
+
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Server announcement: {message}");
     }
 
@@ -296,9 +298,9 @@ internal sealed partial class ChatManager : IChatManager
             var prefs = _preferencesManager.GetPreferences(player.UserId);
             colorOverride = prefs.AdminOOCColor;
         }
-        if (  _netConfigManager.GetClientCVar(player.Channel, CCVars.ShowOocPatronColor) && player.Channel.UserData.PatronTier is { } patron && PatronOocColors.TryGetValue(patron, out var patronColor))
+        if (_netConfigManager.GetClientCVar(player.Channel, CCVars.ShowOocPatronColor) && _sponsorsManager.TryGetInfo(player.UserId, out var sponsorData) && sponsorData.OOCColor != null) // Utopia-Tweak : Sponsors
         {
-            wrappedMessage = Loc.GetString("chat-manager-send-ooc-patron-wrap-message", ("patronColor", patronColor),("playerName", player.Name), ("message", FormattedMessage.EscapeText(message)));
+            wrappedMessage = Loc.GetString("chat-manager-send-ooc-patron-wrap-message", ("patronColor", sponsorData.OOCColor), ("playerName", player.Name), ("message", FormattedMessage.EscapeText(message))); // Utopia-Tweak : Sponsors
         }
 
         //TODO: player.Name color, this will need to change the structure of the MsgChatMessage
@@ -315,10 +317,19 @@ internal sealed partial class ChatManager : IChatManager
             return;
         }
 
+        // Utopia-Tweak : Chat
+        var senderName = player.Name;
+        var senderAdmin = _adminManager.GetAdminData(player);
+        if (senderAdmin != null && !string.IsNullOrEmpty(senderAdmin.Title))
+        {
+            senderName += $"\\[{senderAdmin.Title}\\]";
+        }
+        // Utopia-Tweak : Chat
+
         var clients = _adminManager.ActiveAdmins.Select(p => p.Channel);
         var wrappedMessage = Loc.GetString("chat-manager-send-admin-chat-wrap-message",
                                         ("adminChannelName", Loc.GetString("chat-manager-admin-channel-name")),
-                                        ("playerName", player.Name), ("message", FormattedMessage.EscapeText(message)));
+                                        ("playerName", senderName), ("message", FormattedMessage.EscapeText(message))); // Utopia-Tweak : Chat
 
         foreach (var client in clients)
         {

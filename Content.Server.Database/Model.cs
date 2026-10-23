@@ -51,6 +51,7 @@ namespace Content.Server.Database
         public DbSet<IPIntelCache> IPIntelCache { get; set; } = null!;
         public DbSet<CustomVoteLog> CustomVoteLog { get; set; } = null!;
         public DbSet<CustomVoteLogOption> CustomVoteLogOption { get; set; } = null!;
+        public DbSet<Sponsor> Sponsors { get; set; } = null!; // Utopia-Tweak : Sponsors
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -303,6 +304,12 @@ namespace Content.Server.Database
                 .IsUnique();
             // Utopia-Tweak : Language
 
+            // Utopia-Tweak : Sponsors
+            modelBuilder.Entity<Sponsor>()
+                .HasIndex(p => p.UserId)
+                .IsUnique();
+            // Utopia-Tweak : Sponsors
+
             ModelBan.OnModelCreating(modelBuilder);
             ModelCustomVoteLog.OnModelCreating(modelBuilder);
         }
@@ -494,6 +501,20 @@ namespace Content.Server.Database
         public string LanguageName { get; set; } = null!;
     }
     #endregion
+
+    // Utopia-Tweak : Sponsors
+    public class Sponsor
+    {
+        [Required, Key] public Guid UserId { get; set; }
+        public int Tier { get; set; }
+        public string OOCColor { get; set; } = "#00FF00";
+        public bool HavePriorityJoin { get; set; }
+        public string AllowedMarkings { get; set; } = null!;
+        public int ExtraSlots { get; set; }
+        public DateTime ExpireDate { get; set; }
+        public bool AllowJob { get; set; } = false;
+    }
+    // Utopia-Tweak : Sponsors
 
     public enum DbPreferenceUnavailableMode
     {

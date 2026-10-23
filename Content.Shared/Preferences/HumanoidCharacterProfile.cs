@@ -8,6 +8,7 @@ using Content.Shared.Chat.Prototypes;
 using Content.Shared.EntityEffects.Effects;
 using Content.Shared.GameTicking;
 using Content.Shared.Humanoid;
+using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Preferences.Loadouts;
 using Content.Shared.Roles;
@@ -686,7 +687,7 @@ namespace Content.Shared.Preferences
             return Appearance.Equals(other.Appearance);
         }
 
-        public void EnsureValid(ICommonSession session, IDependencyCollection collection)
+        public void EnsureValid(ICommonSession session, IDependencyCollection collection, string[] sponsorPrototypes) // Utopia-Tweak : Sponsors
         {
             var configManager = collection.Resolve<IConfigurationManager>();
             var prototypeManager = collection.Resolve<IPrototypeManager>();
@@ -696,6 +697,14 @@ namespace Content.Shared.Preferences
                 Species = HumanoidCharacterProfile.DefaultSpecies;
                 speciesPrototype = prototypeManager.Index(Species);
             }
+
+            // Utopia-Tweak : Sponsors
+            if (speciesPrototype.SponsorOnly && !sponsorPrototypes.Contains(Species.Id))
+            {
+                Species = DefaultSpecies;
+                speciesPrototype = prototypeManager.Index(Species);
+            }
+            // Utopia-Tweak : Sponsors
 
             var sex = Sex switch
             {
@@ -768,7 +777,7 @@ namespace Content.Shared.Preferences
                 flavortext = FormattedMessage.RemoveMarkupOrThrow(FlavorText);
             }
 
-            var appearance = HumanoidCharacterAppearance.EnsureValid(Appearance, Species, Sex);
+            var appearance = HumanoidCharacterAppearance.EnsureValid(Appearance, Species, Sex, sponsorPrototypes); // Utopia-Tweak : Sponsors
 
             var prefsUnavailableMode = PreferenceUnavailable switch
             {
@@ -922,10 +931,10 @@ namespace Content.Shared.Preferences
             return result;
         }
 
-        public HumanoidCharacterProfile Validated(ICommonSession session, IDependencyCollection collection)
+        public HumanoidCharacterProfile Validated(ICommonSession session, IDependencyCollection collection, string[] sponsorPrototypes) // Utopia-Tweak : Sponsors
         {
             var profile = new HumanoidCharacterProfile(this);
-            profile.EnsureValid(session, collection);
+            profile.EnsureValid(session, collection, sponsorPrototypes); // Utopia-Tweak : Sponsors
             return profile;
         }
 
@@ -1094,7 +1103,7 @@ namespace Content.Shared.Preferences
             }
 
             var collection = IoCManager.Instance;
-            profile.EnsureValid(session, collection!);
+            profile.EnsureValid(session, collection!, Array.Empty<string>()); // Utopia-Tweak : Sponsors
             return profile;
         }
     }

@@ -289,6 +289,16 @@ namespace Content.Server.Database
 
         #endregion
 
+        // Utopia-Tweak : Sponsors
+        #region Sponsors
+        Task<Sponsor?> GetSponsorInfo(NetUserId userId, CancellationToken cancel = default);
+        Task<Sponsor[]?> GetSponsorList(CancellationToken cancel = default);
+        Task<bool> AddSponsor(Sponsor sponsor, CancellationToken cancel = default);
+        Task<bool> RemoveSponsor(NetUserId userId, CancellationToken cancel = default);
+        Task<bool> SetSponsorExpireDate(NetUserId userId, DateTime expireDate, CancellationToken cancel = default);
+        #endregion
+        // Utopia-Tweak : Sponsors
+
         #region Job Whitelists
 
         Task AddJobWhitelist(Guid player, ProtoId<JobPrototype> job);
@@ -1131,6 +1141,38 @@ namespace Content.Server.Database
 
             return enumerable;
         }
+
+        // Utopia-Tweak : Sponsors
+        public async Task<Sponsor?> GetSponsorInfo(NetUserId userId, CancellationToken cancel = default)
+        {
+            DbWriteOpsMetric.Inc();
+            return await _db.GetSponsorInfo(userId);
+        }
+
+        public async Task<Sponsor[]?> GetSponsorList(CancellationToken cancel = default)
+        {
+            DbWriteOpsMetric.Inc();
+            return await _db.GetSponsorList();
+        }
+
+        public async Task<bool> AddSponsor(Sponsor sponsor, CancellationToken cancel = default)
+        {
+            DbWriteOpsMetric.Inc();
+            return await _db.AddSponsor(sponsor);
+        }
+
+        public async Task<bool> RemoveSponsor(NetUserId userId, CancellationToken cancel = default)
+        {
+            DbWriteOpsMetric.Inc();
+            return await _db.RemoveSponsor(userId);
+        }
+
+        public async Task<bool> SetSponsorExpireDate(NetUserId userId, DateTime expireDate, CancellationToken cancel = default)
+        {
+            DbWriteOpsMetric.Inc();
+            return await _db.SetSponsorExpireDate(userId, expireDate);
+        }
+        // Utopia-Tweak : Sponsors
 
         private (DbContextOptions<PostgresServerDbContext> options, string connectionString) CreatePostgresOptions()
         {

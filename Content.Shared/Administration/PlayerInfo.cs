@@ -1,3 +1,4 @@
+using Content.Shared._Utopia.Sponsors;
 using Content.Shared.Mind;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
@@ -19,7 +20,8 @@ public sealed record PlayerInfo(
     NetUserId SessionId,
     bool Connected,
     bool ActiveThisRound,
-    TimeSpan? OverallPlaytime)
+    TimeSpan? OverallPlaytime,
+    SponsorInfo? Sponsor) // Utopia-Tweak : Sponsors
 {
     private string? _playtimeString;
 

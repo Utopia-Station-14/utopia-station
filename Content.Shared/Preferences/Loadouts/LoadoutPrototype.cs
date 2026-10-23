@@ -49,4 +49,9 @@ public sealed partial class LoadoutPrototype : IPrototype, IEquipmentLoadout
     /// <inheritdoc />
     [DataField]
     public Dictionary<string, List<EntProtoId>> Storage { get; set; } = new();
+
+    // Utopia-Tweak : Sponsors
+    [DataField]
+    public bool SponsorOnly = false;
+    // Utopia-Tweak : Sponsors
 }
