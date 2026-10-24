@@ -1,0 +1,35 @@
+- type: technology
+  id: ModSuitsBase
+  name: research-technology-advanced-powercells
+  icon:
+    sprite: _Utopia/Clothing/ModSuits/Base/back.rsi
+    state: icon
+  discipline: Industrial
+  tier: 1
+  cost: 2500
+  recipeUnlocks:
+  - ModExoskeletonRecipe
+  - ModCoreRecipe
+  - ModFrameRecipe
+  - ModServoMotorRecipe
+  position: -1,-1
+  technologyPrerequisites:
+  - AdvancedPowercells
+
+- type: technology
+  id: ModSuitsBaseParts
+  name: research-technology-advanced-powercells
+  icon:
+    sprite: _Utopia/Clothing/ModSuits/Base/head.rsi
+    state: icon
+  discipline: Industrial
+  tier: 1
+  cost: 1250
+  recipeUnlocks:
+  - BaseModHelmetRecipe
+  - BaseModBodyRecipe
+  - BaseModGlovesRecipe
+  - BaseModBootsRecipe
+  position: -1,-2
+  technologyPrerequisites:
+  - ModSuitsBase

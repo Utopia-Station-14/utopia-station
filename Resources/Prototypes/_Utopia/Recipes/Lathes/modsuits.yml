@@ -1,0 +1,82 @@
+## BASE-start
+- type: latheRecipe
+  id: ModExoskeletonRecipe
+  result: ModExoskeleton
+  completetime: 8
+  applyMaterialDiscount: false
+  materials:
+    Steel: 5
+    Plastic: 10
+
+- type: latheRecipe
+  id: ModCoreRecipe
+  result: ModCore
+  completetime: 5
+  applyMaterialDiscount: false
+  materials:
+    Steel: 2
+    Uranium: 3
+    Plasma: 1
+    Copper: 2
+
+- type: latheRecipe
+  id: ModFrameRecipe
+  result: ModFrame
+  completetime: 10
+  applyMaterialDiscount: false
+  materials:
+    Steel: 10
+
+- type: latheRecipe
+  id: ModServoMotorRecipe
+  result: ModServoMotor
+  completetime: 10
+  applyMaterialDiscount: false
+  materials:
+    Steel: 3
+    Plastic: 2
+    Copper: 5
+## BASE-end
+
+## BASE-PARTS-start
+- type: latheRecipe
+  id: BaseModHelmetRecipe
+  result: BaseModHelmet
+  completetime: 5
+  applyMaterialDiscount: false
+  materials:
+    Steel: 5
+    Plastic: 2
+    Durathread: 2
+    Glass: 5
+
+- type: latheRecipe
+  id: BaseModBodyRecipe
+  result: BaseModBody
+  completetime: 5
+  applyMaterialDiscount: false
+  materials:
+    Steel: 10
+    Plastic: 5
+    Durathread: 4
+
+- type: latheRecipe
+  id: BaseModGlovesRecipe
+  result: BaseModGloves
+  completetime: 5
+  applyMaterialDiscount: false
+  materials:
+    Steel: 2
+    Plastic: 1
+    Durathread: 4
+
+- type: latheRecipe
+  id: BaseModBootsRecipe
+  result: BaseModBoots
+  completetime: 5
+  applyMaterialDiscount: false
+  materials:
+    Steel: 2
+    Plastic: 1
+    Durathread: 4
+## BASE-PARTS-end

@@ -22,3 +22,38 @@
       whitelist:
         tags:
           - UtopiaSteelSheet
+
+- type: entity
+  id: ModSuitsFabricator
+  parent: BaseLatheLube
+  name: exosuit fabricator
+  description: Creates parts for robotics and other mechanical needs.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/exosuit_fabricator.rsi
+    layers:
+    - state: fab-idle
+      map: ["enum.LatheVisualLayers.IsRunning"]
+    - state: fab-load
+      map: ["enum.MaterialStorageVisualLayers.Inserting"]
+    - state: fab-o
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: Machine
+    board: ExosuitFabricatorMachineCircuitboard
+  - type: Lathe
+    idleState: fab-idle
+    runningState: fab-active
+    dynamicPacks:
+    - ModSuitsBasePack
+    - ModSuitsBasePartsPack
+  - type: MaterialStorage
+    whitelist:
+      tags:
+        - Sheet
+        - RawMaterial
+        - Ingot
+  - type: OreSiloClient
+  - type: GuideHelp
+    guides:
+    - Robotics
+

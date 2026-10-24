@@ -5,13 +5,13 @@
   description: A modular exosuit control backpack. Deploy armor parts and manage modules from the built-in interface.
   components:
   - type: Sprite
-    sprite: Clothing/Back/Backpacks/backpack.rsi
+    sprite: _Utopia/Clothing/ModSuits/Base/back.rsi
     state: icon
   - type: ModSuit
-    helmetPrototype: ClothingHeadHelmetHardsuitEngineering
-    bodyPrototype: ClothingOuterHardsuitEngineering
-    glovesPrototype: ClothingHandsGlovesColorYellow
-    bootsPrototype: ClothingShoesBootsMag
+    helmetPrototype: BaseModSuitHelmet
+    bodyPrototype: BaseModSuitBody
+    glovesPrototype: BaseModSuitGloves
+    bootsPrototype: BaseModSuitBoots
   - type: PowerCellDraw
     drawRate: 0.5
     useRate: 0
@@ -25,6 +25,9 @@
     interfaces:
       enum.ModSuitUiKey.Key:
         type: ModSuitBoundUserInterface
+  - type: Construction
+    graph: ModSuit
+    node: modsuit
 
 - type: entity
   id: UtopiaActionToggleModSuit

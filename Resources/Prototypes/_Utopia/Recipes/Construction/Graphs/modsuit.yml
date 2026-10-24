@@ -1,0 +1,128 @@
+- type: constructionGraph
+  id: ModSuit
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: frame
+      steps:
+      - tag: ModFrame
+        name: MOD frame
+        icon:
+          sprite: _Utopia/Objects/Specific/ModSuits/parts.rsi
+          state: frame
+        doAfter: 2
+  - node: frame
+    entity: ModExoskeleton
+    edges:
+    - to: lvWired
+      steps:
+      - material: Cable
+        amount: 2
+        doAfter: 1
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: ModFrame
+      steps:
+      - tool: Prying
+        doAfter: 2
+  - node: lvWired
+    edges:
+    - to: lvSecured
+      steps:
+      - tool: Screwing
+        doAfter: 1
+    - to: frame
+      completed:
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 2
+      steps:
+      - tool: Cutting
+        doAfter: 1
+  - node: lvSecured
+    edges:
+    - to: servos
+      steps:
+      - tag: ModServoMotor
+        name: MOD servo motor
+        icon:
+          sprite: _Utopia/Objects/Specific/ModSuits/parts.rsi
+          state: servo
+        doAfter: 2
+    - to: lvWired
+      steps:
+      - tool: Screwing
+        doAfter: 1
+  - node: servos
+    edges:
+    - to: mvWired
+      steps:
+      - material: CableMV
+        amount: 2
+        doAfter: 1
+    - to: lvSecured
+      completed:
+      - !type:SpawnPrototype
+        prototype: ModServoMotor
+      steps:
+      - tool: Prying
+        doAfter: 2
+  - node: mvWired
+    edges:
+    - to: mvSecured
+      steps:
+      - tool: Screwing
+        doAfter: 1
+    - to: servos
+      completed:
+      - !type:SpawnPrototype
+        prototype: CableMVStack1
+        amount: 2
+      steps:
+      - tool: Cutting
+        doAfter: 1
+  - node: mvSecured
+    edges:
+    - to: core
+      steps:
+      - tag: ModCore
+        name: MOD core
+        icon:
+          sprite: _Utopia/Objects/Specific/ModSuits/parts.rsi
+          state: core
+        doAfter: 2
+    - to: mvWired
+      steps:
+      - tool: Screwing
+        doAfter: 1
+  - node: core
+    edges:
+    - to: hvWired
+      steps:
+      - material: CableHV
+        amount: 1
+        doAfter: 1
+    - to: mvSecured
+      completed:
+      - !type:SpawnPrototype
+        prototype: ModCore
+      steps:
+      - tool: Prying
+        doAfter: 2
+  - node: hvWired
+    edges:
+    - to: modsuit
+      steps:
+      - tool: Screwing
+        doAfter: 2
+    - to: core
+      completed:
+      - !type:SpawnPrototype
+        prototype: CableHVStack1
+      steps:
+      - tool: Cutting
+        doAfter: 1
+  - node: modsuit
+    entity: ClothingBackModSuit # TODO: id твоего готового МОДа

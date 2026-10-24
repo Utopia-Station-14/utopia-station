@@ -1,0 +1,73 @@
+- type: entity
+  parent: BaseItem
+  id: ModFrame
+  name: MOD frame
+  description: The outer plating and structural frame of a MODsuit.
+  components:
+  - type: Sprite
+    sprite: _Utopia/Objects/Specific/ModSuits/parts.rsi
+    state: frame
+  - type: Tag
+    tags:
+    - ModFrame
+
+- type: entity
+  parent: BaseItem
+  id: ModServoMotor
+  name: MOD servo motor
+  description: A set of servo motors that power the joints of a MODsuit.
+  components:
+  - type: Sprite
+    sprite: _Utopia/Objects/Specific/ModSuits/parts.rsi
+    state: servomotor
+  - type: Tag
+    tags:
+    - ModServoMotor
+
+- type: entity
+  parent: BaseItem
+  id: ModCore
+  name: MOD core
+  description: The power core of a MODsuit.
+  components:
+  - type: Sprite
+    sprite: _Utopia/Objects/Specific/ModSuits/parts.rsi
+    state: core
+  - type: Tag
+    tags:
+    - ModCore
+
+- type: entity
+  id: ModExoskeleton
+  name: MOD exoskeleton
+  description: A bare exoskeleton that a MODsuit is built on.
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Dynamic
+    fixedRotation: false
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.25,0.25,0.25"
+        density: 100
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+        restitution: 0.3
+        friction: 0.2
+  - type: Sprite
+    noRot: true
+    drawdepth: Items
+    sprite: _Utopia/Objects/Specific/ModSuits/parts.rsi
+    state: exoskeleton
+  - type: Appearance
+  - type: Construction
+    graph: ModSuit
+    node: start
+    defaultTarget: modsuit
+  - type: Pullable

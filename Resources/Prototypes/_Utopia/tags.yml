@@ -1,4 +1,4 @@
-# TODO: Сделать комменты как у визов.
+# TODO: Сделать комменты как у визов. Нет, соси -M&B
 - type: Tag
   id: UtopiaCopperOre
 
@@ -45,3 +45,13 @@
 
 - type: Tag
   id: UtopiaHeatExchangerConnection
+
+# ModSuits
+- type: Tag
+  id: ModFrame
+
+- type: Tag
+  id: ModServoMotor
+
+- type: Tag
+  id: ModCore

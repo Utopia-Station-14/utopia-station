@@ -1,0 +1,15 @@
+- type: latheRecipePack
+  id: ModSuitsBasePack
+  recipes:
+  - ModExoskeletonRecipe
+  - ModCoreRecipe
+  - ModFrameRecipe
+  - ModServoMotorRecipe
+
+- type: latheRecipePack
+  id: ModSuitsBasePartsPack
+  recipes:
+  - BaseModHelmetRecipe
+  - BaseModBodyRecipe
+  - BaseModGlovesRecipe
+  - BaseModBootsRecipe
