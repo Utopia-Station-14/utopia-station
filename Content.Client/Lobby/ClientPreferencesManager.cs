@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Client._Utopia.Sponsors;
 using Content.Shared.Construction.Prototypes;
 using Content.Shared.Preferences;
 using Robust.Client;
@@ -19,7 +20,7 @@ namespace Content.Client.Lobby
         [Dependency] private IClientNetManager _netManager = default!;
         [Dependency] private IBaseClient _baseClient = default!;
         [Dependency] private IPlayerManager _playerManager = default!;
-
+        [Dependency] private SponsorsManager _sponsorsManager = default!; // Utopia-Tweak : Sponsors
         public event Action? OnServerDataLoaded;
 
         public GameSettings Settings { get; private set; } = default!;
@@ -62,7 +63,11 @@ namespace Content.Client.Lobby
         public void UpdateCharacter(HumanoidCharacterProfile profile, int slot)
         {
             var collection = IoCManager.Instance!;
-            profile.EnsureValid(_playerManager.LocalSession!, collection);
+            // Utopia-Tweak : Sponsors
+            var allowedMarkings = _sponsorsManager.TryGetInfo(out var sponsor) ? sponsor.AllowedMarkings : [];
+            var session = _playerManager.LocalSession!;
+            profile.EnsureValid(session, collection, allowedMarkings);;
+            // Utopia-Tweak : Sponsors
             var characters = new Dictionary<int, HumanoidCharacterProfile>(Preferences.Characters) {[slot] = profile};
             Preferences = new PlayerPreferences(characters, Preferences.SelectedCharacterIndex, Preferences.AdminOOCColor, Preferences.ConstructionFavorites);
             var msg = new MsgUpdateCharacter

@@ -1020,6 +1020,58 @@ INSERT INTO player_round (players_id, rounds_id) VALUES ({players[player]}, {id}
 
         #endregion
 
+        // Utopia-Tweak : Sponsors
+        #region Sponsors
+
+        public async Task<Sponsor?> GetSponsorInfo(NetUserId userId)
+        {
+            await using var db = await GetDb();
+            return await db.DbContext.Sponsors.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId.UserId);
+        }
+
+        public async Task<Sponsor[]?> GetSponsorList()
+        {
+            await using var db = await GetDb();
+            return await db.DbContext.Sponsors.AsNoTracking().ToArrayAsync();
+        }
+
+        public async Task<bool> AddSponsor(Sponsor sponsor)
+        {
+            await using var db = await GetDb();
+            if (await db.DbContext.Sponsors.AnyAsync(x => x.UserId == sponsor.UserId))
+                return false;
+
+            db.DbContext.Sponsors.Add(sponsor);
+            await db.DbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveSponsor(NetUserId userId)
+        {
+            await using var db = await GetDb();
+            var sponsor = await db.DbContext.Sponsors.SingleOrDefaultAsync(x => x.UserId == userId.UserId);
+            if (sponsor == null)
+                return false;
+
+            db.DbContext.Sponsors.Remove(sponsor);
+            await db.DbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> SetSponsorExpireDate(NetUserId userId, DateTime expireDate)
+        {
+            await using var db = await GetDb();
+            var sponsor = await db.DbContext.Sponsors.SingleOrDefaultAsync(x => x.UserId == userId.UserId);
+            if (sponsor == null)
+                return false;
+
+            sponsor.ExpireDate = expireDate;
+            await db.DbContext.SaveChangesAsync();
+            return true;
+        }
+        #endregion
+        // Utopia-Tweak : Sponsors
+
         #region Whitelist
 
         public async Task<bool> GetWhitelistStatusAsync(NetUserId player)

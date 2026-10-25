@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Content.Server.Afk;
+using Content.Server._Utopia.Sponsors;
 using Content.Server.Database;
 using Content.Shared._Utopia.Language;
 using Content.Shared._Utopia.SpeechBarks;
@@ -45,6 +46,7 @@ namespace Content.Server.Preferences.Managers
         [Dependency] private IPrototypeManager _prototypeManager = default!;
         [Dependency] private MarkingManager _marking = default!;
         [Dependency] private ISerializationManager _serialization = default!;
+        [Dependency] private SponsorsManager _sponsors = default!; // Utopia-Tweak : Sponsors
 
         // Cache player prefs on the server so we don't need as much async hell related to them.
         private readonly Dictionary<NetUserId, PlayerPrefData> _cachedPlayerPrefs =
@@ -222,7 +224,7 @@ namespace Content.Server.Preferences.Managers
                 return;
             }
 
-            if (index < 0 || index >= MaxCharacterSlots)
+            if (index < 0 || index >= GetMaxUserCharacterSlots(userId)) // Utopia-Tweak : Sponsors
             {
                 return;
             }
@@ -266,13 +268,16 @@ namespace Content.Server.Preferences.Managers
                 return;
             }
 
-            if (slot < 0 || slot >= MaxCharacterSlots)
+            if (slot < 0 || slot >= GetMaxUserCharacterSlots(userId)) // Utopia-Tweak : Sponsors
                 return;
 
             var curPrefs = prefsData.Prefs!;
             var session = _playerManager.GetSessionById(userId);
 
-            profile.EnsureValid(session, _dependencies);
+            // Utopia-Tweak : Sponsors
+            var allowedMarkings = _sponsors.TryGetInfo(userId, out var sponsor) ? sponsor.AllowedMarkings : [];
+            profile.EnsureValid(session, _dependencies, allowedMarkings);
+            // Utopia-Tweak : Sponsors
 
             var profiles = new Dictionary<int, HumanoidCharacterProfile>(curPrefs.Characters)
             {
@@ -423,6 +428,20 @@ namespace Content.Server.Preferences.Managers
                 {
                     var prefs = await GetOrCreatePreferencesAsync(session.UserId, cancel);
                     prefsData.Prefs = ConvertPreferences(prefs);
+
+                    // Utopia-Tweak : Sponsors
+                    prefsData.PrefsLoaded = true;
+                    var msg = new MsgPreferencesAndSettings
+                    {
+                        Preferences = prefsData.Prefs,
+                        Settings = new GameSettings
+                        {
+                            MaxCharacterSlots = MaxCharacterSlots
+                        }
+                    };
+
+                    _netManager.ServerSendMessage(msg, session.Channel);
+                    // Utopia-Tweak : Sponsors
                 }
             }
         }
@@ -531,7 +550,8 @@ namespace Content.Server.Preferences.Managers
 
             return new PlayerPreferences(prefs.Characters.Select(p =>
             {
-                return new KeyValuePair<int, HumanoidCharacterProfile>(p.Key, p.Value.Validated(session, collection));
+                var allowedMarkings = _sponsors.TryGetInfo(session.UserId, out var sponsor) ? sponsor.AllowedMarkings : []; // Utopia-Tweak : Sponsors
+                return new KeyValuePair<int, HumanoidCharacterProfile>(p.Key, p.Value.Validated(session, collection, allowedMarkings)); // Utopia-Tweak : Sponsors
             }), prefs.SelectedCharacterIndex, prefs.AdminOOCColor, prefs.ConstructionFavorites);
         }
 
@@ -561,5 +581,14 @@ namespace Content.Server.Preferences.Managers
             _userDb.AddOnFinishLoad(FinishLoad);
             _userDb.AddOnPlayerDisconnect(OnClientDisconnected);
         }
+
+        // Utopia-Tweak : Sponsors
+        private int GetMaxUserCharacterSlots(NetUserId userId)
+        {
+            var maxSlots = _cfg.GetCVar(CCVars.GameMaxCharacterSlots);
+            var extraSlots = _sponsors.TryGetInfo(userId, out var sponsor) ? sponsor.ExtraSlots : 0;
+            return maxSlots + extraSlots;
+        }
+        // Utopia-Tweak : Sponsors
     }
 }

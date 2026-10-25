@@ -56,5 +56,10 @@ namespace Content.Shared.Humanoid.Markings
         /// </remarks>
         [DataField]
         public float RandomWeight = 1f;
+
+        // Utopia-Tweak : Sponsors
+        [DataField]
+        public bool SponsorOnly = false;
+        // Utopia-Tweak : Sponsors
     }
 }

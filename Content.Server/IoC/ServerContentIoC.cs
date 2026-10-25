@@ -5,6 +5,9 @@ using Content.Server.Administration.Notes;
 using Content.Server.Afk;
 using Content.Server.Chat.Managers;
 using Content.Server.Connection;
+using Content.Server.Corvax.DiscordAuth;
+using Content.Server.Corvax.JoinQueue;
+using Content.Server._Utopia.Sponsors;
 using Content.Server.Database;
 using Content.Server.Discord;
 using Content.Server.Discord.DiscordLink;
@@ -83,5 +86,8 @@ internal static class ServerContentIoC
         deps.Register<ServerFeedbackManager>();
         deps.Register<ISharedFeedbackManager, ServerFeedbackManager>();
         deps.Register<WhitelistManager>();
+        deps.Register<SponsorsManager>(); // Utopia-Tweak : Sponsors
+        deps.Register<JoinQueueManager>(); // Corvax-Queue
+        deps.Register<DiscordAuthManager>(); // Corvax-DiscordAuth
     }
 }

@@ -71,7 +71,7 @@ public sealed partial class HumanoidCharacterAppearance : IEquatable<HumanoidCha
             skinColor,
             new()
         );
-        return EnsureValid(appearance, species, sex);
+        return EnsureValid(appearance, species, sex, []); // Utopia-Tweak : Sponsors
     }
 
     private static readonly IReadOnlyList<Color> RealisticEyeColors =
@@ -156,7 +156,7 @@ public sealed partial class HumanoidCharacterAppearance : IEquatable<HumanoidCha
 
         // Safety step. Most systems which called Random() also called this, and not doing so caused issues with markings.
         // In the future it could *maybe* be removed, but it's probably worth the extra CPU cycles to validate this info.
-        return EnsureValid(appearance, species, sex);
+        return EnsureValid(appearance, species, sex, []); // Utopia-Tweak : Sponsors
     }
 
     public static Color ClampColor(Color color)
@@ -164,7 +164,7 @@ public sealed partial class HumanoidCharacterAppearance : IEquatable<HumanoidCha
         return new(color.RByte, color.GByte, color.BByte);
     }
 
-    public static HumanoidCharacterAppearance EnsureValid(HumanoidCharacterAppearance appearance, ProtoId<SpeciesPrototype> species, Sex sex)
+    public static HumanoidCharacterAppearance EnsureValid(HumanoidCharacterAppearance appearance, ProtoId<SpeciesPrototype> species, Sex sex, string[] sponsorPrototypes) // Utopia-Tweak : Sponsors
     {
         var proto = IoCManager.Resolve<IPrototypeManager>();
         var markingManager = IoCManager.Resolve<MarkingManager>();
@@ -178,6 +178,24 @@ public sealed partial class HumanoidCharacterAppearance : IEquatable<HumanoidCha
             var coloration = proto.Index(speciesProto.SkinColoration);
             var organs = markingManager.GetOrgans(species);
             skinColor = coloration.Strategy.EnsureVerified(skinColor);
+
+            // Utopia-Tweak : Sponsors
+            foreach (var (organ, layerMarkings) in validatedMarkings)
+            {
+                foreach (var (_, markings) in layerMarkings)
+                {
+                    for (var i = markings.Count - 1; i >= 0; i--)
+                    {
+                        var marking = markings[i];
+                        if (proto.TryIndex(marking.MarkingId, out MarkingPrototype? markingProto) &&
+                            markingProto.SponsorOnly && !sponsorPrototypes.Contains(marking.MarkingId))
+                        {
+                            markings.RemoveAt(i);
+                        }
+                    }
+                }
+            }
+            // Utopia-Tweak : Sponsors
 
             foreach (var (organ, _) in appearance.Markings)
             {
