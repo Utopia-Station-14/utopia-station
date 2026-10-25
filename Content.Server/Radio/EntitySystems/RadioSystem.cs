@@ -1,3 +1,4 @@
+using Content.Server._CE.ZLevels.Core;
 using Content.Server._Utopia.Language;
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Managers;
@@ -31,8 +32,13 @@ public sealed partial class RadioSystem : SharedRadioSystem
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private IChatManager _chatManager = default!;
     [Dependency] private GhostSystem _ghost = default!;
-    [Dependency] private LanguageSystem _language = default!; // Utopia-Tweak : Language
     [Dependency] private EntityQuery<TelecomExemptComponent> _exemptQuery = default!;
+    [Dependency] private LanguageSystem _language = default!; // Utopia-Tweak : Language
+    // Utopia-Tweak : ZLevels
+    [Dependency] private CEZLevelsSystem _zLevel = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    // Utopia-Tweak : ZLevels
 
     // set used to prevent radio feedback loops.
     private readonly HashSet<string> _messages = new();
@@ -231,15 +237,26 @@ public sealed partial class RadioSystem : SharedRadioSystem
     /// <inheritdoc cref="TelecomServerComponent"/>
     private bool HasActiveServer(MapId mapId, string channelId)
     {
+        // Utopia-Tweak : ZLevels
+        var mapUid = _map.GetMapOrInvalid(mapId);
+        var allowedMaps = new HashSet<MapId> { mapId };
+
+        if (_zLevel.TryGetMapNetwork(mapUid, out var zLevels))
+        {
+            foreach (var zMapUid in zLevels.Comp.SortedZLevels)
+            {
+                allowedMaps.Add(_transform.GetMapId(zMapUid));
+            }
+        }
+        // Utopia-Tweak : ZLevels
+
         var servers = EntityQuery<TelecomServerComponent, EncryptionKeyHolderComponent, ApcPowerReceiverComponent, TransformComponent>();
         foreach (var (_, keys, power, transform) in servers)
         {
-            if (transform.MapID == mapId &&
-                power.Powered &&
-                keys.Channels.Contains(channelId))
-            {
+            // Utopia-Tweak : ZLevels
+            if (power.Powered && keys.Channels.Contains(channelId) && allowedMaps.Contains(transform.MapID))
                 return true;
-            }
+            // Utopia-Tweak : ZLevels
         }
         return false;
     }
