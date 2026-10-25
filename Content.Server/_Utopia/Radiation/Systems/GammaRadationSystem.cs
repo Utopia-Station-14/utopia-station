@@ -12,6 +12,7 @@ public sealed partial class GammaRadiationSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedStackSystem _stack = default!;
     [Dependency] private RadiationSystem _radiation = default!;
+    [Dependency] private ZLevelRadiationSystem _zRadiation = default!;
 
     [Dependency] private EntityQuery<RadiationGridResistanceComponent> _resistanceQuery = default!;
     [Dependency] private EntityQuery<RadiationBlockingContainerComponent> _containerQuery = default!;

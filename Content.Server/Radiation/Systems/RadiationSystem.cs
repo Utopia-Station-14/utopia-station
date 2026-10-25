@@ -1,3 +1,4 @@
+using Content.Server._Utopia.Radiation.Systems;
 using Content.Server.Radiation.Components;
 using Content.Shared.Radiation.Components;
 using Content.Shared.Radiation.Events;
@@ -15,6 +16,7 @@ public sealed partial class RadiationSystem : SharedRadiationSystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedStackSystem _stack = default!;
     [Dependency] private SharedMapSystem _maps = default!;
+    [Dependency] private ZLevelRadiationSystem _zRadiation = default!; // Utopia-Tweak : ZLevels
 
     [Dependency] private EntityQuery<RadiationReceiverComponent> _receiverQuery = default!;
     [Dependency] private EntityQuery<RadiationBlockingContainerComponent> _blockerQuery = default!;
