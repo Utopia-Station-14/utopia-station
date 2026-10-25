@@ -8,6 +8,8 @@ using Content.Server._Utopia.ZLevels.Nodes;
 using Content.Server._Utopia.ZLevels.Power;
 using Content.Shared._Utopia.ZLevels.Cables.Components;
 using Content.Server._Utopia.ZLevels.Disposal.Components;
+using Content.Shared.Disposal.Tube;
+using Content.Shared.Disposal.Unit;
 using Content.Shared.NodeContainer;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
@@ -32,6 +34,7 @@ public sealed partial class ZLevelTransmissionSystem : EntitySystem
         SubscribeLocalEvent<ZLevelTransmitterComponent, ComponentStartup>(OnRefresh);
         SubscribeLocalEvent<ZLevelTransmitterComponent, MoveEvent>(OnMove);
         SubscribeLocalEvent<ZLevelTransmitterComponent, ComponentShutdown>(OnShutdown);
+        SubscribeLocalEvent<ZDisposalPipeComponent, DisposalZTransitionEvent>(OnZDisposalTransition);
     }
 
     private void OnRefresh(EntityUid uid, ZLevelTransmitterComponent comp, ComponentStartup args)
@@ -197,44 +200,54 @@ public sealed partial class ZLevelTransmissionSystem : EntitySystem
     }
     #endregion
 
-    // #region Disposal
-    // public EntityUid? TryFindZDisposalTarget(
-    //     EntityUid source,
-    //     EntityUid targetMap,
-    //     ZNodeDirection dir)
-    // {
-    //     if (!TryGetAnchoredGrid(source, out var xform, out var gridUid, out var grid))
-    //         return null;
+    #region Disposal
+    private void OnZDisposalTransition(Entity<ZDisposalPipeComponent> ent, ref DisposalZTransitionEvent args)
+    {
+        if (!TryFindZDisposalTarget(ent, ent.Comp.ZDirection, out var target))
+            return;
 
-    //     var worldBox = GetTileBox(gridUid, grid, xform);
+        _transform.SetCoordinates(args.Holder, Transform(target).Coordinates);
+        args.Target = target;
+    }
 
-    //     var required = dir == ZNodeDirection.Up
-    //         ? ZNodeDirection.Down
-    //         : ZNodeDirection.Up;
+    private bool TryFindZDisposalTarget(EntityUid source, ZNodeDirection dir, out EntityUid target)
+    {
+        target = default;
 
-    //     if (!TryComp(targetMap, out TransformComponent? mapXform))
-    //         return null;
+        if (dir != ZNodeDirection.Up && dir != ZNodeDirection.Down)
+            return false;
 
-    //     foreach (var ent in _lookup.GetEntitiesIntersecting(mapXform.MapID, worldBox, LookupFlags.All))
-    //     {
-    //         if (!TryComp(ent, out ZDisposalPipeComponent? zPipe))
-    //             continue;
+        if (!TryGetContext(source, out var ctx))
+            return false;
 
-    //         if (zPipe.ZDirection != required)
-    //             continue;
+        var targetMap = GetNeighborMap(ctx, dir == ZNodeDirection.Up ? 1 : -1);
+        if (targetMap == null || !TryComp(targetMap.Value, out TransformComponent? mapXform))
+            return false;
 
-    //         if (!TryComp(ent, out TransformComponent? exform) || !exform.Anchored)
-    //             continue;
+        if (!TryGetAnchoredGrid(source, out var xform, out var gridUid, out var grid))
+            return false;
 
-    //         if (!TryComp(ent, out DisposalTubeComponent? disposal))
-    //             continue;
+        var required = dir == ZNodeDirection.Up ? ZNodeDirection.Down : ZNodeDirection.Up;
+        var worldBox = GetTileBox(gridUid, grid, xform);
 
-    //         return ent;
-    //     }
+        foreach (var ent in _lookup.GetEntitiesIntersecting(mapXform.MapID, worldBox, LookupFlags.All))
+        {
+            if (ent == source)
+                continue;
+            if (!TryComp(ent, out ZDisposalPipeComponent? other) || other.ZDirection != required)
+                continue;
+            if (!TryComp(ent, out TransformComponent? exform) || !exform.Anchored)
+                continue;
+            if (!HasComp<DisposalTubeComponent>(ent))
+                continue;
 
-    //     return null;
-    // }
-    // #endregion
+            target = ent;
+            return true;
+        }
+
+        return false;
+    }
+    #endregion
 
     #region Helpers
     private bool TryGetAnchoredGrid(EntityUid uid, out TransformComponent xform, out EntityUid gridUid, out MapGridComponent grid)

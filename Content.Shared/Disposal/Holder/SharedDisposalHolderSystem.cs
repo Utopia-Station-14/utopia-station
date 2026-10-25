@@ -114,8 +114,20 @@ public abstract partial class SharedDisposalHolderSystem : EntitySystem
         if (ent.Comp.CurrentTube == tube)
             return false;
 
+        // Utopia-Tweak : Z-Levels
+        var tubeEnt = new Entity<DisposalTubeComponent>(tube.Owner, tube.Comp);
+        var zEv = new DisposalZTransitionEvent(ent);
+
+        RaiseLocalEvent(tubeEnt, ref zEv);
+        if (zEv.Target is { } zTarget && TryComp(zTarget, out DisposalTubeComponent? zTube))
+        {
+            tubeEnt = new Entity<DisposalTubeComponent>(zTarget, zTube);
+            ent.Comp.CurrentDirection = Direction.Invalid;
+        }
+        // Utopia-Tweak : Z-Levels
+
         var ev = new GetDisposalsNextDirectionEvent(ent);
-        RaiseLocalEvent(tube, ref ev);
+        RaiseLocalEvent(tubeEnt, ref ev);
 
         // If the next direction to move is invalid, exit immediately
         if (ev.Next == Direction.Invalid)
@@ -148,7 +160,7 @@ public abstract partial class SharedDisposalHolderSystem : EntitySystem
 
             // If the disposed entity re-entered a suspect pipe,
             // it is likely caught in a loop and should try to escape
-            if (ent.Comp.SuspectPipes.Contains(tube))
+            if (ent.Comp.SuspectPipes.Contains(tubeEnt))
             {
                 ent.Comp.CanEscape = true;
             }
@@ -162,21 +174,21 @@ public abstract partial class SharedDisposalHolderSystem : EntitySystem
             // the pipe is marked as suspect.
             if (Math.Abs(ent.Comp.DirectionBias) >= ent.Comp.DirectionBiasThreshold)
             {
-                ent.Comp.SuspectPipes.Add(tube);
+                ent.Comp.SuspectPipes.Add(tubeEnt);
                 ent.Comp.DirectionBias = 0;
             }
 
             Dirty(ent);
 
             // Check if the holder can escape the current pipe
-            if (TryEscaping(ent, (tube, tube.Comp)))
+            if (TryEscaping(ent, tubeEnt))
                 return false;
         }
 
         // Update trajectory
         ent.Comp.CurrentDirection = ev.Next;
-        ent.Comp.CurrentTube = tube;
-        ent.Comp.NextTube = _disposalTube.GetTubeInDirection((tube, tube.Comp), ent.Comp.CurrentDirection);
+        ent.Comp.CurrentTube = tubeEnt;
+        ent.Comp.NextTube = _disposalTube.GetTubeInDirection(tubeEnt, ent.Comp.CurrentDirection);
 
         // Update rotation
         _xform.SetLocalRotationNoLerp(ent, ent.Comp.CurrentDirection.ToAngle(), xform);
