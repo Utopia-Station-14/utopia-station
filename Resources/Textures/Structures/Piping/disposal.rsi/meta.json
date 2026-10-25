@@ -251,6 +251,9 @@
             "name": "signal-router-flipped"
         },
         {
+            "name": "signal-router-flipped-free"
+        },
+        {
             "name": "conpipe-up"
         },
         {
