@@ -1,4 +1,3 @@
-// Utopia-Tweak : Z-Levels
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Shared.Maps;
@@ -6,7 +5,8 @@ using Content.Shared.Spreader;
 using Robust.Shared.Collections;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
-using Robust.Shared.Map.Events;
+using Content.Shared._Utopia.CCVar;
+using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Spreader;
@@ -16,8 +16,7 @@ public sealed partial class SpreaderSystem
     [Dependency] private CESharedZLevelsSystem _zLevels = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private ITileDefinitionManager _tileDefinitionManager = default!;
-
-    private const int ZMaxDepth = 10;
+    [Dependency] private IConfigurationManager _cfg = default!;
 
     private void InitializeZLevels()
     {
@@ -88,7 +87,7 @@ public sealed partial class SpreaderSystem
         var curGrid = grid;
         var curIdx = indices;
 
-        for (var depth = 0; depth < ZMaxDepth; depth++)
+        for (var depth = 0; depth < _cfg.GetCVar(UCCVars.UtopiaMaxZLevelsProcessUpDown); depth++)
         {
             if (!TryGetZTarget(curUid, curGrid, curIdx, -1, out var nextUid, out var nextGrid, out var nextIdx))
                 return false;
