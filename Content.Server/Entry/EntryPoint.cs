@@ -5,6 +5,9 @@ using Content.Server.Administration.Managers;
 using Content.Server.Afk;
 using Content.Server.Chat.Managers;
 using Content.Server.Connection;
+using Content.Server.Corvax.DiscordAuth;
+using Content.Server.Corvax.JoinQueue;
+using Content.Server._Utopia.Sponsors;
 using Content.Server.Database;
 using Content.Server.Discord.DiscordLink;
 using Content.Server.EUI;
@@ -77,6 +80,10 @@ namespace Content.Server.Entry
         [Dependency] private ServerInfoManager _serverInfo = default!;
         [Dependency] private ServerUpdateManager _updateManager = default!;
         [Dependency] private ServerFeedbackManager _feedbackManager = null!;
+        [Dependency] private SponsorsManager _sponsorsManager = default!; // Corvax-Sponsors
+        [Dependency] private JoinQueueManager _queueManager = default!; // Corvax-Queue
+        [Dependency] private DiscordAuthManager _discordAuthManager = default!; // Corvax-DiscordAuth
+
 
         public override void PreInit()
         {
@@ -133,6 +140,10 @@ namespace Content.Server.Entry
             _watchlistWebhookManager.Initialize();
             _job.Initialize();
             _rateLimit.Initialize();
+
+            _sponsorsManager.Initialize(); // Utopia-Tweak : Sponsors
+            _queueManager.Initialize(); // Corvax-Queue
+            _discordAuthManager.Initialize(); // Corvax-DiscordAuth
         }
 
         public override void PostInit()

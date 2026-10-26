@@ -19,6 +19,7 @@ public sealed partial class PlayerTabHeader : Control
         CharacterLabel.OnKeyBindDown += CharacterClicked;
         JobLabel.OnKeyBindDown += JobClicked;
         RoleTypeLabel.OnKeyBindDown += RoleTypeClicked;
+        SponsorLabel.OnKeyBindDown += SponsorClicked; // Utopia-Tweak : Sponsors
         PlaytimeLabel.OnKeyBindDown += PlaytimeClicked;
     }
 
@@ -30,6 +31,7 @@ public sealed partial class PlayerTabHeader : Control
             Header.Character => CharacterLabel,
             Header.Job => JobLabel,
             Header.RoleType => RoleTypeLabel,
+            Header.Sponsor => SponsorLabel, // Utopia-Tweak : Sponsors
             Header.Playtime => PlaytimeLabel,
             _ => throw new ArgumentOutOfRangeException(nameof(header), header, null)
         };
@@ -41,6 +43,7 @@ public sealed partial class PlayerTabHeader : Control
         CharacterLabel.Text = Loc.GetString("player-tab-character");
         JobLabel.Text = Loc.GetString("player-tab-job");
         RoleTypeLabel.Text = Loc.GetString("player-tab-roletype");
+        SponsorLabel.Text = Loc.GetString("player-tab-sponsor"); // Utopia-Tweak : Sponsors
         PlaytimeLabel.Text = Loc.GetString("player-tab-playtime");
     }
 
@@ -75,6 +78,13 @@ public sealed partial class PlayerTabHeader : Control
         HeaderClicked(args, Header.RoleType);
     }
 
+    // Utopia-Tweak : Sponsors
+    private void SponsorClicked(GUIBoundKeyEventArgs args)
+    {
+        HeaderClicked(args, Header.Sponsor);
+    }
+    // Utopia-Tweak : Sponsors
+
     private void PlaytimeClicked(GUIBoundKeyEventArgs args)
     {
         HeaderClicked(args, Header.Playtime);
@@ -90,6 +100,7 @@ public sealed partial class PlayerTabHeader : Control
             CharacterLabel.OnKeyBindDown -= CharacterClicked;
             JobLabel.OnKeyBindDown -= JobClicked;
             RoleTypeLabel.OnKeyBindDown -= RoleTypeClicked;
+            SponsorLabel.OnKeyBindDown -= SponsorClicked; // Utopia-Tweak : Sponsors
             PlaytimeLabel.OnKeyBindDown -= PlaytimeClicked;
         }
     }
@@ -100,6 +111,7 @@ public sealed partial class PlayerTabHeader : Control
         Character,
         Job,
         RoleType,
+        Sponsor, // Utopia-Tweak : Sponsors
         Playtime
     }
 }

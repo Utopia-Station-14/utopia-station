@@ -2,6 +2,7 @@ using System.Linq;
 using Content.Server.Administration;
 using Content.Server.Administration.Managers;
 using Content.Server.Afk;
+using Content.Server._Utopia.Sponsors;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Events;
 using Content.Server.Preferences.Managers;
@@ -36,6 +37,7 @@ public sealed partial class PlayTimeTrackingSystem : EntitySystem
     [Dependency] private IServerPreferencesManager _preferencesManager = default!;
     [Dependency] private SharedRoleSystem _roles = default!;
     [Dependency] private PlayTimeTrackingManager _tracking = default!;
+    [Dependency] private SponsorsManager _sponsorsManager = default!; // Utopia-Tweak : Sponsors
 
     public override void Initialize()
     {
@@ -269,6 +271,16 @@ public sealed partial class PlayTimeTrackingSystem : EntitySystem
     {
         if (!_cfg.GetCVar(CCVars.GameRoleTimers))
             return true;
+
+        // Utopia-Tweak : Sponsors
+        var info = _sponsorsManager.TryGetInfo(player.UserId, out var sponsorInfo);
+
+        if (info && sponsorInfo != null)
+        {
+            if (sponsorInfo.AllowJob)
+                return true;
+        }
+        // Utopia-Tweak : Sponsors
 
         if (!_tracking.TryGetTrackerTimes(player, out var playTimes))
         {

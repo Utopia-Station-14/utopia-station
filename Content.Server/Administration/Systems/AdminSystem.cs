@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Server._Utopia.Sponsors;
 using Content.Server.Administration.Managers;
 using Content.Server.Chat.Managers;
 using Content.Server.GameTicking;
@@ -6,6 +7,7 @@ using Content.Server.Hands.Systems;
 using Content.Server.Mind;
 using Content.Server.Players.PlayTimeTracking;
 using Content.Server.Popups;
+using Content.Shared._Utopia.Sponsors;
 using Content.Shared.Administration;
 using Content.Shared.Administration.Events;
 using Content.Shared.CCVar;
@@ -53,6 +55,7 @@ public sealed partial class AdminSystem : EntitySystem
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private StationRecordsSystem _stationRecords = default!;
     [Dependency] private TransformSystem _transform = default!;
+    [Dependency] private SponsorsManager _sponsorsManager = default!; // Utopia-Tweak : Sponsors
 
     private readonly Dictionary<NetUserId, PlayerInfo> _playerList = new();
 
@@ -262,6 +265,8 @@ public sealed partial class AdminSystem : EntitySystem
             overallPlaytime = playTime;
         }
 
+        _sponsorsManager.TryGetInfo(data.UserId, out var sponsorInfo); // Utopia-Tweak : Sponsors
+
         return new PlayerInfo(
             name,
             entityName,
@@ -275,7 +280,8 @@ public sealed partial class AdminSystem : EntitySystem
             data.UserId,
             connected,
             _roundActivePlayers.Contains(data.UserId),
-            overallPlaytime);
+            overallPlaytime,
+            sponsorInfo); // Utopia-Tweak : Sponsors
     }
 
     private void OnPanicBunkerChanged(bool enabled)

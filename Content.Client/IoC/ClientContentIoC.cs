@@ -2,6 +2,9 @@ using Content.Client.Administration.Managers;
 using Content.Client.Audio.Midi;
 using Content.Client.Changelog;
 using Content.Client.Chat.Managers;
+using Content.Client.Corvax.DiscordAuth;
+using Content.Client.Corvax.JoinQueue;
+using Content.Client._Utopia.Sponsors;
 using Content.Client.Clickable;
 using Content.Client.DebugMon;
 using Content.Client.Eui;
@@ -68,6 +71,10 @@ namespace Content.Client.IoC
             collection.Register<ClientFeedbackManager>();
             collection.Register<ISharedFeedbackManager, ClientFeedbackManager>();
             collection.Register<MidiFileCollectionManager>();
+
+            collection.Register<SponsorsManager>(); // Utopia-Tweak : Sponsors
+            collection.Register<JoinQueueManager>(); // Corvax-Queue
+            collection.Register<DiscordAuthManager>(); // Corvax-DiscordAuth
         }
     }
 }

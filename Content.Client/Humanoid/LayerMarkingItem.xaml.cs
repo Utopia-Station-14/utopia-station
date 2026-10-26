@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Client._Utopia.Sponsors;
 using Content.Client.Guidebook.Controls;
 using Content.Shared.Body;
 using Content.Shared.Humanoid;
@@ -18,6 +19,7 @@ namespace Content.Client.Humanoid;
 public sealed partial class LayerMarkingItem : BoxContainer, ISearchableControl
 {
     [Dependency] private IEntityManager _entity = default!;
+    [Dependency] private SponsorsManager _sponsorsManager = default!; // Utopia-Tweak : Sponsors
 
     private readonly SpriteSystem _sprite;
 
@@ -89,6 +91,20 @@ public sealed partial class LayerMarkingItem : BoxContainer, ISearchableControl
     {
         MarkingTexture.Textures = _markingPrototype.Sprites.Select(layer => _sprite.Frame0(layer)).ToList();
         SelectButton.Text = Loc.GetString($"marking-{_markingPrototype.ID}");
+
+        // Utopia-Tweak : Sponsors
+        if (_markingPrototype.SponsorOnly && _interactive)
+        {
+
+            SelectButton.Disabled = true;
+            SelectButton.Text += " " + Loc.GetString("sponsor-only-text");
+
+            if (_sponsorsManager.TryGetInfo(out var sponsor))
+            {
+                SelectButton.Disabled = !sponsor.AllowedMarkings.Contains(_markingPrototype.ID);
+            }
+        }
+        // Utopia-Tweak : Sponsors
     }
 
     private void UpdateSelection()

@@ -91,6 +91,17 @@ public sealed partial class LoadoutGroupContainer : BoxContainer
                          : p.GroupBy)
         .ToDictionary(g => g.Key, g => g.ToList());
 
+        // Utopia-Tweak : Sponsors
+        var sponsorGroups = groups
+            .Where(g => g.Value.All(p => p.SponsorOnly))
+            .ToList();
+
+        foreach (var group in sponsorGroups)
+        {
+            groups.Remove(group.Key);
+        }
+        // Utopia-Tweak : Sponsors
+
         foreach (var kvp in groups)
         {
             var protos = kvp.Value;
@@ -154,6 +165,28 @@ public sealed partial class LoadoutGroupContainer : BoxContainer
                 );
             }
         }
+
+        // Utopia-Tweak : Sponsors
+        if (sponsorGroups.Count > 0)
+        {
+            LoadoutsContainer.AddChild(new Label
+            {
+                Text = Loc.GetString("adt-sponsor-loadout-category"),
+                StyleClasses = { "LabelHeading" },
+                Margin = new Thickness(5, 8, 5, 2),
+            });
+
+            foreach (var kvp in sponsorGroups)
+            {
+                foreach (var proto in kvp.Value)
+                {
+                    LoadoutsContainer.AddChild(
+                        CreateLoadoutUI(proto, profile, loadout, session, collection, loadoutSystem)
+                    );
+                }
+            }
+        }
+        // Utopia-Tweak : Sponsors
     }
 
     private ToggleLoadoutButton CreateToggleButton(KeyValuePair<string, List<LoadoutPrototype>> kvp, LoadoutContainer firstElement, SubLoadoutContainer subContainer)

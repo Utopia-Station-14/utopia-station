@@ -6,7 +6,7 @@ using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
-namespace Content.Shared_Utopia.Effects;
+namespace Content.Shared._Utopia.Effects;
 
 public sealed partial class SparksSystem : EntitySystem
 {

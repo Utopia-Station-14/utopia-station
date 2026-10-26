@@ -3,6 +3,7 @@ using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server.Chat.Managers;
 using Content.Server.Chat.Systems;
+using Content.Server.Corvax.JoinQueue;
 using Content.Server.Database;
 using Content.Server.Ghost;
 using Content.Server.Maps;
@@ -62,6 +63,7 @@ namespace Content.Server.GameTicking
         [Dependency] private MetaDataSystem _metaData = default!;
         [Dependency] private SharedRoleSystem _roles = default!;
         [Dependency] private ServerDbEntryManager _dbEntryManager = default!;
+        [Dependency] private JoinQueueManager _queueManager = default!; // Corvax-Queue
 
         [ViewVariables] private bool _initialized;
         [ViewVariables] private bool _postInitialized;

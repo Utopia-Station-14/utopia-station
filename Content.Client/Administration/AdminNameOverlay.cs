@@ -217,6 +217,22 @@ internal sealed class AdminNameOverlay : Overlay
                 currentOffset += lineoffset;
             }
 
+            // Utopia-Tweak : Sponsors
+            if (playerInfo.Sponsor != null)
+            {
+                color = Color.GreenYellow;
+                color.A = alpha;
+                var sponsorString = $"Sponsor ({playerInfo.Sponsor.Tier})";
+                if (playerInfo.Sponsor.AllowJob)
+                    sponsorString += " (allJobs)";
+
+                sponsorString += $" до {playerInfo.Sponsor.ExpireDate:dd.MM.yyyy}";
+
+                args.ScreenHandle.DrawString(_font, screenCoordinates + currentOffset, sponsorString, uiScale, color);
+                currentOffset += lineoffset;
+            }
+            // Utopia-Tweak : Sponsors
+
             // Determine antag symbol
             string? symbol;
             switch (_overlaySymbolStyle)
