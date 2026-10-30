@@ -1,4 +1,6 @@
 using Content.Server.DeviceNetwork.Components;
+using Content.Shared._CE.ZLevels.Core.Components;
+using Content.Shared._Utopia.ZLevels;
 using Content.Shared.DeviceNetwork.Events;
 using JetBrains.Annotations;
 
@@ -8,6 +10,7 @@ namespace Content.Server.DeviceNetwork.Systems
     public sealed partial class WirelessNetworkSystem : EntitySystem
     {
         [Dependency] private SharedTransformSystem _transformSystem = default!;
+        [Dependency] private ZLevelsExtensions _zLevel = default!; // Utopia-Tweak : ZLevels
 
         public override void Initialize()
         {
@@ -27,11 +30,19 @@ namespace Content.Server.DeviceNetwork.Systems
             if (!TryComp<WirelessNetworkComponent>(args.Sender, out var sendingComponent))
                 return;
 
-            if (xform.MapID != args.SenderTransform.MapID
-                || (ownPosition - _transformSystem.GetWorldPosition(xform)).Length() > sendingComponent.Range)
+            // Utopia-Tweak : ZLevels
+            var sameMap = xform.MapID == args.SenderTransform.MapID;
+            if (!sameMap && !_zLevel.IsSameZNetwork(xform.MapUid, args.SenderTransform.MapUid))
+            {
+                args.Cancel();
+                return;
+            }
+
+            if ((ownPosition - _transformSystem.GetWorldPosition(xform)).Length() > sendingComponent.Range)
             {
                 args.Cancel();
             }
+            // Utopia-Tweak : ZLevels
         }
     }
 }

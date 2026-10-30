@@ -144,27 +144,45 @@
 - type: entity
   id: UtopiaZDisposalPipeUp
   parent: DisposalPipe
-  name: Z-level disposal pipe
-  description: A disposal pipe capable of transferring contents between Z-levels.
+  name: vertical disposal pipe
+  description: A pipe that sends disposal holders to the Z-level above.
+  suffix: up
   components:
-  - type: ZLevelEntityLink
-  - type: ZLevelTransmitter
-    allowUp: true
-    allowDown: false
-    range: 0.08
+  - type: Sprite
+    layers:
+    - map: [ "pipe" ]
+      state: conpipe-up
+  - type: DisposalTube
+    exits:
+    - South
   - type: ZDisposalPipe
     zDirection: Up
+  - type: GenericVisualizer
+    visuals:
+      enum.AnchorVisuals.Anchored:
+        pipe:
+          False: { state: conpipe-up }
+          True: { state: conpipe-up }
 
 - type: entity
   id: UtopiaZDisposalPipeDown
   parent: DisposalPipe
-  name: Z-level disposal pipe
-  description: A disposal pipe capable of transferring contents between Z-levels.
+  name: vertical disposal pipe
+  description: A pipe that sends disposal holders to the Z-level below.
+  suffix: down
   components:
-  - type: ZLevelEntityLink
-  - type: ZLevelTransmitter
-    allowUp: false
-    allowDown: true
-    range: 0.08
+  - type: Sprite
+    layers:
+    - map: [ "pipe" ]
+      state: conpipe-down
+  - type: DisposalTube
+    exits:
+    - South
   - type: ZDisposalPipe
     zDirection: Down
+  - type: GenericVisualizer
+    visuals:
+      enum.AnchorVisuals.Anchored:
+        pipe:
+          False: { state: conpipe-down }
+          True: { state: conpipe-down }

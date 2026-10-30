@@ -170,3 +170,11 @@ public record struct GetDisposalsNextDirectionEvent(Entity<DisposalHolderCompone
     /// </summary>
     public bool Handled;
 }
+
+// Utopia-Tweak : Z-Levels
+[ByRefEvent]
+public record struct DisposalZTransitionEvent(Entity<DisposalHolderComponent> Holder)
+{
+    public EntityUid? Target;
+}
+// Utopia-Tweak : Z-Levels

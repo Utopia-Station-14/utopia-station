@@ -132,6 +132,8 @@ public sealed partial class ExplosionSystem
             // has the explosion finished processing?
             if (_activeExplosion.FinishedProcessing)
             {
+                _activeExplosion.FlushZLeaks(); // Utopia-Tweak : Z-Levels
+
                 var comp = EnsureComp<TimedDespawnComponent>(_activeExplosion.VisualEnt);
                 comp.Lifetime = _cfg.GetCVar(CCVars.ExplosionPersistence);
                 _appearance.SetData(_activeExplosion.VisualEnt, ExplosionAppearanceData.Progress, int.MaxValue);
@@ -750,6 +752,13 @@ sealed class Explosion
     public readonly float MaxTileIntensity;
     // Utopia-Tweak : Toxicology
 
+    // Utopia-Tweak : Z-Levels
+    private readonly EntityUid _mapUid;
+    private readonly bool _canLeakUp;
+    private readonly bool _canLeakDown;
+    private readonly Dictionary<int, ExplosionZLeak> _zLeaks = new();
+    // Utopia-Tweak : Z-Levels
+
     /// <summary>
     ///     Initialize a new instance for processing
     /// </summary>
@@ -774,7 +783,8 @@ sealed class Explosion
         EntityUid? cause,
         SharedMapSystem mapSystem,
         DamageableSystem damageable,
-        EntityQuery<TileHistoryComponent> historyQuery)
+        EntityQuery<TileHistoryComponent> historyQuery,
+        int zDirection = 0) // Utopia-Tweak : Z-Levels
     {
         VisualEnt = visualEnt;
         Cause = cause;
@@ -796,6 +806,12 @@ sealed class Explosion
         Slope = slope;
         MaxTileIntensity = maxTileIntensity;
         // Utopia-Tweak : Toxicology
+
+        // Utopia-Tweak : Z-Levels
+        _mapUid = mapSystem.GetMap(epicenter.MapId);
+        _canLeakUp = zDirection >= 0 && system.HasZLevel(_mapUid, 1);
+        _canLeakDown = zDirection <= 0 && system.HasZLevel(_mapUid, -1);
+        // Utopia-Tweak : Z-Levels
 
         if (spaceData != null)
         {
@@ -908,6 +924,34 @@ sealed class Explosion
         return false;
     }
 
+    // Utopia-Tweak : Z-Levels
+    private Vector2 GetCurrentTileWorldPos()
+    {
+        if (_currentGrid is { } grid)
+            return _system.GetGridTileWorldPos(grid.Owner, grid.Comp1, _currentEnumerator.Current);
+
+        return Vector2.Transform((_currentEnumerator.Current + new Vector2(0.5f, 0.5f)) * ExplosionSystem.DefaultTileSize, _spaceMatrix);
+    }
+    public void FlushZLeaks()
+    {
+        foreach (var (offset, leak) in _zLeaks)
+        {
+            _system.QueueZExplosion(Epicenter.MapId,
+                offset,
+                leak,
+                ExplosionType.ID,
+                Slope,
+                MaxTileIntensity,
+                Cause,
+                _tileBreakScale,
+                _maxTileBreak,
+                _canCreateVacuum);
+        }
+
+        _zLeaks.Clear();
+    }
+    // Utopia-Tweak : Z-Levels
+
     /// <summary>
     ///     Attempt to process (i.e., damage entities) some number of grid tiles.
     /// </summary>
@@ -936,6 +980,8 @@ sealed class Explosion
                     tileUpdateList = new();
                     _tileUpdateDict[(currentGrid.Owner, currentGrid.Comp1)] = tileUpdateList;
                 }
+
+                var tilesBeforeDamage = tileUpdateList.Count; // Utopia-Tweak : Z-Levels
 
                 // damage entities on the tile. Also figures out whether there are any solid entities blocking the floor
                 // from being destroyed.
@@ -978,6 +1024,23 @@ sealed class Explosion
                         currentGrid.Comp2,
                         ref _currentChunk);
                 }
+
+                // Utopia-Tweak : Z-Levels
+                if (_canLeakUp || _canLeakDown)
+                {
+                    var floorDamaged = tileUpdateList.Count > tilesBeforeDamage;
+                    var holeHere = floorDamaged || _system.IsZHole(currentGrid.Owner, currentGrid.Comp1, _currentEnumerator.Current);
+
+                    _system.AccumulateZLeak(_zLeaks,
+                        _mapUid,
+                        GetCurrentTileWorldPos(),
+                        _currentIntensity,
+                        _canLeakUp,
+                        _canLeakDown,
+                        holeHere,
+                        _maxTileBreak > 0 && _tileBreakScale > 0f);
+                }
+                // Utopia-Tweak : Z-Levels
             }
             else
             {
@@ -1000,6 +1063,19 @@ sealed class Explosion
                     TotalIntensity
                     // Utopia-Tweak : Toxicology
                     );
+
+                // Utopia-Tweak : Z-Levels
+                if (_canLeakUp || _canLeakDown)
+                {
+                    _system.AccumulateZLeak(_zLeaks,
+                        _mapUid,
+                        GetCurrentTileWorldPos(),
+                        _currentIntensity,
+                        _canLeakUp,
+                        _canLeakDown,
+                        true);
+                }
+                // Utopia-Tweak : Z-Levels
             }
 
             if (!MoveNext())
@@ -1043,4 +1119,5 @@ public sealed class QueuedExplosion(ExplosionPrototype proto)
     public int MaxTileBreak;
     public bool CanCreateVacuum;
     public EntityUid? Cause; // The entity that exploded, for logging purposes.
+    public int ZDirection; // Utopia-Tweak : Z-Levels
 }

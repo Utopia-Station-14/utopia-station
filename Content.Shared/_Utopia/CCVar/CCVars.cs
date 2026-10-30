@@ -55,6 +55,9 @@ public sealed class UCCVars
     /// <summary>Energy floor below which a projected light is discarded as imperceptible.</summary>
     public static readonly CVarDef<float>
         CEZProjectedLightMinEnergy = CVarDef.Create("zlevels.ce_projected_light_min_energy", 0.1f, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    public static readonly CVarDef<int>
+        UtopiaMaxZLevelsProcessUpDown = CVarDef.Create("zlevels.utopia_process_up_down", 5, CVar.SERVER | CVar.ARCHIVE);
     #endregion
 
     // Economy

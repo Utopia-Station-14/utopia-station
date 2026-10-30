@@ -69,6 +69,21 @@ public sealed partial class ResearchSystem
         if (serverComponent.Clients.Contains(client))
             return;
 
+        // Utopia-Tweak : ZLevels
+        if (TryComp(client, out TransformComponent? clientXform) && TryComp(server, out TransformComponent? serverXform))
+        {
+            if (clientXform.MapID != serverXform.MapID)
+            {
+                if (clientXform.MapUid is not { } clientMap
+                || serverXform.MapUid is not { } serverMap
+                || !_zExtention.IsSameZNetwork(clientMap, serverMap))
+                {
+                    return;
+                }
+            }
+        }
+        // Utopia-Tweak : ZLevels
+
         serverComponent.Clients.Add(client);
         clientComponent.Server = server;
         SyncClientWithServer(client, clientComponent: clientComponent);

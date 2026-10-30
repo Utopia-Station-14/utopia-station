@@ -1,6 +1,8 @@
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Spreader;
+using Robust.Shared.Map; // Utopia-Tweak : Z-Levels
+using Robust.Shared.Map.Components; // Utopia-Tweak : Z-Levels
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -53,7 +55,17 @@ public sealed partial class KudzuSystem : EntitySystem
         if (component.GrowthLevel < 3)
             return;
 
-        if (args.NeighborFreeTiles.Count == 0)
+        // Utopia-Tweak : Z-Levels
+        var freeTiles = new List<(MapGridComponent Grid, TileRef Tile)>();
+        foreach (var tile in args.NeighborFreeTiles)
+            freeTiles.Add(tile);
+        foreach (var tile in args.ZDownFreeTiles)
+            freeTiles.Add(tile);
+        foreach (var tile in args.ZUpFreeTiles)
+            freeTiles.Add(tile);
+
+        if (freeTiles.Count == 0)
+        // Utopia-Tweak : Z-Levels
         {
             RemCompDeferred<ActiveEdgeSpreaderComponent>(uid);
             return;
@@ -70,7 +82,7 @@ public sealed partial class KudzuSystem : EntitySystem
             return;
         }
 
-        foreach (var neighbor in args.NeighborFreeTiles)
+        foreach (var neighbor in freeTiles) // Utopia-Tweak : Z-Levels
         {
             var neighborUid = Spawn(prototype, _map.GridTileToLocal(neighbor.Tile.GridUid, neighbor.Grid, neighbor.Tile.GridIndices));
             DebugTools.Assert(HasComp<EdgeSpreaderComponent>(neighborUid));

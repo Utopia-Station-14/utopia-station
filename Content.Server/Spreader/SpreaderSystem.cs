@@ -52,6 +52,7 @@ public sealed partial class SpreaderSystem : EntitySystem
 
         SubscribeLocalEvent<EdgeSpreaderComponent, EntityTerminatingEvent>(OnTerminating);
         SetupPrototypes();
+        InitializeZLevels(); // Utopia-Tweak : Z-Levels
     }
 
     private void OnPrototypeReload(PrototypesReloadedEventArgs obj)
@@ -155,12 +156,22 @@ public sealed partial class SpreaderSystem : EntitySystem
 
     private void Spread(EntityUid uid, TransformComponent xform, ProtoId<EdgeSpreaderPrototype> prototype, ref int updates)
     {
-        GetNeighbors(uid, xform, prototype, out var freeTiles, out _, out var neighbors);
+        // Utopia-Tweak : Z-Levels
+        GetNeighbors(uid, xform, prototype, out var freeTiles, out _, out var neighbors, out var holes);
+        GetZNeighbors(uid, xform, prototype, holes,
+            out var zDownFree, out var zDownNeighbors, out var zUpFree, out var zUpNeighbors);
+        // Utopia-Tweak : Z-Levels
 
         var ev = new SpreadNeighborsEvent()
         {
             NeighborFreeTiles = freeTiles,
             Neighbors = neighbors,
+            // Utopia-Tweak : Z-Levels
+            ZDownFreeTiles = zDownFree,
+            ZDownNeighbors = zDownNeighbors,
+            ZUpFreeTiles = zUpFree,
+            ZUpNeighbors = zUpNeighbors,
+            // Utopia-Tweak : Z-Levels
             Updates = updates,
         };
 
@@ -168,14 +179,20 @@ public sealed partial class SpreaderSystem : EntitySystem
         updates = ev.Updates;
     }
 
+    // Utopia-Tweak : Z-Levels
+    public void GetNeighbors(EntityUid uid, TransformComponent comp, ProtoId<EdgeSpreaderPrototype> prototype, out ValueList<(MapGridComponent, TileRef)> freeTiles, out ValueList<Vector2i> occupiedTiles, out ValueList<EntityUid> neighbors)
+        => GetNeighbors(uid, comp, prototype, out freeTiles, out occupiedTiles, out neighbors, out _);
+    // Utopia-Tweak : Z-Levels
+
     /// <summary>
     /// Gets the neighboring node data for the specified entity and the specified node group.
     /// </summary>
-    public void GetNeighbors(EntityUid uid, TransformComponent comp, ProtoId<EdgeSpreaderPrototype> prototype, out ValueList<(MapGridComponent, TileRef)> freeTiles, out ValueList<Vector2i> occupiedTiles, out ValueList<EntityUid> neighbors)
+    public void GetNeighbors(EntityUid uid, TransformComponent comp, ProtoId<EdgeSpreaderPrototype> prototype, out ValueList<(MapGridComponent, TileRef)> freeTiles, out ValueList<Vector2i> occupiedTiles, out ValueList<EntityUid> neighbors, out ValueList<(EntityUid Grid, Vector2i Indices)> holes) // Utopia-Tweak : Z-Levels
     {
         freeTiles = [];
         occupiedTiles = [];
         neighbors = [];
+        holes = []; // Utopia-Tweak : Z-Levels
         // TODO remove occupiedTiles -- its currently unused and just slows this method down.
         if (!ProtoMan.Resolve(prototype, out var spreaderPrototype))
             return;
@@ -242,11 +259,17 @@ public sealed partial class SpreaderSystem : EntitySystem
             if ((blockedAtmosDirs & ourAtmosDir) != 0x0)
                 continue;
 
-            if (!_map.TryGetTileRef(neighborEnt, neighborGrid, neighborPos, out var tileRef) || tileRef.Tile.IsEmpty)
+            // Utopia-Tweak : Z-Levels
+            if (!_map.TryGetTileRef(neighborEnt, neighborGrid, neighborPos, out var tileRef))
                 continue;
 
-            if (spreaderPrototype.PreventSpreadOnSpaced && _turf.IsSpace(tileRef))
+            if (tileRef.Tile.IsEmpty ||
+                (spreaderPrototype.PreventSpreadOnSpaced && _turf.IsSpace(tileRef)))
+            {
+                holes.Add((neighborEnt, neighborPos));
                 continue;
+            }
+            // Utopia-Tweak : Z-Levels
 
             var directionEnumerator = _map.GetAnchoredEntities(neighborEnt, neighborGrid, neighborPos);
             var occupied = false;

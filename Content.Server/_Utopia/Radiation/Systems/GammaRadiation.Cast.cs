@@ -10,8 +10,8 @@ public sealed partial class GammaRadiationSystem
 {
     private readonly record struct GammaSourceData(float Intensity, RadiationSourceComponent Source, TransformComponent Xform, Vector2 WorldPosition);
 
-    private const float GammaPenetration = 0.35f;
-    private const float GammaScatterFraction = 0.02f;
+    public const float GammaPenetration = 0.35f;
+    public const float GammaScatterFraction = 0.02f;
 
     private readonly List<GammaSourceData> _sources = new();
     private readonly List<(EntityUid Uid, float Rads)> _pending = new();
@@ -62,16 +62,22 @@ public sealed partial class GammaRadiationSystem
 
     private float Cast(in GammaSourceData src, TransformComponent destXform, Vector2 destWorld)
     {
-        if (src.Xform.MapID != destXform.MapID)
+        if (!_zRadiation.TryGetLevelDiff(src.Xform.MapUid, destXform.MapUid, out var dz)
+            || Math.Abs(dz) > ZLevelRadiationSystem.GammaMaxZLevels)
             return 0f;
 
-        var dist = Math.Max((destWorld - src.WorldPosition).Length(), 0.5f);
+        var delta = destWorld - src.WorldPosition;
+        var vert = dz * ZLevelRadiationSystem.GammaLevelHeight;
+        var dist = Math.Max(MathF.Sqrt(delta.LengthSquared() + vert * vert), 0.5f);
         var rads = src.Intensity / dist;
         if (dist > src.Source.GammaTerminalDecayDistance)
             rads -= src.Source.GammaTerminalDecaySlope * (dist - src.Source.GammaTerminalDecayDistance);
 
         if (rads < 0.01f)
             return 0f;
+
+        if (dz != 0)
+            return _zRadiation.CastGamma(dz, src.Xform.MapUid!.Value, src.Xform.MapID, src.WorldPosition, destWorld,rads);
 
         var mapId = destXform.MapID;
 
@@ -99,7 +105,7 @@ public sealed partial class GammaRadiationSystem
         return rads;
     }
 
-    private float Gridcast(EntityUid gridUid,MapGridComponent grid, float rads, in GammaSourceData src,TransformComponent destXform, Vector2 destWorld)
+    private float Gridcast(EntityUid gridUid,  MapGridComponent grid, float rads, in GammaSourceData src, TransformComponent destXform, Vector2 destWorld)
     {
         if (!_resistanceQuery.TryComp(gridUid, out var resistance))
             return rads;
