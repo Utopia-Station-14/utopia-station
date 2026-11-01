@@ -80,7 +80,7 @@
     sprite: Structures/Windows/window-base.rsi
     layers:
     - state: wall-0
-      map: ["enum.WallVisualLayers.Base"]
+      # map: ["enum.WallVisualLayers.Base"]
   - type: Icon
     sprite: Structures/Windows/window-base.rsi
     state: wall-0

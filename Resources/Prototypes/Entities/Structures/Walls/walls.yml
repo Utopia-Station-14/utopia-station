@@ -407,9 +407,6 @@
       - &SpawnPlasteel !type:SpawnEntitiesBehavior
         spawn:
           SheetPlasteel1: *BaseWallSpawn
-  - type: IconSmooth
-    key: walls
-    base: reinf_over
   - type: Appearance
   - type: GenericVisualizer
     visuals:

@@ -62,13 +62,13 @@
     stackType: Plasma
     baseLayer: base
     layerStates:
-    - plasma
-    - plasma_2
-    - plasma_3
+    - phoron
+    - phoron_2
+    - phoron_3
   - type: Sprite
-    state: plasma_3
+    state: phoron_3
     layers:
-    - state: plasma_3
+    - state: phoron_3
       map: ["base"]
   - type: Item
     heldPrefix: plasma
