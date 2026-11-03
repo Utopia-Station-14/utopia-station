@@ -1,0 +1,47 @@
+- type: guideEntry
+  id: UtopiaRuleset
+  name: utopia-guide-entry-ruleset
+  priority: 0
+  ruleEntry: true
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/MainRuleset.xml"
+  children:
+  - UtopiaRule0
+  - UtopiaRule1
+  - UtopiaRule2
+  - UtopiaRule3
+  - UtopiaRule4
+
+- type: guideEntry
+  id: UtopiaRule0
+  name: utopia-guide-entry-rule0
+  priority: 1
+  ruleEntry: true
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/Rule0.xml"
+
+- type: guideEntry
+  id: UtopiaRule1
+  name: utopia-guide-entry-rule1
+  priority: 2
+  ruleEntry: true
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/Rule1.xml"
+
+- type: guideEntry
+  id: UtopiaRule2
+  name: utopia-guide-entry-rule2
+  priority: 3
+  ruleEntry: true
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/Rule2.xml"
+
+- type: guideEntry
+  id: UtopiaRule3
+  name: utopia-guide-entry-rule3
+  priority: 4
+  ruleEntry: true
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/Rule3.xml"
+
+- type: guideEntry
+  id: UtopiaRule4
+  name: utopia-guide-entry-rule4
+  priority: 5
+  ruleEntry: true
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/Rule4.xml"
