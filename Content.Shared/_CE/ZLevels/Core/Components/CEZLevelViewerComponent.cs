@@ -6,6 +6,8 @@
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Content.Shared.DoAfter;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared._CE.ZLevels.Core.Components;
 
@@ -34,4 +36,11 @@ public sealed partial class CEZLevelViewerComponent : Component
     public EntityUid? ActionEntity;
 
     #endregion
+
+    public float LookUpDelay = 0.5f; // Utopia-Tweak : Z-Levels?
 }
+
+// Utopia-Tweak : Z-Levels?
+[Serializable, NetSerializable]
+public sealed partial class CELookUpDoAfterEvent : SimpleDoAfterEvent;
+// Utopia-Tweak : Z-Levels?

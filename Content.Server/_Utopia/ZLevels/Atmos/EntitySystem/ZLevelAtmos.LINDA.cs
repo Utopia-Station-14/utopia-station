@@ -10,6 +10,8 @@ using Content.Shared.Maps;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Configuration;
+using Content.Shared._Utopia.CCVar;
 
 namespace Content.Server.Atmos.EntitySystems;
 
@@ -21,7 +23,6 @@ public sealed partial class AtmosphereSystem
     [Dependency] private ZLevelAtmosSystem _zGas = default!;
 
     private readonly float[] _zFlows = new float[Atmospherics.TotalNumberOfGases];
-    private const int ZMixtureMaxDepth = 10; // <see cref="RespiratorSystem.cs"/> <seealso cref="BarotraumaSystem.cs"/>
     private const bool GoUp = false;
     private const int ZCeilingSearchRadius = 8;
     private const int ZCeilingRescanCycles = 20;
@@ -716,7 +717,7 @@ public sealed partial class AtmosphereSystem
 
         var worldPos = _transformSystem.GetWorldPosition(xform);
 
-        for (var i = 0; i < ZMixtureMaxDepth; i++)
+        for (var i = 0; i < _cfg.GetCVar(UCCVars.UtopiaMaxZLevelsProcessUpDown); i++)
         {
             if (!_zLevels.TryMapOffset(currentMap, -1, out var below))
                 return null;

@@ -6,6 +6,7 @@
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared.Gravity;
 using Content.Shared.Throwing;
+using Robust.Shared.Map;
 using Robust.Shared.Physics.Components;
 
 namespace Content.Shared._CE.ZLevels.Core.EntitySystems;
@@ -46,7 +47,7 @@ public abstract partial class CESharedZLevelsSystem
             if (!ZPhysicsQuery.TryComp(uid, out var zPhysicsComponent) ||
                 !_transformQuery.TryComp(uid, out var xform) ||
                 !_physicsQuery.TryComp(uid, out var physics) ||
-                !IsGravityEnabled(uid))
+                !HasGravityBelow(uid) && !IsGravityEnabled(uid))
             {
                 _activeBodies.RemoveAt(i);
                 continue;
@@ -201,6 +202,30 @@ public abstract partial class CESharedZLevelsSystem
             return !_gravity.IsWeightless((uid, grav));
 
         return true;
+    }
+
+    public bool HasGravityBelow(EntityUid uid)
+    {
+        var xform = Transform(uid);
+        if (xform.MapUid is not { } currentMapUid)
+            return false;
+
+        if (!TryMapDown(currentMapUid, out var belowMapUid))
+            return false;
+
+        if (TryComp<GravityComponent>(belowMapUid.Owner, out var mapGravity) && mapGravity.Enabled)
+            return true;
+
+        var belowMapId = _transform.GetMapId(belowMapUid.Owner);
+        var belowCoords = new MapCoordinates(_transform.GetWorldPosition(xform), belowMapId);
+
+        if (_map.TryFindGridAt(belowCoords, out var belowGridUid, out _))
+        {
+            if (TryComp<GravityComponent>(belowGridUid, out var gridGravity) && gridGravity.Enabled)
+                return true;
+        }
+
+        return false;
     }
 }
 

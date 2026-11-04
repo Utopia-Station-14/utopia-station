@@ -14,6 +14,16 @@ public record struct SpreadNeighborsEvent
     public ValueList<(MapGridComponent Grid, TileRef Tile)> NeighborFreeTiles;
     public ValueList<EntityUid> Neighbors;
 
+    // Utopia-Tweak : Z-Levels
+    public ValueList<(MapGridComponent Grid, TileRef Tile)> ZDownFreeTiles;
+
+    public ValueList<EntityUid> ZDownNeighbors;
+
+    public ValueList<(MapGridComponent Grid, TileRef Tile)> ZUpFreeTiles;
+
+    public ValueList<EntityUid> ZUpNeighbors;
+    // Utopia-Tweak : Z-Levels
+
     /// <summary>
     /// How many updates allowed are remaining.
     /// Subscribers can handle as they wish.

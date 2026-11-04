@@ -10,17 +10,20 @@ using Content.Shared.Ghost.Components;
 using Content.Shared.Maps;
 using JetBrains.Annotations;
 using Robust.Shared.Map;
+using Content.Shared.DoAfter;
 
 namespace Content.Shared._CE.ZLevels.Core.EntitySystems;
 
 public abstract partial class CESharedZLevelsSystem
 {
     [Dependency] protected ITileDefinitionManager TilDefMan = null!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
 
     private void InitializeView()
     {
         SubscribeLocalEvent<CEZLevelViewerComponent, MoveEvent>(OnViewerMove);
         SubscribeLocalEvent<CEZLevelViewerComponent, CEToggleZLevelLookUpAction>(OnToggleLookUp);
+        SubscribeLocalEvent<CEZLevelViewerComponent, CELookUpDoAfterEvent>(OnLookUpDoAfter); // Utopia-Tweak : Z-Levels?
     }
 
     protected virtual void OnViewerMove(Entity<CEZLevelViewerComponent> ent, ref MoveEvent args)
@@ -45,15 +48,58 @@ public abstract partial class CESharedZLevelsSystem
 
         args.Handled = true;
 
-        if (HasOpaqueAbove(ent) && !HasComp<GhostComponent>(ent.Owner))
+        // Utopia-Tweak : Z-Levels?
+        if (ent.Comp.LookUp)
+        {
+            ent.Comp.LookUp = false;
+            DirtyField(ent, ent.Comp, nameof(CEZLevelViewerComponent.LookUp));
+            return;
+        }
+
+        var isGhost = HasComp<GhostComponent>(ent.Owner);
+
+        if (!isGhost && HasOpaqueAbove(ent))
         {
             _popup.PopupEntity(Loc.GetString("ce-zlevel-look-up-fail"), ent, ent);
             return;
         }
 
-        ent.Comp.LookUp = !ent.Comp.LookUp;
+        if (isGhost)
+        {
+            ent.Comp.LookUp = true;
+            DirtyField(ent, ent.Comp, nameof(CEZLevelViewerComponent.LookUp));
+            return;
+        }
+
+        var doAfterArgs = new DoAfterArgs(EntityManager, ent, ent.Comp.LookUpDelay, new CELookUpDoAfterEvent(), ent)
+        {
+            BreakOnMove = false,
+            BreakOnDamage = true,
+            NeedHand = false,
+        };
+
+        _doAfter.TryStartDoAfter(doAfterArgs);
+        // Utopia-Tweak : Z-Levels?
+    }
+
+    // Utopia-Tweak : Z-Levels?
+    private void OnLookUpDoAfter(Entity<CEZLevelViewerComponent> ent, ref CELookUpDoAfterEvent args)
+    {
+        if (args.Cancelled || args.Handled)
+            return;
+
+        args.Handled = true;
+
+        if (HasOpaqueAbove(ent))
+        {
+            _popup.PopupEntity(Loc.GetString("ce-zlevel-look-up-fail"), ent, ent);
+            return;
+        }
+
+        ent.Comp.LookUp = true;
         DirtyField(ent, ent.Comp, nameof(CEZLevelViewerComponent.LookUp));
     }
+    // Utopia-Tweak : Z-Levels?
 
     public bool HasOpaqueAbove(EntityUid ent, Entity<CEZMapComponent?>? currentMapUid = null)
     {

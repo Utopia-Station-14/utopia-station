@@ -36,6 +36,7 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private TurfSystem _turf = default!;
     [Dependency] private InventorySystem _inventory = default!; // Utopia-Tweak : Stains
+    [Dependency] private SpreaderSystem _spreader = default!; // Utopia-Tweak : Z-Levels
 
     [Dependency] private EntityQuery<PuddleComponent> _puddleQuery = default!;
     [Dependency] private EntityQuery<EvaporationSparkleComponent> _evaporationSparklesQuery = default!;
@@ -90,9 +91,42 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
     }
     // Utopia-Tweak : Stains
 
+    // Utopia-Tweak : Z-Levels
+    private bool TryFallThrough(Entity<PuddleComponent> entity)
+    {
+        var xform = Transform(entity);
+        if (xform.GridUid is not { } gridUid || !TryComp<MapGridComponent>(gridUid, out var grid))
+            return false;
+
+        var indices = _map.TileIndicesFor(gridUid, grid, xform.Coordinates);
+        var tileRef = _map.GetTileRef(gridUid, grid, indices);
+
+        if (!tileRef.Tile.IsEmpty && !_turf.IsSpace(tileRef))
+            return false;
+
+        if (!_spreader.TryFindDropTile(gridUid, grid, indices, out _, out _, out var drop))
+            return false;
+
+        if (_solutionContainerSystem.ResolveSolution(entity.Owner, entity.Comp.SolutionName, ref entity.Comp.Solution, out var solution)
+            && solution.Volume > FixedPoint2.Zero)
+        {
+            var all = _solutionContainerSystem.SplitSolution(entity.Comp.Solution.Value, solution.Volume);
+            TrySpillAt(drop, all, out _, false);
+        }
+
+        QueueDel(entity);
+        return true;
+    }
+    // Utopia-Tweak : Z-Levels
+
     // TODO: This can be predicted once https://github.com/space-wizards/RobustToolbox/pull/5849 is merged
     private void OnPuddleSpread(Entity<PuddleComponent> entity, ref SpreadNeighborsEvent args)
     {
+        // Utopia-Tweak : Z-Levels
+        if (TryFallThrough(entity))
+            return;
+        // Utopia-Tweak : Z-Levels
+
         // Overflow is the source of the overflowing liquid. This contains the excess fluid above overflow limit (20u)
         var overflow = GetOverflowSolution(entity.Owner, entity.Comp);
 
@@ -101,6 +135,49 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
             RemCompDeferred<ActiveEdgeSpreaderComponent>(entity);
             return;
         }
+
+        // Utopia-Tweak : Z-Levels
+        var dropCount = args.ZDownFreeTiles.Count + args.ZDownNeighbors.Count;
+        if (dropCount > 0 && args.Updates > 0)
+        {
+            var dropAmount = overflow.Volume / dropCount;
+
+            foreach (var (_, dropTile) in args.ZDownFreeTiles)
+            {
+                if (args.Updates <= 0)
+                    break;
+
+                TrySpillAt(dropTile, overflow.SplitSolution(dropAmount), out _, false);
+                args.Updates--;
+            }
+
+            foreach (var below in args.ZDownNeighbors)
+            {
+                if (args.Updates <= 0)
+                    break;
+
+                if (!_puddleQuery.HasComponent(below))
+                    continue;
+
+                TryAddSolution(below, overflow.SplitSolution(dropAmount), false);
+                args.Updates--;
+            }
+
+            if (overflow.Volume == FixedPoint2.Zero)
+            {
+                RemCompDeferred<ActiveEdgeSpreaderComponent>(entity);
+                return;
+            }
+
+            if (args.Updates <= 0)
+            {
+                if (_solutionContainerSystem.ResolveSolution(entity.Owner, entity.Comp.SolutionName, ref entity.Comp.Solution))
+                    _solutionContainerSystem.TryAddSolution(entity.Comp.Solution.Value, overflow);
+
+                return;
+            }
+        }
+        // Utopia-Tweak : Z-Levels
 
         // For overflows, we never go to a fully evaporative tile just to avoid continuously having to mop it.
 
@@ -540,6 +617,11 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
         // If space return early, let that spill go out into the void
         if (tileRef.Tile.IsEmpty || _turf.IsSpace(tileRef))
         {
+            // Utopia-Tweak : Z-Levels
+            if (_spreader.TryFindDropTile(tileRef.GridUid, tileRef.GridIndices, out var dropTile))
+                return TrySpillAt(dropTile, solution, out puddleUid, sound, tileReact);
+            // Utopia-Tweak : Z-Levels
+
             puddleUid = EntityUid.Invalid;
             return false;
         }

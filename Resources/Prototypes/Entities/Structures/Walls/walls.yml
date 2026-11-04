@@ -54,6 +54,8 @@
   - type: CEZPhysics
   - type: CEZLevelHighGround
   - type: CEZGridConnector
+  - type: CEGridStabilitySupport
+    supportStrength: 100
   # Utopia-Tweak-end
 
 - type: entity

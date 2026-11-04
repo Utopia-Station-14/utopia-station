@@ -1,11 +1,13 @@
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
+using Content.Server._CE.ZLevels.Core;
 using Content.Shared.DeviceNetwork;
 using Content.Shared.DeviceNetwork.Components;
 using Content.Shared.DeviceNetwork.Events;
 using Content.Shared.DeviceNetwork.Systems;
 using Content.Shared.Examine;
 using JetBrains.Annotations;
+using Robust.Shared.Map;
 using Robust.Shared.Random;
 
 namespace Content.Server.DeviceNetwork.Systems
@@ -21,6 +23,7 @@ namespace Content.Server.DeviceNetwork.Systems
         [Dependency] private SharedTransformSystem _transformSystem = default!;
         [Dependency] private DeviceListSystem _deviceLists = default!;
         [Dependency] private NetworkConfiguratorSystem _configurator = default!;
+        [Dependency] private CEZLevelsSystem _zLevel = default!; // Utopia-Tweak : ZLevels
 
         private readonly Dictionary<int, DeviceNet> _networks = new(4);
         private readonly Queue<DeviceNetworkPacketEvent> _queueA = new();
@@ -342,10 +345,33 @@ namespace Content.Server.DeviceNetwork.Systems
 
             var senderPos = _transformSystem.GetWorldPosition(xform);
 
+            // Utopia-Tweak : ZLevels
+            var allowedMaps = new HashSet<MapId> { xform.MapID };
+            if (xform.MapUid is { } senderMapUid && _zLevel.TryGetMapNetwork(senderMapUid, out var senderNet))
+            {
+                foreach (var zMapUid in senderNet.Comp.SortedZLevels)
+                {
+                    if (!zMapUid.IsValid())
+                        continue;
+
+                    var zMapId = _transformSystem.GetMapId(zMapUid);
+                    if (zMapId != MapId.Nullspace)
+                    {
+                        allowedMaps.Add(zMapId);
+                    }
+                }
+            }
+            // Utopia-Tweak : ZLevels
+
             foreach (var connection in connections)
             {
-                if (connection.Owner == packet.Sender)
+                // Utopia-Tweak : ZLevels
+                if (connection.Owner == packet.Sender || Deleted(connection.Owner))
                     continue;
+
+                if (!allowedMaps.Contains(Transform(connection.Owner).MapID))
+                    continue;
+                // Utopia-Tweak : ZLevels
 
                 BeforePacketSentEvent beforeEv = new(packet.Sender, xform, senderPos, connection.NetIdEnum.ToString(), packet.Frequency);
                 RaiseLocalEvent(connection.Owner, beforeEv, false);

@@ -1,3 +1,4 @@
+using Content.Shared._Utopia.ZLevels;
 using Content.Shared.Power.EntitySystems;
 using JetBrains.Annotations;
 using Robust.Shared.Utility;
@@ -8,7 +9,7 @@ public abstract partial class SharedOreSiloSystem : EntitySystem
 {
     [Dependency] private SharedMaterialStorageSystem _materialStorage = default!;
     [Dependency] private SharedPowerReceiverSystem _powerReceiver = default!;
-    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private ZLevelsExtensions _zLevel = default!; // Utopia-Tweak : ZLevels
 
     [Dependency] private EntityQuery<OreSiloClientComponent> _clientQuery = default!;
 
@@ -155,10 +156,10 @@ public abstract partial class SharedOreSiloSystem : EntitySystem
         if (!_powerReceiver.IsPowered(silo.Owner))
             return false;
 
-        if (_transform.GetGrid(client) != _transform.GetGrid(silo.Owner))
+        if (!TryComp(client, out TransformComponent? clientXform)) // Utopia-Tweak : ZLevels
             return false;
 
-        if (!_transform.InRange((silo.Owner, silo.Comp2), client, silo.Comp1.Range))
+        if (!_zLevel.InRange((silo.Owner, silo.Comp2), (client, clientXform), silo.Comp1.Range)) // Utopia-Tweak : ZLevels
             return false;
 
         return true;
