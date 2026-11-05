@@ -5,13 +5,13 @@ using Content.Shared.Cargo.Prototypes;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
-namespace Content.Shared._Utopia.Economy;
+namespace Content.Shared._Utopia.Economy.Systems;
 
 public abstract partial class SharedEconomySystem : EntitySystem
 {
     [Dependency] protected IRobustRandom Random = default!;
 
-    protected readonly List<BankAccount> Accounts = new();
+    protected readonly List<BankAccount> Accounts = [];
 
     protected BankAccount CreateAccount(int accountId = default, int startingBalance = 0)
     {
@@ -88,7 +88,7 @@ public abstract partial class SharedEconomySystem : EntitySystem
         return account.Balance;
     }
 
-    public bool ToggleAccount(BankAccount bankAccount)
+    public static bool ToggleAccount(BankAccount bankAccount)
     {
         return !bankAccount.IsBlocked;
     }

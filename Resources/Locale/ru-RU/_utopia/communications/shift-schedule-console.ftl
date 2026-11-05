@@ -28,17 +28,8 @@ shift-schedule-announcement =
 
 shift-schedule-announcement-no-description =
     Текущий пункт расписания: {$name}
-    Подробности не подготовлены.
+    Подробности не предоставлены.
 
-shift-schedule-advance-announcement =
-    Скоро по расписанию: {$name}
-    {$description}
-
-shift-schedule-advance-no-description =
-    Скоро по расписанию: {$name}
-    Подробности не подготовлены.
-
-shift-schedule-no-access = Недостаточно доступа для изменения расписания.
 shift-schedule-invalid-entry = Расписание составлено некорректно.
 shift-schedule-entry-missing = Этот пункт расписания уже не существует.
 shift-schedule-limit-reached = Достигнут лимит пунктов расписания.

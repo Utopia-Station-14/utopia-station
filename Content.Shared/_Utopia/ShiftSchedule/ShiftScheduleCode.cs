@@ -11,11 +11,12 @@ namespace Content.Shared._Utopia.ShiftSchedule;
 
 public static class ShiftScheduleCode
 {
-    public const int MaxEntries = 30;
+    public const int MaxEntries = 45;
     public const int MaxTitleLength = 80;
     public const int MaxDescriptionLength = 500;
-    public const int MaxTimeSeconds = 99 * 3600 + 59 * 60 + 59;
-    public const int MaxCodeLength = 128 * 1024;
+    public const int MinTimeSeconds = 15;
+    public const int MaxTimeSeconds = 36000;
+    public const int MaxCodeLength = 131072;
 
     public static string Encode(IEnumerable<ShiftScheduleEntryState> entries)
     {

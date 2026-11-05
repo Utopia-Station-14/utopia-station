@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 using Content.Client.UserInterface.Fragments;
-using Content.Shared._Utopia.Economy;
+using Content.Shared._Utopia.Economy.Messages;
 using Content.Shared.CartridgeLoader;
 using Robust.Client.UserInterface;
 

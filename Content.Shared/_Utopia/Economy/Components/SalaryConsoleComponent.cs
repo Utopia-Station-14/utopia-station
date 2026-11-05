@@ -2,12 +2,12 @@ using Content.Shared.StationRecords;
 using Robust.Shared.Audio;
 using Robust.Shared.Serialization;
 
-namespace Content.Shared._Utopia.Economy;
+namespace Content.Shared._Utopia.Economy.Components;
 
 [RegisterComponent]
 public sealed partial class SalaryConsoleComponent : Component
 {
-    public const string BudgetCardSlotId = "BankCardSlot";
+    public const string BudgetCardSlotId = "depcard";
 
     [ViewVariables]
     public uint? ActiveKey;

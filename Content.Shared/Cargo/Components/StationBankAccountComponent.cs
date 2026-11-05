@@ -1,5 +1,5 @@
-using System.Linq;
 using Content.Shared._Utopia.Economy;
+using Content.Shared._Utopia.Economy.Systems;
 using Content.Shared.Cargo.Prototypes;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;

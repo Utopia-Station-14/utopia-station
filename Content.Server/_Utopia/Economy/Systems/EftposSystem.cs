@@ -1,5 +1,7 @@
 using Content.Server.Hands.Systems;
-using Content.Shared._Utopia.Economy;
+using Content.Shared._Utopia.Economy.Components;
+using Content.Shared._Utopia.Economy.Messages;
+using Content.Shared._Utopia.Economy.Systems;
 using Content.Shared.Access.Components;
 using Content.Shared.Hands.Components;
 using Content.Shared.Interaction;
@@ -7,7 +9,7 @@ using Content.Shared.Popups;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
 
-namespace Content.Server._Utopia.Economy;
+namespace Content.Server._Utopia.Economy.Systems;
 
 public sealed partial class EftposSystem : EntitySystem
 {
@@ -17,14 +19,7 @@ public sealed partial class EftposSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popupSystem = default!;
     [Dependency] private HandsSystem _handsSystem = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<EftposComponent, EftposLockMessage>(OnLock);
-        SubscribeLocalEvent<EftposComponent, InteractUsingEvent>(OnInteractUsing);
-    }
-
+    [SubscribeLocalEvent]
     private void OnInteractUsing(Entity<EftposComponent> ent, ref InteractUsingEvent args)
     {
         if (ent.Comp.BankAccountId == null || !TryComp(args.Used, out BankCardComponent? bankCard)
@@ -52,6 +47,7 @@ public sealed partial class EftposSystem : EntitySystem
         }
     }
 
+    [SubscribeLocalEvent]
     private void OnLock(Entity<EftposComponent> ent, ref EftposLockMessage args)
     {
         if (!HasComp<HandsComponent>(args.Actor))

@@ -1,13 +1,12 @@
 using System.Linq;
 using System.Numerics;
-using Content.Server._Utopia.Economy;
+using Content.Server._Utopia.Economy.Systems;
 using Content.Server.Access.Systems;
 using Content.Server.Cargo.Systems;
 using Content.Server.Stack;
 using Content.Server.VendingMachines.Components;
 using Content.Server.Vocalization.Systems;
-using Content.Shared._Utopia.Economy;
-using Content.Shared.Advertise.Components;
+using Content.Shared._Utopia.Economy.Components;
 using Content.Shared.Cargo;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Emp;

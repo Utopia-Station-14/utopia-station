@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Content.Shared.Speech.Components;
+using Robust.Shared.Random;
 
 namespace Content.Shared.Speech.EntitySystems;
 
@@ -10,6 +11,25 @@ public sealed partial class LizardAccentSystem : RelayAccentSystem<LizardAccentC
     private static readonly Regex RegexInternalX = new(@"(\w)x");
     private static readonly Regex RegexLowerEndX = new(@"\bx([\-|r|R]|\b)");
     private static readonly Regex RegexUpperEndX = new(@"\bX([\-|r|R]|\b)");
+
+    // Utopia-Tweak : Localization
+    private static readonly Regex RegexLowerC = new Regex("с+");
+    private static readonly Regex RegexUpperC = new Regex("С+");
+    private static readonly Regex RegexLowerZ = new Regex("з+");
+    private static readonly Regex RegexUpperZ = new Regex("З+");
+    private static readonly Regex RegexLowerSh = new Regex("ш+");
+    private static readonly Regex RegexUpperSh = new Regex("Ш+");
+    private static readonly Regex RegexLowerCh = new Regex("ч+");
+    private static readonly Regex RegexUpperCh = new Regex("Ч+");
+    private static readonly List<string> ReplacementsSs = new List<string> { "сс", "ссс" };
+    private static readonly List<string> ReplacementsSsUpper = new List<string> { "СС", "ССС" };
+    private static readonly List<string> ReplacementsSh = new List<string> { "шш", "шшш" };
+    private static readonly List<string> ReplacementsShUpper = new List<string> { "ШШ", "ШШШ" };
+    private static readonly List<string> ReplacementsCh = new List<string> { "щщ", "щщщ" };
+    private static readonly List<string> ReplacementsChUpper = new List<string> { "ЩЩ", "ЩЩЩ" };
+    // Utopia-Tweak : Localization
+
+    [Dependency] private IRobustRandom _random = default!; // Corvax-Localization
 
     public override string Accentuate(string message, Entity<LizardAccentComponent>? ent = null)
     {
@@ -24,6 +44,16 @@ public sealed partial class LizardAccentSystem : RelayAccentSystem<LizardAccentC
         // eckS
         message = RegexUpperEndX.Replace(message, "ECKS$1");
 
+        // Utopia-Tweak : Localization
+        message = RegexLowerC.Replace(message, _random.Pick(ReplacementsSs));
+        message = RegexUpperC.Replace(message, _random.Pick(ReplacementsSsUpper));
+        message = RegexLowerZ.Replace(message, _random.Pick(ReplacementsSs));
+        message = RegexUpperZ.Replace(message, _random.Pick(ReplacementsSsUpper));
+        message = RegexLowerSh.Replace(message, _random.Pick(ReplacementsSh));
+        message = RegexUpperSh.Replace(message, _random.Pick(ReplacementsShUpper));
+        message = RegexLowerCh.Replace(message, _random.Pick(ReplacementsCh));
+        message = RegexUpperCh.Replace(message, _random.Pick(ReplacementsChUpper));
+        // Utopia-Tweak : Localization
         return message;
     }
 }
