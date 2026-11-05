@@ -1,7 +1,7 @@
 using Content.Shared.StationRecords;
 using Robust.Shared.Serialization;
 
-namespace Content.Shared._Utopia.Economy;
+namespace Content.Shared._Utopia.Economy.Messages;
 
 [Serializable, NetSerializable]
 public sealed class SalaryConsoleUserInterfaceState : BoundUserInterfaceState

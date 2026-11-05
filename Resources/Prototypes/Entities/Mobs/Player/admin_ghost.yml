@@ -20,7 +20,7 @@
     - NotGhostnadoWarpable
     - AllowPortalTraversal
     - PreventPortalCollision
-    - UtopiaIgnoreBalanceChecks
+    - UtopiaIgnoreBalanceChecks # Utopia-Tweak : Economy
   - type: Input
     context: "aghost"
   - type: Ghost

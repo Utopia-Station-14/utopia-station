@@ -1,8 +1,8 @@
 using Content.Shared.StationRecords;
 
-namespace Content.Server._Utopia.Economy;
+namespace Content.Shared._Utopia.Economy.Components;
 
-[RegisterComponent, Access(typeof(EconomicRecordsConsoleSystem))]
+[RegisterComponent]
 public sealed partial class EconomicRecordsConsoleComponent : Component
 {
     [ViewVariables]
@@ -11,4 +11,3 @@ public sealed partial class EconomicRecordsConsoleComponent : Component
     [ViewVariables]
     public StationRecordsFilter? Filter;
 }
-

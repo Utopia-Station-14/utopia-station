@@ -1,11 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Content.Server._Utopia.Economy;
+using Content.Server._Utopia.Economy.Systems;
 using Content.Server.Chat.Systems;
 using Content.Server.Containers;
 using Content.Server.Roles;
 using Content.Server.Roles.Jobs;
-using Content.Shared._Utopia.Economy;
+using Content.Shared._Utopia.Economy.Components;
 using Content.Shared.Access;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;

@@ -38,6 +38,12 @@ public sealed partial class SlurredSystem : RelayAccentSystem<SlurredAccentCompo
                     'a' => "ah",
                     'u' => "oo",
                     'c' => "k",
+                    // Utopia-Tweak : Localization
+                    'о' => "а",
+                    'к' => "кх",
+                    'щ' => "шч",
+                    'ц' => "тс",
+                    // Utopia-Tweak : Localization
                     _ => $"{character}",
                 };
 

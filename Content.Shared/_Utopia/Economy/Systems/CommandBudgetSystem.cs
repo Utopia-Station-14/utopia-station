@@ -1,21 +1,16 @@
+using Content.Shared._Utopia.Economy.Components;
 using Content.Shared.Paper;
 using Content.Shared.Station;
 using Content.Shared.Cargo.Components;
 
-namespace Content.Shared._Utopia.Economy;
+namespace Content.Shared._Utopia.Economy.Systems;
 
 public sealed partial class CommandBudgetSystem : SharedEconomySystem
 {
     [Dependency] private PaperSystem _paper = default!;
     [Dependency] private SharedStationSystem _station = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<CommandBudgetPinPaperComponent, MapInitEvent>(OnMapInit);
-    }
-
+    [SubscribeLocalEvent]
     private void OnMapInit(Entity<CommandBudgetPinPaperComponent> ent, ref MapInitEvent args)
     {
         if (!TryComp(_station.GetOwningStation(ent), out StationBankAccountComponent? stationBank))

@@ -9,19 +9,41 @@
     - бла
     - бла
     - бла
-    - динг-донг
-    - динг
-    - донг
-    - жиббер-жаббер
-    - жуббр
     - бле
-    - зиппти
-    - зуп
-    - виббл
-    - воббл
-    - виггл
-    - яда
-    - мех
-    - нех
-    - нах
-    - вах
+    - бле
+    - бле
+    - блю
+    - блю
+    - блю
+
+- type: language
+  parent: BaseVocalLanguage
+  id: SovietInternational
+  roundstart: true
+  uiColor: "#CC0000"
+  speech: !type:Generic
+    obfuscateSyllables: true
+    color: "#CC0000"
+    whisperColor: "#930707"
+    replacement:
+    - vodka
+    - pivo
+    - balalaйka
+    - moroz
+    - ded moroz
+    - чort
+    - kvas
+    - kolbasa
+    - samovar
+    - matrёшka
+    - medvedь
+    - Boris
+    - davaй
+    - poшёл
+    - na zdorovьe
+    - zdrastvyй
+    - kak dela
+    - hleb
+    - sыr
+    - чaшka
+    - Ivan

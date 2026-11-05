@@ -1,5 +1,6 @@
 using Content.Server.Station.Systems;
-using Content.Shared._Utopia.Economy;
+using Content.Shared._Utopia.Economy.Components;
+using Content.Shared._Utopia.Economy.Messages;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.StationRecords;
 using Content.Shared.StationRecords.Events;
@@ -9,7 +10,7 @@ using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 
-namespace Content.Server._Utopia.Economy;
+namespace Content.Server._Utopia.Economy.Systems;
 
 public sealed partial class SalaryConsoleSystem : EntitySystem
 {
@@ -50,8 +51,7 @@ public sealed partial class SalaryConsoleSystem : EntitySystem
 
     private void OnFiltersChanged(Entity<SalaryConsoleComponent> ent, ref SetStationRecordFilter msg)
     {
-        if (ent.Comp.Filter == null ||
-            ent.Comp.Filter.Type != msg.Type || ent.Comp.Filter.Value != msg.Value)
+        if (ent.Comp.Filter == null || ent.Comp.Filter.Type != msg.Type || ent.Comp.Filter.Value != msg.Value)
         {
             ent.Comp.Filter = new StationRecordsFilter(msg.Type, msg.Value);
             UpdateUiState(ent);

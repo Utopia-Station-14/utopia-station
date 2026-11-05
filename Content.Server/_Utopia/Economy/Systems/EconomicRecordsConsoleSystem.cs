@@ -1,12 +1,15 @@
 using Content.Server.Station.Systems;
 using Content.Shared._Utopia.Economy;
+using Content.Shared._Utopia.Economy.Components;
+using Content.Shared._Utopia.Economy.Messages;
+using Content.Shared._Utopia.Economy.Systems;
 using Content.Shared.StationRecords;
 using Content.Shared.StationRecords.Events;
 using Content.Shared.StationRecords.Components;
 using Content.Shared.StationRecords.Systems;
 using Robust.Server.GameObjects;
 
-namespace Content.Server._Utopia.Economy;
+namespace Content.Server._Utopia.Economy.Systems;
 
 public sealed partial class EconomicRecordsConsoleSystem : EntitySystem
 {
@@ -63,7 +66,7 @@ public sealed partial class EconomicRecordsConsoleSystem : EntitySystem
                 && bankCard.AccountId.HasValue
                 && _bankCard.TryGetAccount(bankCard.AccountId.Value, out var account))
                 {
-                    account.IsBlocked = _bankCard.ToggleAccount(account);
+                    account.IsBlocked = SharedEconomySystem.ToggleAccount(account);
                 }
             }
         }

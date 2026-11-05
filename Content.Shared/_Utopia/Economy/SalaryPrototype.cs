@@ -9,7 +9,7 @@ public sealed partial class SalaryPrototype : IPrototype
     public string ID { get; private set; } = default!;
 
     [DataField]
-    public Dictionary<string, SalaryEntry> Salaries = new();
+    public Dictionary<string, SalaryEntry> Salaries = [];
 }
 
 [DataDefinition, Serializable]

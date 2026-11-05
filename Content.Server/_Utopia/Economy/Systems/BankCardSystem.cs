@@ -8,7 +8,9 @@ using Content.Server.Roles.Jobs;
 using Content.Server.Station.Systems;
 using Content.Shared._Utopia.CCVar;
 using Content.Shared._Utopia.Economy;
-
+using Content.Shared._Utopia.Economy.Components;
+using Content.Shared._Utopia.Economy.Messages;
+using Content.Shared._Utopia.Economy.Systems;
 using Content.Shared.Cargo.Components;
 using Content.Shared.GameTicking;
 using Content.Shared.Mind;
@@ -19,7 +21,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
-namespace Content.Server._Utopia.Economy;
+namespace Content.Server._Utopia.Economy.Systems;
 
 public sealed partial class BankCardSystem : SharedEconomySystem
 {

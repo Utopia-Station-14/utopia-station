@@ -1,5 +1,8 @@
-using Content.Server._Utopia.Economy;
+using Content.Server._Utopia.Economy.Systems;
 using Content.Shared._Utopia.Economy;
+using Content.Shared._Utopia.Economy.Components;
+using Content.Shared._Utopia.Economy.Messages;
+using Content.Shared._Utopia.Economy.Systems;
 using Content.Shared.CartridgeLoader;
 using Content.Shared.PDA;
 using Robust.Shared.Timing;
@@ -131,8 +134,8 @@ public sealed partial class BankCartridgeSystem : EntitySystem
         senderAccount.Balance -= args.Amount;
         targetAccount.Balance += args.Amount;
 
-        senderAccount.History ??= new List<TransactionsHistory>();
-        targetAccount.History ??= new List<TransactionsHistory>();
+        senderAccount.History ??= [];
+        targetAccount.History ??= [];
 
         var transferType = Loc.GetString("bank-transfer");
 
@@ -271,7 +274,7 @@ public sealed partial class BankCartridgeSystem : EntitySystem
             state.Balance = account.Balance;
             state.AccountId = account.AccountId;
             state.OwnerName = account.Name;
-            state.History = account.History ?? new List<TransactionsHistory>();
+            state.History = account.History ?? [];
             state.IsBlocked = account.IsBlocked;
             state.NotificationOn = component.NotificationOn;
         }

@@ -1,5 +1,5 @@
 using Content.Shared.StationRecords;
-using Content.Shared._Utopia.Economy;
+using Content.Shared._Utopia.Economy.Messages;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 

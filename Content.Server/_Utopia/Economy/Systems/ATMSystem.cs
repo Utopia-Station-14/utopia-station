@@ -1,5 +1,6 @@
 using Content.Server.Stack;
-using Content.Shared._Utopia.Economy;
+using Content.Shared._Utopia.Economy.Components;
+using Content.Shared._Utopia.Economy.Messages;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;
@@ -14,7 +15,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
-namespace Content.Server._Utopia.Economy;
+namespace Content.Server._Utopia.Economy.Systems;
 
 public sealed partial class ATMSystem : EntitySystem
 {

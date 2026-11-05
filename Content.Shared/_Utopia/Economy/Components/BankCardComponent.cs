@@ -2,7 +2,7 @@ using Content.Shared.Cargo.Prototypes;
 using Robust.Shared.Prototypes;
 using Robust.Shared.GameStates;
 
-namespace Content.Shared._Utopia.Economy;
+namespace Content.Shared._Utopia.Economy.Components;
 
 [RegisterComponent, NetworkedComponent]
 public sealed partial class BankCardComponent : Component

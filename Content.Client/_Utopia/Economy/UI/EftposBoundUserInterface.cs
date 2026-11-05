@@ -1,3 +1,4 @@
+using Content.Shared._Utopia.Economy.Messages;
 using JetBrains.Annotations;
 
 namespace Content.Client._Utopia.Economy.UI;

@@ -30,13 +30,13 @@
   - type: SalaryConsole
   - type: ItemSlots
     slots:
-      BankCardSlot:
+      depcard:
         whitelist:
           tags:
           - UtopiaDepartamentCard
   - type: ContainerContainer
     containers:
-      BankCardSlot: !type:ContainerSlot
+      depcard: !type:ContainerSlot
       board: !type:Container
 
 - type: entity
@@ -184,7 +184,7 @@
     - map: ["enum.WiresVisualLayers.MaintenancePanel"]
       state: generic_panel_open
   - type: AccessReader
-    access: [["Captain"]]
+    access: [ [ "Captain" ], [ "HeadOfPersonnel" ] ]
   - type: ShiftScheduleConsole
   - type: ActivatableUI
     key: enum.ShiftScheduleConsoleUiKey.Key

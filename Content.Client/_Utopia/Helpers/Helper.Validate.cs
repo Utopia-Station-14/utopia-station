@@ -5,7 +5,7 @@ namespace Content.Client._Utopia.Helpers;
 
 public static partial class UtopiaHelper
 {
-    private static readonly Regex LineEditPatternNumbers = new Regex("[^0-9]");
+    private static readonly Regex LineEditPatternNumbers = new("[^0-9]");
 
     public static void ValidateLineEditNumbers(LineEdit lineEdit, int length)
     {

@@ -4,7 +4,6 @@ using Content.Server.GameTicking;
 using Content.Server.Station.Systems;
 using Content.Shared._Utopia.ShiftSchedule;
 using Content.Shared.Access.Components;
-using Content.Shared.Access.Systems;
 using Content.Shared.CCVar;
 using Content.Shared.Chat;
 using Content.Shared.Containers.ItemSlots;
@@ -16,7 +15,6 @@ namespace Content.Server._Utopia.ShiftSchedule;
 
 public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
 {
-    [Dependency] private AccessReaderSystem _accessReader = default!;
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private GameTicker _ticker = default!;
     [Dependency] private IConfigurationManager _configuration = default!;
@@ -68,7 +66,7 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
                 (
                     false,
                     false,
-                    Array.Empty<ShiftScheduleEntryState>(),
+                    [],
                     Loc.GetString("shift-schedule-station-missing")
                 )
             );
@@ -76,8 +74,7 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
             return;
         }
 
-        var canEdit = message.Actor is { Valid: true } user && (!TryComp<AccessReaderComponent>(uid, out var accessReader) ||
-            _accessReader.IsAllowed(user, uid, accessReader));
+        var canEdit = message.Actor is { Valid: true };
 
         UpdateInterface(uid, schedule, canEdit, canEdit ? null : Loc.GetString("shift-schedule-no-access"));
     }
@@ -85,7 +82,7 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnSave(EntityUid uid, ShiftScheduleConsoleComponent component, ShiftScheduleSaveMessage message)
     {
-        if (message.Actor is not { Valid: true } user)
+        if (message.Actor is not { Valid: true })
             return;
 
         if (!TryGetSchedule(uid, out var schedule))
@@ -95,18 +92,11 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
                 (
                     false,
                     false,
-                    Array.Empty<ShiftScheduleEntryState>(),
+                    [],
                     Loc.GetString("shift-schedule-station-missing")
                 )
             );
 
-            return;
-        }
-
-        if (TryComp<AccessReaderComponent>(uid, out var accessReader)
-        && !_accessReader.IsAllowed(user, uid, accessReader))
-        {
-            UpdateInterface(uid, schedule, false, Loc.GetString("shift-schedule-no-access"));
             return;
         }
 
@@ -121,7 +111,7 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
 
         if (title.Length == 0 || title.Length > ShiftScheduleCode.MaxTitleLength
         || description.Length > ShiftScheduleCode.MaxDescriptionLength
-        || message.Time < 0 || message.Time > ShiftScheduleCode.MaxTimeSeconds)
+        || message.Time < ShiftScheduleCode.MinTimeSeconds || message.Time > ShiftScheduleCode.MaxTimeSeconds)
         {
             UpdateInterface(uid, schedule, true, Loc.GetString("shift-schedule-invalid-entry"));
             return;
@@ -169,7 +159,7 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnImportCode(EntityUid uid, ShiftScheduleConsoleComponent component, ShiftScheduleImportCodeMessage message)
     {
-        if (message.Actor is not { Valid: true } user)
+        if (message.Actor is not { Valid: true })
             return;
 
         if (!TryGetSchedule(uid, out var schedule))
@@ -179,18 +169,11 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
                 (
                     false,
                     false,
-                    Array.Empty<ShiftScheduleEntryState>(),
+                    [],
                     Loc.GetString("shift-schedule-station-missing")
                 )
             );
 
-            return;
-        }
-
-        if (TryComp<AccessReaderComponent>(uid, out var accessReader)
-        && !_accessReader.IsAllowed(user, uid, accessReader))
-        {
-            UpdateInterface(uid, schedule, false, Loc.GetString("shift-schedule-no-access"));
             return;
         }
 
@@ -210,8 +193,7 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
         if (args.Slot.ID != ShiftScheduleConsoleComponent.CardSlotId)
             return;
 
-        if (args.User is not { } user || !HasComp<ShiftScheduleCardComponent>(args.Item)
-        || TryComp<AccessReaderComponent>(uid, out var accessReader) && !_accessReader.IsAllowed(user, uid, accessReader))
+        if (args.User != null || !HasComp<ShiftScheduleCardComponent>(args.Item))
         {
             args.Cancelled = true;
         }
@@ -231,7 +213,7 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
                 (
                     false,
                     false,
-                    Array.Empty<ShiftScheduleEntryState>(),
+                    [],
                     Loc.GetString("shift-schedule-station-missing")
                 )
             );
@@ -269,7 +251,7 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
             if (entry.Title is null || entry.Description is null
             || entry.Title.Trim().Length is 0 or > ShiftScheduleCode.MaxTitleLength
             || entry.Description.Trim().Length > ShiftScheduleCode.MaxDescriptionLength
-            || entry.TimeSeconds < 0 || entry.TimeSeconds > ShiftScheduleCode.MaxTimeSeconds)
+            || entry.TimeSeconds < ShiftScheduleCode.MinTimeSeconds || entry.TimeSeconds > ShiftScheduleCode.MaxTimeSeconds)
             {
                 return false;
             }
@@ -283,8 +265,7 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
                 entry.TimeSeconds,
                 entry.Description.Trim())
             {
-                Announced = _ticker.RunLevel == GameRunLevel.InRound &&
-                    TimeSpan.FromSeconds(entry.TimeSeconds) <= elapsed
+                Announced = _ticker.RunLevel == GameRunLevel.InRound && TimeSpan.FromSeconds(entry.TimeSeconds) <= elapsed
             })
             .OrderBy(entry => entry.TimeSeconds)
             .ThenBy(entry => entry.Id)
@@ -309,18 +290,11 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
                 (
                     false,
                     false,
-                    Array.Empty<ShiftScheduleEntryState>(),
+                    [],
                     Loc.GetString("shift-schedule-station-missing")
                 )
             );
 
-            return;
-        }
-
-        if (TryComp<AccessReaderComponent>(uid, out var accessReader)
-        && !_accessReader.IsAllowed(user, uid, accessReader))
-        {
-            UpdateInterface(uid, schedule, false, Loc.GetString("shift-schedule-no-access"));
             return;
         }
 
@@ -346,18 +320,11 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
                 (
                     false,
                     false,
-                    Array.Empty<ShiftScheduleEntryState>(),
+                    [],
                     Loc.GetString("shift-schedule-station-missing")
                 )
             );
 
-            return;
-        }
-
-        if (TryComp<AccessReaderComponent>(uid, out var accessReader) &&
-            !_accessReader.IsAllowed(user, uid, accessReader))
-        {
-            UpdateInterface(uid, schedule, false, Loc.GetString("shift-schedule-no-access"));
             return;
         }
 
@@ -380,18 +347,11 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
                 (
                     false,
                     false,
-                    Array.Empty<ShiftScheduleEntryState>(),
+                    [],
                     Loc.GetString("shift-schedule-station-missing")
                 )
             );
 
-            return;
-        }
-
-        if (TryComp<AccessReaderComponent>(uid, out var accessReader) &&
-            !_accessReader.IsAllowed(user, uid, accessReader))
-        {
-            UpdateInterface(uid, schedule, false, Loc.GetString("shift-schedule-no-access"));
             return;
         }
 
@@ -408,9 +368,8 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
             return;
         }
 
-        Announce(schedule, entry, advance: true);
-        UpdateInterface(uid, schedule, true,
-            Loc.GetString("shift-schedule-announced-in-advance", ("name", entry.Title)));
+        Announce(schedule, entry);
+        UpdateInterface(uid, schedule, true, Loc.GetString("shift-schedule-announced-in-advance", ("name", entry.Title)));
     }
 
     [SubscribeLocalEvent]
@@ -448,21 +407,17 @@ public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
             ? schedule.Entries
                 .Select(entry => new ShiftScheduleEntryState(entry.Id, entry.Title, entry.TimeSeconds, entry.Description))
                 .ToArray()
-            : Array.Empty<ShiftScheduleEntryState>();
+            : [];
 
         _ui.SetUiState(uid, ShiftScheduleConsoleUiKey.Key,
             new ShiftScheduleConsoleInterfaceState(canEdit, schedule.Enabled, entries, status, clear));
     }
 
-    private void Announce(ShiftScheduleComponent schedule, ShiftScheduleEntry entry, bool advance = false)
+    private void Announce(ShiftScheduleComponent schedule, ShiftScheduleEntry entry)
     {
-        var message = advance
-            ? string.IsNullOrWhiteSpace(entry.Description)
+        var message = string.IsNullOrWhiteSpace(entry.Description)
                 ? Loc.GetString("shift-schedule-advance-no-description", ("name", entry.Title))
-                : Loc.GetString("shift-schedule-advance-announcement", ("name", entry.Title), ("description", entry.Description))
-            : string.IsNullOrWhiteSpace(entry.Description)
-                ? Loc.GetString("shift-schedule-announcement-no-description", ("name", entry.Title))
-                : Loc.GetString("shift-schedule-announcement", ("name", entry.Title), ("description", entry.Description));
+                : Loc.GetString("shift-schedule-advance-announcement", ("name", entry.Title), ("description", entry.Description));
 
         var maxLength = _configuration.GetCVar(CCVars.ChatMaxAnnouncementLength);
         message = SharedChatSystem.SanitizeAnnouncement(message, maxLength);

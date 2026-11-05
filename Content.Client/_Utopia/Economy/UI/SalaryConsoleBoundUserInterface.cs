@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
-using Content.Shared._Utopia.Economy;
+using Content.Shared._Utopia.Economy.Messages;
+using Content.Shared._Utopia.Economy.Components;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.StationRecords;
 
@@ -31,16 +32,6 @@ public sealed class SalaryConsoleBoundUserInterface : BoundUserInterface
 
         _menu.OnClose += Close;
         _menu?.OpenCentered();
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        base.Dispose(disposing);
-
-        if (!disposing)
-            return;
-
-        _menu?.Dispose();
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

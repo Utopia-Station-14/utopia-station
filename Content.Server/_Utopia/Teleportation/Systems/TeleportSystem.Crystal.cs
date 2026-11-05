@@ -19,13 +19,7 @@ public sealed partial class TeleportCrystalSystem : EntitySystem
     [Dependency] private StackSystem _stack = default!;
     [Dependency] private SharedContainerSystem _containerSystem = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<TeleportCrystalComponent, ThrowDoHitEvent>(OnThrowIn);
-    }
-
+    [SubscribeLocalEvent]
     private void OnThrowIn(Entity<TeleportCrystalComponent> ent, ref ThrowDoHitEvent args)
     {
         if (ent.Comp.MobOnly && !HasComp<MobStateComponent>(args.Target))
@@ -36,37 +30,37 @@ public sealed partial class TeleportCrystalSystem : EntitySystem
         switch (ent.Comp.CType)
         {
             case CrystalType.Bluespace:
-                {
-                    EnsureComp<RandomTeleportComponent>(ent, out var bcomp);
-                    _teleport.RandomTeleport(target, ent.Comp.SpecialValue, bcomp.DepartureSound, 1);
-                    break;
-                }
+            {
+                EnsureComp<RandomTeleportComponent>(ent, out var bcomp);
+                _teleport.RandomTeleport(target, ent.Comp.SpecialValue, bcomp.DepartureSound, 1);
+                break;
+            }
             case CrystalType.Redspace:
+            {
+                if (HasComp<RedspaceEffectComponent>(target))
+                    return;
+
+                EnsureComp<RedspaceEffectComponent>(target);
+
+                var scale = _scaleVisuals.GetSpriteScale(target);
+                var newScale = scale * ent.Comp.SpecialValue;
+
+                EnsureComp<ItemComponent>(target);
+                _scaleVisuals.SetSpriteScale(target, newScale);
+                _physics.ScaleFixtures(target, ent.Comp.SpecialValue);
+
+                Timer.Spawn(TimeSpan.FromSeconds(ent.Comp.Cooldown), () =>
                 {
-                    if (HasComp<RedspaceEffectComponent>(target))
-                        return;
+                    _scaleVisuals.SetSpriteScale(target, scale);
+                    _physics.ScaleFixtures(target, 1f / ent.Comp.SpecialValue);
+                    _containerSystem.AttachParentToContainerOrGrid((target, Transform(target)));
 
-                    EnsureComp<RedspaceEffectComponent>(target);
+                    RemComp<ItemComponent>(target);
+                    RemComp<RedspaceEffectComponent>(target);
+                });
 
-                    var scale = _scaleVisuals.GetSpriteScale(target);
-                    var newScale = scale * ent.Comp.SpecialValue;
-
-                    EnsureComp<ItemComponent>(target);
-                    _scaleVisuals.SetSpriteScale(target, newScale);
-                    _physics.ScaleFixtures(target, ent.Comp.SpecialValue);
-
-                    Timer.Spawn(TimeSpan.FromSeconds(ent.Comp.Cooldown), () =>
-                    {
-                        _scaleVisuals.SetSpriteScale(target, scale);
-                        _physics.ScaleFixtures(target, 1f / ent.Comp.SpecialValue);
-                        _containerSystem.AttachParentToContainerOrGrid((target, Transform(target)));
-
-                        RemComp<ItemComponent>(target);
-                        RemComp<RedspaceEffectComponent>(target);
-                    });
-
-                    break;
-                }
+                break;
+            }
         }
 
         if (ent.Comp.ConsumeOnThrow)
