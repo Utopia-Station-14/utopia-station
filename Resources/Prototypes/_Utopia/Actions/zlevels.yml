@@ -1,0 +1,29 @@
+- type: entity
+  id: UtopiaActionZLevelsMoving
+  parent: BaseAction
+  name: Move up
+  description: Move up one Z-Level
+  components:
+  - type: Action
+    useDelay: 1
+  - type: Sprite
+    sprite: _CE/Actions/misc.rsi
+    layers:
+      - state: up
+  - type: InstantAction
+    event: !type:UtopiaZLevelsMovingActionEvent
+
+- type: entity
+  id: UtopiaActionZLevelsMovingDown
+  parent: BaseAction
+  name: Move down
+  description: Move down one Z-Level
+  components:
+  - type: Action
+    useDelay: 1
+  - type: Sprite
+    sprite: _CE/Actions/misc.rsi
+    layers:
+      - state: down
+  - type: InstantAction
+    event: !type:UtopiaZLevelsMovingDownActionEvent

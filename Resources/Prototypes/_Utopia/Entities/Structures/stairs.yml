@@ -6,9 +6,8 @@
   - type: CEZLevelHighGround
     stick: true
     heightCurve:
+    - 0.0
     - 1.05
-    - 1.05
-    - 0.1
 
 - type: entity
   id: ZLevelStairStage
@@ -18,9 +17,8 @@
   - type: CEZLevelHighGround
     stick: true
     heightCurve:
+    - 0.0
     - 1.05
-    - 1.05
-    - 0.1
 
 - type: entity
   id: ZLevelStairWhite
@@ -30,9 +28,8 @@
   - type: CEZLevelHighGround
     stick: true
     heightCurve:
+    - 0.0
     - 1.05
-    - 1.05
-    - 0.1
 
 - type: entity
   id: ZLevelStairStageWhite
@@ -42,9 +39,8 @@
   - type: CEZLevelHighGround
     stick: true
     heightCurve:
+    - 0.0
     - 1.05
-    - 1.05
-    - 0.1
 
 - type: entity
   id: ZLevelStairDark
@@ -54,9 +50,8 @@
   - type: CEZLevelHighGround
     stick: true
     heightCurve:
+    - 0.0
     - 1.05
-    - 1.05
-    - 0.1
 
 - type: entity
   id: ZLevelStairStageDark
@@ -66,9 +61,8 @@
   - type: CEZLevelHighGround
     stick: true
     heightCurve:
+    - 0.0
     - 1.05
-    - 1.05
-    - 0.1
 
 - type: entity
   id: ZLevelStairWood
@@ -78,9 +72,8 @@
   - type: CEZLevelHighGround
     stick: true
     heightCurve:
+    - 0.0
     - 1.05
-    - 1.05
-    - 0.1
 
 - type: entity
   id: ZLevelStairStageWood
@@ -90,6 +83,5 @@
   - type: CEZLevelHighGround
     stick: true
     heightCurve:
+    - 0.0
     - 1.05
-    - 1.05
-    - 0.1

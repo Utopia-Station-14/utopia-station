@@ -1,7 +1,10 @@
+using Content.Server._CE.ZLevels.Core;
 using Content.Server.Pinpointer;
+using Content.Shared._Utopia.ZLevels;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Materials.OreSilo;
 using Robust.Server.GameStates;
+using Robust.Shared.Map;
 using Robust.Shared.Player;
 
 namespace Content.Server.Materials;
@@ -13,6 +16,11 @@ public sealed partial class OreSiloSystem : SharedOreSiloSystem
     [Dependency] private NavMapSystem _navMap = default!;
     [Dependency] private PvsOverrideSystem _pvsOverride = default!;
     [Dependency] private SharedUserInterfaceSystem _userInterface = default!;
+    // Utopia-Tweak : ZLevels
+    [Dependency] private SharedTransformSystem _xform = default!;
+    [Dependency] private CEZLevelsSystem _zLevel = default!;
+    [Dependency] private ZLevelsExtensions _zExtention = default!; // Utopia-Tweak : ZLevels
+    // Utopia-Tweak : ZLevels
 
     private const float OreSiloPreloadRangeSquared = 225f; // ~1 screen
 
@@ -30,8 +38,30 @@ public sealed partial class OreSiloSystem : SharedOreSiloSystem
 
         var xform = Transform(ent);
 
-        // Sneakily uses override with TComponent parameter
-        _entityLookup.GetEntitiesInRange(xform.Coordinates, ent.Comp.Range, _clientLookup);
+        // Utopia-Tweak : ZLevels
+        var siloCoord = _xform.GetMapCoordinates(xform);
+        var maps = new HashSet<MapId> { xform.MapID };
+        if (xform.MapUid is { } siloMapUid && _zLevel.TryGetMapNetwork(siloMapUid, out var siloNet))
+        {
+            foreach (var zMapUid in siloNet.Comp.SortedZLevels)
+            {
+                if (!zMapUid.IsValid())
+                    continue;
+
+                var zMapId = _xform.GetMapId(zMapUid);
+                if (zMapId != MapId.Nullspace)
+                {
+                    maps.Add(zMapId);
+                }
+            }
+        }
+
+        foreach (var mapId in maps)
+        {
+            var searchCoord = new MapCoordinates(siloCoord.Position, mapId);
+            _entityLookup.GetEntitiesInRange(searchCoord, ent.Comp.Range, _clientLookup);
+        }
+        // Utopia-Tweak : ZLevels
 
         foreach (var client in _clientLookup)
         {
@@ -85,22 +115,27 @@ public sealed partial class OreSiloSystem : SharedOreSiloSystem
         // Sloth okay-ed this in the interim until a better solution comes around.
 
         var actorQuery = EntityQueryEnumerator<ActorComponent, TransformComponent>();
-        while (actorQuery.MoveNext(out _, out var actorComp, out var actorXform))
+        while (actorQuery.MoveNext(out var ent1, out var actorComp, out var actorXform)) // Utopia-Tweak : ZLevels
         {
             _silosToAdd.Clear();
             _silosToRemove.Clear();
 
+            var actorCoord = _xform.GetMapCoordinates(actorXform); // Utopia-Tweak : ZLevels
             var clientQuery = EntityQueryEnumerator<OreSiloClientComponent, TransformComponent>();
-            while (clientQuery.MoveNext(out _, out var clientComp, out var clientXform))
+            while (clientQuery.MoveNext(out var ent2, out var clientComp, out var clientXform)) // Utopia-Tweak : ZLevels
             {
                 if (clientComp.Silo == null)
                     continue;
 
-                // We limit it to same-grid checks only for peak perf
-                if (actorXform.GridUid != clientXform.GridUid)
+                if (!_zExtention.IsSameZLevel((ent1, actorXform), (ent2, clientXform))) // Utopia-Tweak : ZLevels
                     continue;
 
-                if ((actorXform.LocalPosition - clientXform.LocalPosition).LengthSquared() <= OreSiloPreloadRangeSquared)
+                // Utopia-Tweak : ZLevels
+                var clientCoord = _xform.GetMapCoordinates(clientXform);
+                var within = (actorCoord.Position - clientCoord.Position).LengthSquared() <= OreSiloPreloadRangeSquared;
+                // Utopia-Tweak : ZLevels
+
+                if (within) // Utopia-Tweak : ZLevels
                 {
                     _silosToAdd.Add(clientComp.Silo.Value);
                 }

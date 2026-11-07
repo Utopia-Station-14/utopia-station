@@ -144,8 +144,8 @@ public abstract partial class SharedJetpackSystem : EntitySystem
     {
         // No and no again! Do not attempt to activate the jetpack on a grid with gravity disabled. You will not be the first or the last to try this.
         // https://discord.com/channels/310555209753690112/310555209753690112/1270067921682694234
-        return gridUid == null ||
-               (!HasComp<GravityComponent>(gridUid));
+        return true; // Utopia-Tweak : Z-Levels. TODO: Переделать механику джетпака.
+                     // Основная причина, почему визарды не одобряют полет без гравитации на тайле - дисбаланс и ненужность магниток.
     }
 
     private void OnJetpackGetAction(EntityUid uid, JetpackComponent component, GetItemActionsEvent args)

@@ -275,7 +275,8 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
         float tileBreakScale = 1f,
         int maxTileBreak = int.MaxValue,
         bool canCreateVacuum = true,
-        bool addLog = true)
+        bool addLog = true,
+        int zDirection = 0) // Utopia-Tweak : Z-Levels
     {
         if (totalIntensity <= 0 || slope <= 0)
             return;
@@ -296,6 +297,11 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
             if (queued.Proto.ID != type.ID || queued.Epicenter.MapId != epicenter.MapId)
                 continue;
 
+            // Utopia-Tweak : Z-Levels
+            if (queued.ZDirection != zDirection)
+                continue;
+            // Utopia-Tweak : Z-Levels
+
             var dst2 = queued.Proto.MaxCombineDistance * queued.Proto.MaxCombineDistance;
             var direction = queued.Epicenter.Position - epicenter.Position;
             if (direction.LengthSquared() > dst2)
@@ -315,7 +321,8 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
             TileBreakScale = tileBreakScale,
             MaxTileBreak = maxTileBreak,
             CanCreateVacuum = canCreateVacuum,
-            Cause = cause
+            Cause = cause,
+            ZDirection = zDirection // Utopia-Tweak : Z-Levels
         };
         _explosionQueue.Enqueue(boom);
         _queuedExplosions.Add(boom);
@@ -397,7 +404,8 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
             queued.Cause,
             _map,
             _damageableSystem,
-            _tileHistoryQuery);
+            _tileHistoryQuery,
+            queued.ZDirection); // Utopia-Tweak : Z-Levels
     }
 
     private void CameraShake(float range, MapCoordinates epicenter, float totalIntensity)
