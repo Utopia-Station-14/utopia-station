@@ -25,6 +25,13 @@ public sealed partial class SupermatterSystem
 
     #region Radiation
     private const float RadiationOutput = 0.004f;
+    private const float GammaRatio = 0.7f;
+    private const float BetaRatio = 0.3f;
+    private const float BetaEnergyShare = 0.15f;
+    private const float GammaInertia = 0.5f;
+    private const float BetaInertia = 2f;
+    private const float GammaPenetration = 0.5f;
+    private const float BetaPenetration = 2f;
     #endregion
 
     #region Lightning

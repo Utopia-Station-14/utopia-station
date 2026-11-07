@@ -91,6 +91,11 @@ public sealed partial class SupermatterComponent : Component
     /// </summary>
     [DataField]
     public float Radiation = 3f;
+
+    [DataField]
+    public float BetaModifier = 1f;
+    [DataField]
+    public float GammaModifier = 1f;
     #endregion
 
     #region Visuals

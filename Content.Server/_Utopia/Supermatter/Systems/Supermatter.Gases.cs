@@ -53,12 +53,8 @@ public sealed partial class SupermatterSystem
 
         if (tileMixture != null)
         {
-            var heatCapacity = _atmosphere.GetHeatCapacity(wastes, true);
-            var temp = power / heatCapacity;
-
-            wastes.Temperature = MathF.Max(tileMixture.Temperature + temp, Atmospherics.TCMB);
             _atmosphere.Merge(tileMixture, wastes);
-            ProcessGasWasteEnergy(sm, temp);
+            ProcessGasWasteEnergy(sm, wastes.Temperature);
         }
     }
 
@@ -99,19 +95,19 @@ public sealed partial class SupermatterSystem
 
     private GasMixture ModifyWasteGas(Entity<SupermatterComponent> sm, GasMixture wastes, float power)
     {
-        var heatModifier = WasteGasHeatingConstant * sm.Comp.TemperatureScaleModifier;
-        if (power > 0)
-        {
-            var plasmaGen = Math.Clamp(power > 0 ? 0.1f : 0f, 0f, 0.1f);
-            var oxygenGen = Math.Clamp(power > 0 ? 0.1f : 0f, 0f, 0.1f);
+        var effectivePower = MathF.Max(0.1f, power);
 
-            wastes.SetMoles(Gas.Plasma, wastes.GetMoles(Gas.Plasma) + plasmaGen);
-            wastes.SetMoles(Gas.Oxygen, wastes.GetMoles(Gas.Oxygen) + oxygenGen);
-        }
+        var heatModifier = WasteGasHeatingConstant * sm.Comp.TemperatureScaleModifier * effectivePower;
+        var plasmaGen = Math.Clamp(0.1f * effectivePower, 0f, 1f);
+        var oxygenGen = Math.Clamp(0.1f * effectivePower, 0f, 1f);
+
+        wastes.SetMoles(Gas.Plasma, wastes.GetMoles(Gas.Plasma) + plasmaGen);
+        wastes.SetMoles(Gas.Oxygen, wastes.GetMoles(Gas.Oxygen) + oxygenGen);
 
         wastes.Temperature = MathF.Max(wastes.Temperature + heatModifier, Atmospherics.TCMB);
         return wastes;
     }
+
     public void ProcessGases(Entity<SupermatterComponent> sm, float frameTime)
     {
         sm.Comp.AtmosGas = CollectGases(sm);

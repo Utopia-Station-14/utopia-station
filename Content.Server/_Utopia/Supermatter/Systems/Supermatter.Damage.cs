@@ -42,7 +42,12 @@ public sealed partial class SupermatterSystem
             cascadeDamage = ProcessCascadeDamage(sm);
         }
         else if (tempDamage >= powerDamage && tempDamage >= moleDamage)
+        {
+            if (sm.Comp.CurrentTemperature < sm.Comp.MinTemperature)
+                sm.Comp.DamageType = SupermatterDamageType.Cool;
+
             sm.Comp.DamageType = SupermatterDamageType.Heat;
+        }
         else if (powerDamage >= moleDamage)
             sm.Comp.DamageType = SupermatterDamageType.Energy;
         else
@@ -66,13 +71,11 @@ public sealed partial class SupermatterSystem
     private float ProcessTemperatureDamage(Entity<SupermatterComponent> sm)
     {
         var temperature = sm.Comp.CurrentTemperature;
-
         if (temperature > sm.Comp.MaxTemperature)
             return (temperature - sm.Comp.MaxTemperature) / 500f;
 
         else if (temperature < sm.Comp.MinTemperature)
-            return (temperature - sm.Comp.MinTemperature) / 500f;
-
+            return Math.Abs(temperature - sm.Comp.MinTemperature) / 500f;
 
         return 0f;
     }

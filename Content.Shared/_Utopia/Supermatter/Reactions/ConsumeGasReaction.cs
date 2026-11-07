@@ -1,8 +1,10 @@
 using Content.Shared.Atmos;
-using Content.Shared._Utopia.Supermatter.Prototypes;
 
 namespace Content.Shared._Utopia.Supermatter.Prototypes;
 
+/// <summary>
+///     Поглощает газ и превращает его в внутреннюю энергию.
+/// </summary>
 public sealed partial class SupermatterConsumeGasEffect : SupermatterGasReactionEffect
 {
     [DataField(required: true)]
@@ -14,8 +16,13 @@ public sealed partial class SupermatterConsumeGasEffect : SupermatterGasReaction
     [DataField]
     public float EnergyPerMole;
 
+    /// <summary>Лимит за тик. 0 или меньше - без лимита.</summary>
     [DataField]
     public float MaxMolesPerTick;
+
+    /// <summary>Ниже этого количества газ добирается целиком, чтобы не тянуться к нулю вечно.</summary>
+    [DataField]
+    public float DustThreshold = 0.001f;
 
     public override void Effect(SupermatterGasReactionEffectArgs args)
     {
@@ -23,13 +30,14 @@ public sealed partial class SupermatterConsumeGasEffect : SupermatterGasReaction
         if (currentMoles <= 0f)
             return;
 
-        var absorbed = currentMoles * AbsorbRatePerSecond * args.FrameTime;
+        var absorbed = currentMoles < DustThreshold
+            ? currentMoles
+            : currentMoles * AbsorbRatePerSecond * args.FrameTime;
 
-        if (MaxMolesPerTick > 0f && absorbed > MaxMolesPerTick)
-            absorbed = MaxMolesPerTick;
+        if (MaxMolesPerTick > 0f)
+            absorbed = MathF.Min(absorbed, MaxMolesPerTick);
 
-        if (absorbed > currentMoles)
-            absorbed = currentMoles;
+        absorbed = MathF.Min(absorbed, currentMoles);
 
         if (absorbed <= 0f)
             return;

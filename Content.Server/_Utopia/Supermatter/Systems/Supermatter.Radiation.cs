@@ -13,21 +13,29 @@ public sealed partial class SupermatterSystem
         if (!TryComp<RadiationSourceComponent>(sm, out var rad))
             return;
 
-        // Интенсивность радиации равна внешней энергии СМа и парочке модификаторов, покрытыми RadiationOutput.
-        var power = (sm.Comp.ExternalEnergy * sm.Comp.RadiationModifier + GetIntegrityModifier(sm)) * RadiationOutput;
+        var gammaTarget = sm.Comp.ExternalEnergy * sm.Comp.RadiationModifier * RadiationOutput * GammaRatio * sm.Comp.GammaModifier;
+        var betaTarget = (GetIntegrityModifier(sm) + sm.Comp.ExternalEnergy * sm.Comp.RadiationModifier * BetaEnergyShare)
+            * RadiationOutput * BetaRatio * sm.Comp.BetaModifier;
 
-        var lerpFactor = 1f - MathF.Exp(-sm.Comp.ModifierDecayRate * frameTime);
-        var intensity = MathHelper.Lerp(rad.Intensity, power, lerpFactor);
+        var gammaLerp = 1f - MathF.Exp(-sm.Comp.ModifierDecayRate * GammaInertia * frameTime);
+        var betaLerp = 1f - MathF.Exp(-sm.Comp.ModifierDecayRate * BetaInertia * frameTime);
 
-        ProcessRadiationEnergy(sm, power * frameTime); // Забираем энергию за радиоактивность.
+        var gamma = MathHelper.Lerp(rad.GammaIntensity, gammaTarget, gammaLerp);
+        var beta = MathHelper.Lerp(rad.Intensity, betaTarget, betaLerp);
 
-        if (MathHelper.CloseTo(rad.Intensity, intensity, 0.01f))
+        ProcessRadiationEnergy(sm, (gammaTarget + betaTarget) * frameTime);
+
+        if (MathHelper.CloseTo(rad.GammaIntensity, gamma, 0.01f) && MathHelper.CloseTo(rad.Intensity, beta, 0.01f))
             return;
 
-        rad.Intensity = intensity;
-        rad.Slope = MathHelper.Lerp(rad.Slope, GetRadiationSlope(intensity), lerpFactor);
+        rad.GammaIntensity = gamma;
+        rad.Intensity = beta;
+        var totalRadiation = gamma + beta;
 
-        sm.Comp.Radiation = rad.Intensity;
+        rad.Slope = GetRadiationSlope(rad.GammaIntensity);
+
+        sm.Comp.Radiation = totalRadiation;
+        rad.Slope = GetRadiationSlope(totalRadiation);
     }
 
     /// <summary>

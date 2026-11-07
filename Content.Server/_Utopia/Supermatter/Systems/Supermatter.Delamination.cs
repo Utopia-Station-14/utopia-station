@@ -19,7 +19,7 @@ public sealed partial class SupermatterSystem
     private EntProtoId SingularityPrototype = "Singularity";
     private EntProtoId TeslaPrototype = "TeslaEnergyBall";
     private EntProtoId SupermatterKudzu = "SupermatterBlob";
-    private const string SupermatterStabilizer= "UtopiaStabilizerCore";
+    private const string SupermatterStabilizer = "UtopiaStabilizerCore";
 
 
     private SoundSpecifier CascadeMusic = new SoundPathSpecifier("/Audio/_Utopia/Supermatter/thecascade.ogg");

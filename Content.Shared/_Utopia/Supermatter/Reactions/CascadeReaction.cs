@@ -2,13 +2,17 @@ using Content.Shared.Atmos;
 
 namespace Content.Shared._Utopia.Supermatter.Prototypes;
 
+/// <summary>
+///     Запускает каскад, если доля HyperGas среди двух газов лежит в заданном окне.
+///     Эффект сам определяет условие, поэтому tolerance реакции в YAML лучше сделать широким.
+/// </summary>
 public sealed partial class SupermatterCascadeEffect : SupermatterGasReactionEffect
 {
     [DataField(required: true)]
-    public Gas GasFirst;
+    public Gas HyperGas;
 
     [DataField(required: true)]
-    public Gas GasSecond;
+    public Gas AntiGas;
 
     [DataField]
     public float MinHyperRatio = 0.35f;
@@ -16,19 +20,21 @@ public sealed partial class SupermatterCascadeEffect : SupermatterGasReactionEff
     [DataField]
     public float MaxHyperRatio = 0.45f;
 
+    /// <summary>Минимум суммарных молей двух газов, чтобы следы не запускали каскад.</summary>
+    [DataField]
+    public float MinTotalMoles = 5f;
+
     public override void Effect(SupermatterGasReactionEffectArgs args)
     {
-        var gasMixture = args.GasMixture;
+        var hyper = args.GasMixture.GetMoles(HyperGas);
+        var anti = args.GasMixture.GetMoles(AntiGas);
+        var total = hyper + anti;
 
-        var hyperMoles = gasMixture.GetMoles(GasFirst);
-        var antiMoles = gasMixture.GetMoles(GasSecond);
-
-        var totalTargetMoles = hyperMoles + antiMoles;
-        if (totalTargetMoles <= 0f)
+        if (total < MinTotalMoles)
             return;
 
-        var hyperRatio = hyperMoles / totalTargetMoles;
-        if (hyperRatio >= MinHyperRatio && hyperRatio <= MaxHyperRatio)
+        var ratio = hyper / total;
+        if (ratio >= MinHyperRatio && ratio <= MaxHyperRatio)
             args.Supermatter.Comp.CascadeModifier = 1f;
     }
 }

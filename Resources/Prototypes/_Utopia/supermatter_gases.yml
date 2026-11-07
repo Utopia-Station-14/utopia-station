@@ -212,3 +212,4 @@
   - !type:SupermatterConsumeGasEffect
     gas: Ammonia
     energyPerMole: 8
+    absorbRatePerSecond: 0.5
