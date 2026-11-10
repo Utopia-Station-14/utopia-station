@@ -14,7 +14,6 @@ public static class ShiftScheduleCode
     public const int MaxEntries = 45;
     public const int MaxTitleLength = 80;
     public const int MaxDescriptionLength = 500;
-    public const int MinTimeSeconds = 15;
     public const int MaxTimeSeconds = 36000;
     public const int MaxCodeLength = 131072;
 

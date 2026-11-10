@@ -1,3 +1,5 @@
+using Content.Shared._Utopia.Language;
+using Content.Shared._Utopia.SpeechBarks;
 using Content.Shared.Examine;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.IdentityManagement;
@@ -10,6 +12,7 @@ namespace Content.Shared.Humanoid;
 public sealed partial class HumanoidProfileSystem : EntitySystem
 {
     [Dependency] private GrammarSystem _grammar = default!;
+    [Dependency] private SharedLanguageSystem _language = default!; // Utopia-Tweak : Languages
 
     public override void Initialize()
     {
@@ -37,6 +40,31 @@ public sealed partial class HumanoidProfileSystem : EntitySystem
         {
             _grammar.SetGender((ent, grammar), profile.Gender);
         }
+
+        // Utopia-Tweak : Barks
+        if (TryComp<SpeechBarksComponent>(ent, out var barks))
+        {
+            barks.Data = profile.Bark;
+
+            if (ProtoMan.TryIndex(barks.Data.Proto, out SpeechBarkPrototype? barkProto))
+            {
+                barks.Data.Sound = barkProto.Sound;
+            }
+        }
+        // Utopia-Tweak : Barks
+
+        // Utopia-Tweak : Languages
+        var languageSpeaker = EnsureComp<LanguageSpeakerComponent>(ent);
+        languageSpeaker.Languages.Clear();
+
+        foreach (var lang in profile.Languages)
+        {
+            languageSpeaker.Languages[lang.ToString()] = LanguageKnowledge.Speak;
+        }
+
+        _language.SelectDefaultLanguage(ent);
+        _language.UpdateUi(ent);
+        // Utopia-Tweak : Languages
     }
 
     private void OnExamined(Entity<HumanoidProfileComponent> ent, ref ExaminedEvent args)

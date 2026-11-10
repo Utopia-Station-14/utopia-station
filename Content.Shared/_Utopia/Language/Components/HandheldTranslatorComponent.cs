@@ -1,7 +1,4 @@
-using Content.Shared.Actions;
-using Content.Shared.Whitelist;
 using Robust.Shared.GameStates;
-using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Utopia.Language;
 
@@ -12,16 +9,13 @@ namespace Content.Shared._Utopia.Language;
 [AutoGenerateComponentState]
 public sealed partial class HandheldTranslatorComponent : Component
 {
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("languages", required: true), AutoNetworkedField]
+    [DataField(required: true), AutoNetworkedField]
     public Dictionary<string, LanguageKnowledge> Languages;
 
-    [ViewVariables(VVAccess.ReadWrite)]
     [DataField("toggle")]
     public bool ToggleOnInteract = true;
 
-    [ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
-    [DataField]
+    [DataField, AutoNetworkedField]
     public bool Enabled = false;
 
     public EntityUid? User;

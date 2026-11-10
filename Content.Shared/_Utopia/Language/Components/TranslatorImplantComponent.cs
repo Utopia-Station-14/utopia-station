@@ -9,8 +9,7 @@ namespace Content.Shared.Implants.Components;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class TranslatorImplantComponent : Component
 {
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("languages")]
+    [DataField]
     public Dictionary<string, LanguageKnowledge> Languages = new();
 
     /// <summary>
@@ -22,7 +21,6 @@ public sealed partial class TranslatorImplantComponent : Component
     /// <summary>
     /// Should this implant be removeable?
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("permanent"), AutoNetworkedField]
+    [DataField, AutoNetworkedField]
     public bool Permanent = false;
 }

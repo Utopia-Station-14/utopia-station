@@ -20,16 +20,7 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
 
     public int Seed { get; private set; }
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<LanguageSpeakerComponent, MapInitEvent>(OnMapInit);
-        SubscribeLocalEvent<RoundStartingEvent>(OnRoundStart);
-
-        SubscribeNetworkEvent<LanguageChosenMessage>(OnLanguageSwitch);
-    }
-
+    [SubscribeLocalEvent]
     private void OnMapInit(EntityUid uid, LanguageSpeakerComponent component, MapInitEvent args)
     {
         component.CurrentLanguage ??= component.Languages.Keys
@@ -39,11 +30,13 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
         UpdateUi(uid);
     }
 
+    [SubscribeLocalEvent]
     private void OnRoundStart(RoundStartingEvent args)
     {
         Seed = _random.Next();
     }
 
+    [SubscribeNetworkEvent]
     private void OnLanguageSwitch(LanguageChosenMessage args)
     {
         var uid = GetEntity(args.Uid);
