@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Server._Utopia.Radiation.Systems;
 using Content.Server.Radiation.Components;
 using Content.Server.Radiation.Events;
 using Content.Shared.Radiation.Components;
@@ -13,9 +14,10 @@ namespace Content.Server.Radiation.Systems;
 public partial class RadiationSystem
 {
     private List<Entity<MapGridComponent>> _grids = new();
+    // Utopia-Tweak : Radiation-Updt
     private const float BetaMinDistance = 1f;
     private const float BetaHardRangeMultiplier = 2f;
-    private const float BetaAbsorption = 1.2f;
+    public const float BetaAbsorption = 1.2f;
     // Utopia-Tweak : Radiation-Updt
 
     private readonly record struct SourceData(
@@ -137,16 +139,22 @@ public partial class RadiationSystem
         bool saveVisitedTiles)
     {
         // lets first check that source and destination on the same map
-        if (source.Transform.MapID != destTrs.MapID)
+        // Utopia-Tweak : ZLevels
+        if (!_zRadiation.TryGetLevelDiff(source.Transform.MapUid, destTrs.MapUid, out var dz)
+            || Math.Abs(dz) > ZLevelRadiationSystem.MaxZLevels)
             return null;
+        // Utopia-Tweak : ZLevels
 
         var mapId = destTrs.MapID;
 
         // Utopia-Tweak : Radiation-Updt
         // get direction from rad source to destination and its distance
         var dir = destWorld - source.WorldPosition;
-        var dist = Math.Max(dir.Length(), BetaMinDistance);
-        if (TryComp(source.Entity.Owner, out EventHorizonComponent? horizon)) // if we have a horizon emit radiation from the horizon,
+        // Utopia-Tweak : ZLevels
+        var vert = dz * ZLevelRadiationSystem.LevelHeight;
+        var dist = Math.Max(MathF.Sqrt(dir.LengthSquared() + vert * vert), BetaMinDistance);
+        // Utopia-Tweak : ZLevels
+        if (dz == 0 && TryComp(source.Entity.Owner, out EventHorizonComponent? horizon)) // if we have a horizon emit radiation from the horizon,
             dist = Math.Max(dist - horizon.Radius, BetaMinDistance);
 
         if (dist > source.TerminalDecayDistance * BetaHardRangeMultiplier)
@@ -164,6 +172,20 @@ public partial class RadiationSystem
         // at first we assume that it doesn't hit any radiation blockers
         // and has only distance penalty
         var ray = new RadiationRay(mapId, source.Entity, source.WorldPosition, destUid, destWorld, rads);
+
+        // Utopia-Tweak : ZLevels
+        if (dz != 0)
+        {
+            _zRadiation.CastBeta(dz,
+                source.Transform.MapUid!.Value,
+                source.Transform.MapID,
+                source.WorldPosition,
+                destWorld,
+                ref ray,
+                saveVisitedTiles);
+            return ray;
+        }
+        // Utopia-Tweak : ZLevels
 
         // if source and destination on the same grid it's possible that
         // between them can be another grid (ie. shuttle in center of donut station)

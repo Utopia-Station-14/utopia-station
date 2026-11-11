@@ -1,7 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Content.Server._CE.ZLevels.Core;
 using Content.Server.Administration.Logs;
 using Content.Server.Radio.EntitySystems;
+using Content.Shared._Utopia.ZLevels;
 using Content.Shared.Access.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Research.Components;
@@ -22,6 +24,8 @@ namespace Content.Server.Research.Systems
         [Dependency] private UserInterfaceSystem _uiSystem = default!;
         [Dependency] private SharedPopupSystem _popup = default!;
         [Dependency] private RadioSystem _radio = default!;
+        [Dependency] private CEZLevelsSystem _zLevel = default!; // Utopia-Tweak : ZLevels
+        [Dependency] private ZLevelsExtensions _zExtention = default!; // Utopia-Tweak : ZLevels
 
         public override void Initialize()
         {
@@ -84,7 +88,14 @@ namespace Content.Server.Research.Systems
                 return [];
 
             var set = new HashSet<Entity<ResearchServerComponent>>();
-            _lookup.GetGridEntities(grid, set);
+
+            // Utopia-Tweak : ZLevels
+            foreach (var targetGrid in _zLevel.GetTargetGrids(grid))
+            {
+                _lookup.GetGridEntities(targetGrid, set);
+            }
+            // Utopia-Tweak : ZLevels
+
             return set;
         }
 

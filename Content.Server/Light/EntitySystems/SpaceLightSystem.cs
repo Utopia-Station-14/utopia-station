@@ -1,3 +1,4 @@
+using Content.Server._CE.ZLevels.Core;
 using Content.Server.GameTicking;
 using Content.Shared.CCVar;
 using Robust.Shared.Configuration;
@@ -18,6 +19,8 @@ public sealed partial class SpaceLightSystem : EntitySystem
 
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private SharedTransformSystem _transform = default!; // Utopia-Tweak : ZLevels
+    [Dependency] private CEZLevelsSystem _zLevel = default!; // Utopia-Tweak : ZLevels
 
     public override void Initialize()
     {
@@ -34,12 +37,15 @@ public sealed partial class SpaceLightSystem : EntitySystem
         if (!_map.TryGetMap(ev.Map, out var mapUid))
             return;
 
-        // MapLight is often intentionally set for planet/salvage/arena maps, so don't overwrite it.
-        if (HasComp<MapLightComponent>(mapUid.Value))
-            return;
+        // Utopia-Tweak : ZLevels
+        if (!HasComp<MapLightComponent>(mapUid.Value))
+        {
+            _spaceLightMaps.Add(ev.Map);
+            _map.SetAmbientLight(ev.Map, _spaceLightColor);
+        }
 
-        _spaceLightMaps.Add(ev.Map);
-        _map.SetAmbientLight(ev.Map, _spaceLightColor);
+        ZLevelLightApply(ev.Map);
+        // Utopia-Tweak : ZLevels
     }
 
     private void OnMapRemoved(MapRemovedEvent ev)
@@ -67,4 +73,29 @@ public sealed partial class SpaceLightSystem : EntitySystem
 
         return Color.FromSrgb(color);
     }
+
+    // Utopia-Tweak : ZLevels
+    private void ZLevelLightApply(MapId mapId)
+    {
+        if (!_map.TryGetMap(mapId, out var mapUid))
+            return;
+
+        if (!_zLevel.TryGetMapNetwork(mapUid.Value, out var zLevels))
+            return;
+
+        foreach (var zMapUid in zLevels.Comp.SortedZLevels)
+        {
+            var zMapId = _transform.GetMapId(zMapUid);
+            if (zMapId == mapId || !_map.MapExists(zMapId))
+                continue;
+
+            if (HasComp<MapLightComponent>(zMapUid))
+                continue;
+
+            _spaceLightMaps.Add(zMapId);
+            _map.SetAmbientLight(zMapId, _spaceLightColor);
+        }
+    }
+    // Utopia-Tweak : ZLevels
+
 }

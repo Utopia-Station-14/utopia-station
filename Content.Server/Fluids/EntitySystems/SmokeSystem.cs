@@ -11,6 +11,7 @@ using Content.Shared.Database;
 using Content.Shared.FixedPoint;
 using Content.Shared.Smoking;
 using Robust.Server.GameObjects;
+using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
@@ -130,19 +131,37 @@ public sealed partial class SmokeSystem : EntitySystem
             return;
         }
 
-        if (args.NeighborFreeTiles.Count == 0)
+        // Utopia-Tweak : Z-Levels
+        var freeTiles = new List<(MapGridComponent Grid, TileRef Tile)>();
+        foreach (var tile in args.NeighborFreeTiles)
+            freeTiles.Add(tile);
+        foreach (var tile in args.ZDownFreeTiles)
+            freeTiles.Add(tile);
+        foreach (var tile in args.ZUpFreeTiles)
+            freeTiles.Add(tile);
+
+        var neighbors = new List<EntityUid>();
+        foreach (var neighbor in args.Neighbors)
+            neighbors.Add(neighbor);
+        foreach (var neighbor in args.ZDownNeighbors)
+            neighbors.Add(neighbor);
+        foreach (var neighbor in args.ZUpNeighbors)
+            neighbors.Add(neighbor);
+        // Utopia-Tweak : Z-Levels
+
+        if (freeTiles.Count == 0) // Utopia-Tweak : Z-Levels
             return;
 
         TryComp<TimedDespawnComponent>(entity, out var timer);
 
         // wtf is the logic behind any of this.
-        var smokePerSpread = entity.Comp.SpreadAmount / Math.Max(1, args.NeighborFreeTiles.Count);
-        foreach (var neighbor in args.NeighborFreeTiles)
+        var smokePerSpread = entity.Comp.SpreadAmount / Math.Max(1, freeTiles.Count); // Utopia-Tweak : Z-Levels
+        foreach (var neighbor in freeTiles) // Utopia-Tweak : Z-Levels
         {
             var coords = _map.GridTileToLocal(neighbor.Tile.GridUid, neighbor.Grid, neighbor.Tile.GridIndices);
             var ent = Spawn(prototype.ID, coords);
             var spreadAmount = Math.Max(0, smokePerSpread);
-            entity.Comp.SpreadAmount -= args.NeighborFreeTiles.Count;
+            entity.Comp.SpreadAmount -= freeTiles.Count; // Utopia-Tweak : Z-Levels
 
             StartSmoke(ent, solution.Clone(), timer?.Lifetime ?? entity.Comp.Duration, spreadAmount);
 
@@ -155,13 +174,13 @@ public sealed partial class SmokeSystem : EntitySystem
 
         args.Updates--;
 
-        if (args.NeighborFreeTiles.Count > 0 || args.Neighbors.Count == 0 || entity.Comp.SpreadAmount < 1)
+        if (freeTiles.Count > 0 || neighbors.Count == 0 || entity.Comp.SpreadAmount < 1) // Utopia-Tweak : Z-Levels
             return;
 
         // We have no more neighbours to spread to. So instead we will randomly distribute our volume to neighbouring smoke tiles.
 
-        _random.Shuffle(args.Neighbors);
-        foreach (var neighbor in args.Neighbors)
+        _random.Shuffle(neighbors); // Utopia-Tweak : Z-Levels
+        foreach (var neighbor in neighbors) // Utopia-Tweak : Z-Levels
         {
             if (!_smokeQuery.TryGetComponent(neighbor, out var smoke))
                 continue;
