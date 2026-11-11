@@ -84,6 +84,7 @@ public sealed partial class GunSystem : SharedGunSystem
         // I must be high because this was getting tripped even when true.
         // DebugTools.Assert(direction != Vector2.Zero);
         var shotProjectiles = new List<EntityUid>(ammo.Count);
+        var fired = false; // Utopia-Tweak : Gun Shoot Effect
 
         foreach (var (ent, shootable) in ammo)
         {
@@ -103,6 +104,7 @@ public sealed partial class GunSystem : SharedGunSystem
                     {
                         var uid = Spawn(cartridge.Prototype, fromEnt);
                         CreateAndFireProjectiles(uid, cartridge);
+                        fired = true; // Utopia-Tweak : Gun Shoot Effect
 
                         RaiseLocalEvent(ent!.Value, new AmmoShotEvent()
                         {
@@ -131,6 +133,7 @@ public sealed partial class GunSystem : SharedGunSystem
                     if (ent == null)
                         break;
                     CreateAndFireProjectiles(ent.Value, newAmmo);
+                    fired = true; // Utopia-Tweak : Gun Shoot Effect
 
                     break;
                 case HitscanAmmoComponent:
@@ -148,6 +151,7 @@ public sealed partial class GunSystem : SharedGunSystem
                     RaiseLocalEvent(ent.Value, ref hitscanEv);
 
                     Del(ent);
+                    fired = true; // Utopia-Tweak : Gun Shoot Effect
 
                     Audio.PlayPredicted(gun.Comp.SoundGunshotModified, gun, user);
                     break;
@@ -160,6 +164,14 @@ public sealed partial class GunSystem : SharedGunSystem
         {
             FiredProjectiles = shotProjectiles,
         });
+
+        // Utopia-Tweak : Gun Shoot Effect
+        if (fired && gun.Comp.ShowGunEffect && user is { } shooter)
+        {
+            var filter = Filter.PvsExcept(shooter, entityManager: EntityManager);
+            RaiseNetworkEvent(new GunShootEffectEvent(GetNetEntity(gun), GetNetEntity(shooter), mapDirection.ToAngle()), filter);
+        }
+        // Utopia-Tweak : Gun Shoot Effect
 
         void CreateAndFireProjectiles(EntityUid ammoEnt, AmmoComponent ammoComp)
         {

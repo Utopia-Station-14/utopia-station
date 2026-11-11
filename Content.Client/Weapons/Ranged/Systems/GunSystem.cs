@@ -100,6 +100,7 @@ public sealed partial class GunSystem : SharedGunSystem
 
         // Plays animated effects on the client.
         SubscribeNetworkEvent<HitscanEvent>(OnHitscan);
+        SubscribeNetworkEvent<GunShootEffectEvent>(OnGunShootEffect); // Utopia-Tweak : Gun Shoot Effect
 
         InitializeMagazineVisuals();
         InitializeSpentAmmo();
@@ -168,6 +169,19 @@ public sealed partial class GunSystem : SharedGunSystem
             _animPlayer.Play(ent, anim, "hitscan-effect");
         }
     }
+
+    // Utopia-Tweak : Gun Shoot Effect
+    private void OnGunShootEffect(GunShootEffectEvent ev)
+    {
+        var gun = GetEntity(ev.Gun);
+        var user = GetEntity(ev.User);
+
+        if (Exists(gun) && Exists(user) && TryComp<GunComponent>(gun, out var gunComp))
+        {
+            TryGunShootEffect((gun, gunComp), ev.Angle, user, predicted: false);
+        }
+    }
+    // Utopia-Tweak : Gun Shoot Effect
 
     public override void Update(float frameTime)
     {
@@ -557,13 +571,13 @@ public sealed partial class GunSystem : SharedGunSystem
     public override void PlayImpactSound(EntityUid otherEntity, DamageSpecifier? modifiedDamage, SoundSpecifier? weaponSound, bool forceWeaponSound) { }
 
     // Utopia-Tweak : Gun Shoot Effect
-    private void TryGunShootEffect(Entity<GunComponent> gun, Angle worldAngle, EntityUid? user)
+    private void TryGunShootEffect(Entity<GunComponent> gun, Angle worldAngle, EntityUid? user, bool predicted = true)
     {
         const float fadeInTime = 0.07f;
         const float holdTime = 0.20f;
         const float fadeOutTime = 0.45f;
 
-        if (!Timing.IsFirstTimePredicted || user == null)
+        if (user == null || predicted && !Timing.IsFirstTimePredicted)
             return;
 
         var xform = Transform(user.Value);

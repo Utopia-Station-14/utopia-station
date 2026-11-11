@@ -11,12 +11,6 @@ public abstract partial class SharedWeaponComboSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPrototypeManager _prototype = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<ComboWeaponComponent, MeleeHitEvent>(OnHeavyHit);
-    }
 
     private static WeaponCombatAction GetWeaponAction(bool isWide, ComboWeaponStand stance)
     {
@@ -24,6 +18,7 @@ public abstract partial class SharedWeaponComboSystem : EntitySystem
         return (WeaponCombatAction)index;
     }
 
+    [SubscribeLocalEvent]
     private void OnHeavyHit(Entity<ComboWeaponComponent> entity, ref MeleeHitEvent args)
     {
         if (!_timing.IsFirstTimePredicted)
@@ -32,17 +27,7 @@ public abstract partial class SharedWeaponComboSystem : EntitySystem
         if (!args.IsHit || !args.HitEntities.Any())
             return;
 
-        if (!HasComp<VisualBodyComponent>(args.HitEntities[0]))
-            return;
-
-        var move = GetWeaponAction(args.Iswide, entity.Comp.CurrentStand);
-        entity.Comp.CurrestActions.Add(move);
-
-        if (entity.Comp.CurrestActions.Count >= 5 && entity.Comp.CurrestActions != null)
-        {
-            entity.Comp.CurrestActions.RemoveAt(0);
-        }
-
+        AddAction(entity.Owner, entity.Comp, GetWeaponAction(args.Iswide, entity.Comp.CurrentStand));
         TryDoCombo(args.User, args.HitEntities[0], entity.Comp);
     }
 
@@ -72,9 +57,27 @@ public abstract partial class SharedWeaponComboSystem : EntitySystem
 
         if (isComboCompleted)
         {
-            comp.CurrestActions.Clear();
+            ClearActions(user, comp);
         }
 
         return true;
+    }
+
+    private void AddAction(EntityUid weapon, ComboWeaponComponent comp, WeaponCombatAction action)
+    {
+        comp.CurrestActions.Add(action);
+
+        if (comp.CurrestActions.Count > 5)
+        {
+            comp.CurrestActions.RemoveAt(0);
+        }
+
+        Dirty(weapon, comp);
+    }
+
+    private void ClearActions(EntityUid weapon, ComboWeaponComponent comp)
+    {
+        comp.CurrestActions.Clear();
+        Dirty(weapon, comp);
     }
 }

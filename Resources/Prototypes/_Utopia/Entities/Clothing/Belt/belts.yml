@@ -1,0 +1,20 @@
+- type: entity
+  parent: ClothingBeltSecurity
+  id: UtopiaClothingBeltJudo
+  name: corporative judo belt
+  description: The belt’s nanites grant you the skills of a corporate judo master!
+  components:
+  - type: Sprite
+    sprite: _Utopia/Clothing/Belt/judo_belt.rsi
+  - type: Clothing
+    sprite: _Utopia/Clothing/Belt/judo_belt.rsi
+  - type: ClothingGrantTag
+    tag: BatonUsingBlocker
+  - type: ClothingGrantComponent
+    component:
+      - type: Combo
+        availableMoves:
+        - Ashibarai
+        - Metsubushi
+        - ShimeWaza
+        - TomoeNage

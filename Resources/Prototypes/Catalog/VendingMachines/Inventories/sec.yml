@@ -22,6 +22,7 @@
     RadioHandheldSecurity: 5
     SecurityBola: 6
     UtopiaWeaponTonfa: 2 # Utopia-Tweak : Combat
+    UtopiaClothingBeltJudo: 3 # Utopia-Tweak : Combat
   # security officers need to follow a diet regimen!
   contrabandInventory:
     WeaponMeleeNeedle: 2

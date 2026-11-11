@@ -288,7 +288,7 @@ public sealed partial class ComboFlashEffect : IComboEffect
         var status = entMan.System<StatusEffectNew.StatusEffectsSystem>();
         var blind = entMan.System<BlindableSystem>();
 
-        status.TryAddStatusEffectDuration(target, "Flashed", TimeSpan.FromSeconds(Duration));
+        status.TryAddStatusEffectDuration(target, "StatusEffectFlashed", TimeSpan.FromSeconds(Duration));
         blind.AdjustEyeDamage(target, 1);
     }
 }
