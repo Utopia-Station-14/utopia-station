@@ -41,13 +41,7 @@ public sealed partial class UtopiaStairsSystem : EntitySystem
         TryTraverse(entity, (mapUid, currentMap), grid, worldPos, forward, approachSide);
     }
 
-    private void TryTraverse(
-        EntityUid entity,
-        Entity<CEZMapComponent?> currentMap,
-        MapGridComponent currentGrid,
-        Vector2 stairsPosition,
-        Vector2 forward,
-        float approachSide)
+    private void TryTraverse(EntityUid entity, Entity<CEZMapComponent?> currentMap, MapGridComponent currentGrid, Vector2 stairsPosition, Vector2 forward, float approachSide)
     {
         for (var pass = 0; pass < 2; pass++)
         {
@@ -81,12 +75,7 @@ public sealed partial class UtopiaStairsSystem : EntitySystem
         return CEZLevelOpeningCache.IsOpeningTile((gridUid, grid), tile, _map, _tileDefinitions);
     }
 
-    private void MoveToLevel(
-        EntityUid entity,
-        Entity<CEZMapComponent?> currentMap,
-        EntityUid targetMap,
-        Vector2 landingPosition,
-        int offset)
+    private void MoveToLevel(EntityUid entity, Entity<CEZMapComponent?> currentMap, EntityUid targetMap, Vector2 landingPosition, int offset)
     {
         if (!_zLevels.TryMove(entity, offset, currentMap))
             return;

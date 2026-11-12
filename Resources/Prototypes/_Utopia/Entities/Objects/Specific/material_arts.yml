@@ -68,3 +68,4 @@
           - Teeth
         - type: Reflect
           reflectProb: 1.0
+          showMarkup: false
