@@ -25,6 +25,10 @@
 - type: Tag
   id: IgnoreChokeSpeechBlocking
 
+# Combat
+- type: Tag
+  id: BatonUsingBlocker
+
 # Economy
 - type: Tag
   id: UtopiaIgnoreBalanceChecks

@@ -99,6 +99,12 @@
   - type: Tag
     tags:
     - Stunbaton
+  # Utopia-Tweak : Combat
+  - type: MeleeBlacklist
+    blacklist:
+      tags:
+      - BatonUsingBlocker
+  # Utopia-Tweak : Combat
 
 - type: entity
   name: truncheon

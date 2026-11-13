@@ -1,4 +1,4 @@
-namespace Content.Server._Utopia.ShiftSchedule;
+namespace Content.Server._Utopia.ShiftSchedule.Components;
 
 [RegisterComponent]
 public sealed partial class ShiftScheduleComponent : Component

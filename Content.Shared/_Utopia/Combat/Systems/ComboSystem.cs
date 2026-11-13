@@ -12,16 +12,6 @@ public sealed partial class SharedComboSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<ComboComponent, DisarmAttemptEvent>(OnDisarmUsed);
-        SubscribeLocalEvent<ComboComponent, MeleeHitEvent>(OnMeleeHit);
-        SubscribeLocalEvent<ComboComponent, GrabStageChangedEvent>(OnGrab);
-        SubscribeLocalEvent<ComboComponent, ToggleCombatActionEvent>(OnCombatToggled);
-    }
-
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -39,6 +29,7 @@ public sealed partial class SharedComboSystem : EntitySystem
         }
     }
 
+    [SubscribeLocalEvent]
     private void OnDisarmUsed(Entity<ComboComponent> entity, ref DisarmAttemptEvent args)
     {
         if (args.DisarmerUid != entity.Owner || args.DisarmerUid == args.TargetUid)
@@ -48,18 +39,17 @@ public sealed partial class SharedComboSystem : EntitySystem
         TryDoCombo(entity.Owner, args.TargetUid, entity.Comp);
     }
 
+    [SubscribeLocalEvent]
     private void OnMeleeHit(Entity<ComboComponent> entity, ref MeleeHitEvent args)
     {
         if (args.User != entity.Owner || !args.IsHit || !args.HitEntities.Any())
-            return;
-
-        if (!HasComp<VisualBodyComponent>(args.HitEntities[0]))
             return;
 
         AddAction(entity.Owner, entity.Comp, CombatAction.Hit);
         TryDoCombo(entity.Owner, args.HitEntities[0], entity.Comp);
     }
 
+    [SubscribeLocalEvent]
     private void OnGrab(Entity<ComboComponent> entity, ref GrabStageChangedEvent args)
     {
         if (args.Puller.Owner != entity.Owner || args.NewStage <= args.OldStage)
@@ -69,6 +59,7 @@ public sealed partial class SharedComboSystem : EntitySystem
         TryDoCombo(entity.Owner, args.Pulling.Owner, entity.Comp);
     }
 
+    [SubscribeLocalEvent]
     private void OnCombatToggled(Entity<ComboComponent> entity, ref ToggleCombatActionEvent args)
     {
         if (!HasComp<CombatModeComponent>(entity))

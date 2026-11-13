@@ -9,6 +9,7 @@ using Content.Shared.Damage.Systems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -19,6 +20,7 @@ public sealed partial class GeneticsSystem : EntitySystem
 {
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private IComponentFactory _componentFactory = default!;
     [Dependency] private GeneticShuffleSystem _shuffle = default!;
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private IGameTiming _timing = default!;
@@ -292,16 +294,13 @@ public sealed partial class GeneticsSystem : EntitySystem
             return false;
 
         var isBase = ent.Comp.BaseMutationIds.Contains(mutationId);
+        if (isBase)
+            return true;
 
         if (entry.Enabled)
         {
             if (!TryDeactivateMutation(ent, mutationId))
                 return false;
-        }
-
-        if (isBase)
-        {
-            return true;
         }
 
         if (_proto.TryIndex<GeneticMutationPrototype>(mutationId, out var proto))
@@ -381,9 +380,12 @@ public sealed partial class GeneticsSystem : EntitySystem
 
     private void RemoveMutationComponents(EntityUid uid, GeneticMutationPrototype proto)
     {
-        foreach (var (comp, _) in proto.Components)
+        foreach (var (componentId, _) in proto.Components)
         {
-            RemCompDeferred(uid, comp.GetType());
+            if (!_componentFactory.TryGetRegistration(componentId, out var registration))
+                continue;
+
+            RemComp(uid, registration.Type);
         }
     }
 

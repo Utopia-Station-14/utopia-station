@@ -1,87 +1,93 @@
 - type: entity
-  id: ZLevelStairs
+  abstract: true
+  id: ZLevelStairBase
   parent: Stairs
-  suffix: Steel
   components:
-  - type: CEZLevelHighGround
-    stick: true
-    heightCurve:
-    - 0.0
-    - 1.05
+  - type: UtopiaStairs
+  - type: Fixtures
+    fixtures:
+      trigger:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.49,0.44,0.49,0.49"
+        layer:
+        - MobLayer
+        mask:
+        - MobMask
+        density: 1000
+        hard: false
+
+- type: entity
+  id: ZLevelStairs
+  parent: ZLevelStairBase
+  suffix: Steel
 
 - type: entity
   id: ZLevelStairStage
-  parent: StairStage
+  parent: ZLevelStairBase
   suffix: Steel, stage
   components:
-  - type: CEZLevelHighGround
-    stick: true
-    heightCurve:
-    - 0.0
-    - 1.05
+  - type: Sprite
+    sprite: Structures/stairs.rsi
+    state: stairs_stage_steel
+    drawdepth: FloorTiles
 
 - type: entity
   id: ZLevelStairWhite
-  parent: StairWhite
+  parent: ZLevelStairBase
   suffix: White
   components:
-  - type: CEZLevelHighGround
-    stick: true
-    heightCurve:
-    - 0.0
-    - 1.05
+  - type: Sprite
+    sprite: Structures/stairs.rsi
+    state: stairs_white
+    drawdepth: FloorTiles
 
 - type: entity
   id: ZLevelStairStageWhite
-  parent: StairStageWhite
+  parent: ZLevelStairBase
   suffix: White, stage
   components:
-  - type: CEZLevelHighGround
-    stick: true
-    heightCurve:
-    - 0.0
-    - 1.05
+  - type: Sprite
+    sprite: Structures/stairs.rsi
+    state: stairs_stage_white
+    drawdepth: FloorTiles
 
 - type: entity
   id: ZLevelStairDark
-  parent: StairDark
+  parent: ZLevelStairBase
   suffix: Dark
   components:
-  - type: CEZLevelHighGround
-    stick: true
-    heightCurve:
-    - 0.0
-    - 1.05
+  - type: Sprite
+    sprite: Structures/stairs.rsi
+    state: stairs_dark
+    drawdepth: FloorTiles
 
 - type: entity
   id: ZLevelStairStageDark
-  parent: StairStageDark
+  parent: ZLevelStairBase
   suffix: Dark, stage
   components:
-  - type: CEZLevelHighGround
-    stick: true
-    heightCurve:
-    - 0.0
-    - 1.05
+  - type: Sprite
+    sprite: Structures/stairs.rsi
+    state: stairs_stage_dark
+    drawdepth: FloorTiles
 
 - type: entity
   id: ZLevelStairWood
-  parent: StairWood
+  parent: ZLevelStairBase
   suffix: Wood
   components:
-  - type: CEZLevelHighGround
-    stick: true
-    heightCurve:
-    - 0.0
-    - 1.05
+  - type: Sprite
+    sprite: Structures/stairs.rsi
+    state: stairs_wood
+    drawdepth: FloorTiles
 
 - type: entity
   id: ZLevelStairStageWood
-  parent: StairStageWood
+  parent: ZLevelStairBase
   suffix: Wood, stage
   components:
-  - type: CEZLevelHighGround
-    stick: true
-    heightCurve:
-    - 0.0
-    - 1.05
+  - type: Sprite
+    sprite: Structures/stairs.rsi
+    state: stairs_stage_wood
+    drawdepth: FloorTiles

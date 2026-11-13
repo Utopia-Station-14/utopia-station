@@ -1,0 +1,62 @@
+- type: combatMove
+  id: Ashibarai
+  actionsNeeds:
+    - Grab
+    - Disarm
+  comboEvent:
+    - !type:ComboStunEffect
+      stunTime: 1
+      dropItems: false
+    - !type:ComboDamageEffect
+      damage:
+        types:
+          Blunt: 5
+
+- type: combatMove
+  id: Metsubushi
+  actionsNeeds:
+    - Hit
+    - Grab
+    - Hit
+  comboEvent:
+    - !type:ComboFlashEffect
+      duration: 5
+      slowDown: 3
+    - !type:ComboAudioTargetEffect
+      sound:
+        collection: GenericHit
+
+- type: combatMove
+  id: ShimeWaza
+  actionsNeeds:
+    - Disarm
+    - Disarm
+    - Grab
+  comboEvent:
+    - !type:ComboMoreDamageToDownedEffect
+      damage:
+        types:
+          Blunt: 10
+    - !type:ComboMoreStaminaDamageToDownedEffect
+      damage: 45
+    - !type:ComboAudioTargetEffect
+      sound:
+        collection: GenericHit
+
+- type: combatMove
+  id: TomoeNage
+  actionsNeeds:
+    - Disarm
+    - Hit
+  comboEvent:
+    - !type:ComboEffectToUserPuller
+      comboEvents:
+      - !type:ComboDamageEffect
+        damage:
+          types:
+            Blunt: 10
+      - !type:ComboThrowOnUserEffect
+      - !type:ComboStopTargetGrabEffect
+      - !type:ComboStunEffect
+        stunTime: 1
+        dropItems: false
