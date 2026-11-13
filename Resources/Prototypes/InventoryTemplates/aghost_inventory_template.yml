@@ -9,7 +9,7 @@
       uiWindowPos: 2,1
       strippingWindowPos: 2,4
       displayName: Back
-# Utopia-start
+# Utopia-Tweak : Aghost
     - name: belt
       slotTexture: belt
       fullTextureName: template_small
@@ -39,7 +39,7 @@
       strippingWindowPos: 1,4
       displayName: Pocket 2
       stripHidden: true
-# Utopia-end
+# Utopia-Tweak : Aghost
     - name: id
       slotTexture: id
       fullTextureName: template_small
