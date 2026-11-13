@@ -149,9 +149,7 @@
   id: MobAghostGear
   equipment:
     back: ClothingBackpackSatchelAdmin
-# Utopia-start
-    belt: ClothingBeltChiefEngineerFilled
-# Utopia-end
+    belt: ClothingBeltChiefEngineerFilled # Utopia-Tweak : Aghost
     id: AdminPDA
   storage:
     back:
