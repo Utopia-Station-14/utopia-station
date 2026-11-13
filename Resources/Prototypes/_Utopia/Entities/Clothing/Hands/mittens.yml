@@ -43,12 +43,12 @@
   - type: Sprite
     layers:
     - state: icon
-      color: "#000000"
+      color: "#222222"
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
-        color: "#000000"
+        color: "#222222"
   - type: Fiber
     fiberColor: fibers-black
 
@@ -162,7 +162,7 @@
     clothingVisuals:
       gloves:
       - state: equipped-HAND
-        color: "#0089EF0"
+        color: "#0089EF"
   - type: Fiber
     fiberColor: fibers-blue
 
