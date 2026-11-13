@@ -11,6 +11,7 @@ fibers-nitrile = nitrile
 fibers-nanomachines = insulative nanomachine
 fibers-chameleon = holographic chameleon
 fibers-rubber = rubber
+fibers-wool = wool # Utopia-Tweak: For mittens
 
 fibers-purple = purple
 fibers-red = red
@@ -28,3 +29,8 @@ fibers-regal-blue = regal blue
 fibers-olive = olive
 fibers-silver = silver
 fibers-gold = gold
+# Utopia-Tweak: Colors
+fibers-vinous = vinous
+fibers-pink = pink
+fibers-cyan = cyan
+# Utopia-Tweak: Colors
