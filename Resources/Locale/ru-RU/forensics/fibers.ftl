@@ -11,9 +11,9 @@ fibers-nitrile = нитриловые
 fibers-nanomachines = изолирующие наномашинные
 fibers-chameleon = голографические хамелеонные
 fibers-rubber = резиновые
-# Utopia-Tweak: For mittens
+# Utopia-Tweak: Fibers
 fibers-wool = шерстяные
-# Utopia-Tweak: For mittens
+# Utopia-Tweak: Fibers
 
 fibers-purple = фиолетовые
 fibers-red = красные
@@ -31,8 +31,8 @@ fibers-regal-blue = королевские синие
 fibers-olive = оливковые
 fibers-silver = серебряные
 fibers-gold = золотые
-# Utopia-Tweak: Colors
+# Utopia-Tweak: Fibers
 fibers-vinous = бордовые
 fibers-pink = розовые
 fibers-cyan = голубые
-# Utopia-Tweak: Colors
+# Utopia-Tweak: Fibers
