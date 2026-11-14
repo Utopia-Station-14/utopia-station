@@ -1,0 +1,268 @@
+- type: entity
+  abstract: true
+  parent: [ TemperatureProtection, ClothingHandsBase ]
+  id: ClothingHandsMittenBase
+  components:
+  - type: Sprite
+    sprite: _Utopia/Clothing/Hands/Gloves/mittens.rsi
+    layers:
+    - state: icon
+    - state: wool
+  - type: Armor
+    modifiers:
+      coefficients:
+        Cold: 0.9
+  - type: Fiber
+    fiberMaterial: fibers-wool
+
+# White
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenWhite
+  name: white mitten
+  description: Regular white gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#EAE8E8"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#EAE8E8"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-white
+
+# Black
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenBlack
+  name: black mitten
+  description: Regular black gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#222222"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#222222"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-black
+
+# Red
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenRed
+  name: red mitten
+  description: Regular red gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#940000"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#940000"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-red
+
+# Orange
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenOrange
+  name: orange mitten
+  description: Regular orange gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#EF8100"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#EF8100"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-orange
+
+# Yellow
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenYellow
+  name: yellow mitten
+  description: Regular yellow gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#F1E600"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#F1E600"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-yellow
+
+# Vinous
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenVinous
+  name: vinous mitten
+  description: Regular vinous gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#641212"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#641212"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-vinous
+
+# Pink
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenPink
+  name: pink mitten
+  description: Regular pink gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#EB71C6"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#EB71C6"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-pink
+
+# Blue
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenBlue
+  name: blue mitten
+  description: Regular blue gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#0089EF"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#0089EF"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-blue
+
+# Cyan
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenCyan
+  name: cyan mitten
+  description: Regular cyan gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#71DAEB"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#71DAEB"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-cyan
+
+# Teal
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenTeal
+  name: teal mitten
+  description: Regular teal gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#5BEBCE"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#5BEBCE"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-teal
+
+# Green
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenGreen
+  name: green mitten
+  description: Regular green gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#5ABF2F"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#5ABF2F"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-green
+
+# Brown
+- type: entity
+  parent: ClothingHandsMittenBase
+  id: ClothingHandsMittenBrown
+  name: brown mitten
+  description: Regular brown gloves that do not keep you from frying.
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      color: "#723A02"
+    - state: wool
+  - type: Clothing
+    clothingVisuals:
+      gloves:
+      - state: equipped-HAND
+        color: "#723A02"
+      - state: equipped-HAND-wool
+  - type: Fiber
+    fiberColor: fibers-brown
