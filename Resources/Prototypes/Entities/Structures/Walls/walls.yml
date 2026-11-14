@@ -57,6 +57,12 @@
   - type: CEGridStabilitySupport
     supportStrength: 100
   # Utopia-Tweak-end
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.4
+    heatCapacity: 10000
+  # Utopia-Tweak-end
+
 
 - type: entity
   abstract: true
@@ -141,6 +147,12 @@
   - type: IconSmooth
     key: walls
     base: brick
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.28
+    heatCapacity: 15000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWallWeak ]
@@ -170,6 +182,12 @@
   - type: IconSmooth
     key: walls
     base: brass
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.7
+    heatCapacity: 11000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWallWeak ]
@@ -205,6 +223,12 @@
   - type: IconSmooth
     key: meatwalls
     base: meat
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.3
+    heatCapacity: 6000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, BaseStructureHealth ]
@@ -226,6 +250,12 @@
   - type: IconSmooth
     key: walls
     base: debug
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.5
+    heatCapacity: 10000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWallWeak ]
@@ -268,6 +298,12 @@
   - type: IconSmooth
     key: walls
     base: gold
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.85
+    heatCapacity: 12000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWallWeak ]
@@ -301,6 +337,12 @@
     base: plasma
   - type: RadiationBlocker
     resistance: 5
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.3
+    heatCapacity: 18000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: BaseWall
@@ -328,6 +370,12 @@
         density: 4000
   - type: RadiationBlocker
     resistance: 5
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.05
+    heatCapacity: 50000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ WallPlastitaniumIndestructible, StructureHealthWallStrong ]
@@ -344,6 +392,12 @@
         damage: 350
       behaviors:
       - *SpawnGirder
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.05
+    heatCapacity: 50000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: WallDiagonalBase
@@ -360,6 +414,12 @@
     state: state0
   - type: RadiationBlocker
     resistance: 5
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.05
+    heatCapacity: 50000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ WallPlastitaniumDiagonalIndestructible, StructureHealthWallStrong ]
@@ -382,6 +442,12 @@
       behaviors:
       - *SoundMetalSlam
       - *SpawnGirder
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.05
+    heatCapacity: 50000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWallStrong ]
@@ -439,6 +505,12 @@
         layer:
         - WallLayer
         density: 2000
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.12
+    heatCapacity: 25000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: WallReinforced
@@ -457,6 +529,12 @@
     key: walls
     base: reinf_over
   # Rusted walls should be made weaker through a damage mod status effect.
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.18
+    heatCapacity: 22000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ WallDiagonalBase, StructureHealthWallStrong ]
@@ -481,6 +559,12 @@
       - *SpawnPlasteel
   - type: RadiationBlocker
     resistance: 5
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.12
+    heatCapacity: 25000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWallStrong ]
@@ -505,6 +589,12 @@
     base: wall
   - type: StaticPrice
     price: 150
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.22
+    heatCapacity: 20000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: BaseWall
@@ -532,6 +622,12 @@
         density: 4000
   - type: RadiationBlocker
     resistance: 5
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.22
+    heatCapacity: 20000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWallWeak ]
@@ -565,6 +661,12 @@
     base: silver
 
 #shuttle walls
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.85
+    heatCapacity: 12000
+  # Utopia-Tweak-end
+
 - type: entity
   parent: [ WallDiagonalBase, StructureHealthWallStrong ]
   id: WallShuttleDiagonal
@@ -615,6 +717,12 @@
     resistance: 5
   - type: StaticPrice
     price: 200
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.08
+    heatCapacity: 40000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWallStrong ]
@@ -670,6 +778,12 @@
         layer:
         - WallLayer
         density: 2000
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.08
+    heatCapacity: 40000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWall ]
@@ -704,6 +818,12 @@
   - type: IconSmooth
     key: walls
     base: solid
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.4
+    heatCapacity: 10000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ WallDiagonalBase, StructureHealthWall ]
@@ -724,6 +844,12 @@
       - *ChangeNodeGirder
       - *SoundMetalSlam
       - *SpawnSteel
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.4
+    heatCapacity: 10000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: WallSolid
@@ -742,6 +868,12 @@
     key: walls
     base: solid
   # Rusted walls should be made weaker through a damage mod status effect.
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.45
+    heatCapacity: 9000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWall ]
@@ -771,6 +903,12 @@
     cost: 6
     delay: 8
     fx: EffectRCDDeconstruct8
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.2
+    heatCapacity: 14000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWallStrong ]
@@ -813,6 +951,12 @@
   - type: Construction
     graph: Girder
     node: reinforcedWallChitin
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.12
+    heatCapacity: 25000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: WallPlastitanium
@@ -826,6 +970,12 @@
   - type: IconSmooth
     key: walls
     base: xenoborg
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.05
+    heatCapacity: 50000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: WallPlastitaniumDiagonal
@@ -840,6 +990,12 @@
   - type: Icon
     sprite: Structures/Walls/exo-borg-diagonal.rsi
     state: state0
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.05
+    heatCapacity: 50000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWallWeak ]
@@ -880,6 +1036,12 @@
     base: uranium
   - type: RadiationBlocker
     resistance: 6
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.25
+    heatCapacity: 30000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthBarrierStrong ]
@@ -913,6 +1075,12 @@
   - type: IconSmooth
     key: walls
     base: wood
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.15
+    heatCapacity: 5000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthBarrier ]
@@ -949,6 +1117,12 @@
   - type: Construction
     graph: WebStructures
     node: wall
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.2
+    heatCapacity: 2000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthWall ]
@@ -971,6 +1145,12 @@
     key: walls
     base: mining
   - type: Appearance
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.35
+    heatCapacity: 16000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ WallDiagonalBase, StructureHealthWall ]
@@ -994,6 +1174,12 @@
       - *SoundMetalSlam
 
 # Mime
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.35
+    heatCapacity: 16000
+  # Utopia-Tweak-end
+
 
 - type: entity
   id: WallInvisible
@@ -1015,6 +1201,12 @@
         layer:
         - GlassLayer
   - type: Airtight
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0
+    heatCapacity: 100000
+  # Utopia-Tweak-end
+
 
 - type: entity
   id: WallForce
@@ -1042,6 +1234,12 @@
   - type: Icon
     sprite: Structures/Magic/forcewall.rsi
     state: forcewall
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0
+    heatCapacity: 100000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWall, StructureHealthBarrierStrong ]
@@ -1068,6 +1266,12 @@
     base: concrete
 
 # Cardboard
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.25
+    heatCapacity: 18000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseStructure, StructureHealthBarrierWeak ]
@@ -1127,3 +1331,9 @@
   - type: Occluder
   - type: BlockWeather
   - type: SunShadowCast
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.5
+    heatCapacity: 1000
+  # Utopia-Tweak-end
+

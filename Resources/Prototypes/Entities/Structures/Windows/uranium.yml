@@ -40,6 +40,12 @@
     price: 200
   - type: RadiationBlocker
     resistance: 3
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.3
+    heatCapacity: 12000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [BaseDeltaPressurePlasmaQuarter, BaseWindowStructureDirectional, BaseRCDResistant, StructureHealthBarrierWeak]
@@ -82,6 +88,12 @@
     price: 100
   - type: RadiationBlocker
     resistance: 1.5
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.38
+    heatCapacity: 6000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: UraniumWindowDirectional
@@ -113,6 +125,12 @@
     trackAllDamage: true
     damageOverlay:
       sprite: Structures/Windows/cracks_directional_corner.rsi
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.4
+    heatCapacity: 4000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: UraniumWindow
@@ -162,3 +180,9 @@
   - type: Construction
     graph: WindowDiagonal
     node: uraniumWindowDiagonal
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.3
+    heatCapacity: 12000
+  # Utopia-Tweak-end
+
