@@ -1,23 +1,23 @@
-ent-ADTClothingFootWrapsBlack = черные обмотки для ног
+ent-UtopiaClothingFootWrapsBlack = черные обмотки для ног
     .desc = Пара кусков ткани для тех, кому некомфортно в обычных человеческих ботинках.
     .suffix = { "" }
 
-ent-ADTClothingFootWrapsWhite = белые обмотки для ног
+ent-UtopiaClothingFootWrapsWhite = белые обмотки для ног
     .desc = Пара кусков ткани для тех, кому некомфортно в обычных человеческих ботинках.
     .suffix = { "" }
 
-ent-ADTClothingFootWrapsHighBlack = черные высокие обмотки для ног
+ent-UtopiaClothingFootWrapsHighBlack = черные высокие обмотки для ног
     .desc = Пара кусков ткани для тех, кому некомфортно в обычных человеческих ботинках.
     .suffix = { "" }
 
-ent-ADTClothingFootWrapsHighWhite = белые высокие обмотки для ног
+ent-UtopiaClothingFootWrapsHighWhite = белые высокие обмотки для ног
     .desc = Пара кусков ткани для тех, кому некомфортно в обычных человеческих ботинках.
     .suffix = { "" }
 
-ent-ADTClothingFootWrapsBrown = коричневые обмотки для ног
+ent-UtopiaClothingFootWrapsBrown = коричневые обмотки для ног
     .desc = Пара кусков ткани для тех, кому некомфортно в обычных человеческих ботинках.
     .suffix = { "" }
 
-ent-ADTClothingFootWrapsHighBrown = коричневые высокие обмотки для ног
+ent-UtopiaClothingFootWrapsHighBrown = коричневые высокие обмотки для ног
     .desc = Пара кусков ткани для тех, кому некомфортно в обычных человеческих ботинках.
     .suffix = { "" }
