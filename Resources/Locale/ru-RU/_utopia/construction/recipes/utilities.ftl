@@ -2,4 +2,4 @@ construction-recipe-heat-exchanger-connector = радиатор (конекто�
 construction-recipe-heat-exchanger-fourway = радиатор (четвертной)
 construction-recipe-heat-exchanger-tjunc = радиатор (Т-образный)
 construction-recipe-cable-multi = распределительная коробка
-construction-recipe-z-pipe = вертикальная труба
+construction-recipe-z-pipe-multi = вертикальная труба
