@@ -72,7 +72,6 @@
   parent: GasPipeSansLayers
   id: UtopiaGasZPipeMulti
   name: multi-level pipe
-  suffix: 3 layers, Up/Down
   description: A vertical pipe junction that carries three pipe layers up and down between levels.
   placement:
     mode: AlignAtmosPipeLayers

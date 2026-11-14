@@ -150,6 +150,10 @@ public sealed partial class AtmosphereSystem
             effectivePressure = MathF.Max(effectivePressure, floor);
         }
 
+        var hasLeakTarget = tile.PressureSpecificTarget is { Space: true };
+        if (tile.PressureDirection == AtmosDirection.Invalid && !hasLeakTarget)
+            return;
+
         _entSet.Clear();
         _lookup.GetLocalEntitiesIntersecting(tile.GridIndex, tile.GridIndices, _entSet, 0f);
 
