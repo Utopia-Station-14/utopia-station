@@ -44,6 +44,12 @@
       sprite: Structures/Windows/cracks.rsi
   - type: StaticPrice
     price: 150
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.08
+    heatCapacity: 30000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: ShuttleWindow

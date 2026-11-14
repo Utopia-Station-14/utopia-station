@@ -1,0 +1,41 @@
+- type: entity
+  parent: GasValve
+  id: GasValveThreeWay
+  name: three-way valve
+  description: A T-junction with a valve that switches the flow between the straight and the side path.
+  components:
+    - type: Sprite
+      sprite: Structures/Piping/Atmospherics/pump.rsi
+      layers:
+        - sprite: Structures/Piping/Atmospherics/pipe.rsi
+          state: pipeTJunction
+          map: [ "enum.PipeVisualLayers.Pipe" ]
+        - state: pumpManualValve
+          map: [ "enum.SubfloorLayers.FirstLayer", "enabled" ]
+    - type: AtmosPipeLayers
+      alternativePrototypes:
+        Primary: GasValveThreeWay
+        Secondary: GasValveThreeWay
+        Tertiary: GasValveThreeWay
+    - type: GasValve
+      kind: ThreeWay
+      inletName: inlet
+      outletName: outlet
+      sideName: side
+    - type: NodeContainer
+      nodes:
+        inlet:
+          !type:PipeNode
+          nodeGroupID: Pipe
+          pipeDirection: South
+          volume: 100
+        outlet:
+          !type:PipeNode
+          nodeGroupID: Pipe
+          pipeDirection: East
+          volume: 100
+        side:
+          !type:PipeNode
+          nodeGroupID: Pipe
+          pipeDirection: West
+          volume: 100

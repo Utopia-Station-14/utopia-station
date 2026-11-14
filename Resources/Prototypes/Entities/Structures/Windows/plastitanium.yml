@@ -51,6 +51,12 @@
     pylons:
     - Door
     - Firelock
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.06
+    heatCapacity: 35000
+  # Utopia-Tweak-end
+
 
 - type: entity
   id: PlastitaniumWindowSquareBase
@@ -155,7 +161,7 @@
         mask:
         - FullTileMask
         layer:
-        - GlassLayer
+        - WallLayer
         density: 4000
   - type: Airtight
     noAirWhenFullyAirBlocked: false

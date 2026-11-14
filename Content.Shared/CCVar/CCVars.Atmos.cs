@@ -93,7 +93,7 @@ public sealed partial class CCVars
     /// </summary>
     /// <remarks> Disabled by default, superconduction is awful. </remarks>
     public static readonly CVarDef<bool> Superconduction =
-        CVarDef.Create("atmos.superconduction", false, CVar.SERVERONLY);
+        CVarDef.Create("atmos.superconduction", true, CVar.SERVERONLY);
 
     /// <summary>
     ///     Heat loss per tile due to radiation at 20 degC, in W.

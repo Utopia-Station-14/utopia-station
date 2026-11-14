@@ -74,6 +74,12 @@
     pylons:
     - Door
     - Firelock
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.5
+    heatCapacity: 4000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWindowStructure, StructureHealthBarrier ]
@@ -118,6 +124,12 @@
   - type: Occluder
   - type: StaticPrice
     price: 70
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.42
+    heatCapacity: 4500
+  # Utopia-Tweak-end
+
 
 - type: entity
   abstract: true
@@ -192,6 +204,12 @@
   - type: Construction
     graph: WindowDirectional
     node: windowDirectional
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.6
+    heatCapacity: 2000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: [ BaseWindowStructureDirectional, StructureHealthBarrierWeak ]
@@ -250,6 +268,12 @@
     trackAllDamage: true
     damageOverlay:
       sprite: Structures/Windows/cracks_directional_corner.rsi
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.65
+    heatCapacity: 1500
+  # Utopia-Tweak-end
+
 
 - type: entity
   abstract: true
@@ -274,6 +298,12 @@
     state: frosted_window
   - type: StaticPrice
     price: 35
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.5
+    heatCapacity: 2200
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: WindowFrostedDirectional
@@ -302,6 +332,12 @@
     trackAllDamage: true
     damageOverlay:
       sprite: Structures/Windows/cracks_directional_corner.rsi
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.5
+    heatCapacity: 2200
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: Window
@@ -350,3 +386,9 @@
   - type: Construction
     graph: WindowDiagonal
     node: windowDiagonal
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.5
+    heatCapacity: 4000
+  # Utopia-Tweak-end
+
