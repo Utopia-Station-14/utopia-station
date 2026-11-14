@@ -7,6 +7,7 @@
     sprite: _Utopia/Clothing/Hands/Gloves/mittens.rsi
     layers:
     - state: icon
+    - state: wool
   - type: Armor
     modifiers:
       coefficients:
@@ -25,11 +26,13 @@
     layers:
     - state: icon
       color: "#EAE8E8"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
         color: "#EAE8E8"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-white
 
@@ -44,11 +47,13 @@
     layers:
     - state: icon
       color: "#222222"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
         color: "#222222"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-black
 
@@ -63,11 +68,13 @@
     layers:
     - state: icon
       color: "#940000"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
         color: "#940000"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-red
 
@@ -82,11 +89,13 @@
     layers:
     - state: icon
       color: "#EF8100"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
         color: "#EF8100"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-orange
 
@@ -101,11 +110,13 @@
     layers:
     - state: icon
       color: "#F1E600"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
         color: "#F1E600"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-yellow
 
@@ -120,11 +131,13 @@
     layers:
     - state: icon
       color: "#911919"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
-        color: "#911919"
+        color: "#661212"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-vinous
 
@@ -139,11 +152,13 @@
     layers:
     - state: icon
       color: "#EB71C6"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
         color: "#EB71C6"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-pink
 
@@ -158,11 +173,13 @@
     layers:
     - state: icon
       color: "#0089EF"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
         color: "#0089EF"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-blue
 
@@ -177,11 +194,13 @@
     layers:
     - state: icon
       color: "#71DAEB"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
         color: "#71DAEB"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-cyan
 
@@ -189,18 +208,20 @@
 - type: entity
   parent: ClothingHandsMittenBase
   id: ClothingHandsMittenTeal
-  name: aqua mitten
-  description: Regular aqua gloves that do not keep you from frying.
+  name: teal mitten
+  description: Regular teal gloves that do not keep you from frying.
   components:
   - type: Sprite
     layers:
     - state: icon
       color: "#5BEBCE"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
         color: "#5BEBCE"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-teal
 
@@ -215,11 +236,13 @@
     layers:
     - state: icon
       color: "#5ABF2F"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
         color: "#5ABF2F"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-green
 
@@ -234,10 +257,12 @@
     layers:
     - state: icon
       color: "#723A02"
+    - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
         color: "#723A02"
+      - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-brown

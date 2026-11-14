@@ -11,7 +11,14 @@
       "name": "icon"
     },
     {
+      "name": "wool"
+    },
+    {
       "name": "equipped-HAND",
+      "directions": 4
+    },
+    {
+      "name": "equipped-HAND-wool",
       "directions": 4
     }
   ]
