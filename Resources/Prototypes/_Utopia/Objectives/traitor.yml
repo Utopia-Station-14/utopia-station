@@ -1,7 +1,7 @@
 - type: entity
   categories: [ HideSpawnMenu ]
   parent: BaseTraitorStealObjective
-  id: ADTKravMagaStealObjective
+  id: UtopiaKravMagaStealObjective
   components:
   - type: Objective
     difficulty: 4
