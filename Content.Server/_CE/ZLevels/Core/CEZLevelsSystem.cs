@@ -22,7 +22,6 @@ public sealed partial class CEZLevelsSystem : CESharedZLevelsSystem
     [Dependency] private TransformSystem _transform = default!;
     [Dependency] private MetaDataSystem _meta = default!;
     [Dependency] private StationSystem _station = default!;
-
     [Dependency] private EntityQuery<MapGridComponent> _mapGridQuery = default!;
 
     public override void Initialize()
@@ -30,10 +29,20 @@ public sealed partial class CEZLevelsSystem : CESharedZLevelsSystem
         base.Initialize();
 
         InitView();
-
-        SubscribeLocalEvent<CEStationZLevelsComponent, StationPostInitEvent>(OnStationPostInit);
     }
 
+    [SubscribeLocalEvent]
+    private void OnZMapTerminating(Entity<CEZMapComponent> ent, ref EntityTerminatingEvent args)
+    {
+        var networkUid = ent.Comp.NetworkUid;
+
+        if (TerminatingOrDeleted(networkUid) || !TryComp<CEZMapNetworkComponent>(networkUid, out var network))
+            return;
+
+        TryRemoveMapsFromNetwork((networkUid, network), new[] { ent.Owner });
+    }
+
+    [SubscribeLocalEvent]
     private void OnStationPostInit(Entity<CEStationZLevelsComponent> ent, ref StationPostInitEvent args)
     {
         if (ent.Comp.MapsAbove.Count == 0 && ent.Comp.MapsBelow.Count == 0)
@@ -62,7 +71,7 @@ public sealed partial class CEZLevelsSystem : CESharedZLevelsSystem
         var depth = ent.Comp.MapsBelow.Count * -1;
         foreach (var mapBelow in ent.Comp.MapsBelow)
         {
-            if (!_mapLoader.TryLoadMap(mapBelow, out var mapEnt, out _))
+            if (!_mapLoader.TryLoadMap(mapBelow, out var mapEnt, out var grids))
             {
                 Log.Error($"Failed to load map for Station zNetwork at depth {depth}!");
                 continue;
@@ -71,8 +80,11 @@ public sealed partial class CEZLevelsSystem : CESharedZLevelsSystem
             Log.Info($"Created map {mapEnt.Value.Comp.MapId} for Station zNetwork at level {depth}");
             _map.InitializeMap(mapEnt.Value.Comp.MapId);
             _meta.SetEntityName(mapEnt.Value, $"{stationName} [{depth}]");
-            if (_mapGridQuery.HasComp(mapEnt.Value)) //Adding zlevel map to station, if it is planetmap
-                _station.AddGridToStation(ent, mapEnt.Value);
+            foreach (var grid in grids)
+            {
+                _station.AddGridToStation(ent, grid.Owner);
+            }
+
             dict.Add(mapEnt.Value, depth);
             depth++;
         }
@@ -81,7 +93,7 @@ public sealed partial class CEZLevelsSystem : CESharedZLevelsSystem
         depth = 1;
         foreach (var mapAbove in ent.Comp.MapsAbove)
         {
-            if (!_mapLoader.TryLoadMap(mapAbove, out var mapEnt, out _))
+            if (!_mapLoader.TryLoadMap(mapAbove, out var mapEnt, out var grids))
             {
                 Log.Error($"Failed to load map for Station zNetwork at depth {depth}!");
                 continue;
@@ -90,8 +102,11 @@ public sealed partial class CEZLevelsSystem : CESharedZLevelsSystem
             Log.Info($"Created map {mapEnt.Value.Comp.MapId} for Station zNetwork at level {depth}");
             _map.InitializeMap(mapEnt.Value.Comp.MapId);
             _meta.SetEntityName(mapEnt.Value, $"{stationName} [{depth}]");
-            if (_mapGridQuery.HasComp(mapEnt.Value)) //Adding zlevel map to station, if it is planetmap
-                _station.AddGridToStation(ent, mapEnt.Value);
+            foreach (var grid in grids)
+            {
+                _station.AddGridToStation(ent, grid.Owner);
+            }
+
             dict.Add(mapEnt.Value, depth);
             depth++;
         }
