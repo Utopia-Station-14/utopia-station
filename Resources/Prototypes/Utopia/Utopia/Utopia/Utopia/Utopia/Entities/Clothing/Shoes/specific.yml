@@ -1,6 +1,6 @@
 - type: entity
   parent: ClothingShoesBaseButcherable
-  id: ADTClothingFootWrapsWhite
+  id: UtopiaClothingFootWrapsWhite
   name: white footwraps
   description: Pair of pieces of clothing for those who are uncomfortable with ordinary shoes.
   components:
@@ -12,7 +12,7 @@
 
 - type: entity
   parent: ClothingShoesBaseButcherable
-  id: ADTClothingFootWrapsBlack
+  id: UtopiaClothingFootWrapsBlack
   name: black footwraps
   description: Pair of pieces of clothing for those who are uncomfortable with ordinary shoes.
   components:
@@ -24,7 +24,7 @@
 
 - type: entity
   parent: ClothingShoesBaseButcherable
-  id: ADTClothingFootWrapsHighBlack
+  id: UtopiaClothingFootWrapsHighBlack
   name: high black footwraps
   description: Pair of pieces of clothing for those who are uncomfortable with ordinary shoes.
   components:
@@ -36,7 +36,7 @@
 
 - type: entity
   parent: ClothingShoesBaseButcherable
-  id: ADTClothingFootWrapsHighWhite
+  id: UtopiaClothingFootWrapsHighWhite
   name: high white footwraps
   description: Pair of pieces of clothing for those who are uncomfortable with ordinary shoes.
   components:
@@ -48,7 +48,7 @@
 
 - type: entity
   parent: ClothingShoesBaseButcherable
-  id: ADTClothingFootWrapsBrown
+  id: UtopiaClothingFootWrapsBrown
   name: brown footwraps
   description: Pair of pieces of clothing for those who are uncomfortable with ordinary shoes.
   components:
@@ -60,7 +60,7 @@
 
 - type: entity
   parent: ClothingShoesBaseButcherable
-  id: ADTClothingFootWrapsHighBrown
+  id: UtopiaClothingFootWrapsHighBrown
   name: brown white footwraps
   description: Pair of pieces of clothing for those who are uncomfortable with ordinary shoes.
   components:
