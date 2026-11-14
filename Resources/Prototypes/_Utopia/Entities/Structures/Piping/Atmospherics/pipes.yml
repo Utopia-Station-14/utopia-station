@@ -143,3 +143,6 @@
     layers:
     - state: zmanifold
       map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: Construction
+    graph: UtopiaZPipeMulti
+    node: zpipemulti
