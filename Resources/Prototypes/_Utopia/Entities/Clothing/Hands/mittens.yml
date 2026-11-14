@@ -1,18 +1,18 @@
 - type: entity
   abstract: true
-  parent: ClothingHandsBase
+  parent: [ TemperatureProtection, ClothingHandsBase ]
   id: ClothingHandsMittenBase
   components:
   - type: Sprite
     sprite: _Utopia/Clothing/Hands/Gloves/mittens.rsi
     layers:
     - state: icon
+  - type: Armor
+    modifiers:
+      coefficients:
+        Cold: 0.9
   - type: Fiber
     fiberMaterial: fibers-wool
-  - type: TemperatureProtection
-    heatingCoefficient: 1.0
-    coolingCoefficient: 0.90
-
 
 # White
 - type: entity
