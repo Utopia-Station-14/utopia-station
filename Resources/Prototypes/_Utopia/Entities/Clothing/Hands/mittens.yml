@@ -130,13 +130,13 @@
   - type: Sprite
     layers:
     - state: icon
-      color: "#911919"
+      color: "#641212"
     - state: wool
   - type: Clothing
     clothingVisuals:
       gloves:
       - state: equipped-HAND
-        color: "#661212"
+        color: "#641212"
       - state: equipped-HAND-wool
   - type: Fiber
     fiberColor: fibers-vinous
