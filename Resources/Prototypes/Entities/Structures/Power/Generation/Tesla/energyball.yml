@@ -114,6 +114,7 @@
     - TeslaEngine
     - SingularityTeslaEngine
     - Power
+  - type: SupermatterProtection # Utopia-Tweak : Supermatter
 
 - type: entity
   id: TeslaMiniEnergyBall

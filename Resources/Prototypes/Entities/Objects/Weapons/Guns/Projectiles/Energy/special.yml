@@ -43,3 +43,7 @@
     - EmitterBolt
   - type: TimedDespawn
     lifetime: 3
+  ## Utopia-Tweak : Supermatter
+  - type: SupermatterFood
+    energy: 150
+  ## Utopia-Tweak : Supermatter
