@@ -19,8 +19,8 @@
         Tertiary: GasValveFourWay
     - type: GasValve
       kind: FourWay
-      inletName: inlet
-      outletName: outlet
+      inlet: inlet
+      outlet: outlet
       inletBName: inletB
       outletBName: outletB
     - type: NodeContainer

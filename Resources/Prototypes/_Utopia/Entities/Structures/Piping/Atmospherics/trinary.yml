@@ -19,8 +19,8 @@
         Tertiary: GasValveThreeWay
     - type: GasValve
       kind: ThreeWay
-      inletName: inlet
-      outletName: outlet
+      inlet: inlet
+      outlet: outlet
       sideName: side
     - type: NodeContainer
       nodes:
