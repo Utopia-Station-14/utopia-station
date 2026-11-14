@@ -11,7 +11,9 @@ fibers-nitrile = нитриловые
 fibers-nanomachines = изолирующие наномашинные
 fibers-chameleon = голографические хамелеонные
 fibers-rubber = резиновые
-fibers-wool = шерстяные # Utopia-Tweak: For mittens
+# Utopia-Tweak: For mittens
+fibers-wool = шерстяные
+# Utopia-Tweak: For mittens
 
 fibers-purple = фиолетовые
 fibers-red = красные

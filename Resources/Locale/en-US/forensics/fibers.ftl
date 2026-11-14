@@ -11,7 +11,9 @@ fibers-nitrile = nitrile
 fibers-nanomachines = insulative nanomachine
 fibers-chameleon = holographic chameleon
 fibers-rubber = rubber
-fibers-wool = wool # Utopia-Tweak: For mittens
+# Utopia-Tweak: For mittens
+fibers-wool = wool 
+# Utopia-Tweak: For mittens
 
 fibers-purple = purple
 fibers-red = red
