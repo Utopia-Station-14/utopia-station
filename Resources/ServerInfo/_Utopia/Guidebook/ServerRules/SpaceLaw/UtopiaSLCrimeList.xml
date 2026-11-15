@@ -9,77 +9,77 @@
     <ColorBox><Box>5-XX - Критические</Box></ColorBox>
 
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">00</Box></ColorBox>
-    <ColorBox Color="#54e4a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Оскорбительное поведение</Box></ColorBox>
-    <ColorBox Color="#d1e048"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Оскорбление власти</Box></ColorBox>
-    <ColorBox Color="#cf9d3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Забастовка</Box></ColorBox>
-    <ColorBox Color="#cf3f3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Неподчинение в ЧС</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Мятеж</Box></ColorBox>
+    <ColorBox Color="#a3e1c5"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Оскорбительное поведение</Box></ColorBox>
+    <ColorBox Color="#dde1a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Оскорбление власти</Box></ColorBox>
+    <ColorBox Color="#e1c0a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Забастовка</Box></ColorBox>
+    <ColorBox Color="#e1a3a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Неподчинение в ЧС</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Мятеж</Box></ColorBox>
 
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">01</Box></ColorBox>
-    <ColorBox Color="#54e4a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Лёгкий ущерб здоровью</Box></ColorBox>
-    <ColorBox Color="#d1e048"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Средний ущерб здоровью</Box></ColorBox>
-    <ColorBox Color="#cf9d3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Значительный ущерб здоровью</Box></ColorBox>
-    <ColorBox Color="#cf3f3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Убийство</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Уничтожение тела</Box></ColorBox>
+    <ColorBox Color="#a3e1c5"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Лёгкий ущерб здоровью</Box></ColorBox>
+    <ColorBox Color="#dde1a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Средний ущерб здоровью</Box></ColorBox>
+    <ColorBox Color="#e1c0a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Значительный ущерб здоровью</Box></ColorBox>
+    <ColorBox Color="#e1a3a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Убийство</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Уничтожение тела</Box></ColorBox>
 
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">02</Box></ColorBox>
-    <ColorBox Color="#54e4a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Порча имущества</Box></ColorBox>
-    <ColorBox Color="#d1e048"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Вандализм</Box></ColorBox>
-    <ColorBox Color="#cf9d3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Саботаж</Box></ColorBox>
-    <ColorBox Color="#cf3f3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Крупный саботаж</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Теракт</Box></ColorBox>
+    <ColorBox Color="#a3e1c5"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Порча имущества</Box></ColorBox>
+    <ColorBox Color="#dde1a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Вандализм</Box></ColorBox>
+    <ColorBox Color="#e1c0a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Саботаж</Box></ColorBox>
+    <ColorBox Color="#e1a3a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Крупный саботаж</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Теракт</Box></ColorBox>
 
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">03</Box></ColorBox>
-    <ColorBox Color="#54e4a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Малое присвоение имущества</Box></ColorBox>
-    <ColorBox Color="#d1e048"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Среднее присвоение имущества</Box></ColorBox>
-    <ColorBox Color="#cf9d3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Значительное присвоение имущества</Box></ColorBox>
-    <ColorBox Color="#cf3f3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Крупное присвоение имущества</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Особое присвоение имущества</Box></ColorBox>
+    <ColorBox Color="#a3e1c5"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Малое присвоение имущества</Box></ColorBox>
+    <ColorBox Color="#dde1a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Среднее присвоение имущества</Box></ColorBox>
+    <ColorBox Color="#e1c0a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Значительное присвоение имущества</Box></ColorBox>
+    <ColorBox Color="#e1a3a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Крупное присвоение имущества</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Особое присвоение имущества</Box></ColorBox>
 
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">04</Box></ColorBox>
-    <ColorBox Color="#54e4a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение пропаганды</Box></ColorBox>
-    <ColorBox Color="#d1e048"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение регулируемых веществ</Box></ColorBox>
-    <ColorBox Color="#cf9d3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение модифицированных предметов</Box></ColorBox>
-    <ColorBox Color="#cf3f3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение контрабанды</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение вражеского снаряжения</Box></ColorBox>
+    <ColorBox Color="#a3e1c5"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение пропаганды</Box></ColorBox>
+    <ColorBox Color="#dde1a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение регулируемых веществ</Box></ColorBox>
+    <ColorBox Color="#e1c0a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение модифицированных предметов</Box></ColorBox>
+    <ColorBox Color="#e1a3a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение контрабанды</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение вражеского снаряжения</Box></ColorBox>
 
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">05</Box></ColorBox>
-    <ColorBox Color="#54e4a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Злоупотребление экипировкой</Box></ColorBox>
-    <ColorBox Color="#d1e048"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение боевым приспособлением или бронёй</Box></ColorBox>
-    <ColorBox Color="#cf9d3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение специальным оборудованием</Box></ColorBox>
-    <ColorBox Color="#cf3f3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение летальным оружием</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Распространение оружия</Box></ColorBox>
+    <ColorBox Color="#a3e1c5"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Злоупотребление экипировкой</Box></ColorBox>
+    <ColorBox Color="#dde1a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение боевым приспособлением или бронёй</Box></ColorBox>
+    <ColorBox Color="#e1c0a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение специальным оборудованием</Box></ColorBox>
+    <ColorBox Color="#e1a3a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение летальным оружием</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Распространение оружия</Box></ColorBox>
 
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">06</Box></ColorBox>
-    <ColorBox Color="#54e4a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2"></Box></ColorBox>
-    <ColorBox Color="#d1e048"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Жестокое обращение с животными</Box></ColorBox>
-    <ColorBox Color="#cf9d3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Распространение флоры и фауны</Box></ColorBox>
-    <ColorBox Color="#cf3f3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Жестокое обращение с особыми животными</Box></ColorBox>
+    <ColorBox Color="#a3e1c5"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2"></Box></ColorBox>
+    <ColorBox Color="#dde1a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Жестокое обращение с животными</Box></ColorBox>
+    <ColorBox Color="#e1c0a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Распространение флоры и фауны</Box></ColorBox>
+    <ColorBox Color="#e1a3a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Жестокое обращение с особыми животными</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2"></Box></ColorBox>
 
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">07</Box></ColorBox>
-    <ColorBox Color="#54e4a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нахождение в служебном отсеке</Box></ColorBox>
-    <ColorBox Color="#d1e048"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Проникновение со взломом</Box></ColorBox>
-    <ColorBox Color="#cf9d3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нахождение в стратегической точке</Box></ColorBox>
+    <ColorBox Color="#a3e1c5"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нахождение в служебном отсеке</Box></ColorBox>
+    <ColorBox Color="#dde1a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Проникновение со взломом</Box></ColorBox>
+    <ColorBox Color="#e1c0a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нахождение в стратегической точке</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2"></Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нахождение в защищённой стратегической точке</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нахождение в защищённой стратегической точке</Box></ColorBox>
 
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">08</Box></ColorBox>
-    <ColorBox Color="#54e4a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нарушение общественного порядка</Box></ColorBox>
-    <ColorBox Color="#d1e048"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Клевета, дискредитация, мошенничество</Box></ColorBox>
-    <ColorBox Color="#cf9d3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Помеха правосудию</Box></ColorBox>
+    <ColorBox Color="#a3e1c5"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нарушение общественного порядка</Box></ColorBox>
+    <ColorBox Color="#dde1a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Клевета, дискредитация, мошенничество</Box></ColorBox>
+    <ColorBox Color="#e1c0a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Помеха правосудию</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2"></Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2"></Box></ColorBox>
 
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">09</Box></ColorBox>
-    <ColorBox Color="#54e4a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Недочёты в работе</Box></ColorBox>
-    <ColorBox Color="#d1e048"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Халатность</Box></ColorBox>
+    <ColorBox Color="#a3e1c5"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Недочёты в работе</Box></ColorBox>
+    <ColorBox Color="#dde1a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Халатность</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2"></Box></ColorBox>
-    <ColorBox Color="#cf3f3f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Грубая халатность</Box></ColorBox>
+    <ColorBox Color="#e1a3a3"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Грубая халатность</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2"></Box></ColorBox>
   </Table>
 
-  # Описания нарушений и наказание
+  # Описания нарушений и наказаний
 
   ## 1хх
   <Table Columns="4">
@@ -100,12 +100,16 @@
 
     <ColorBox Color="#59563a"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">102</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Порча имущества</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Загрязнение коридоров и отделов (жидкостями).
+Повреждения и/или уничтожение мебели (столы, кресла и т.д.), лампочек, посуды.
+Незначительные повреждения киборга.
+
+Случайное загрязнение исключается.</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">5 минут или 50 кредитов</Box></ColorBox>
 
     <ColorBox Color="#4d2e2e"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">103</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Малое присвоение имущества</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2"></Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">5 минут или 50 кредитов</Box></ColorBox>
 
     <ColorBox Color="#4d2e2e"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">104</Box></ColorBox>
@@ -115,7 +119,7 @@
 
     <ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">105</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Злоупотребление экипировкой</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Неправомерное или нецелевое использование оборудования и материалов, предназначенных для выполнения определённых задач или функций, включая излишнее собирательство снаряжения.</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">5 минут или 50 кредитов</Box></ColorBox>
 
     <ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">107</Box></ColorBox>
@@ -143,7 +147,9 @@
 
     <ColorBox Color="#2e422e"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">200</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Оскорбление власти</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Оскорбление власти корпорации, равно как и её отдельных представителей и должностных лиц, выраженное в действиях или высказываниях, подрывающих авторитет и репутацию корпорации.
+
+Аргументированная критика не подпадает под действие данной статьи.</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">10 минут или 100 кредитов</Box></ColorBox>
 
     <ColorBox Color="#453a59"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">201</Box></ColorBox>
@@ -153,7 +159,11 @@
 
     <ColorBox Color="#59563a"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">202</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Вандализм</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Уничтожение стен, окон, шлюзов, камер.
+Уничтожение консолей и машин (автолат, протолат и т.д.), не являющихся редкими (встречающихся в экземпляре 1-2 штук на станции).
+Средние и тяжёлые повреждения киборга.
+Отключение электропитания вне рабочих отделов (коридор, дормы и т.д.), либо в рамках одного помещения рабочего отдела (область, подклюённая к одному лкп).
+Несанкционированное крупное строительство (стены, окна).</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">10 минут или 100 кредитов</Box></ColorBox>
 
     <ColorBox Color="#4d2e2e"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">203</Box></ColorBox>
@@ -167,8 +177,14 @@
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">10 минут или 100 кредитов</Box></ColorBox>
 
     <ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">205</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение боевым снаряжением или бронёй</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение боевым приспособлением или бронёй</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение боевым приспособлением, включая опасные предметы, средства самообороны или самодельное оружие, без соответствующего разрешения, должностной необходимости или ЧС. Представляет собой правонарушение, связанное с незаконным хранением и использованием объектов, которые могут нанести серьёзный вред здоровью или жизни гуманоида. Предмет считается опасным, если он не предназначен для выполнения полезных рабочих функций, но может быть использован для причинения тяжкого вреда.
+
+Список подобных предметов включает в себя, но не ограничивается:
+Опасный рабочий инструмент, вынесенный из отдела (поварской секач, боевой хирургическая пила и т.д.).
+Самодельное или импровизированное оружие (бита, копьё и т.д.).
+Средства самообороны (вспышки, шок-дубинки и т.д.).
+Бронежилеты, шлема, любые щиты, за исключением игрушечных.</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">10 минут или 100 кредитов</Box></ColorBox>
 
     <ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">206</Box></ColorBox>
@@ -215,7 +231,11 @@
 
     <ColorBox Color="#59563a"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">302</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Саботаж</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Уничтожение консолей и машин (автолат, протолат и т.д.), являющихся редкими (встречающихся в экземпляре 1-2 штук на станции).
+Уничтожение киборга и/или внедрение в него общественно опасных законов.
+Отключение электропитания в пределах одного рабочего отдела (карго, РнД и т.д.).
+Разрушение одного телекоммуникационного сервера.
+Нарушение герметичности станции в одном отсеке.</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">25 минут</Box></ColorBox>
 
     <ColorBox Color="#4d2e2e"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">303</Box></ColorBox>
@@ -281,7 +301,12 @@
 
     <ColorBox Color="#59563a"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">402</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Крупный саботаж</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Действия, повлёкшие уничтожение ТЭГа.
+Несанкционированная смена законов ИИ.
+Отключение электропитания в пределах двух и более рабочих отделов (карго, РнД и т.д.).
+Разрушение двух и более телекоммуникационных серверов.
+Нарушение герметичности станции в двух и более отсеках.
+Выпуск опасных газов в пределах одного отсека.</Box></ColorBox>
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">40 минут</Box></ColorBox>
 
     <ColorBox Color="#4d2e2e"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">403</Box></ColorBox>
@@ -327,41 +352,45 @@
     <ColorBox><Box>Подробное описание и границы статьи</Box></ColorBox>
     <ColorBox><Box>Наказание по лёгкой / средней / тяжёлой степеням</Box></ColorBox>
 
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">500</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Мятеж</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">500</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Мятеж</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
 
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">501</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Уничтожение тела</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Тело считается уничтоженным, если его невозможно восстановить: оно выброшено в космос, полностью распалось, либо орган, образующий сознание, не найден. Тело также считается уничтоженным, если оно пролежало в терминальной стадии разложения 15 минут и более.</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">501</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Уничтожение тела</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Тело считается уничтоженным, если его невозможно восстановить: оно выброшено в космос, полностью распалось, либо орган, образующий сознание, не найден. Тело также считается уничтоженным, если оно пролежало в терминальной стадии разложения 15 минут и более.</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
 
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">502</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Теракт</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">502</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Теракт</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Действия, повлёкшие выпуск теслы, сингулярности.
+Отключение электропитания на территории 50% станции.
+Нарушение герметичности станции в четырёх и более отсеках.
+Уничтожение 50% одного отсека станции.
+Выпуск опасных газов в пределах двух и более отсеков.</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
 
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">503</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Особое присвоение имущества</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">503</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Особое присвоение имущества</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
 
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">504</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение вражеского снаряжения</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Осознанное незаконное владение прямо перечисленным в закрытом реестре военным, диверсионным или иным вражеским снаряжением.</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">504</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение вражеского снаряжения</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Осознанное незаконное владение прямо перечисленным в закрытом реестре военным, диверсионным или иным вражеским снаряжением.</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
 
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">505</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Распространение летального оружия</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Незаконная передача хотя бы двух регулируемых предметов минимум двум и более лицам.
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">505</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Распространение летального оружия</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Незаконная передача хотя бы двух регулируемых предметов минимум двум и более лицам.
 
 К регулируемым предметам относятся огнестрельное и энергетическое оружие, боевые гранаты, взрывные устройства и вещества или смеси, подготовленные для взрывного применения. Размещение двух и более таких предметов в свободном доступе также образует состав.</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
 
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">507</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нахождение в защищённой стратегической точке</Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нахождение на территории защищённого отсека стратегической важности без законного доступа, разрешения, уполномоченного сопровождения, либо необходимого служебного основания. Случайный вход с немедленным выходом, спасение жизни и законное сопровождение исключают статью.
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">507</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нахождение в защищённой стратегической точке</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нахождение на территории защищённого отсека стратегической важности без законного доступа, разрешения, уполномоченного сопровождения, либо необходимого служебного основания. Случайный вход с немедленным выходом, спасение жизни и законное сопровождение исключают статью.
 
 Защинёнными отсеками стратегической важности считаются:
 - Атмосферика;
@@ -374,6 +403,6 @@
 - Ядро ИИ;
 - Каюта капитана.
     </Box></ColorBox>
-    <ColorBox Color="#7b3b99"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
+    <ColorBox Color="#d1a3e1"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перма</Box></ColorBox>
   </Table>
 </Document>
