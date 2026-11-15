@@ -40,8 +40,8 @@ jobs:
           CREATED_ISO="${{ github.event.pull_request.created_at }}"
           MERGED_ISO="${{ github.event.pull_request.merged_at }}"
 
-          CREATED_DATE=$(date -d "$CREATED_ISO" +"%d.%m.%Y %H:%M")
-          MERGED_DATE=$(date -d "$MERGED_ISO" +"%d.%m.%Y %H:%M")
+          CREATED_DATE=$(TZ=Europe/Moscow date -d "$CREATED_ISO" +"%d.%m.%Y %H:%M")
+          MERGED_DATE=$(TZ=Europe/Moscow date -d "$MERGED_ISO" +"%d.%m.%Y %H:%M")
 
           CHANGELOG=$(echo "$PR_BODY" | awk '/:cl:/{flag=1} flag')
           EMBED_DESC=$(printf "%s\n\n%s" "**$PR_TITLE**" "$CHANGELOG")

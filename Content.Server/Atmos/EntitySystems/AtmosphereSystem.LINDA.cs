@@ -71,25 +71,23 @@ namespace Content.Server.Atmos.EntitySystems
                     shouldShareAir = true;
                 }
 
+                // Utopia-Tweak : Atmos-Updt
                 if (shouldShareAir)
                 {
                     var difference = Share(tile, enemyTile, adjacentTileLength);
 
-                    // Monstermos already handles this, so let's not handle it ourselves.
-                    if (!MonstermosEqualization)
+                    if (difference >= 0)
                     {
-                        if (difference >= 0)
-                        {
-                            ConsiderPressureDifference(gridAtmosphere, tile, direction, difference);
-                        }
-                        else
-                        {
-                            ConsiderPressureDifference(gridAtmosphere, enemyTile, i.ToOppositeDir(), -difference);
-                        }
+                        ConsiderPressureDifference(gridAtmosphere, tile, direction, difference);
+                    }
+                    else
+                    {
+                        ConsiderPressureDifference(gridAtmosphere, enemyTile, i.ToOppositeDir(), -difference);
                     }
 
                     LastShareCheck(tile);
                 }
+                // Utopia-Tweak : Atmos-Updt
             }
 
             ShareZLevelAtmos(ent, tile, adjacentTileLength); // Utopia-Tweak : Z-Levels

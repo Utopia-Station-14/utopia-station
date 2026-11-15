@@ -1,7 +1,10 @@
 using Content.Server.Atmos.EntitySystems;
+using Content.Server.NodeContainer.NodeGroups;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Reactions;
 using JetBrains.Annotations;
+using Robust.Shared.GameObjects;
+using Robust.Shared.IoC;
 
 namespace Content.Server.Atmos.Reactions
 {
@@ -48,11 +51,23 @@ namespace Content.Server.Atmos.Reactions
             {
                 energyReleased += (Atmospherics.FireHydrogenEnergyReleased * burnedFuel);
 
-                // TODO ATMOS Radiation pulse here!
+                // Utopia-Tweak : Tritium-Radiation
+                if (location != null)
+                {
+                    IoCManager.Resolve<IEntitySystemManager>()
+                        .GetEntitySystem<TritiumFireRadiationSystem>()
+                        .Pulse(location.GridIndex, location.GridIndices, burnedFuel);
+                }
+                else if (holder is PipeNet pipeNet)
+                {
+                    IoCManager.Resolve<IEntitySystemManager>()
+                        .GetEntitySystem<TritiumFireRadiationSystem>()
+                        .PulsePipeNet(pipeNet, burnedFuel);
+                }
+                // Utopia-Tweak : Tritium-Radiation
 
                 // Conservation of mass is important.
                 mixture.AdjustMoles(Gas.WaterVapor, burnedFuel);
-
                 mixture.ReactionResults[(byte)GasReaction.Fire] += burnedFuel;
             }
 

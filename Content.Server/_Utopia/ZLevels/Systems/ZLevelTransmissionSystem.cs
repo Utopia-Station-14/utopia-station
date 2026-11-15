@@ -86,16 +86,13 @@ public sealed partial class ZLevelTransmissionSystem : EntitySystem
             return;
 
         _zPipes.ClearAll(container);
-
         var worldBox = GetTileBox(gridUid, grid, xform);
-
         foreach (var node in container.Nodes.Values)
         {
             if (node is not ZPipeNode zNode)
                 continue;
 
             var (targetMap, requiredDir) = ResolveDirection(link, zNode.ZDirection);
-
             if (targetMap == null)
                 continue;
 
@@ -130,6 +127,9 @@ public sealed partial class ZLevelTransmissionSystem : EntitySystem
                     continue;
 
                 if (other.ZDirection != requiredDir)
+                    continue;
+
+                if (other.CurrentPipeLayer != self.CurrentPipeLayer)
                     continue;
 
                 _zPipes.AddZConnection(self, other);

@@ -123,3 +123,29 @@
         doAfter: 1
       - tool: Welding
         doAfter: 1
+
+- type: constructionGraph
+  id: UtopiaZPipeMulti
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: zpipemulti
+      steps:
+      - material: Steel
+        amount: 3
+        doAfter: 1
+
+  - node: zpipemulti
+    entity: UtopiaGasZPipeMulti
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Welding
+        doAfter: 2
+

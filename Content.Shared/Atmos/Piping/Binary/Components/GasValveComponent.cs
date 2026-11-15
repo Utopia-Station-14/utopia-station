@@ -1,6 +1,7 @@
 using Content.Shared.Atmos.Piping.Binary.Systems;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Atmos.Piping.Binary.Components;
 
@@ -33,4 +34,23 @@ public sealed partial class GasValveComponent : Component
     /// </summary>
     [DataField]
     public SoundSpecifier ValveSound = new SoundCollectionSpecifier("valveSqueak");
+
+    // Utopia-Tweak : AtmosUpdt
+    [DataField]
+    public GasValveType Kind = GasValveType.Straight;
+
+    [DataField]
+    public string? SideName;
+
+    [DataField]
+    public string? InletBName;
+
+    [DataField]
+    public string? OutletBName;
+    // Utopia-Tweak : AtmosUpdt
 }
+
+// Utopia-Tweak : AtmosUpdt
+[Serializable, NetSerializable]
+public enum GasValveType : byte { Straight, ThreeWay, FourWay }
+// Utopia-Tweak : AtmosUpdt

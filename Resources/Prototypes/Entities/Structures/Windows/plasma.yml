@@ -40,6 +40,12 @@
     price: 100
   - type: RadiationBlocker
     resistance: 2
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.2
+    heatCapacity: 9000
+  # Utopia-Tweak-end
+
 
 - type: entity
   id: PlasmaWindowDirectional
@@ -83,6 +89,12 @@
     price: 50
   - type: RadiationBlocker
     resistance: 1
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.28
+    heatCapacity: 4500
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: PlasmaWindowDirectional
@@ -114,6 +126,12 @@
     trackAllDamage: true
     damageOverlay:
       sprite: Structures/Windows/cracks_directional_corner.rsi
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.3
+    heatCapacity: 3000
+  # Utopia-Tweak-end
+
 
 - type: entity
   parent: PlasmaWindow
@@ -163,3 +181,9 @@
   - type: Construction
     graph: WindowDiagonal
     node: plasmaWindowDiagonal
+  # Utopia-Tweak-start: Atmos-Updt
+  - type: ThermalConductor
+    thermalConductivity: 0.2
+    heatCapacity: 9000
+  # Utopia-Tweak-end
+

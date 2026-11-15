@@ -1,0 +1,22 @@
+- type: entity
+  id: TritiumFireRadiation
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Transform
+  - type: RadiationSource
+    intensity: 2
+    gammaIntensity: 2
+
+- type: entity
+  id: EffectSpaceWind
+  name: space wind
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Utopia/Effects/spacewind.rsi
+    state: wind
+    drawdepth: Effects
+    noRot: false
+  - type: Appearance
+  - type: TimedDespawn
+    lifetime: 0.6

@@ -19,6 +19,20 @@
     ClothingHeadHatCanadaBeanie: 4
     ClothingHeadHatSantahat: 2
     ClothingHeadHatXmasCrown: 2
+# Utopia-Tweak: Clothing
+    UtopiaClothingHandsMittenWhite: 2
+    UtopiaClothingHandsMittenBlack: 2
+    UtopiaClothingHandsMittenRed: 2
+    UtopiaClothingHandsMittenOrange: 2
+    UtopiaClothingHandsMittenYellow: 2
+    UtopiaClothingHandsMittenVinous: 2
+    UtopiaClothingHandsMittenPink: 2
+    UtopiaClothingHandsMittenBlue: 2
+    UtopiaClothingHandsMittenCyan: 2
+    UtopiaClothingHandsMittenTeal: 2
+    UtopiaClothingHandsMittenGreen: 2
+    UtopiaClothingHandsMittenBrown: 2
+# Utopia-Tweak: Clothing
   emaggedInventory:
     ClothingNeckScarfStripedSyndieGreen: 3
     ClothingNeckScarfStripedSyndieRed: 3
