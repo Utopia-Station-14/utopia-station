@@ -1,0 +1,42 @@
+- type: constructionGraph
+  id: UtopiaCableMulti
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: cablemulti
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+      - material: CableHV
+        amount: 1
+        doAfter: 1
+      - material: CableMV
+        amount: 1
+        doAfter: 1
+      - material: Cable
+        amount: 1
+        doAfter: 1
+
+  - node: cablemulti
+    entity: UtopiaZCableWallTerminal
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: CableHVStack1
+        amount: 1
+      - !type:SpawnPrototype
+        prototype: CableMVStack1
+        amount: 1
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 1
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Cutting
+        doAfter: 2

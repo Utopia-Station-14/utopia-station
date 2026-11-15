@@ -46,3 +46,24 @@
   category: construction-category-utilities
   placementMode: SnapgridCenter
   canBuildInImpassable: false
+
+
+- type: construction
+  id: UtopiaGasZPipeMulti
+  name: construction-recipe-z-pipe-multi
+  graph: UtopiaZPipeMulti
+  startNode: start
+  targetNode: zpipemulti
+  category: construction-category-utilities
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+
+- type: construction
+  id: UtopiaZCableWallTerminal
+  name: construction-recipe-cable-multi
+  graph: UtopiaCableMulti
+  startNode: start
+  targetNode: cablemulti
+  category: construction-category-utilities
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false

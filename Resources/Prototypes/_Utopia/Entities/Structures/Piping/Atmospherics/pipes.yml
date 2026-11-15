@@ -70,62 +70,78 @@
 
 - type: entity
   parent: GasPipeSansLayers
-  id: UtopiaGasZPipeUp
-  name: UP
-  suffix: Straight
+  id: UtopiaGasZPipeMulti
+  name: multi-level pipe
+  description: A vertical pipe junction that carries three pipe layers up and down between levels.
   placement:
     mode: AlignAtmosPipeLayers
   components:
   - type: NodeContainer
     nodes:
-      pipe:
+      pipeLayer1:
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
-      zUp:
+        pipeLayer: Secondary
+      pipeLayer2:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        pipeLayer: Primary
+      pipeLayer3:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        pipeLayer: Tertiary
+      zUp1:
         !type:ZPipeNode
         nodeGroupID: Pipe
+        pipeDirection: Longitudinal
         zDirection: Up
+        pipeLayer: Secondary
+      zDown1:
+        !type:ZPipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        zDirection: Down
+        pipeLayer: Secondary
+      zUp2:
+        !type:ZPipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        zDirection: Up
+        pipeLayer: Primary
+      zDown2:
+        !type:ZPipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        zDirection: Down
+        pipeLayer: Primary
+      zUp3:
+        !type:ZPipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        zDirection: Up
+        pipeLayer: Tertiary
+      zDown3:
+        !type:ZPipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        zDirection: Down
+        pipeLayer: Tertiary
   - type: ZPipe
   - type: ZLevelTransmitter
     allowUp: true
-  - type: ZLevelEntityLink
-  - type: AtmosDevice
-  - type: Sprite
-    sprite: Structures/Piping/Atmospherics/pipe.rsi
-    drawdepth: ThinPipe
-    visible: false
-    layers:
-    - state: pipeUp
-      map: [ "enum.PipeVisualLayers.Pipe" ]
-
-- type: entity
-  parent: GasPipeSansLayers
-  id: UtopiaGasZPipeDown
-  name: DOWN
-  suffix: Straight
-  placement:
-    mode: AlignAtmosPipeLayers
-  components:
-  - type: NodeContainer
-    nodes:
-      pipe:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-      zDown:
-        !type:ZPipeNode
-        nodeGroupID: Pipe
-        zDirection: Down
-  - type: ZPipe
-  - type: ZLevelTransmitter
     allowDown: true
   - type: ZLevelEntityLink
   - type: AtmosDevice
   - type: Sprite
-    sprite: Structures/Piping/Atmospherics/pipe.rsi
+    sprite: _Utopia/Structures/Piping/Atmospherics/zmanifold.rsi
     drawdepth: ThinPipe
     visible: false
     layers:
-    - state: pipeDown
+    - state: zmanifold
       map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: Construction
+    graph: UtopiaZPipeMulti
+    node: zpipemulti
