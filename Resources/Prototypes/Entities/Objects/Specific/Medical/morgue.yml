@@ -126,6 +126,9 @@
     solution: food
   - type: Extractable
     grindableSolutionName: food
+  # Utopia-Tweak : Supermatter
+  - type: SupermatterProtection
+  # Utopia-Tweak : Supermatter
 
 - type: entity
   parent: Ash
