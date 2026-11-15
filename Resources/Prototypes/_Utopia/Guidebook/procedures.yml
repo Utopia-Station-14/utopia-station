@@ -21,7 +21,7 @@
   text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPProcess.xml"
 
 - type: guideEntry
-  id: UtopiaPLevel
-  name: utopia-guide-entry-procedures-level
+  id: UtopiaPForce
+  name: utopia-guide-entry-procedures-force
   priority: 3
   text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPForce.xml"
