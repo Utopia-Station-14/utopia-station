@@ -20,18 +20,18 @@
     ClothingHeadHatSantahat: 2
     ClothingHeadHatXmasCrown: 2
 # Utopia-Tweak: Clothing
-    ClothingHandsMittenWhite: 2
-    ClothingHandsMittenBlack: 2
-    ClothingHandsMittenRed: 2
-    ClothingHandsMittenOrange: 2
-    ClothingHandsMittenYellow: 2
-    ClothingHandsMittenVinous: 2
-    ClothingHandsMittenPink: 2
-    ClothingHandsMittenBlue: 2
-    ClothingHandsMittenCyan: 2
-    ClothingHandsMittenTeal: 2
-    ClothingHandsMittenGreen: 2
-    ClothingHandsMittenBrown: 2
+    UtopiaClothingHandsMittenWhite: 2
+    UtopiaClothingHandsMittenBlack: 2
+    UtopiaClothingHandsMittenRed: 2
+    UtopiaClothingHandsMittenOrange: 2
+    UtopiaClothingHandsMittenYellow: 2
+    UtopiaClothingHandsMittenVinous: 2
+    UtopiaClothingHandsMittenPink: 2
+    UtopiaClothingHandsMittenBlue: 2
+    UtopiaClothingHandsMittenCyan: 2
+    UtopiaClothingHandsMittenTeal: 2
+    UtopiaClothingHandsMittenGreen: 2
+    UtopiaClothingHandsMittenBrown: 2
 # Utopia-Tweak: Clothing
   emaggedInventory:
     ClothingNeckScarfStripedSyndieGreen: 3
