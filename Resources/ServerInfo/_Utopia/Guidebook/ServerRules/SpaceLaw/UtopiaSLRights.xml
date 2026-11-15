@@ -1,137 +1,52 @@
 ﻿﻿<Document>
   # Основные Права Разумных Существ
   <Table Columns="2">
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        №
-      </Box></ColorBox>
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        Право
-      </Box>
-    </ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">№</Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Право</Box></ColorBox>
 
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        1
-      </Box>
-    </ColorBox>
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        [bold]Право на жизнь.[/bold]
-        Каждый имеет право на жизнь. Смертная казнь является крайней мерой наказания за критические преступления. Незаконное лишение погибшего возможности реанимации или клонирования квалифицируется по статье 501.
-      </Box>
-    </ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">1</Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">[bold]Право на жизнь.[/bold]
+Каждый имеет право на жизнь. Смертная казнь является крайней мерой наказания за критические преступления. Незаконное лишение погибшего возможности реанимации или клонирования квалифицируется по статье 501.</Box></ColorBox>
 
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        2
-      </Box>
-    </ColorBox>
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        [bold]Право на достоинство личности.[/bold]
-        Запрещены пытки, принуждение к действиям. Медицинские, научные и иные опыты допускаются только с добровольного согласия разумного существа.
-      </Box>
-    </ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">2</Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">[bold]Право на достоинство личности.[/bold]
+Запрещены пытки, принуждение к действиям. Медицинские, научные и иные опыты допускаются только с добровольного согласия разумного существа.</Box></ColorBox>
 
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        3
-      </Box>
-    </ColorBox>
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        [bold]Право на свободу и личную неприкосновенность.[/bold]
-        Каждый имеет право на свободу мысли, слова и передвижения.
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">3</Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">[bold]Право на свободу и личную неприкосновенность.[/bold]
+Каждый имеет право на свободу мысли, слова и передвижения.
 Не допускаются пропаганда и агитация, продвигающие социальную, расовую, национальную или религиозную ненависть, вражду или превосходство.
-        Лишить права на свободу можно лишь решением Центрального Командования или Службы Безопасности в связи с нарушением КЗ или карантинными действиями, а также при возникновении чрезвычайной ситуации.
-      </Box>
-    </ColorBox>
+Лишить права на свободу можно лишь решением Центрального Командования или Службы Безопасности в связи с нарушением КЗ или карантинными действиями, а также при возникновении чрезвычайной ситуации.</Box></ColorBox>
 
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        4
-      </Box>
-    </ColorBox>
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        [bold]Право на неприкосновенность частной жизни.[/bold]
-        Сведения о частной жизни и переписка не могут собираться, использоваться или передаваться без согласия лица, кроме случаев, когда это необходимо для медицинской помощи, расследования, обеспечения безопасности или исполнения служебной обязанности. Доступ получает только уполномоченный сотрудник.
-        
-      </Box>
-    </ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">4</Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">[bold]Право на неприкосновенность частной жизни.[/bold]
+Сведения о частной жизни и переписка не могут собираться, использоваться или передаваться без согласия лица, кроме случаев, когда это необходимо для медицинской помощи, расследования, обеспечения безопасности или исполнения служебной обязанности. Доступ получает только уполномоченный сотрудник.</Box></ColorBox>
 
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        5
-      </Box>
-    </ColorBox>
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        [bold]Право на охрану здоровья и медицинскую помощь.[/bold]
-        Каждый имеет право на охрану здоровья, медицинскую и при необходимости психологическую помощь, клонирование и реанимацию. Эвтаназия допускается только по добровольному запросу больного.
-      </Box>
-    </ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">5</Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">[bold]Право на охрану здоровья и медицинскую помощь.[/bold]
+Каждый имеет право на охрану здоровья, медицинскую и при необходимости психологическую помощь, клонирование и реанимацию. Эвтаназия допускается только по добровольному запросу больного.</Box></ColorBox>
 
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        6
-      </Box>
-    </ColorBox>
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        [bold]Право на владение имуществом.[/bold]
-        Каждый вправе иметь имущество, владеть, пользоваться и распоряжаться им. Уполномоченное лицо вправе изъять имущество на основаниях и установленные сроки. Вещи, не связанные с делом, можно временно изъять не более чем на 3 минуты.
-      </Box>
-    </ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">6</Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">[bold]Право на владение имуществом.[/bold]
+Каждый вправе иметь имущество, владеть, пользоваться и распоряжаться им. Уполномоченное лицо вправе изъять имущество на основаниях и установленные сроки. Вещи, не связанные с делом, можно временно изъять не более чем на 3 минуты.</Box></ColorBox>
 
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        7
-      </Box>
-    </ColorBox>
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        [bold]Право на должное исполнение СРП.[/bold]
-        Каждый вправе требовать соблюдения стандартных рабочих процедур по отношению к себе.
-      </Box>
-    </ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">7</Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">[bold]Право на должное исполнение СРП.[/bold]
+Каждый вправе требовать соблюдения стандартных рабочих процедур по отношению к себе.</Box></ColorBox>
 
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        8
-      </Box></ColorBox>
-    <ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        [bold]Право на признание разумным.[/bold]
-        Существо, не обладающее ОПРС, но имеющее объективные признаки разумности и способное сосуществовать с другими разумными видами, может быть признано разумным уполномоченным лицом и получить защиту ОПРС. Признание проводится по процедуре признания разумности.
-      </Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">8</Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">[bold]Право на признание разумным.[/bold]
+Существо, не обладающее ОПРС, но имеющее объективные признаки разумности и способное сосуществовать с другими разумными видами, может быть признано разумным уполномоченным лицом и получить защиту ОПРС. Признание проводится по процедуре признания разумности.</Box></ColorBox>
 
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        9
-      </Box>
-    </ColorBox>
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        [bold]Презумпция невиновности.[/bold]
-        Обвиняемый считается невиновным, пока вина не доказана.
-Обвиняемый не обязан доказывать невиновность или свидетельствовать против себя. Когда доказательств недостаточно, решение принимается в пользу обвиняемого. Доказательство, полученное с нарушением ОПРС или закона, рассматривается по делу; нарушение при его получении отдельно оценивается по применимой статье.
-      </Box>
-    </ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">9</Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">[bold]Презумпция невиновности.[/bold]
+Обвиняемый считается невиновным, пока вина не доказана.
+Обвиняемый не обязан доказывать невиновность или свидетельствовать против себя. Когда доказательств недостаточно, решение принимается в пользу обвиняемого. Доказательство, полученное с нарушением ОПРС или закона, рассматривается по делу; нарушение при его получении отдельно оценивается по применимой статье.</Box></ColorBox>
 
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        10
-      </Box>
-    </ColorBox>
-    <ColorBox Color="#3b4354">
-      <Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">
-        [bold]Право на юридическую защиту.[/bold]
-        Каждый субъект ОПРС вправе требовать юридическую помощь и защищать свои права и свободы.
-Гамма отменяет Юр защиту.
-      </Box>
-    </ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">10</Box></ColorBox>
+<ColorBox Color="#3b4354"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">[bold]Право на юридическую защиту.[/bold]
+Каждый субъект ОПРС вправе требовать юридическую помощь и защищать свои права и свободы.
+Гамма отменяет Юр защиту.</Box></ColorBox>
   </Table>
 
 </Document>
