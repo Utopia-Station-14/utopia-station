@@ -241,7 +241,8 @@ public sealed partial class PlayTimeTrackingSystem : EntitySystem
     /// <returns>Returns true if all requirements were met or there were no requirements.</returns>
     public bool IsAllowed(ICommonSession player, ProtoId<JobPrototype> job)
     {
-        if (!_cfg.GetCVar(CCVars.GameRoleTimers))
+        if (!_cfg.GetCVar(CCVars.GameRoleTimers) ||
+            _sponsorsManager.TryGetInfo(player.UserId, out var sponsorInfo) && sponsorInfo.AllowJob) // Utopia-Tweak : Sponsors
             return true;
 
         if (!_tracking.TryGetTrackerTimes(player, out var playTimes))
@@ -272,16 +273,6 @@ public sealed partial class PlayTimeTrackingSystem : EntitySystem
         if (!_cfg.GetCVar(CCVars.GameRoleTimers))
             return true;
 
-        // Utopia-Tweak : Sponsors
-        var info = _sponsorsManager.TryGetInfo(player.UserId, out var sponsorInfo);
-
-        if (info && sponsorInfo != null)
-        {
-            if (sponsorInfo.AllowJob)
-                return true;
-        }
-        // Utopia-Tweak : Sponsors
-
         if (!_tracking.TryGetTrackerTimes(player, out var playTimes))
         {
             Log.Error($"Unable to check playtimes {Environment.StackTrace}");
@@ -302,7 +293,8 @@ public sealed partial class PlayTimeTrackingSystem : EntitySystem
     public HashSet<ProtoId<JobPrototype>> GetDisallowedJobs(ICommonSession player)
     {
         var roles = new HashSet<ProtoId<JobPrototype>>();
-        if (!_cfg.GetCVar(CCVars.GameRoleTimers))
+        if (!_cfg.GetCVar(CCVars.GameRoleTimers)
+        || _sponsorsManager.TryGetInfo(player.UserId, out var sponsorInfo) && sponsorInfo.AllowJob) // Utopia-Tweak : Sponsors
             return roles;
 
         if (!_tracking.TryGetTrackerTimes(player, out var playTimes))
@@ -326,6 +318,12 @@ public sealed partial class PlayTimeTrackingSystem : EntitySystem
             return;
 
         var player = _playerManager.GetSessionById(userId);
+
+        // Utopia-Tweak : Sponsors
+        if (_sponsorsManager.TryGetInfo(player.UserId, out var sponsorInfo) && sponsorInfo.AllowJob)
+            return;
+        // Utopia-Tweak : Sponsors
+
         if (!_tracking.TryGetTrackerTimes(player, out var playTimes))
         {
             // Sorry mate but your playtimes haven't loaded.
