@@ -11,7 +11,6 @@ using Content.Shared.DoAfter;
 using Content.Shared.Ghost.Components;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
-using Robust.Shared.Map.Components;
 using System.Numerics;
 
 namespace Content.Server._Utopia.ZLevels.Systems;
@@ -69,14 +68,10 @@ public sealed partial class ZLevelLadderSystem : EntitySystem
         }
 
         if (targetMap == null)
-        {
             return;
-        }
 
         if (!IsValidDestination(uid, targetMap.Value, msg.Direction))
-        {
             return;
-        }
 
         var delay = HasComp<GhostComponent>(user) ? TimeSpan.Zero : comp.Delay;
         var doAfter = new DoAfterArgs(EntityManager, user, delay, new ZLevelLadderDoAfterEvent(), uid, uid, uid)
@@ -120,39 +115,26 @@ public sealed partial class ZLevelLadderSystem : EntitySystem
 
     private bool IsValidDestination(EntityUid source, EntityUid targetMap, ZMoveDirection direction)
     {
-        var hasTile = HasTileAt(source, targetMap);
-        var hasSourseTile = HasTileAt(source, source);
-
         return direction switch
         {
-            ZMoveDirection.Down => !hasSourseTile,
-            ZMoveDirection.Up => !hasTile,
+            ZMoveDirection.Down => !HasTileAt(source, source),
+            ZMoveDirection.Up => !HasTileAt(targetMap, _transform.GetWorldPosition(source)),
             _ => false
         };
     }
 
     private bool HasTileAt(EntityUid source, EntityUid targetMap)
     {
-        if (!TryGetAnchoredGrid(source, out var xform, out var gridUid, out var grid))
+        return HasTileAt(targetMap, _transform.GetWorldPosition(source));
+    }
+
+    private bool HasTileAt(EntityUid targetMap, Vector2 position)
+    {
+        if (!_map.TryFindGridAt(targetMap, position, out var targetGridUid, out var targetGridComp))
             return false;
 
-        var worldBox = GetTileBox(gridUid, grid, xform);
-
-        if (!TryComp(targetMap, out TransformComponent? mapXform))
-            return false;
-
-        var targetCoords = new MapCoordinates(worldBox.Center, mapXform.MapID);
-
-        if (!_map.TryFindGridAt(targetCoords, out var targetGridUid, out var targetGridComp))
-            return false;
-
-        var invMatrix = _transform.GetInvWorldMatrix(targetGridUid);
-        var localPos = Vector2.Transform(worldBox.Center, invMatrix);
-        var targetEntityCoords = new EntityCoordinates(targetGridUid, localPos);
-
-        var tile = _map.GetTileRef(targetGridUid, targetGridComp, targetEntityCoords);
-
-        return !tile.Tile.IsEmpty;
+        return _map.TryGetTileRef(targetGridUid, targetGridComp, position, out var tile)
+            && !tile.Tile.IsEmpty;
     }
 
     private void Teleport(EntityUid user, EntityUid targetMap)
@@ -162,44 +144,6 @@ public sealed partial class ZLevelLadderSystem : EntitySystem
     }
 
     #region Helpers
-
-    private bool TryGetAnchoredGrid(EntityUid uid, out TransformComponent xform, out EntityUid gridUid, out MapGridComponent grid)
-    {
-        xform = default!;
-        gridUid = default;
-        grid = default!;
-
-        if (!TryComp(uid, out TransformComponent? comp))
-            return false;
-
-        xform = comp;
-
-        if (!xform.Anchored)
-            return false;
-
-        if (xform.GridUid is not { } g)
-            return false;
-
-        if (!TryComp(g, out MapGridComponent? mapGrid))
-            return false;
-
-        grid = mapGrid;
-        gridUid = g;
-        return true;
-    }
-
-    private Box2 GetTileBox(EntityUid gridUid, MapGridComponent grid, TransformComponent xform)
-    {
-        var tile = _map.LocalToTile(gridUid, grid, xform.Coordinates);
-        var tileSize = grid.TileSize;
-        var localCenter = new Vector2(tile.X + 0.5f, tile.Y + 0.5f) * tileSize;
-
-        var worldMatrix = _transform.GetWorldMatrix(gridUid);
-        var worldCenter = Vector2.Transform(localCenter, worldMatrix);
-
-        var half = new Vector2(tileSize / 2f, tileSize / 2f);
-        return new Box2(worldCenter - half, worldCenter + half);
-    }
 
     private bool TryGetContext(EntityUid uid, out ZLevelContext ctx)
     {
