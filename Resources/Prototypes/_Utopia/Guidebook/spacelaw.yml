@@ -1,0 +1,34 @@
+﻿- type: guideEntry
+  id: UtopiaSpaceLaw
+  name: utopia-guide-entry-spacelaw
+  priority: 0
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaSL.xml"
+  children:
+  - UtopiaSLCrimeList
+  - UtopiaSLRights
+  - UtopiaSLContraband
+  - UtopiaProcedures
+
+- type: guideEntry
+  id: UtopiaSLCrimeList
+  name: utopia-guide-entry-spacelaw-crimelist
+  priority: 1
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaSLCrimeList.xml"
+
+- type: guideEntry
+  id: UtopiaSLRights
+  name: utopia-guide-entry-spacelaw-rights
+  priority: 2
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaSLRights.xml"
+
+- type: guideEntry
+  id: UtopiaSLContraband
+  name: utopia-guide-entry-spacelaw-contraband
+  priority: 3
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaSLContraband.xml"
+
+- type: guideEntry
+  id: UtopiaProcedures
+  name: utopia-guide-entry-spacelaw-procedures
+  priority: 4
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaProcedures.xml"
