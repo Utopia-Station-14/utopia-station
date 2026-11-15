@@ -305,6 +305,9 @@ public sealed partial class AtmosphereSystem
             return;
         }
 
+        if (direction == AtmosDirection.Invalid)
+            return;
+
         var dir = (direction.ToAngle() + gridWorldRotation).ToWorldVec();
         var proximity = Math.Clamp(pressureDifference / FullWindPressure, 0.5f, 1f);
         var hasTarget = throwTarget != EntityCoordinates.Invalid;
