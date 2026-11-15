@@ -1,7 +1,13 @@
+/*
+ * This file is sublicensed under MIT License
+ * https://github.com/space-wizards/space-station-14/blob/master/LICENSE.TXT
+ */
+
 using System.Numerics;
 using Content.Server._Utopia.ZLevels.Components;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
+using Content.Shared._Utopia.ZLevels;
 using Content.Shared._Utopia.ZLevels.Components;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -15,9 +21,8 @@ public sealed partial class UtopiaStairsSystem : EntitySystem
     private static readonly TimeSpan TraverseCooldown = TimeSpan.FromSeconds(0.5);
 
     [Dependency] private CESharedZLevelsSystem _zLevels = default!;
-    [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
-    [Dependency] private ITileDefinitionManager _tileDefinitions = default!;
+    [Dependency] private ZLevelsExtensions _zLevel = default!;
 
     [SubscribeLocalEvent]
     private void OnStartCollide(Entity<UtopiaStairsComponent> stairs, ref StartCollideEvent args)
@@ -37,45 +42,36 @@ public sealed partial class UtopiaStairsSystem : EntitySystem
         var worldPos = _transform.GetWorldPosition(stairs);
         var forward = GetForward(_transform.GetWorldRotation(stairs).GetCardinalDir());
         var entityPos = _transform.GetWorldPosition(entity);
-        var approachSide = Vector2.Dot(entityPos - worldPos, forward) >= 0f ? 1f : -1f;
-        TryTraverse(entity, (mapUid, currentMap), grid, worldPos, forward, approachSide);
+        var aSide = Vector2.Dot(entityPos - worldPos, forward) >= 0f ? 1f : -1f;
+        TryTraverse(entity, (mapUid, currentMap), grid, worldPos, forward, aSide);
     }
 
-    private void TryTraverse(EntityUid entity, Entity<CEZMapComponent?> currentMap, MapGridComponent currentGrid, Vector2 stairsPosition, Vector2 forward, float approachSide)
+    private void TryTraverse(EntityUid entity, Entity<CEZMapComponent?> currentMap, MapGridComponent currentGrid, Vector2 stairsPos, Vector2 forward, float aSide)
     {
         for (var pass = 0; pass < 2; pass++)
         {
-            var side = pass == 0 ? approachSide : -approachSide;
-            var landingPosition = stairsPosition + forward * side * currentGrid.TileSize;
+            var side = pass == 0 ? aSide : -aSide;
+            var landingPos = stairsPos + forward * side * currentGrid.TileSize;
 
             if (_zLevels.TryMapOffset(currentMap, 1, out var mapAbove)
-            && IsOpeningAt(mapAbove.Owner, stairsPosition)
-            && !IsOpeningAt(mapAbove.Owner, landingPosition))
+            && _zLevel.IsOpeningAt(mapAbove.Owner, stairsPos)
+            && !_zLevel.IsOpeningAt(mapAbove.Owner, landingPos))
             {
-                MoveToLevel(entity, currentMap, mapAbove.Owner, landingPosition, 1);
+                MoveToLevel(entity, currentMap, mapAbove.Owner, landingPos, 1);
                 return;
             }
 
             if (_zLevels.TryMapOffset(currentMap, -1, out var mapBelow)
-            && IsOpeningAt(currentMap.Owner, landingPosition)
-            && !IsOpeningAt(mapBelow.Owner, landingPosition))
+            && _zLevel.IsOpeningAt(currentMap.Owner, landingPos)
+            && !_zLevel.IsOpeningAt(mapBelow.Owner, landingPos))
             {
-                MoveToLevel(entity, currentMap, mapBelow.Owner, landingPosition, -1);
+                MoveToLevel(entity, currentMap, mapBelow.Owner, landingPos, -1);
                 return;
             }
         }
     }
 
-    private bool IsOpeningAt(EntityUid mapUid, Vector2 position)
-    {
-        if (!_map.TryFindGridAt(mapUid, position, out var gridUid, out var grid))
-            return true;
-
-        var tile = _map.WorldToTile(gridUid, grid, position);
-        return CEZLevelOpeningCache.IsOpeningTile((gridUid, grid), tile, _map, _tileDefinitions);
-    }
-
-    private void MoveToLevel(EntityUid entity, Entity<CEZMapComponent?> currentMap, EntityUid targetMap, Vector2 landingPosition, int offset)
+    private void MoveToLevel(EntityUid entity, Entity<CEZMapComponent?> currentMap, EntityUid targetMap, Vector2 landingPos, int offset)
     {
         if (!_zLevels.TryMove(entity, offset, currentMap))
             return;
@@ -89,8 +85,10 @@ public sealed partial class UtopiaStairsSystem : EntitySystem
             }
         });
 
-        var mapComponent = Comp<MapComponent>(targetMap);
-        _transform.SetMapCoordinates(entity, new MapCoordinates(landingPosition, mapComponent.MapId));
+        if (!TryComp<MapComponent>(targetMap, out var mapComp) || mapComp == null)
+            return;
+
+        _transform.SetMapCoordinates(entity, new MapCoordinates(landingPos, mapComp.MapId));
     }
 
     private static Vector2 GetForward(Direction direction)

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Content.Server._Utopia.Sponsors;
 using Content.Server.Database;
 using Content.Shared.CCVar;
 using Content.Shared.Players.JobWhitelist;
@@ -20,6 +21,7 @@ public sealed partial class JobWhitelistManager : IPostInjectInit
     [Dependency] private INetManager _net = default!;
     [Dependency] private IPlayerManager _player = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private SponsorsManager _sponsors = default!; // Utopia-Tweak : Sponsors
     [Dependency] private UserDbDataManager _userDb = default!;
     [Dependency] private ILogManager _logManager = default!;
 
@@ -72,6 +74,11 @@ public sealed partial class JobWhitelistManager : IPostInjectInit
         {
             return true;
         }
+
+        // Utopia-Tweak : Sponsors
+        if (_sponsors.TryGetInfo(session.UserId, out var sponsor) && sponsor.AllowJob)
+            return true;
+        // Utopia-Tweak : Sponsors
 
         return IsWhitelisted(session.UserId, job);
     }

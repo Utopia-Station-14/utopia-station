@@ -1,4 +1,12 @@
+/*
+ * This file is sublicensed under MIT License
+ * https://github.com/space-wizards/space-station-14/blob/master/LICENSE.TXT
+ */
+
+using System.Numerics;
+using JetBrains.Annotations;
 using Content.Shared._CE.ZLevels.Core.Components;
+using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Robust.Shared.Map;
 
 namespace Content.Shared._Utopia.ZLevels;
@@ -6,7 +14,10 @@ namespace Content.Shared._Utopia.ZLevels;
 public sealed partial class ZLevelsExtensions : EntitySystem
 {
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private ITileDefinitionManager _tileDefinitions = default!;
+    [Dependency] private SharedMapSystem _map = default!;
 
+    [PublicAPI]
     public bool InRange(Entity<TransformComponent?> entA, Entity<TransformComponent?> entB, float range)
     {
         if (!Resolve(entA, ref entA.Comp, logMissing: false))
@@ -40,6 +51,7 @@ public sealed partial class ZLevelsExtensions : EntitySystem
         return (coordA.Position - coordB.Position).LengthSquared() < rangeSquared;
     }
 
+    [PublicAPI]
     public bool IsSameZLevel(Entity<TransformComponent?> entA, Entity<TransformComponent?> entB)
     {
         if (!Resolve(entA, ref entA.Comp, logMissing: false))
@@ -60,6 +72,7 @@ public sealed partial class ZLevelsExtensions : EntitySystem
         return aZMap.NetworkUid == bZMap.NetworkUid;
     }
 
+    [PublicAPI]
     public bool IsSameZNetwork(EntityUid? mapA, EntityUid? mapB)
     {
         if (mapA is not { } a || mapB is not { } b)
@@ -69,5 +82,15 @@ public sealed partial class ZLevelsExtensions : EntitySystem
             return false;
 
         return aZMap.NetworkUid == bZMap.NetworkUid;
+    }
+
+    [PublicAPI]
+    public bool IsOpeningAt(EntityUid mapUid, Vector2 position)
+    {
+        if (!_map.TryFindGridAt(mapUid, position, out var gridUid, out var grid))
+            return true;
+
+        var tile = _map.WorldToTile(gridUid, grid, position);
+        return CEZLevelOpeningCache.IsOpeningTile((gridUid, grid), tile, _map, _tileDefinitions);
     }
 }
