@@ -26,9 +26,3 @@
   name: utopia-guide-entry-spacelaw-contraband
   priority: 3
   text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaSLContraband.xml"
-
-- type: guideEntry
-  id: UtopiaProcedures
-  name: utopia-guide-entry-spacelaw-procedures
-  priority: 4
-  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaProcedures.xml"
