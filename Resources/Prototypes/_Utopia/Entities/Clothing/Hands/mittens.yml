@@ -1,7 +1,7 @@
 - type: entity
   abstract: true
   parent: [ TemperatureProtection, ClothingHandsBase ]
-  id: ClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenBase
   components:
   - type: Sprite
     sprite: _Utopia/Clothing/Hands/Gloves/mittens.rsi
@@ -17,8 +17,8 @@
 
 # White
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenWhite
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenWhite
   name: white mitten
   description: Regular white gloves that do not keep you from frying.
   components:
@@ -38,8 +38,8 @@
 
 # Black
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenBlack
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenBlack
   name: black mitten
   description: Regular black gloves that do not keep you from frying.
   components:
@@ -59,8 +59,8 @@
 
 # Red
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenRed
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenRed
   name: red mitten
   description: Regular red gloves that do not keep you from frying.
   components:
@@ -80,8 +80,8 @@
 
 # Orange
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenOrange
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenOrange
   name: orange mitten
   description: Regular orange gloves that do not keep you from frying.
   components:
@@ -101,8 +101,8 @@
 
 # Yellow
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenYellow
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenYellow
   name: yellow mitten
   description: Regular yellow gloves that do not keep you from frying.
   components:
@@ -122,8 +122,8 @@
 
 # Vinous
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenVinous
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenVinous
   name: vinous mitten
   description: Regular vinous gloves that do not keep you from frying.
   components:
@@ -143,8 +143,8 @@
 
 # Pink
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenPink
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenPink
   name: pink mitten
   description: Regular pink gloves that do not keep you from frying.
   components:
@@ -164,8 +164,8 @@
 
 # Blue
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenBlue
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenBlue
   name: blue mitten
   description: Regular blue gloves that do not keep you from frying.
   components:
@@ -185,8 +185,8 @@
 
 # Cyan
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenCyan
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenCyan
   name: cyan mitten
   description: Regular cyan gloves that do not keep you from frying.
   components:
@@ -206,8 +206,8 @@
 
 # Teal
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenTeal
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenTeal
   name: teal mitten
   description: Regular teal gloves that do not keep you from frying.
   components:
@@ -227,8 +227,8 @@
 
 # Green
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenGreen
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenGreen
   name: green mitten
   description: Regular green gloves that do not keep you from frying.
   components:
@@ -248,8 +248,8 @@
 
 # Brown
 - type: entity
-  parent: ClothingHandsMittenBase
-  id: ClothingHandsMittenBrown
+  parent: UtopiaClothingHandsMittenBase
+  id: UtopiaClothingHandsMittenBrown
   name: brown mitten
   description: Regular brown gloves that do not keep you from frying.
   components:
