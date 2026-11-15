@@ -42,7 +42,7 @@
   - type: CEZPhysics
   - type: CEZLevelViewer
     lookUp: true
-  - type: ZLevelMoving
+  - type: UtopiaZLevelsMoving
   # Utopia-Tweak-end
 
 # The progenitor. This should only container the most basic components possible.
