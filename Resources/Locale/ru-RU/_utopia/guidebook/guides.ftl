@@ -14,3 +14,4 @@ utopia-guide-entry-procedures = Процедуры
 utopia-guide-entry-procedures-search = Обыск и изъятия
 utopia-guide-entry-procedures-process = Следственные процедуры
 utopia-guide-entry-procedures-force = Уровни применения силы
+utopia-guide-entry-procedures-execution = Лишение жизни

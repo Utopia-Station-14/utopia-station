@@ -7,6 +7,7 @@
   - UtopiaPSearch
   - UtopiaPProcess
   - UtopiaPForce
+  - UtopiaPExecution
 
 - type: guideEntry
   id: UtopiaPSearch
@@ -25,3 +26,9 @@
   name: utopia-guide-entry-procedures-force
   priority: 3
   text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPForce.xml"
+
+- type: guideEntry
+  id: UtopiaPExecution
+  name: utopia-guide-entry-procedures-execution
+  priority: 4
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPExecution.xml"
