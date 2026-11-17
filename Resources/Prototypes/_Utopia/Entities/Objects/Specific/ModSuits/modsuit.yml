@@ -8,10 +8,10 @@
     sprite: _Utopia/Clothing/ModSuits/Base/back.rsi
     state: icon
   - type: ModSuit
-    helmetPrototype: BaseModSuitHelmet
-    bodyPrototype: BaseModSuitBody
-    glovesPrototype: BaseModSuitGloves
-    bootsPrototype: BaseModSuitBoots
+    helmetPrototype: BaseModHelmet
+    bodyPrototype: BaseModBody
+    glovesPrototype: BaseModGloves
+    bootsPrototype: BaseModBoots
   - type: PowerCellDraw
     drawRate: 0.5
     useRate: 0

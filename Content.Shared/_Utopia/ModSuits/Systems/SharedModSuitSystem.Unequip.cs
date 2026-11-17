@@ -47,7 +47,7 @@ public abstract partial class SharedModSuitSystem
             suit.Owner,
             target: suit.Owner)
         {
-            BreakOnMove = true,
+            BreakOnMove = false,
             BreakOnDamage = true,
             NeedHand = false,
         };
