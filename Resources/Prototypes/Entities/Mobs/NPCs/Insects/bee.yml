@@ -1,5 +1,5 @@
 - type: entity
-  parent: [ SolutionFood, SolutionTiny, SimpleMobBase, FlyingMobBase, BaseSlicingRefinableButchering ]
+  parent: [ SolutionFood, SolutionTiny, SimpleNoCollisionMobBase, FlyingMobBase, BaseSlicingRefinableButchering ] # Utopia-Tweak : MobCollision
   id: MobBee
   name: bee
   description: Nice to have, but you can't build a civilization on a foundation of honey alone.
@@ -79,6 +79,12 @@
   - type: HTN
     rootTask:
       task: SimpleHostileCompound
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: ApianHoneyGlands
+      chance: 0.5
+  # Utopia-Tweak : Genetics
 
 - type: entity
   parent: [ MobBee, MobCombat ]
@@ -109,3 +115,9 @@
   - type: HTN
     rootTask:
       task: SimpleHostileCompound
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: OvipositionGlands
+      chance: 0.5
+  # Utopia-Tweak : Genetics

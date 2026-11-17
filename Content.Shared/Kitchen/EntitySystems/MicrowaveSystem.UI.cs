@@ -50,8 +50,15 @@ public abstract partial class MicrowaveSystem
     [SubscribeLocalEvent]
     private void OnSelectCookTime(Entity<MicrowaveComponent> ent, ref MicrowaveSelectCookTimeMessage args)
     {
+        // Utopia-Tweak : MicrowaveBattery
+        var isPowered = TryComp<MicrowaveBatteryComponent>(ent, out var microwaveBattery)
+        && !microwaveBattery.NetworkPower
+            ? HasChargedBattery(ent)
+            : _power.IsPowered(ent.Owner);
+        // Utopia-Tweak : MicrowaveBattery
+
         if (IsActiveMicrowave(ent.AsNullable())
-            || !_power.IsPowered(ent.Owner))
+            || !isPowered)
             return;
 
         // some validation to prevent trollage

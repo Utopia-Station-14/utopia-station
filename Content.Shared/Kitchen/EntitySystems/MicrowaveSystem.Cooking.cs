@@ -58,9 +58,16 @@ public abstract partial class MicrowaveSystem
     /// </summary>
     public void StartCooking(Entity<MicrowaveComponent> microwave, EntityUid? user)
     {
+        // Utopia-Tweak : MicrowaveBattery
+        var isPowered = TryComp<MicrowaveBatteryComponent>(microwave, out var microwaveBattery)
+        && !microwaveBattery.NetworkPower
+            ? HasChargedBattery(microwave)
+            : !_power.IsPowered(microwave.Owner);
+        // Utopia-Tweak : MicrowaveBattery
+
         if (!HasContents(microwave.AsNullable())
             || IsActiveMicrowave(microwave.AsNullable())
-            || !_power.IsPowered(microwave.Owner))
+            || isPowered) // Utopia-Tweak : Microwave
             return;
 
         var contents = GetMicrowaveContents(microwave.AsNullable());
@@ -96,7 +103,7 @@ public abstract partial class MicrowaveSystem
         var uid = microwave.Owner;
         var component = microwave.Comp;
         var curTime = Timing.CurTime;
-        var cookTime = component.CurrentCookTimerTime * component.CookTimeMultiplier;
+        var cookTime = component.CurrentCookTimerTime * component.FinalCookTimeMultiplier;
 
         Audio.PlayPredicted(component.BeginCookingSound, uid, user);
 
@@ -192,6 +199,7 @@ public abstract partial class MicrowaveSystem
 
         if (beingMicrowaved.Handled)
         {
+            SetAppearance(microwave, null, opened: false); // Utopia-Tweak : Microwave
             UpdateUI(microwave.AsNullable());
             shouldStopMicrowave = true;
             return;

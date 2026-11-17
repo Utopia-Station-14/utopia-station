@@ -86,7 +86,7 @@ public sealed partial class ServerMicrowaveSystem : MicrowaveSystem
 
         var comp = ent.Comp;
         if (_random.Prob(comp.LightningChance))
-            _lightning.ShootRandomLightnings(ent, 1.0f, 2, comp.MalfunctionSpark, triggerLightningEvents: false);
+            _lightning.ShootRandomLightnings(ent, 1.0f, 2, lightningPrototype: comp.MalfunctionSpark, triggerLightningEvents: false); // Utopia-Tweak : Lightning-Update
     }
 
     /// <summary>

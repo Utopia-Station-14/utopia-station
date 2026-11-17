@@ -5,7 +5,7 @@ namespace Content.Shared.Radiation.Components;
 /// <summary>
 /// Irradiate all objects in range.
 /// </summary>
-[RegisterComponent]
+[RegisterComponent, AutoGenerateComponentState]
 // [Access(typeof(SharedRadiationSystem))] // Utopia-Tweak : Radiation
 public sealed partial class RadiationSourceComponent : Component
 {

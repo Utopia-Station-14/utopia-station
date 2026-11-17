@@ -1,6 +1,6 @@
 - type: entity
   abstract: true
-  parent: [ SolutionFood, SolutionTiny, SimpleMobBase, BaseSlicingRefinableButchering, MobNightVision ]
+  parent: [ SolutionFood, SolutionTiny, SimpleNoCollisionMobBase, BaseSlicingRefinableButchering, MobNightVision ] # Utopia-Tweak : MobCollision
   id: BaseCockroach
   components:
   - type: Sprite
@@ -77,6 +77,13 @@
     constantlyReplan: false
     rootTask:
       task: MouseCompound
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: RadiationResistance
+      chance: 0.8
+      startActive: 0.8
+  # Utopia-Tweak : Genetics
 
 - type: entity
   parent: BaseCockroach

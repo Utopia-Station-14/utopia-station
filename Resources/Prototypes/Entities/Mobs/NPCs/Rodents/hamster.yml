@@ -1,5 +1,5 @@
 - type: entity
-  parent: [ SimpleMobBase, MobCombat, StripableInventoryBase, BaseSlicingRefinableButchering, MobNightVision ]
+  parent: [ SimpleNoCollisionMobBase, MobCombat, StripableInventoryBase, BaseSlicingRefinableButchering, MobNightVision ] # Utopia-Tweak : MobCollision
   id: MobHamster
   name: hamster
   description: A cute, fluffy, robust hamster.

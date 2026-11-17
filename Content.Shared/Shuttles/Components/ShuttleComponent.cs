@@ -75,5 +75,13 @@ public sealed partial class ShuttleComponent : Component
     /// </summary>
     [DataField]
     public TimeSpan? FTLCooldownOverride = null;
+
+    // Utopia-Tweak : Machine Parts
+    /// <summary>
+    /// The cached thrust available for each cardinal direction, if all thrusters are T1
+    /// </summary>
+    [ViewVariables]
+    public readonly float[] BaseLinearThrust = new float[4];
+    // Utopia-Tweak : Machine Parts
 }
 

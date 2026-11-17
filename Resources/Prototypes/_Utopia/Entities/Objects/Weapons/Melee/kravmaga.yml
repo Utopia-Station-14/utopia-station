@@ -15,4 +15,5 @@
     component:
     - type: PrepareAction
   - type: StealTarget
-    stealGroup: UtopiaClothingHandsGlovesKravMaga
+    stealGroup:
+    - UtopiaClothingHandsGlovesKravMaga

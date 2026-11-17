@@ -88,6 +88,12 @@
   - type: NpcFactionMember
     factions:
     - Passive
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    baseMutations:
+    - id: OvipositionGlands
+      chance: 0.5
+  # Utopia-Tweak : Genetics
 
 - type: entity
   parent: MobDuckMallard

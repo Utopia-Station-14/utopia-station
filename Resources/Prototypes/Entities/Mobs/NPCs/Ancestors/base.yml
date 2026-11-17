@@ -112,3 +112,7 @@
     blackboard:
       NavInteract: !type:Bool
         true
+  # Utopia-Tweak : Genetics
+  - type: Genetics
+    mutationSlots: 8
+  # Utopia-Tweak : Genetics

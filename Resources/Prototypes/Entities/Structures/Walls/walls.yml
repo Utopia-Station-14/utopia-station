@@ -323,7 +323,7 @@
       - grilles
       - marble
       - doors
-      base: debug
+    base: debug
   # Utopia-Tweak : Atmos-Updt
   - type: ThermalConductor
     thermalConductivity: 0.5
@@ -370,6 +370,7 @@
 
 - type: entity
   parent: [ BaseWall, StructureHealthWallWeak ]
+  id: WallGold
   name: gold wall
   components:
   - type: Sprite

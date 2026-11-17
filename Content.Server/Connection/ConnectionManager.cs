@@ -385,7 +385,7 @@ namespace Content.Server.Connection
             var havePriorityJoin = _sponsorsManager.TryGetInfo(userId, out var sponsor)
                 && sponsor.HavePriorityJoin;
 
-            _ticker ??= _entityManager.SystemOrNull<GameTicker>();
+            _ticker ??= _entityManager.SystemOrNull<ServerGameTicker>();
             var wasInGame = _ticker != null &&
                 _ticker.PlayerGameStatuses.TryGetValue(userId, out var status) &&
                 status == PlayerGameStatus.JoinedGame;

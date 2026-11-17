@@ -16,6 +16,7 @@ public abstract partial class MicrowaveSystem
     {
         // this really does have to be in ComponentInit
         ent.Comp.Storage = Container.EnsureContainer<Container>(ent, ent.Comp.ContainerId);
+        ent.Comp.FinalCookTimeMultiplier = ent.Comp.CookTimeMultiplier; // Utopia-Tweak : Machine Parts
     }
 
     /// <summary>

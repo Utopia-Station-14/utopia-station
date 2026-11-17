@@ -1,3 +1,4 @@
+using Content.Shared.Construction.Prototypes;
 using Content.Shared.DeviceLinking;
 using Content.Shared.Item;
 using Content.Shared.Kitchen.EntitySystems;
@@ -228,4 +229,15 @@ public sealed partial class MicrowaveComponent : Component
     /// </summary>
     [DataField]
     public EntProtoId MalfunctionSpark = "Spark";
+
+    // Utopia-Tweak : Machine Parts
+    [DataField]
+    public ProtoId<MachinePartPrototype> MachinePartCookTimeMultiplier = "Laser";
+
+    [ViewVariables(VVAccess.ReadWrite)]
+    public float FinalCookTimeMultiplier = 1.0f;
+
+    [DataField]
+    public float CookTimeScalingConstant = 0.5f;
+    // Utopia-Tweak : Machine Parts
 }

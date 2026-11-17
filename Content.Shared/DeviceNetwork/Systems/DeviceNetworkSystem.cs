@@ -1,8 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
+using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared.DeviceNetwork.Components;
 using Content.Shared.DeviceNetwork.Events;
 using Content.Shared.Examine;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Map;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
 
@@ -18,6 +20,7 @@ public sealed partial class DeviceNetworkSystem : EntitySystem
     [Dependency] private IPrototypeManager _protoMan = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedTransformSystem _transformSystem = default!;
+    [Dependency] private CESharedZLevelsSystem _zLevel = default!; // Utopia-Tweak : ZLevels
 
     [Dependency] private EntityQuery<DeviceNetworkComponent> _deviceQuery;
 
@@ -188,11 +191,33 @@ public sealed partial class DeviceNetworkSystem : EntitySystem
     {
         var xform = Transform(packet.Sender);
         var senderPos = _transformSystem.GetWorldPosition(xform);
+        // Utopia-Tweak : ZLevels
+        var allowedMaps = new HashSet<MapId> { xform.MapID };
+        if (xform.MapUid is { } senderMapUid && _zLevel.TryGetMapNetwork(senderMapUid, out var senderNet))
+        {
+            foreach (var zMapUid in senderNet.Comp.SortedZLevels)
+            {
+                if (!zMapUid.IsValid())
+                    continue;
+
+                var zMapId = _transformSystem.GetMapId(zMapUid);
+                if (zMapId != MapId.Nullspace)
+                {
+                    allowedMaps.Add(zMapId);
+                }
+            }
+        }
+        // Utopia-Tweak : ZLevels
 
         foreach (var connection in connections)
         {
-            if (connection.Owner == packet.Sender.Owner)
+            // Utopia-Tweak : ZLevels
+            if (connection.Owner.Equals(packet.Sender.Owner) || Deleted(connection.Owner))
                 continue;
+
+            if (!allowedMaps.Contains(Transform(connection.Owner).MapID))
+                continue;
+            // Utopia-Tweak : ZLevels
 
             var beforeEv = new BeforePacketSentEvent(
                 packet.NetId,

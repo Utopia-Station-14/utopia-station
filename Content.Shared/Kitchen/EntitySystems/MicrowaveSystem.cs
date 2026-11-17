@@ -1,4 +1,6 @@
 using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.Construction.Components;
+using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Destructible;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.DeviceLinking.Systems;
@@ -8,6 +10,7 @@ using Content.Shared.Kitchen.Components;
 using Content.Shared.Popups;
 using Content.Shared.Power;
 using Content.Shared.Power.EntitySystems;
+using Content.Shared.PowerCell.Components;
 using Content.Shared.Stacks;
 using Content.Shared.Temperature.Systems;
 using Content.Shared.Whitelist;
@@ -42,6 +45,8 @@ public abstract partial class MicrowaveSystem : EntitySystem
     [Dependency] private SharedPowerStateSystem _powerState = default!;
     [Dependency] private SharedStackSystem _stack = default!;
     [Dependency] private SharedTemperatureSystem _temperature = default!;
+    [Dependency] private SharedBatterySystem _battery = default!; // Utopia-Tweak : Microwave
+    [Dependency] private ItemSlotsSystem _itemSlots = default!; // Utopia-Tweak : Microwave
 
     [Dependency] protected EntityQuery<MicrowaveComponent> MicrowaveQuery;
     [Dependency] protected EntityQuery<ActiveMicrowaveComponent> ActiveMicrowaveQuery;
@@ -55,6 +60,35 @@ public abstract partial class MicrowaveSystem : EntitySystem
         InitializeUI();
     }
 
+    // Utopia-Tweak : Microwave
+    [SubscribeLocalEvent]
+    private void OnBuiOpened(Entity<MicrowaveComponent> ent, ref BoundUIOpenedEvent args)
+    {
+        if (HasComp<ActiveMicrowaveComponent>(ent) || ent.Comp.Broken)
+            return;
+
+        SetAppearance(ent, null, opened: true);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnBuiClosed(Entity<MicrowaveComponent> ent, ref BoundUIClosedEvent args)
+    {
+        SetAppearance(ent, null, opened: false);
+    }
+
+    private bool HasChargedBattery(EntityUid uid)
+    {
+        if (!TryComp<PowerCellSlotComponent>(uid, out var cellSlotComp))
+            return false;
+
+        var item = _itemSlots.GetItemOrNull(uid, cellSlotComp.CellSlotId);
+        if (item == null)
+            return false;
+
+        return _battery.GetCharge(item.Value).Charge > 0f;
+    }
+    // Utopia-Tweak : Microwave
+
     /// <summary>
     /// Processes every active microwave's ongoing cooking operation.
     /// </summary>
@@ -66,6 +100,22 @@ public abstract partial class MicrowaveSystem : EntitySystem
         var query = EntityQueryEnumerator<ActiveMicrowaveComponent, MicrowaveComponent>();
         while (query.MoveNext(out var uid, out var active, out var microwave))
         {
+
+            // Utopia-Tweak : MicrowaveBattery
+            if (TryComp<MicrowaveBatteryComponent>(uid, out var microwaveBattery)
+            && TryComp<PowerCellSlotComponent>(uid, out var cellSlotComp) && !microwaveBattery.NetworkPower)
+            {
+                var item = _itemSlots.GetItemOrNull(uid, cellSlotComp.CellSlotId);
+                if (item == null || !_battery.TryUseCharge(item.Value, microwaveBattery.CookingPowerDraw * frameTime))
+                {
+                    StopCooking((uid, microwave));
+                    Container.EmptyContainer(microwave.Storage);
+                    UpdateUI((uid, microwave));
+                    continue;
+                }
+            }
+            // Utopia-Tweak : MicrowaveBattery
+
             // Roll malfunctions
             if (active.Malfunctioning && active.NextMalfunction < curTime)
             {
@@ -153,7 +203,14 @@ public abstract partial class MicrowaveSystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnSignalReceived(Entity<MicrowaveComponent> ent, ref SignalReceivedEvent args)
     {
-        if (ent.Comp.Broken || !_power.IsPowered(ent.Owner))
+        // Utopia-Tweak : MicrowaveBattery
+        var isPowered = TryComp<MicrowaveBatteryComponent>(ent, out var microwaveBattery)
+        && !microwaveBattery.NetworkPower
+            ? HasChargedBattery(ent)
+            : _power.IsPowered(ent.Owner);
+        // Utopia-Tweak : MicrowaveBattery
+
+        if (ent.Comp.Broken || !isPowered) // Utopia-Tweak : Microwave
             return;
 
         if (args.Port == ent.Comp.OnPort)
@@ -166,13 +223,39 @@ public abstract partial class MicrowaveSystem : EntitySystem
     /// <param name="ent">The microwave entity.</param>
     /// <param name="state">The visual state of the microwave.</param>
     private void SetAppearance(Entity<MicrowaveComponent> ent,
-        MicrowaveVisualState state)
+        MicrowaveVisualState? state = null, bool? opened = null) // Utopia-Tweak : Microwave
     {
+        // Utopia-Tweak : Microwave
+        if (opened != null)
+        {
+            var openedState = opened.Value ? OpenableMicrowave.Opened : OpenableMicrowave.Closed;
+            Appearance.SetData(ent.Owner, PowerDeviceVisuals.VisualState, openedState);
+        }
+
+        if (state == null)
+            return;
+        // Utopia-Tweak : Microwave
+
         var display = ent.Comp.Broken ? MicrowaveVisualState.Broken : state;
         Appearance.SetData(ent.Owner,
             PowerDeviceVisuals.VisualState,
             display);
     }
+
+    // Utopia-Tweak : Machine Parts
+    [SubscribeLocalEvent]
+    private void OnRefreshParts(Entity<MicrowaveComponent> ent, ref RefreshPartsEvent args)
+    {
+        var cookTier = args.PartTiers[ent.Comp.MachinePartCookTimeMultiplier];
+        ent.Comp.FinalCookTimeMultiplier = ent.Comp.CookTimeMultiplier * MathF.Pow(ent.Comp.CookTimeScalingConstant, cookTier - 1);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnUpgradeExamine(Entity<MicrowaveComponent> ent, ref UpgradeExamineEvent args)
+    {
+        args.AddPercentageUpgrade("microwave-component-upgrade-cook-time", ent.Comp.FinalCookTimeMultiplier);
+    }
+    // Utopia-Tweak : Machine Parts
 }
 
 [Serializable, NetSerializable]

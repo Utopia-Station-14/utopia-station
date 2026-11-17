@@ -20,6 +20,11 @@
   - BoxLedLightbulb
   - BoxLightMixed
   - BoxLedLightMixed
+  # Utopia-Tweak : Research
+  position: 3,1
+  technologyPrerequisites:
+  - AdvancedEntertainment
+  # Utopia-Tweak : Research
 
 - type: technology
   id: Hydroponics

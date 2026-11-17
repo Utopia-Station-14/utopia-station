@@ -35,8 +35,8 @@ public sealed partial class ServerGameTicker
             jObject["map"] = _gameMapManager.GetSelectedMap()?.MapName;
             jObject["round_id"] = RoundId;
             jObject["players"] = Cfg.GetCVar(CCVars.AdminsCountInReportedPlayerCount)
-                ? _playerManager.PlayerCount
-                : _playerManager.PlayerCount - _adminManager.ActiveAdmins.Count();
+                ? _queueManager.ActualPlayersCount // Corvax-Queue
+                : _queueManager.ActualPlayersCount - _adminManager.ActiveAdmins.Count(); // Corvax-Queue
             jObject["soft_max_players"] = Cfg.GetCVar(CCVars.SoftMaxPlayers);
             jObject["panic_bunker"] = Cfg.GetCVar(CCVars.PanicBunkerEnabled);
             jObject["run_level"] = (int) RunLevel;
