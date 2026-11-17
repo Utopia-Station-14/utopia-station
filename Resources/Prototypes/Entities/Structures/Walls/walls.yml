@@ -319,11 +319,15 @@
       - *SpawnGirder
   - type: IconSmooth
     key: walls
+    states:
+    - !type:CornerSpriteSmoothing
+      mask:
+      - walls
       - windows
       - grilles
       - marble
       - doors
-    base: debug
+      base: debug
   # Utopia-Tweak : Atmos-Updt
   - type: ThermalConductor
     thermalConductivity: 0.5

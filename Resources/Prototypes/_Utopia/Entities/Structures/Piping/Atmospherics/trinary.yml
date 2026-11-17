@@ -13,10 +13,7 @@
         - state: pumpManualValve
           map: [ "enum.SubfloorLayers.FirstLayer", "enabled" ]
     - type: AtmosPipeLayers
-      alternativePrototypes:
-        Primary: GasValveThreeWay
-        Secondary: GasValveThreeWay
-        Tertiary: GasValveThreeWay
+      pipeLayersLocked: true
     - type: GasValve
       kind: ThreeWay
       inlet: inlet
