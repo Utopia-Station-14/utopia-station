@@ -125,6 +125,14 @@ public sealed partial class RCDPrototype : IPrototype
     [DataField, ViewVariables(VVAccess.ReadOnly)]
     public RcdRotation Rotation { get; private set; } = RcdRotation.User;
 
+    /// <summary>
+    /// The relative order to use in the rotary menu.
+    /// Lower numbers appear before higher numbers, which appear before null.
+    /// Defaults to null.
+    /// </summary>
+    [DataField]
+    public int? MenuOrder { get; private set; }
+
     // Utopia-Tweak : RPD
     /// <summary>
     /// If the entity can be flipped, this prototype is available as an alternate (mode dependent)

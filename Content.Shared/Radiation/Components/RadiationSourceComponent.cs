@@ -3,7 +3,7 @@ using Content.Shared.Radiation.Systems;
 namespace Content.Shared.Radiation.Components;
 
 /// <summary>
-///     Irradiate all objects in range.
+/// Irradiate all objects in range.
 /// </summary>
 [RegisterComponent]
 // [Access(typeof(SharedRadiationSystem))] // Utopia-Tweak : Radiation
@@ -11,30 +11,31 @@ public sealed partial class RadiationSourceComponent : Component
 {
     // Utopia-Tweak : RadiationUpdt
     /// <summary>
-    ///     Radiation intensity in center of the source in rads per second.
-    ///     From there radiation rays will travel over distance and loose intensity
-    ///     when hit radiation blocker.
+    /// Radiation intensity in center of the source in rads per second.
+    /// From there radiation rays will travel over distance and loose intensity
+    /// when hit radiation blocker.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("intensity")]
+    [DataField, AutoNetworkedField]
     public float Intensity = 1;
 
     /// <summary>
-    ///     Defines how fast radiation rays will loose intensity
-    ///     over distance. The bigger the value, the shorter range
-    ///     of radiation source will be.
+    /// Defines how fast radiation rays will loose intensity
+    /// over distance. The bigger the value, the shorter range
+    /// of radiation source will be.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("slope")]
+    [DataField, AutoNetworkedField]
     public float Slope = 0.5f;
+
+    [DataField, AutoNetworkedField]
+    public bool Enabled = true;
+    // Utopia-Tweak : RadiationUpdt
 
     /// <summary>
     ///     Defines how fast radiation rays will loose intensity
     ///     over distance if the ray enters terminal decay. The bigger the value, faster the radiation source
     ///     will decay past the TerminalDecayDistance.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("terminalDecaySlope")]
+    [DataField]
     public float TerminalDecaySlope = 0.07f;
 
     /// <summary>
@@ -43,22 +44,15 @@ public sealed partial class RadiationSourceComponent : Component
     ///     Hyperbolic decay is horizontially asymptotic at y=0. Terminal decay is an additional
     ///     linear decrement.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("terminalDecayDistance")]
+    [DataField]
     public float TerminalDecayDistance = 15;
 
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
-    public bool Enabled = true;
-    // Utopia-Tweak : RadiationUpdt
-    [ViewVariables(VVAccess.ReadWrite)]
     [DataField]
     public float GammaIntensity = 0f;
 
-    [ViewVariables(VVAccess.ReadWrite)]
     [DataField]
     public float GammaTerminalDecaySlope = 0.02f;
 
-    [ViewVariables(VVAccess.ReadWrite)]
     [DataField]
     public float GammaTerminalDecayDistance = 25f;
     // Utopia-Tweak : RadiationUpdt

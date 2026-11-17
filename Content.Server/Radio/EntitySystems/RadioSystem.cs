@@ -1,9 +1,7 @@
 using Content.Server._CE.ZLevels.Core;
 using Content.Server._Utopia.Language;
 using Content.Server.Administration.Logs;
-using Content.Server.Chat.Managers;
 using Content.Server.Chat.Systems;
-using Content.Server.Ghost;
 using Content.Server.Power.Components;
 using Content.Shared._Utopia.Language;
 using Content.Shared.Chat;
@@ -30,8 +28,6 @@ public sealed partial class RadioSystem : SharedRadioSystem
     [Dependency] private IAdminLogManager _adminLogger = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private ChatSystem _chat = default!;
-    [Dependency] private IChatManager _chatManager = default!;
-    [Dependency] private GhostSystem _ghost = default!;
     [Dependency] private EntityQuery<TelecomExemptComponent> _exemptQuery = default!;
     [Dependency] private LanguageSystem _language = default!; // Utopia-Tweak : Language
     // Utopia-Tweak : ZLevels
@@ -61,33 +57,16 @@ public sealed partial class RadioSystem : SharedRadioSystem
 
     private void OnIntrinsicReceive(EntityUid uid, IntrinsicRadioReceiverComponent component, ref RadioReceiveEvent args)
     {
-        if (!TryComp(uid, out ActorComponent? actor))
-            return;
-
-        var msg = args.ChatMsg;
-
         // Utopia-Tweak : Language
+        var msg = args.ChatMsg;
         if (!_language.CanUnderstand(uid, args.Language))
         {
             msg = args.UnknownLanguageChatMsg;
         }
         // Utopia-Tweak : Language
 
-        if (_ghost.CanGhostWarp(actor.PlayerSession, out _))
-        {
-            msg = new MsgChatMessage
-            {
-                Message = new ChatMessage(args.ChatMsg.Message)
-                {
-                    WrappedMessage = _chatManager.PrependFollowButtonIfAppropriate(
-                        args.ChatMsg.Message.WrappedMessage,
-                        args.MessageSource,
-                        actor.PlayerSession.Channel),
-                },
-            };
-        }
-
-        _netMan.ServerSendMessage(msg, actor.PlayerSession.Channel);
+        if (TryComp(uid, out ActorComponent? actor))
+            _netMan.ServerSendMessage(msg, actor.PlayerSession.Channel); // Utopia-Tweak : Language
     }
 
     /// <inheritdoc/>
@@ -107,7 +86,7 @@ public sealed partial class RadioSystem : SharedRadioSystem
         RaiseLocalEvent(messageSource, evt);
 
         var name = evt.VoiceName;
-        name = FormattedMessage.EscapeText(name);
+        name = _chat.ChatNameLinks ? $"[textlink=\"{FormattedMessage.EscapeStringParameter(name)}\" entity=\"{GetNetEntity(messageSource)}\" color=\"{channel.Color.ToHex()}\"]" : FormattedMessage.EscapeText(name);
 
         SpeechVerbPrototype speech;
         if (evt.SpeechVerb != null && ProtoMan.Resolve(evt.SpeechVerb, out var evntProto))

@@ -1,4 +1,4 @@
-﻿using Content.Shared.Construction.Components;
+using Content.Shared.Construction.Components;
 using Content.Shared.Construction.Prototypes;
 using Content.Shared.Stacks;
 using Content.Shared.Tag;

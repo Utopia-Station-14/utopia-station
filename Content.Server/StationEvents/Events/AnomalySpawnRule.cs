@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Server.Anomaly;
 using Content.Server.StationEvents.Components;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
@@ -8,47 +8,55 @@ using Robust.Shared.Random;
 
 namespace Content.Server.StationEvents.Events;
 
+/// <summary>
+/// Handler for events spawning an anomaly on station.
+/// </summary>
+/// <seealso cref="AnomalySpawnRuleComponent"/>
 public sealed partial class AnomalySpawnRule : StationEventSystem<AnomalySpawnRuleComponent>
 {
     [Dependency] private AnomalySystem _anomaly = default!;
     [Dependency] private CESharedZLevelsSystem _zLevels = default!; // Utopia-Tweak : ZLevels
     [Dependency] private IRobustRandom _random = default!; // Utopia-Tweak : ZLevels
 
-    protected override void Added(EntityUid uid, AnomalySpawnRuleComponent component, GameRuleComponent gameRule, GameRuleAddedEvent args)
+    protected override void Added(Entity<AnomalySpawnRuleComponent, GameRuleComponent> ent, ref GameRuleAddedEvent args)
     {
-        if (!TryComp<StationEventComponent>(uid, out var stationEvent))
+        if (!TryComp<StationEventComponent>(ent, out var stationEvent))
             return;
 
         var str = Loc.GetString("anomaly-spawn-event-announcement",
             ("sighting", Loc.GetString($"anomaly-spawn-sighting-{RobustRandom.Next(1, 6)}")));
         stationEvent.StartAnnouncement = str;
 
-        base.Added(uid, component, gameRule, args);
+        base.Added(ent, ref args);
     }
 
-    protected override void Started(EntityUid uid, AnomalySpawnRuleComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
+    protected override void Started(Entity<AnomalySpawnRuleComponent, GameRuleComponent> ent, ref GameRuleStartedEvent args)
     {
-        base.Started(uid, component, gameRule, args);
+        base.Started(ent, ref args);
 
-        if (!TryGetRandomStation(out var chosenStation))
+        if (!Station.TryGetRandomStation<StationEventEligibleComponent>(out var chosenStation))
             return;
 
         if (!TryComp<StationDataComponent>(chosenStation, out var stationData))
             return;
 
-        var grid = StationSystem.GetLargestGrid((chosenStation.Value, stationData));
+        var grid = Station.GetLargestGrid((chosenStation.Value, stationData));
 
         if (grid is null)
             return;
 
-        // Utopia-Tweak : ZLevels
-        var mlGrids = _zLevels.GetTargetGrids(grid.Value);
-        if (mlGrids.Count == 0)
-            return;
+        var amountToSpawn = ent.Comp1.AmountToSpawn.Next(RobustRandom);
+        for (var i = 0; i < amountToSpawn; i++)
+        {
+            // Utopia-Tweak : ZLevels
+            var mlGrids = _zLevels.GetTargetGrids(grid.Value);
+            if (mlGrids.Count == 0)
+                return;
 
-        var targetGrid = mlGrids.ElementAt(_random.Next(mlGrids.Count));
+            var targetGrid = mlGrids.ElementAt(_random.Next(mlGrids.Count));
 
-        _anomaly.SpawnOnRandomGridLocation(targetGrid, component.AnomalySpawnerPrototype);
-        // Utopia-Tweak : ZLevels
+            _anomaly.SpawnOnRandomGridLocation(targetGrid, ent.Comp1.AnomalySpawnerPrototype);
+            // Utopia-Tweak : ZLevels
+        }
     }
 }
