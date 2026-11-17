@@ -129,18 +129,6 @@
   name: explosion beacon console
   description: Displays target explosion parameters from a linked explosion beacon. Link with a multitool.
   components:
-  - type: Sprite
-    layers:
-    - map: ["computerLayerBody"]
-      state: computer
-    - map: ["computerLayerKeyboard"]
-      state: generic_keyboard
-    - map: ["computerLayerScreen"]
-      state: artifact
-    - map: ["computerLayerKeys"]
-      state: tech_key
-    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
-      state: generic_panel_open
   - type: ComputerVisuals
     stateScreen: artifact
     stateKeys: tech_key
