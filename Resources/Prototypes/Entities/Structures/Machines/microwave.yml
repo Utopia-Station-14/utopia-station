@@ -47,7 +47,7 @@
   - type: DeviceNetwork
     deviceNetId: Wireless
     receiveFrequencyId: BasicDevice
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 200
   - type: UserInterface
     interfaces:
@@ -172,7 +172,7 @@
   components:
   - type: Microwave
     cookTimeMultiplier: 0.5
-    baseHeatMultiplier: 200
+    objectHeatMultiplier: 200
     capacity: 10
     canMicrowaveIdsSafely: false
     explosionChance: 0.3

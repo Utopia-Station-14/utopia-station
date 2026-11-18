@@ -1,5 +1,5 @@
 - type: entity
-  parent: GasValve
+  parent: GasBinaryBase
   id: GasValveFourWay
   name: four-way valve
   description: A four-way junction with a valve that switches the flow between two corner paths.
@@ -12,11 +12,10 @@
           map: [ "enum.PipeVisualLayers.Pipe" ]
         - state: pumpManualValve
           map: [ "enum.SubfloorLayers.FirstLayer", "enabled" ]
+    - type: Appearance
     - type: AtmosPipeLayers
-      alternativePrototypes:
-        Primary: GasValveFourWay
-        Secondary: GasValveFourWay
-        Tertiary: GasValveFourWay
+      pipeLayersLocked: true
+    - type: PipeColorVisuals
     - type: GasValve
       kind: FourWay
       inlet: inlet
@@ -45,3 +44,20 @@
           nodeGroupID: Pipe
           pipeDirection: South
           volume: 100
+    - type: GenericVisualizer
+      visuals:
+        enum.FilterVisuals.Enabled:
+          enabled:
+            True: { state: pumpManualValveOn }
+            False: { state: pumpManualValve }
+    - type: AmbientSound
+      enabled: true
+      volume: -9
+      range: 5
+      sound:
+        path: /Audio/Ambience/Objects/gas_hiss.ogg
+    - type: AtmosMonitoringConsoleDevice
+      navMapBlip: GasValve
+    - type: GuideHelp
+      guides:
+      - ManualValve

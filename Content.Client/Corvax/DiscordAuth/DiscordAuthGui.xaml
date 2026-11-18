@@ -12,7 +12,7 @@
                 <Button Name="QuitButton" Text="{Loc 'discord-auth-quit-btn'}"
                         HorizontalAlignment="Right" HorizontalExpand="True" />
             </BoxContainer>
-            <controls:HighDivider />
+            <controls:Separator StyleClasses="HighDivider" />
             <BoxContainer Orientation="Vertical" Margin="50 20 50 20">
                 <Label Text="{Loc 'discord-auth-info'}" Align="Center" />
                 <Label Text="{Loc 'discord-auth-warn'}" Margin="0 5 0 0" Align="Center" StyleClasses="LabelSubText" />

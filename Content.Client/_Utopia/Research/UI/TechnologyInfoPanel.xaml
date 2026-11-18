@@ -1,7 +1,6 @@
 <Control xmlns="https://spacestation14.io"
     xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
-    xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
     MinWidth="225"
     VerticalExpand="True"
     HorizontalExpand="True">
@@ -61,7 +60,7 @@
                         HorizontalAlignment="Center"
                         StyleClasses="LabelHeading" />
                 </controls:StripeBack>
-                <customControls:HSeparator StyleClasses="LowDivider" Margin="0 5 0 10"/>
+                <controls:Separator StyleClasses="LowDivider" Margin="0 5 0 10"/>
                 <PanelContainer VerticalExpand="True">
                     <PanelContainer.PanelOverride>
                         <gfx:StyleBoxFlat BackgroundColor="#1B1B1E"/>
@@ -91,7 +90,7 @@
                         HorizontalAlignment="Center"
                         StyleClasses="LabelHeading"/>
                 </controls:StripeBack>
-                <customControls:HSeparator StyleClasses="LowDivider" Margin="0 5 0 10"/>
+                <controls:Separator StyleClasses="LowDivider" Margin="0 5 0 10"/>
                 <PanelContainer VerticalExpand="True">
                     <PanelContainer.PanelOverride>
                         <gfx:StyleBoxFlat BackgroundColor="#1B1B1E"/>

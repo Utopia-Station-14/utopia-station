@@ -52,10 +52,10 @@ public sealed partial class SharedPrepareActionSystem : EntitySystem
         if (!args.IsHit || !args.HitEntities.Any())
             return;
 
-        if (!TryComp<VisualBodyComponent>(args.HitEntities[0], out _))
+        if (!TryComp<VisualBodyComponent>(args.HitEntities.First(), out _))
             return;
 
-        UseEventOnTarget(ent, args.HitEntities[0], ent.Comp.PreparedMove);
+        UseEventOnTarget(ent, args.HitEntities.First(), ent.Comp.PreparedMove);
         ent.Comp.PreparedMove = null;
     }
 

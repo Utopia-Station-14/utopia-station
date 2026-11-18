@@ -7,7 +7,7 @@
         <BoxContainer HorizontalAlignment="Center" HorizontalExpand="True" VerticalAlignment="Center" Orientation="Vertical" MinSize="325 160">
             <Label Text="{Loc 'atm-ui-nanotrasen-atm'}"/>
             <Label Name="BalanceLabel" Visible="False"/>
-            <controls:HighDivider Name="Divider" Visible="False"/>
+            <controls:Separator StyleClasses="HighDivider" Name="Divider" Visible="False"/>
             <Label Name="StatusLabel"/>
             <SliderIntInput Name="WithdrawSlider"/>
             <BoxContainer HorizontalExpand="True" VerticalExpand="True" VerticalAlignment="Bottom" Orientation="Horizontal">
