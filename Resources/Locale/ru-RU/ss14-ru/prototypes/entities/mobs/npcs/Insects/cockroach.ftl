@@ -1,9 +1,0 @@
-ent-BaseCockroach = { ent-SolutionFood }
-    .desc = { ent-SolutionFood.desc }
-    .suffix = { ent-SimpleMobBase.suffix }
-ent-MobCockroach = таракан
-    .desc = Эта станция просто кишит насекомыми.
-    .suffix = { ent-BaseCockroach.suffix }
-ent-MobGlockroach = ТТаракан
-    .desc = Эта станция просто кишит на- О БОЖЕ, У ЭТОГО ТАРАКАНА ПИСТОЛЕТ!!!
-    .suffix = Адмемы

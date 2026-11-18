@@ -28,7 +28,7 @@ public abstract partial class SharedWeaponComboSystem : EntitySystem
             return;
 
         AddAction(entity.Owner, entity.Comp, GetWeaponAction(args.Iswide, entity.Comp.CurrentStand));
-        TryDoCombo(args.User, args.HitEntities.First(), entity.Comp);
+        TryDoCombo(args.User, args.HitEntities[0], entity.Comp);
     }
 
     private bool TryDoCombo(EntityUid user, EntityUid target, ComboWeaponComponent comp)

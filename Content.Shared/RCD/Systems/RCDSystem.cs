@@ -719,12 +719,9 @@ public sealed partial class RCDSystem : EntitySystem
                 {
                     if (ProtoMan.TryIndex<EntityPrototype>(proto, out var entityProto) &&
                         entityProto.TryGetComponent<AtmosPipeLayersComponent>(out var atmosPipeLayers, _entityManager.ComponentFactory) &&
-                        ProtoMan.TryGetVariantCollection<EntityPrototype>(entityProto, out var altPrototypes))
+                        _pipeLayersSystem.TryGetAlternativePrototype(atmosPipeLayers, _currentLayer, out var newProtoId))
                     {
-                        if (altPrototypes.Count > (int)atmosPipeLayers.CurrentPipeLayer)
-                        {
-                            proto = altPrototypes[(int)atmosPipeLayers.CurrentPipeLayer];
-                        }
+                        proto = newProtoId;
                     }
                 }
 
@@ -768,6 +765,7 @@ public sealed partial class RCDSystem : EntitySystem
                 var mapCoords = new MapCoordinates(_transform.ToMapCoordinates(entityCoords).Position,
                     _transform.GetMapId(entityCoords));
 
+                var ent = Spawn(proto, mapCoords, rotation: rotation);
                 // Utopia-Tweak : RPD
 
                 switch (prototype.Rotation)
@@ -785,10 +783,8 @@ public sealed partial class RCDSystem : EntitySystem
                         throw new NotImplementedException($"Rotation type {prototype.Rotation} in RCD prototype {prototype.ID} does not have a direction conversion.");
                 }
 
-                var ent = Spawn(proto, mapCoords, rotation: rotation); // Utopia-Tweak : RPD
-
                 // Utopia-Tweak : RPD
-                if (component.IsRpd && prototype.HasLayers && HasComp<PipeRestrictOverlapComponent>(ent))
+                if ((component.IsRpd) && prototype.HasLayers && HasComp<PipeRestrictOverlapComponent>(ent))
                 {
                     var entXformPost = Transform(ent);
                     var overlapNow = _pipeOverlap.CheckOverlap(ent);
@@ -800,7 +796,7 @@ public sealed partial class RCDSystem : EntitySystem
                 }
                 // Utopia-Tweak : RPD
 
-                _adminLogger.Add(LogType.RCD, LogImpact.High, $"{ToPrettyString(user):user} used {ToPrettyString(uid):rcd} to spawn {ToPrettyString(ent)} at {position} on grid {gridUid}"); // Utopia-Tweak : RPD
+                _adminLogger.Add(LogType.RCD, LogImpact.High, $"{ToPrettyString(user):user} used {ToPrettyString(uid):rcd} to spawn {ToPrettyString(ent)} at {position} on grid {gridUid}"); // Starlight, RCD uid
                 break;
 
             case RcdMode.Deconstruct:

@@ -35,7 +35,7 @@ public sealed partial class BankCardSystem : SharedEconomySystem
     [Dependency] private GameTicker _gameTicker = default!;
     [Dependency] private IPrototypeManager _protoMan = default!;
     [Dependency] private JobSystem _job = default!;
-    [Dependency] private ServerStationSystem _station = default!;
+    [Dependency] private StationSystem _station = default!;
 
     private const string Salaries = "Salaries";
     private const int FallbackBase = 100;

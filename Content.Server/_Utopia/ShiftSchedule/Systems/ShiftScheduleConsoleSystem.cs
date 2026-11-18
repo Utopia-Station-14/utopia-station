@@ -7,7 +7,6 @@ using Content.Shared._Utopia.ShiftSchedule;
 using Content.Shared.CCVar;
 using Content.Shared.Chat;
 using Content.Shared.Containers.ItemSlots;
-using Content.Shared.GameTicking;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 using Robust.Shared.Configuration;
@@ -17,9 +16,9 @@ namespace Content.Server._Utopia.ShiftSchedule.Systems;
 public sealed partial class ShiftScheduleConsoleSystem : EntitySystem
 {
     [Dependency] private ChatSystem _chat = default!;
-    [Dependency] private ServerGameTicker _ticker = default!;
+    [Dependency] private GameTicker _ticker = default!;
     [Dependency] private IConfigurationManager _configuration = default!;
-    [Dependency] private ServerStationSystem _stationSystem = default!;
+    [Dependency] private StationSystem _stationSystem = default!;
     [Dependency] private UserInterfaceSystem _ui = default!;
 
     public override void Update(float frameTime)

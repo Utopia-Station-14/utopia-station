@@ -31,9 +31,9 @@ public sealed class MeleeHitEvent : HandledEntityEventArgs
     public DamageSpecifier BonusDamage = new();
 
     /// <summary>
-    ///     A set containing every hit entity. Can be zero.
+    ///     A list containing every hit entity. Can be zero.
     /// </summary>
-    public IReadOnlySet<EntityUid> HitEntities;
+    public IReadOnlyList<EntityUid> HitEntities;
 
     /// <summary>
     ///     Used to define a new hit sound in case you want to override the default GenericHit.
@@ -68,7 +68,7 @@ public sealed class MeleeHitEvent : HandledEntityEventArgs
 
     public bool Iswide = false; // Utopia-Tweak : Combat
 
-    public MeleeHitEvent(HashSet<EntityUid> hitEntities, EntityUid user, EntityUid weapon, DamageSpecifier baseDamage, Vector2? direction,
+    public MeleeHitEvent(List<EntityUid> hitEntities, EntityUid user, EntityUid weapon, DamageSpecifier baseDamage, Vector2? direction,
         bool iswide = false) // Utopia-Tweak : Combat
     {
         HitEntities = hitEntities;

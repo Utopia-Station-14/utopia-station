@@ -13,7 +13,7 @@
                 <Button Name="QuitButton" Text="{Loc 'queue-quit'}"
                         HorizontalAlignment="Right" HorizontalExpand="True" />
             </BoxContainer>
-            <controls:Separator StyleClasses="HighDivider" />
+            <controls:HighDivider />
             <BoxContainer Orientation="Vertical" VerticalExpand="True" Margin="0 20 0 0">
                 <BoxContainer Orientation="Vertical">
                     <BoxContainer Orientation="Vertical" VerticalExpand="True">

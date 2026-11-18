@@ -39,7 +39,7 @@
       prefix: device-address-prefix-teg
       sendBroadcastAttemptEvent: true
       examinableAddress: true
-    - type: WiredNetwork
+    - type: WiredNetworkConnection
     - type: PowerSupplier
       supplyRampRate: 100000000
       supplyRampTolerance: 10000000000

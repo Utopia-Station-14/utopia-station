@@ -1,4 +1,4 @@
-using Content.Server._Utopia.Power.Generator;
+﻿using Content.Server._Utopia.Power.Generator;
 using Content.Shared._Utopia.Power.Generator;
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Atmos;

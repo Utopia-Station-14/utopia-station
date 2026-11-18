@@ -1,5 +1,5 @@
-ent-HydroponicsTray = гидропонный лоток
+ent-hydroponicsTray = гидропонный лоток
     .desc = Космическая грядка межзвёздного класса, позволяющая быстро выращивать и селекционировать сельскохозяйственные культуры. Только... не забывайте о космических сорняках.
-ent-HydroponicsTrayEmpty = { ent-HydroponicsTray }
-    .desc = { ent-HydroponicsTray.desc }
+ent-HydroponicsTrayEmpty = { ent-hydroponicsTray }
+    .desc = { ent-hydroponicsTray.desc }
     .suffix = Пустой

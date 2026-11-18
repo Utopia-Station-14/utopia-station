@@ -21,7 +21,7 @@ public sealed partial class CEZLevelsSystem : CESharedZLevelsSystem
     [Dependency] private MapLoaderSystem _mapLoader = default!;
     [Dependency] private TransformSystem _transform = default!;
     [Dependency] private MetaDataSystem _meta = default!;
-    [Dependency] private ServerStationSystem _station = default!;
+    [Dependency] private StationSystem _station = default!;
     [Dependency] private EntityQuery<MapGridComponent> _mapGridQuery = default!;
 
     public override void Initialize()

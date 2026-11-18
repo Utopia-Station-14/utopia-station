@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Made by mrlegendary:discord for Utopia Station",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+    "states": [
+        {
+            "name": "accounts",
+            "directions": 4,
+            "delays": [
+                [
+                    0.5,
+                    0.5
+                ],
+                [
+                    0.5,
+                    0.5
+                ],
+                [
+                    0.5,
+                    0.5
+                ],
+                [
+                    0.5,
+                    0.5
+                ]
+            ]
+        },
+        {
+            "name": "salary",
+            "directions": 4,
+            "delays": [
+                [
+                    0.3,
+                    0.3,
+                    0.3,
+                    0.3
+                ],
+                [
+                    0.3,
+                    0.3,
+                    0.3,
+                    0.3
+                ],
+                [
+                    0.3,
+                    0.3,
+                    0.3,
+                    0.3
+                ],
+                [
+                    0.3,
+                    0.3,
+                    0.3,
+                    0.3
+                ]
+            ]
+        }
+    ]
+}

@@ -152,7 +152,7 @@
 - type: latheRecipe
   parent: BaseBigToolRecipe
   id: TRayScanner
-  result: TRayScanner
+  result: trayScanner
 
 - type: latheRecipe
   parent: BaseBigToolRecipe

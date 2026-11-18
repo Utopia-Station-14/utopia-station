@@ -65,12 +65,6 @@
       input:
         !type:CableDeviceNode
         nodeGroupID: MVPower
-  - type: Electrified
-    onHandInteract: false
-    onInteractUsing: false
-    onBump: false
-    usesApcPower: false
-    mediumVoltageNode: input
   - type: Damageable
     damageModifierSet: PlasteelStaticMod
   - type: ActiveRadio
@@ -109,7 +103,7 @@
   - type: DeviceNetwork
     deviceNetId: Wireless
     receiveFrequencyId: BasicDevice
-  - type: WirelessNetwork
+  - type: WirelessNetworkConnection
     range: 200
   - type: DeviceLinkSink
     ports:

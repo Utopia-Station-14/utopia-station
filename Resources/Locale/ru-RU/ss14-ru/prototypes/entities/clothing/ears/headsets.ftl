@@ -40,6 +40,3 @@ ent-ClothingHeadsetWizard = гарнитура волшебника
     .desc = Гарнитура, используемая ужасными космическими волшебниками.
 ent-ClothingHeadsetNinja = зелёная гарнитура
     .desc = Кто откажется носить эту стильную чёрно-зелёную гарнитуру?
-ent-ClothingHeadsetSyndicateCovert = гарнитура пассажира
-    .desc = { ent-ClothingHeadsetGrey.desc }
-    .suffix = Синдикат

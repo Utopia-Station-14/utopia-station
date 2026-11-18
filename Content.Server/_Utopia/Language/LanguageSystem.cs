@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Text;
 using Content.Server.Chat.Systems;
+using Content.Server.GameTicking.Events;
 using Content.Server.Mind;
 using Content.Shared._Utopia.Language;
-using Content.Shared.GameTicking.Events;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -12,6 +12,7 @@ namespace Content.Server._Utopia.Language;
 
 public sealed partial class LanguageSystem : SharedLanguageSystem
 {
+    [Dependency] private IPrototypeManager _proto = default!;
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private MindSystem _mind = default!;
     [Dependency] private ISharedPlayerManager _player = default!;
@@ -260,7 +261,7 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
 
         foreach (var item in langs.ToList())
         {
-            var proto = ProtoMan.Index<LanguagePrototype>(item.Key);
+            var proto = _proto.Index<LanguagePrototype>(item.Key);
             if (!proto.ShowUnderstood && item.Value < LanguageKnowledge.BadSpeak)
             {
                 langs.Remove(item.Key);

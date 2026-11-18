@@ -1,4 +1,4 @@
-namespace Content.Shared.Kitchen.Components;
+namespace Content.Server.Kitchen.Components;
 
 [RegisterComponent]
 public sealed partial class MicrowaveBatteryComponent : Component

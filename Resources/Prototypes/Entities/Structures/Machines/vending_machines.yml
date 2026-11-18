@@ -10,7 +10,6 @@
   - type: ActionGrant
     actions:
     - ActionVendingThrow
-    - ActionOpenVendingMachineInterface
   - type: StationAiWhitelist
   - type: AmbientOnPowered
   - type: AmbientSound
@@ -60,7 +59,6 @@
     interfaces:
       enum.VendingMachineUiKey.Key:
         type: VendingMachineBoundUserInterface
-        requireInputValidation: false
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
   - type: WiresPanel
@@ -82,13 +80,9 @@
     messageSet: SpookySpeakerMessagesGeneric
     speakChance: 0.2
   - type: IntrinsicRadioReceiver
-  - type: IntrinsicRadioTransmitter
-    channels:
-    - Service
   - type: ActiveRadio
     channels:
     - Common
-    - Service
   - type: DoAfter
   - type: Electrified
     enabled: false
@@ -112,9 +106,6 @@
   - type: VendingMachineDispenseOnHit
     chance: 0.25
     threshold: 2
-  - type: Input
-    context: "human"
-  - type: Examiner
   # Utopia-Tweak : Language
   - type: LanguageSpeaker
     languages:
@@ -1938,14 +1929,6 @@
   # Utopia-Tweak : Colorful-UI
 
 - type: entity
-  parent: VendingMachineSalvage
-  id: VendingMachineSalvageCargo
-  suffix: Cargo Access
-  components:
-  - type: AccessReader
-    access: [["Salvage"], ["Cargo"]]
-
-- type: entity
   parent: VendingMachine
   id: VendingMachineDonut
   name: Monkin' Donuts
@@ -2925,14 +2908,6 @@
       buttonColor: "#ffb76f"
       borderThickness: 1
   # Utopia-Tweak : Colorful-UI
-
-- type: entity
-  parent: VendingMachineChemicals
-  id: VendingMachineChemicalsMed
-  suffix: Medical Access
-  components:
-  - type: AccessReader
-    access: [["Chemistry"], ["Medical"]]
 
 - type: entity
   parent: VendingMachineChemicals
