@@ -1,5 +1,5 @@
 - type: entity
-  parent: GasValve
+  parent: GasBinaryBase
   id: GasValveThreeWay
   name: three-way valve
   description: A T-junction with a valve that switches the flow between the straight and the side path.
@@ -12,11 +12,10 @@
           map: [ "enum.PipeVisualLayers.Pipe" ]
         - state: pumpManualValve
           map: [ "enum.SubfloorLayers.FirstLayer", "enabled" ]
+    - type: Appearance
     - type: AtmosPipeLayers
-      alternativePrototypes:
-        Primary: GasValveThreeWay
-        Secondary: GasValveThreeWay
-        Tertiary: GasValveThreeWay
+      pipeLayersLocked: true
+    - type: PipeColorVisuals
     - type: GasValve
       kind: ThreeWay
       inlet: inlet
@@ -39,3 +38,20 @@
           nodeGroupID: Pipe
           pipeDirection: West
           volume: 100
+    - type: GenericVisualizer
+      visuals:
+        enum.FilterVisuals.Enabled:
+          enabled:
+            True: { state: pumpManualValveOn }
+            False: { state: pumpManualValve }
+    - type: AmbientSound
+      enabled: true
+      volume: -9
+      range: 5
+      sound:
+        path: /Audio/Ambience/Objects/gas_hiss.ogg
+    - type: AtmosMonitoringConsoleDevice
+      navMapBlip: GasValve
+    - type: GuideHelp
+      guides:
+      - ManualValve

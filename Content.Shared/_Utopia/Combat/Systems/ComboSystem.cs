@@ -46,7 +46,7 @@ public sealed partial class SharedComboSystem : EntitySystem
             return;
 
         AddAction(entity.Owner, entity.Comp, CombatAction.Hit);
-        TryDoCombo(entity.Owner, args.HitEntities[0], entity.Comp);
+        TryDoCombo(entity.Owner, args.HitEntities.First(), entity.Comp);
     }
 
     [SubscribeLocalEvent]

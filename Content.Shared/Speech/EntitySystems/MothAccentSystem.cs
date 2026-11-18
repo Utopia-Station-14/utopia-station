@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Content.Shared.Speech.Components;
 using Content.Shared.Speech.EntitySystems;
 using Robust.Shared.Random;

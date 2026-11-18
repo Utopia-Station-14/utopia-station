@@ -31,22 +31,6 @@ public sealed partial class CEZCollapseSystem
     }
 
     [SubscribeLocalEvent]
-    private void OnCoreReAnchor(Entity<CEGridStabilityCoreComponent> ent, ref ReAnchorEvent args)
-    {
-        if (_stabilityQuery.TryGetComponent(args.OldGrid, out var oldComp))
-        {
-            oldComp.Cores.Remove(ent.Owner);
-            MarkDirty(args.OldGrid);
-        }
-
-        if (_stabilityQuery.TryGetComponent(args.Grid, out var newComp))
-        {
-            newComp.Cores.Add(ent.Owner);
-            MarkDirty(args.Grid);
-        }
-    }
-
-    [SubscribeLocalEvent]
     private void OnSupportAnchorChanged(Entity<CEGridStabilitySupportComponent> ent, ref AnchorStateChangedEvent args)
     {
         if (args.Transform.GridUid is not { } gridUid || !_stabilityQuery.TryGetComponent(gridUid, out var comp))
@@ -60,22 +44,6 @@ public sealed partial class CEZCollapseSystem
         // Marking just this grid is enough — GetColumn() pulls in every Z-adjacent participating grid
         // (including whichever one this Support bridges to) the moment a job actually starts for it.
         MarkDirty(gridUid);
-    }
-
-    [SubscribeLocalEvent]
-    private void OnSupportReAnchor(Entity<CEGridStabilitySupportComponent> ent, ref ReAnchorEvent args)
-    {
-        if (_stabilityQuery.TryGetComponent(args.OldGrid, out var oldComp))
-        {
-            oldComp.Supports.Remove(ent.Owner);
-            MarkDirty(args.OldGrid);
-        }
-
-        if (_stabilityQuery.TryGetComponent(args.Grid, out var newComp))
-        {
-            newComp.Supports.Add(ent.Owner);
-            MarkDirty(args.Grid);
-        }
     }
 
     // Externally-caused tile add/remove (RCD, explosions, etc). No special-cased math for "inherit

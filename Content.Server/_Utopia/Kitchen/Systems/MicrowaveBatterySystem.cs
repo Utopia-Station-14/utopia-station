@@ -1,6 +1,6 @@
-using Content.Server.Kitchen.Components;
 using Content.Server.Popups;
 using Content.Server.Power.Components;
+using Content.Shared.Kitchen.Components;
 using Content.Shared.Verbs;
 
 namespace Content.Server.Kitchen.EntitySystems;
