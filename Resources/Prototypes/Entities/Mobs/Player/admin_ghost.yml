@@ -93,10 +93,9 @@
     deviceNetId: Wireless
     receiveFrequencyId: CrewMonitor
     transmitFrequencyId: ShuttleTimer
-  - type: WirelessNetwork
+  - type: WirelessNetworkConnection
     range: 500
   - type: StationLimitedNetwork
-  - type: StationTracker
   - type: Thieving
     stripTimeReduction: 9999
     stealthy: true
@@ -114,7 +113,6 @@
     damageCoefficient: 0
   - type: GluedImmune
   - type: LubedImmune
-  - type: ShowNewPlayerIcon
 
 - type: entity
   abstract: true

@@ -2,7 +2,6 @@ using Content.Server.Chat.Systems;
 using Content.Shared._Utopia.Language;
 using Content.Shared.Chat;
 using Content.Shared.Speech;
-using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
@@ -99,11 +98,10 @@ public sealed partial class Generic : ILanguageType
         string font = Font != null && Font != "" ? Font : verb.FontId;
 
         name = FormattedMessage.EscapeText(name);
-        var messageName = chat.ChatNameLinks ? $"[textlink=\"{FormattedMessage.EscapeStringParameter(name)}\" entity=\"{entMan.GetNetEntity(uid)}\" entitynamecolor=\"true\"]" : FormattedMessage.EscapeText(name);
 
         // Build messages
         var wrappedMessage = Loc.GetString(verb.Bold && Font == null ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message",
-            ("entityName", messageName),
+            ("entityName", name),
             ("verb", Loc.GetString(random.Pick(verbStrings))),
             ("fontType", font),
             ("fontSize", fontSize),
@@ -112,7 +110,7 @@ public sealed partial class Generic : ILanguageType
             ("message", coloredMessage));
 
         var wrappedLanguageMessage = Loc.GetString(verb.Bold && Font == null ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message",
-            ("entityName", messageName),
+            ("entityName", name),
             ("verb", Loc.GetString(random.Pick(verbStrings))),
             ("fontType", font),
             ("fontSize", fontSize),

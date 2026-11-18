@@ -23,7 +23,7 @@
 - type: reaction
   id: AlliesCocktail
   requiredMixerCategories:
-  - Stir
+  - Shake
   reactants:
     Martini:
       amount: 2
@@ -185,10 +185,8 @@
       amount: 1
     Sugar:
       amount: 1
-    Vodka:
-      amount: 1
   products:
-    BananaHonk: 4
+    BananaHonk: 3
 
 - type: reaction
   id: BeepskySmash
@@ -391,7 +389,7 @@
 - type: reaction
   id: DriestMartini
   requiredMixerCategories:
-  - Stir
+  - Shake
   reactants:
     Gin:
       amount: 1
@@ -819,7 +817,7 @@
 - type: reaction
   id: Martini
   requiredMixerCategories:
-  - Stir
+  - Shake
   reactants:
     Gin:
       amount: 2
@@ -1221,7 +1219,7 @@
 - type: reaction
   id: VodkaMartini
   requiredMixerCategories:
-  - Stir
+  - Shake
   reactants:
     Vermouth:
       amount: 1

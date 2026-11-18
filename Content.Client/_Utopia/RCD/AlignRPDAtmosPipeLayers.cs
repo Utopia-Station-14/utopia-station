@@ -209,14 +209,10 @@ public sealed partial class AlignRPDAtmosPipeLayers : PlacementMode
         if (!currentProto.TryGetComponent<AtmosPipeLayersComponent>(out var atmosPipeLayers, _entityManager.ComponentFactory))
             return;
 
-        if (!_protoManager.TryGetVariantCollection<EntityPrototype>(currentProto, out var protoVariants))
+        if (!_pipeLayersSystem.TryGetAlternativePrototype(atmosPipeLayers, layer, out var newProtoId))
             return;
 
-        if ((int)layer >= protoVariants.Count)
-            return;
-
-        var newProtoId = protoVariants[(int)layer];
-        if (_protoManager.TryIndex(newProtoId, out var newProto))
+        if (_protoManager.TryIndex<EntityPrototype>(newProtoId, out var newProto))
         {
             // Update the placed prototype
             pManager.CurrentPermission.EntityType = newProtoId;

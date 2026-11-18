@@ -216,7 +216,7 @@ public sealed partial class CargoSystem
         var xform = Transform(uid);
 
         if (_station.GetOwningStation(uid) is not { } station ||
-            !_bankQuery.TryComp(station, out var bankAccount))
+            !TryComp<StationBankAccountComponent>(station, out var bankAccount))
         {
             return;
         }

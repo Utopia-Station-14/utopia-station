@@ -1,5 +1,5 @@
 ent-BaseMobJaunt = прыжок
-    .desc = Слабое изображение гуманоидной фигуры.
+    .desc = Здесь сохранились слабые следы гуманоидной фигуры.
     .suffix = Эфирный
 ent-EtherealJaunt = прыжок
     .desc = { ent-BaseMobJaunt.desc }

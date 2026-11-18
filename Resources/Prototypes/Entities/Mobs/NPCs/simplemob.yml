@@ -94,14 +94,3 @@
     price: 150
   - type: FloatingVisuals
   - type: Genetics # Utopia-Tweak : Genetics
-
-- type: entity
-  abstract: true
-  parent: [ SolutionFood, SolutionTiny ]
-  id: SolutionVermin
-  components:
-  - type: Solution
-    solution:
-      reagents:
-      - ReagentId: UncookedAnimalProteins
-        Quantity: 15

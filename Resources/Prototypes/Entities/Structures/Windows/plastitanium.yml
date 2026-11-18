@@ -51,36 +51,12 @@
     pylons:
     - Door
     - Firelock
-  - type: IconSmooth
-    key: windows-plastitanium
-    states:
-    - !type:CardinalCornerSpriteSmoothing
-      mask: [ windows-plastitanium ]
-      altMask:
-      - windows
-      - windows-reinf
-      - windows-tinted
-      - windows-plasma
-      - windows-plasma-reinf
-      - windows-uranium
-      - windows-uranium-reinf
-      - windows-exo
-      - windows-shuttle
-      - windows-regal
-      - walls-exo
-      - walls-shuttle
-      - walls-plastitanium
-      - walls-material
-      - walls-marble
-      - walls
-      - grilles
-      - doors
-      base: window
-  # Utopia-Tweak : Atmos-Updt
+  # Utopia-Tweak-start: Atmos-Updt
   - type: ThermalConductor
     thermalConductivity: 0.06
     heatCapacity: 35000
-  # Utopia-Tweak : Atmos-Updt
+  # Utopia-Tweak-end
+
 
 - type: entity
   id: PlastitaniumWindowSquareBase
@@ -94,6 +70,9 @@
   - type: Icon
     sprite: Structures/Windows/window-plastitanium.rsi
     state: full
+  - type: IconSmooth
+    key: walls
+    base: ptwindow
   - type: Airtight
   - type: Fixtures
     fixtures:
@@ -113,11 +92,6 @@
   components:
   - type: ExaminableDamage
     messages: null
-  - type: Tag
-    tags:
-    - ForceFixRotations
-    - Window
-    - SmeltingImmune
 
 - type: entity
   parent: [ PlastitaniumWindowSquareBase, StructureHealthBarrierStrong ]
@@ -163,6 +137,7 @@
   - type: Sprite
     drawdepth: WallTops
     sprite: Structures/Windows/window-diagonal-plastitanium.rsi
+    state: state0
   - type: Tag
     tags:
     - Diagonal
@@ -171,15 +146,9 @@
     sprite: Structures/Windows/window-diagonal-plastitanium.rsi
     state: state0
   - type: IconSmooth
-    states:
-    - !type:DiagonalSpriteSmoothing
-      mask:
-      - walls
-      - windows
-      - grilles
-      - marble
-      - doors
-      base: state
+    mode: Diagonal
+    key: walls
+    base: state
   - type: Fixtures
     fixtures:
       fix1:
@@ -208,11 +177,6 @@
   components:
   - type: ExaminableDamage
     messages: null
-  - type: Tag
-    tags:
-    - ForceFixRotations
-    - Window
-    - SmeltingImmune
 
 - type: entity
   id: PlastitaniumWindowDiagonal

@@ -39,16 +39,6 @@
   - SodaDispenserMachineCircuitboard
   - SmartFridgeCircuitboard
 
-- type: latheRecipePack
-  id: HydroponicsStatic
-  recipes:
-  - HydroponicsToolMiniHoe
-  - HydroponicsToolScythe
-  - HydroponicsToolHatchet
-  - HydroponicsToolSpade
-  - HydroponicsToolClippers
-  - PlantAnalyzer
-
 ## Dynamic
 
 - type: latheRecipePack
@@ -59,16 +49,6 @@
   - ClothingBackpackWaterTank
   - MegaSprayBottle
   - TrashBagHolding
-  - BoxLighttube
-  - BoxExteriorLighttube
-  - BoxLedLighttube
-  - BoxSodiumLighttube
-  - BoxLightbulb
-  - BoxDimLightbulb
-  - BoxWarmLightbulb
-  - BoxLedLightbulb
-  - BoxLightMixed
-  - BoxLedLightMixed
 
 - type: latheRecipePack
   id: Instruments

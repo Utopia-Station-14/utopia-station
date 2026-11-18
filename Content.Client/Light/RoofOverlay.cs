@@ -132,5 +132,7 @@ public sealed partial class RoofOverlay : Overlay
                     }
                 }
             }, null);
+
+        worldHandle.SetTransform(Matrix3x2.Identity);
     }
 }

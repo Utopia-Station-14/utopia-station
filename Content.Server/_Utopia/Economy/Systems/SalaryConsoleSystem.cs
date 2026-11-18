@@ -14,7 +14,7 @@ namespace Content.Server._Utopia.Economy.Systems;
 
 public sealed partial class SalaryConsoleSystem : EntitySystem
 {
-    [Dependency] private ServerStationSystem _station = default!;
+    [Dependency] private StationSystem _station = default!;
     [Dependency] private BankCardSystem _bankCard = default!;
     [Dependency] private ItemSlotsSystem _itemSlots = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;

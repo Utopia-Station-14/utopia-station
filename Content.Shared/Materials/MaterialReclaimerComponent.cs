@@ -181,12 +181,6 @@ public sealed partial class MaterialReclaimerComponent : Component
     /// </summary>
     [DataField]
     public bool GibOnEmag = true;
-
-    /// <summary>
-    /// Should it reclaim things on interaction
-    /// </summary>
-    [DataField]
-    public bool ReclaimOnInteract;
 }
 
 [NetSerializable, Serializable]

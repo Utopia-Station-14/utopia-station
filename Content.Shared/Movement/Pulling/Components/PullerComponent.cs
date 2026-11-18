@@ -1,7 +1,8 @@
-using Content.Shared._Utopia.Grab;
+﻿using Content.Shared._Utopia.Grab;
 using Content.Shared.Alert;
 using Content.Shared.DoAfter;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Movement.Pulling.Systems;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;

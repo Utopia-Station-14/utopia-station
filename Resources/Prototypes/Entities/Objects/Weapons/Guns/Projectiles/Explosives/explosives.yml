@@ -46,13 +46,14 @@
   parent: BaseBullet
   id: BulletGrenadeBaton
   categories: [ HideSpawnMenu ]
-  name: baton grenade round
+  name: baton grenade
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/Projectiles/projectiles2.rsi
     layers:
     - state: grenade
   - type: Projectile
+    deleteOnCollide: false
     damage:
       types:
         Blunt: 1
@@ -73,10 +74,10 @@
     - state: grenade
   - type: ExplodeOnTrigger
   - type: Explosive
-    explosionType: Clake
-    totalIntensity: 150 # a ~3 tile radius
+    explosionType: Default
+    totalIntensity: 150 # a ~2 tile radius
     intensitySlope: 5
-    maxIntensity: 20
+    maxIntensity: 10
     canCreateVacuum: false
 
 - type: entity
@@ -108,9 +109,9 @@
   - type: ExplodeOnTrigger
   - type: Explosive
     explosionType: Default
-    totalIntensity: 120
-    intensitySlope: 5
-    maxIntensity: 9
+    totalIntensity: 50
+    intensitySlope: 1
+    maxIntensity: 5
     canCreateVacuum: false
   - type: ContainerContainer
     containers:

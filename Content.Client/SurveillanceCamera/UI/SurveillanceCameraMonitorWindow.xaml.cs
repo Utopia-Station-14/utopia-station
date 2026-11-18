@@ -28,7 +28,7 @@ public sealed partial class SurveillanceCameraMonitorWindow : DefaultWindow
     /// First parameter contains the camera's address.
     /// Second optional parameter contains a subnet - if possible, the monitor will switch to this subnet.
     /// </summary>
-    public event Action<DeviceAddress, ProtoId<DeviceFrequencyPrototype>?>? CameraSelected;
+    public event Action<string, ProtoId<DeviceFrequencyPrototype>?>? CameraSelected;
 
     public event Action<ProtoId<DeviceFrequencyPrototype>>? SubnetOpened;
     public event Action? CameraRefresh;
@@ -36,10 +36,10 @@ public sealed partial class SurveillanceCameraMonitorWindow : DefaultWindow
     public event Action? CameraSwitchTimer;
     public event Action? CameraDisconnect;
 
-    private DeviceAddress _currentAddress = DeviceAddress.Invalid;
+    private string _currentAddress = string.Empty;
     private bool _isSwitching;
     private readonly FixedEye _defaultEye = new();
-    private readonly Dictionary<ProtoId<DeviceFrequencyPrototype>, int> _subnetMap = [];
+    private readonly Dictionary<ProtoId<DeviceFrequencyPrototype>, int> _subnetMap = new();
     private EntityUid? _mapUid;
 
     public SurveillanceCameraMonitorWindow()
@@ -78,9 +78,9 @@ public sealed partial class SurveillanceCameraMonitorWindow : DefaultWindow
     // pass it here so that the UI can change its view.
     public void UpdateState(IEye? eye,
         HashSet<ProtoId<DeviceFrequencyPrototype>> subnets,
-        DeviceAddress activeAddress,
+        string activeAddress,
         ProtoId<DeviceFrequencyPrototype>? activeSubnet,
-        Dictionary<DeviceAddress, string> cameras)
+        Dictionary<string, string> cameras)
     {
         CameraMap.SetActiveCameraAddress(activeAddress);
         CameraMap.SetAvailableSubnets(subnets);
@@ -91,7 +91,6 @@ public sealed partial class SurveillanceCameraMonitorWindow : DefaultWindow
         if (subnets.Count == 0)
         {
             SubnetSelector.AddItem(Loc.GetString("surveillance-camera-monitor-ui-no-subnets"));
-            SubnetSelector.SetItemMetadata(0, new DeviceFrequency(0));
             SubnetSelector.Disabled = true;
             return;
         }
@@ -116,10 +115,10 @@ public sealed partial class SurveillanceCameraMonitorWindow : DefaultWindow
             SubnetSelector.Clear();
             _subnetMap.Clear();
 
-            foreach (var frequency in subnets)
+            foreach (var subnet in subnets)
             {
-                var id = AddSubnet(frequency);
-                _subnetMap.Add(frequency, id);
+                var id = AddSubnet(subnet);
+                _subnetMap.Add(subnet, id);
             }
         }
 
@@ -129,7 +128,7 @@ public sealed partial class SurveillanceCameraMonitorWindow : DefaultWindow
         PopulateCameraList(cameras);
     }
 
-    private void PopulateCameraList(Dictionary<DeviceAddress, string> cameras)
+    private void PopulateCameraList(Dictionary<string, string> cameras)
     {
         var entries = cameras.Select(i => new ItemList.Item(SubnetList)
         {
@@ -181,10 +180,9 @@ public sealed partial class SurveillanceCameraMonitorWindow : DefaultWindow
     private int AddSubnet(ProtoId<DeviceFrequencyPrototype> subnet)
     {
         var name = subnet;
-        if (_prototypeManager.TryIndex(subnet, out var frequency)
-            && frequency.Name != null)
+        if (_prototypeManager.TryIndex(subnet, out var frequency))
         {
-            name = Loc.GetString(frequency.Name);
+            name = Loc.GetString(frequency.Name ?? subnet);
         }
 
         SubnetSelector.AddItem(name);
@@ -195,7 +193,7 @@ public sealed partial class SurveillanceCameraMonitorWindow : DefaultWindow
 
     private void OnSubnetListSelect(ItemList.ItemListSelectedEventArgs args)
     {
-        CameraSelected!((DeviceAddress)SubnetList[args.ItemIndex].Metadata!, null);
+        CameraSelected!((string)SubnetList[args.ItemIndex].Metadata!, null);
     }
 
     public void SetMap(EntityUid mapUid)
@@ -211,7 +209,7 @@ public sealed partial class SurveillanceCameraMonitorWindow : DefaultWindow
         if (!mapComp.Cameras.TryGetValue(netEntity, out var marker) || !marker.Active)
             return;
 
-        if (marker.Address != DeviceAddress.Invalid)
+        if (!string.IsNullOrEmpty(marker.Address))
             CameraSelected?.Invoke(marker.Address, marker.Subnet);
         else
             _entityNetManager.SendSystemNetworkMessage(new RequestCameraMarkerUpdateMessage(netEntity));

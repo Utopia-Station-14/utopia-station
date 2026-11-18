@@ -1,9 +1,7 @@
 using System.Numerics;
-using Content.Server.Power.EntitySystems;
+using Content.Server.DeviceNetwork.Systems;
+using Content.Server.Power.Components;
 using Content.Shared.DeviceNetwork.Components;
-using Content.Shared.DeviceNetwork.Events;
-using Content.Shared.DeviceNetwork.Systems;
-using Content.Shared.SurveillanceCamera;
 using Content.Shared.SurveillanceCamera.Components;
 
 namespace Content.Server.SurveillanceCamera;
@@ -11,15 +9,22 @@ namespace Content.Server.SurveillanceCamera;
 public sealed partial class SurveillanceCameraMapSystem : EntitySystem
 {
     [Dependency] private SharedTransformSystem _transform = default!;
-    [Dependency] private PowerReceiverSystem _power = default!;
 
-    [SubscribeLocalEvent(after: [typeof(DeviceNetworkSystem)])]
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<SurveillanceCameraComponent, MapInitEvent>(OnCameraInit, after: [typeof(DeviceNetworkSystem)]);
+        SubscribeLocalEvent<SurveillanceCameraComponent, MoveEvent>(OnCameraMoved);
+
+        SubscribeNetworkEvent<RequestCameraMarkerUpdateMessage>(OnRequestCameraMarkerUpdate);
+    }
+
     private void OnCameraInit(Entity<SurveillanceCameraComponent> ent, ref MapInitEvent args)
     {
         UpdateCameraMarker(ent);
     }
 
-    [SubscribeLocalEvent]
     private void OnCameraMoved(Entity<SurveillanceCameraComponent> ent, ref MoveEvent args)
     {
         if (!args.ParentChanged)
@@ -45,19 +50,6 @@ public sealed partial class SurveillanceCameraMapSystem : EntitySystem
             UpdateCameraMarker(ent);
     }
 
-    [SubscribeLocalEvent]
-    private void OnFrequencyChanged(Entity<SurveillanceCameraComponent> ent, ref DeviceReceiveFrequencyChangedEvent args)
-    {
-        UpdateCameraMarker(ent);
-    }
-
-    [SubscribeLocalEvent]
-    private void OnAddressChanged(Entity<SurveillanceCameraComponent> ent, ref DeviceAddressChangedEvent args)
-    {
-        UpdateCameraMarker(ent);
-    }
-
-    [SubscribeNetworkEvent]
     private void OnRequestCameraMarkerUpdate(RequestCameraMarkerUpdateMessage args)
     {
         var cameraEntity = GetEntity(args.CameraEntity);
@@ -68,7 +60,7 @@ public sealed partial class SurveillanceCameraMapSystem : EntitySystem
     }
 
     /// <summary>
-    /// Updates camera data in the <see cref="SurveillanceCameraMapComponent"/> for the specified camera.
+    /// Updates camera data in the SurveillanceCameraMapComponent for the specified camera entity.
     /// </summary>
     public void UpdateCameraMarker(Entity<SurveillanceCameraComponent> camera)
     {
@@ -84,9 +76,6 @@ public sealed partial class SurveillanceCameraMapSystem : EntitySystem
         if (gridUid is null)
             return;
 
-        if (deviceNet.ReceiveFrequencyId == null)
-            return;
-
         var netEntity = GetNetEntity(uid);
 
         var mapComp = EnsureComp<SurveillanceCameraMapComponent>(gridUid.Value);
@@ -95,8 +84,8 @@ public sealed partial class SurveillanceCameraMapSystem : EntitySystem
         var localPos = Vector2.Transform(worldPos, gridMatrix);
 
         var address = deviceNet.Address;
-        var subnet = deviceNet.ReceiveFrequencyId.Value;
-        var powered = _power.IsPowered(uid);
+        var subnet = deviceNet.ReceiveFrequencyId ?? string.Empty;
+        var powered = CompOrNull<ApcPowerReceiverComponent>(uid)?.Powered ?? true;
         var active = comp.Active && powered;
 
         var exists = mapComp.Cameras.TryGetValue(netEntity, out var existing);
@@ -110,7 +99,7 @@ public sealed partial class SurveillanceCameraMapSystem : EntitySystem
             return;
         }
 
-        var visible = !exists || existing.Visible;
+        var visible = exists ? existing.Visible : true;
 
         mapComp.Cameras[netEntity] = new CameraMarker
         {
@@ -118,13 +107,13 @@ public sealed partial class SurveillanceCameraMapSystem : EntitySystem
             Active = active,
             Address = address,
             Subnet = subnet,
-            Visible = visible,
+            Visible = visible
         };
         Dirty(gridUid.Value, mapComp);
     }
 
     /// <summary>
-    /// Sets the visibility state of the camera on the camera map.
+    /// Sets the visibility state of a camera on the camera map.
     /// </summary>
     public void SetCameraVisibility(EntityUid cameraUid, bool visible)
     {
@@ -136,17 +125,16 @@ public sealed partial class SurveillanceCameraMapSystem : EntitySystem
             return;
 
         var netEntity = GetNetEntity(cameraUid);
-        if (!mapComp.Cameras.TryGetValue(netEntity, out var marker)
-            || marker.Visible == visible)
-            return;
-
-        marker.Visible = visible;
-        mapComp.Cameras[netEntity] = marker;
-        Dirty(gridUid.Value, mapComp);
+        if (mapComp.Cameras.TryGetValue(netEntity, out var marker) && marker.Visible != visible)
+        {
+            marker.Visible = visible;
+            mapComp.Cameras[netEntity] = marker;
+            Dirty(gridUid.Value, mapComp);
+        }
     }
 
     /// <summary>
-    /// Checks if the camera is currently visible on the camera map.
+    /// Checks if a camera is currently visible on the camera map.
     /// </summary>
     public bool IsCameraVisible(EntityUid cameraUid)
     {

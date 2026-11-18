@@ -407,7 +407,7 @@ entity-effect-guidebook-ignite =
     { $chance ->
         [1] Поджигает
         *[other] поджечь
-    } организм
+    } the metabolizer
 
 entity-effect-guidebook-make-sentient =
     { $chance ->

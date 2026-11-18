@@ -145,11 +145,11 @@
       Flammable: [ Touch ]
       Extinguish: [ Touch ]
     reactions:
-    - reagents: [ Water, Holywater, SpaceCleaner ]
+    - reagents: [ Water, SpaceCleaner ]
       methods: [ Touch ]
       effects:
       - !type:WashCreamPie
-    - reagents: [ Water, Holywater ]
+    - reagents: [ Water ]
       methods: [ Touch ]
       effects:
       - !type:HealthChange
@@ -275,9 +275,6 @@
   - type: VisualOrgan
     data:
       sprite: Mobs/Customization/eyes.rsi
-  - type: EyeBlinking
-    eyelidsSprite: /Textures/Mobs/Species/Human/parts.rsi
-  - type: Appearance
 
 - type: entity
   parent: [ OrganBaseLungs, OrganSlimePersonInternal, OrganSlimePersonMetabolizer ]
