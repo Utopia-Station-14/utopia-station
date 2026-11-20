@@ -1696,9 +1696,6 @@ entities:
       parent: 2
       rot: 1.5707963267948966 rad
       pos: 31.5,14.5
-    - type: Door
-      state: Opening
-      secondsUntilStateChange: -108137.95
     - type: DeviceLinkSource
       lastSignals:
         DoorStatus: True
@@ -1872,9 +1869,6 @@ entities:
       pos: -19.5,-15.5
     - type: DeviceLinkSink
       invokeCounter: 1
-    - type: Door
-      state: Opening
-      secondsUntilStateChange: -61533.17
     - type: DeviceLinkSource
       linkedPorts:
         36:
@@ -2412,9 +2406,6 @@ entities:
       parent: 2
       rot: -1.5707963267948966 rad
       pos: 11.5,17.5
-    - type: Door
-      state: Opening
-      secondsUntilStateChange: -45948.613
     - type: DeviceLinkSource
       lastSignals:
         DoorStatus: True
@@ -2438,9 +2429,6 @@ entities:
       parent: 2
       rot: -1.5707963267948966 rad
       pos: -2.5,-12.5
-    - type: Door
-      state: Opening
-      secondsUntilStateChange: -2219.8313
     - type: DeviceLinkSource
       lastSignals:
         DoorStatus: True
@@ -2456,9 +2444,6 @@ entities:
       parent: 2
       rot: -1.5707963267948966 rad
       pos: -2.5,-13.5
-    - type: Door
-      state: Opening
-      secondsUntilStateChange: -2226.3645
     - type: DeviceLinkSource
       lastSignals:
         DoorStatus: True
@@ -26924,11 +26909,6 @@ entities:
       parent: 2
       rot: -1.5707963267948966 rad
       pos: -1.5,-13.5
-    - type: Door
-      state: Closing
-      secondsUntilStateChange: -2223.6978
-    - type: Firelock
-      emergencyCloseCooldown: 23795.5428731
   - uid: 1382
     components:
     - type: Transform
@@ -26965,21 +26945,11 @@ entities:
     - type: Transform
       parent: 2
       pos: 3.5,-13.5
-    - type: Door
-      state: Closing
-      secondsUntilStateChange: -258956.2
-    - type: Firelock
-      emergencyCloseCooldown: 30137.5365311
   - uid: 1392
     components:
     - type: Transform
       parent: 2
       pos: 3.5,-12.5
-    - type: Door
-      state: Closing
-      secondsUntilStateChange: -261369.11
-    - type: Firelock
-      emergencyCloseCooldown: 30139.0698629
   - uid: 1411
     components:
     - type: Transform

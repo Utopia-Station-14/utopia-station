@@ -1894,17 +1894,6 @@ entities:
     - type: Transform
       parent: 2
       pos: 25.5,-9.5
-- proto: AirlockCommandGlass
-  entities:
-  - uid: 37
-    components:
-    - type: Transform
-      parent: 2
-      pos: 8.5,-13.5
-    - type: AccessReader
-      accessListsOriginal: []
-      access:
-      - - Command
 - proto: AirlockCommandGlassLocked
   entities:
   - uid: 34
@@ -1913,6 +1902,11 @@ entities:
       parent: 2
       rot: 3.141592653589793 rad
       pos: 5.5,-12.5
+  - uid: 37
+    components:
+    - type: Transform
+      parent: 2
+      pos: 8.5,-13.5
   - uid: 45
     components:
     - type: Transform
@@ -9433,11 +9427,6 @@ entities:
     - type: Transform
       parent: 2
       pos: 16.5,25.5
-  - uid: 8109
-    components:
-    - type: Transform
-      parent: 2
-      pos: 16.5,27.5
   - uid: 8110
     components:
     - type: Transform
