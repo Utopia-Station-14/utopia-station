@@ -4,21 +4,10 @@
   name: salary console
   description: Used to pay salaries to station employees.
   components:
-  - type: Sprite
-    layers:
-    - map: ["computerLayerBody"]
-      state: computer
-    - map: ["computerLayerKeyboard"]
-      state: generic_keyboard
-    - map: ["computerLayerKeys"]
-      state: generic_keys
-    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
-      state: generic_panel_open
-    - map: ["computerLayerScreen"]
-      sprite: _Utopia/Structures/Machines/computers.rsi
-      state: salary
   - type: Computer
     board: UtopiaComputerSalaryCircuitboard
+  - type: ComputerVisuals
+    stateScreen: salary
   - type: ActivatableUI
     key: enum.SalaryConsoleUiKey.Key
   - type: UserInterface
@@ -45,21 +34,10 @@
   name: economic records computer
   description: Shows crew economic records.
   components:
-  - type: Sprite
-    layers:
-    - map: ["computerLayerBody"]
-      state: computer
-    - map: ["computerLayerKeyboard"]
-      state: generic_keyboard
-    - map: ["computerLayerKeys"]
-      state: generic_keys
-    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
-      state: generic_panel_open
-    - map: ["computerLayerScreen"]
-      sprite: _Utopia/Structures/Machines/computers.rsi
-      state: accounts
   - type: Computer
     board: UtopiaComputerEconomicRecordsCircuitboard
+  - type: ComputerVisuals
+    stateScreen: accounts
   - type: ActivatableUI
     key: enum.EconomicRecordsConsoleKey.Key
   - type: UserInterface
@@ -78,20 +56,11 @@
   name: geneticists console
   description: A console used with the medical scanner for DNA research.
   components:
-  - type: Sprite
-    layers:
-    - map: ["computerLayerBody"]
-      state: computer
-    - map: ["computerLayerKeyboard"]
-      state: generic_keyboard
-    - map: ["computerLayerScreen"]
-      state: dna
-    - map: ["computerLayerKeys"]
-      state: med_key
-    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
-      state: generic_panel_open
   - type: Computer
     board: UtopiaDnaManipulatorConsoleCircuitboard
+  - type: ComputerVisuals
+    stateScreen: dna
+    stateKeys: med_key
   - type: ActivatableUI
     singleUser: true
     key: enum.DnaScannerConsoleUiKey.Key
@@ -125,18 +94,9 @@
   components:
     - type: Computer
       board: UtopiaComputerTurbineCircuitboard
-    - type: Sprite
-      layers:
-        - map: ["computerLayerBody"]
-          state: computer
-        - map: ["computerLayerKeyboard"]
-          state: generic_keyboard
-        - map: ["computerLayerScreen"]
-          state: turbinecomp
-        - map: ["computerLayerKeys"]
-          state: atmos_key
-        - map: ["enum.WiresVisualLayers.MaintenancePanel"]
-          state: generic_panel_open
+    - type: ComputerVisuals
+      stateScreen: turbinecomp
+      stateKeys: atmos_key
     - type: GenericVisualizer
       visuals:
         enum.ComputerVisuals.Powered:
@@ -164,6 +124,44 @@
           type: WiresBoundUserInterface
 
 - type: entity
+  id: ComputerExplosionBeaconConsole
+  parent: BaseComputerAiAccess
+  name: explosion beacon console
+  description: Displays target explosion parameters from a linked explosion beacon. Link with a multitool.
+  components:
+  - type: ComputerVisuals
+    stateScreen: artifact
+    stateKeys: tech_key
+  - type: ExplosionBeaconConsole
+  - type: DeviceList
+  - type: DeviceNetwork
+    deviceNetId: Wired
+  - type: DeviceLinkSource
+    range: 65
+    ports:
+      - ExplosionBeaconConsoleSender
+  - type: ActivatableUI
+    key: enum.ExplosionBeaconConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.ExplosionBeaconConsoleUiKey.Key:
+        type: ExplosionBeaconConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: ApcPowerReceiver
+    powerLoad: 50
+  - type: PowerState
+    idlePowerDraw: 50
+    workingPowerDraw: 300
+  - type: AccessReader
+    access: [["Research"]]
+  - type: PointLight
+    radius: 1.5
+    energy: 3.0
+    color: "#e67e22"
+
+
+- type: entity
   parent: BaseComputerAiAccess
   id: UtopiaComputerShiftSchedule
   name: shift schedule console
@@ -171,18 +169,8 @@
   components:
   - type: Computer
     board: UtopiaComputerShiftScheduleCircuitboard
-  - type: Sprite
-    layers:
-    - map: ["computerLayerBody"]
-      state: computer
-    - map: ["computerLayerKeyboard"]
-      state: generic_keyboard
-    - map: ["computerLayerScreen"]
-      state: comm
-    - map: ["computerLayerKeys"]
-      state: generic_keys
-    - map: ["enum.WiresVisualLayers.MaintenancePanel"]
-      state: generic_panel_open
+  - type: ComputerVisuals
+    stateScreen: comm
   - type: AccessReader
     access: [ [ "Captain" ], [ "HeadOfPersonnel" ] ]
   - type: ShiftScheduleConsole

@@ -1,6 +1,6 @@
 using Content.Shared._Utopia.Economy.Components;
 using Content.Shared.Paper;
-using Content.Shared.Station;
+using Content.Shared.Station.Systems;
 using Content.Shared.Cargo.Components;
 
 namespace Content.Shared._Utopia.Economy.Systems;
@@ -8,7 +8,7 @@ namespace Content.Shared._Utopia.Economy.Systems;
 public sealed partial class CommandBudgetSystem : SharedEconomySystem
 {
     [Dependency] private PaperSystem _paper = default!;
-    [Dependency] private SharedStationSystem _station = default!;
+    [Dependency] private StationSystem _station = default!;
 
     [SubscribeLocalEvent]
     private void OnMapInit(Entity<CommandBudgetPinPaperComponent> ent, ref MapInitEvent args)

@@ -1,14 +1,15 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Shared._Utopia.Toxicology.Components;
-using Content.Shared.DeviceLinking;
+using Content.Shared.DeviceLinking.Components;
 using Content.Shared.DeviceLinking.Events;
+using Content.Shared.DeviceLinking.Systems;
 using Content.Shared.Power.EntitySystems;
 
 namespace Content.Shared._Utopia.Toxicology;
 
 public abstract partial class SharedExplosionBeaconConsoleSystem : EntitySystem
 {
-    [Dependency] private SharedDeviceLinkSystem _deviceLink = default!;
+    [Dependency] private DeviceLinkSystem _deviceLink = default!;
     [Dependency] private SharedPowerReceiverSystem _power = default!;
 
     public override void Initialize()
@@ -18,7 +19,7 @@ public abstract partial class SharedExplosionBeaconConsoleSystem : EntitySystem
         SubscribeLocalEvent<ExplosionBeaconConsoleComponent, MapInitEvent>(OnConsoleMapInit);
         SubscribeLocalEvent<ExplosionBeaconConsoleComponent, NewLinkEvent>(OnNewLinkConsole);
         SubscribeLocalEvent<ExplosionBeaconConsoleComponent, LinkAttemptEvent>(OnLinkAttemptConsole);
-        SubscribeLocalEvent<ExplosionBeaconConsoleComponent, PortDisconnectedEvent>(OnPortDisconnectedConsole);
+        SubscribeLocalEvent<ExplosionBeaconConsoleComponent, SourcePortDisconnectedEvent>(OnPortDisconnectedConsole);
 
         SubscribeLocalEvent<ExplosionBeaconComponent, LinkAttemptEvent>(OnLinkAttemptBeacon);
     }
@@ -55,7 +56,9 @@ public abstract partial class SharedExplosionBeaconConsoleSystem : EntitySystem
     private void OnLinkAttemptConsole(Entity<ExplosionBeaconConsoleComponent> ent, ref LinkAttemptEvent args)
     {
         if (ent.Comp.BeaconEntity != null)
-            args.Cancel();
+        {
+            args.Cancelled = true;
+        }
     }
 
     private void OnLinkAttemptBeacon(Entity<ExplosionBeaconComponent> ent, ref LinkAttemptEvent args)
@@ -68,13 +71,13 @@ public abstract partial class SharedExplosionBeaconConsoleSystem : EntitySystem
         {
             if (console.BeaconEntity == ent.Owner)
             {
-                args.Cancel();
+                args.Cancelled = true;
                 return;
             }
         }
     }
 
-    private void OnPortDisconnectedConsole(Entity<ExplosionBeaconConsoleComponent> ent, ref PortDisconnectedEvent args)
+    private void OnPortDisconnectedConsole(Entity<ExplosionBeaconConsoleComponent> ent, ref SourcePortDisconnectedEvent args)
     {
         if (args.Port != ent.Comp.LinkingPort)
             return;

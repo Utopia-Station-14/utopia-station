@@ -1,4 +1,4 @@
-using Content.Server.GameTicking.Events;
+using Content.Shared.GameTicking.Events;
 using Robust.Shared.Random;
 using System.Linq;
 
