@@ -1,0 +1,128 @@
+﻿﻿<Document>
+  # Пропаганда
+  <Table Columns="5">
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Наименование</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Функция или условие</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Статья</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Проверка или условие</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Знамя Синдиката</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Знамя Синдиката.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">104</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Не нуждается</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Одеяло Синдиката</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Одеяло с символикой Синдиката.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">103</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Не нуждается</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Баночка нюка-кола</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Ёмкость с символикой; напиток с гиперзином оценивается отдельно по 204.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">104</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Не нуждается</Box></ColorBox>
+  </Table>
+
+
+  # Регулируемые вещества
+  <Table Columns="5">
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Наименование</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Функция или условие</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Статья</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Проверка или условие</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Ноктюрин (вещество)</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Ноктюрин: снотворное, подавляющее бодрствование и подвижность.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">204</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Экспертом / статья о Веществах</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Стимулятор (вещество)</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Гиперзин: повышает скорость и устойчивость к оглушению</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">204</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Экспертом / статья о Веществах</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Содержимое набора барных токсинов</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Набор ядов: токсин немоты, аматоксин, ликоксид, лексорин; состав подтверждается анализом.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">204</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Экспертом / статья о Веществах</Box></ColorBox>
+  </Table>
+
+  # Модифицированные предметы
+  <Table Columns="5">
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Наименование</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Функция или условие</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Статья</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Проверка или условие</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перчатки вора</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Перчатки с модификацией для незаметного снятия вещей с людей.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">304</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Особые свойства</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Челюсти жизни Синдиката</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нештатные челюсти жизни, способные открывать защищённые и заболтированные двери.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">304</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Особые свойства</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Маяк Вора</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Маяк для перемещения окружающего имущества в воровское хранилище по окончании смены.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">304</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Экспертом</Box></ColorBox>
+  </Table>
+
+
+  # Контрабанда
+  <Table Columns="5">
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Наименование</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Функция или условие</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Статья</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Проверка или условие</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Ключ шифрования Синдиката</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Ключ доступа к закрытому каналу связи Синдиката.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">404</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Не нуждается</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Криптографический секвенсор</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Электронный секвенсор для несанкционированного изменения работы устройств.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">404</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Экспертом / особые свойства</Box></ColorBox>
+  </Table>
+
+
+  # Вражеское снаряжение
+  <Table Columns="5">
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Наименование</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Функция или условие</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Статья</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Проверка или условие</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Игрушечный меч</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Настоящее энергетическое оружие под видом игрушечного меча.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">504</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Экспертиза в выключенном состоянии, не нуждается во включённом</Box></ColorBox>
+
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Бомба Синдиката</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Бомба Синдиката для диверсии.</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">504</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Экспертом /Экспертиза</Box></ColorBox>
+  </Table>
+
+</Document>
