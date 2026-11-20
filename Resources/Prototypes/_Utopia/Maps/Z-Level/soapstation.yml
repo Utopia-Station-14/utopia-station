@@ -1,10 +1,10 @@
 - type: gameMap
   id: SoapStation
-  mapName: SoapStation
+  mapName: Soap Station
   minPlayers: 0
   maxRandomOffset: 0
   randomRotation: false
-  mapPath: /Maps/_Utopia/Z-Level/SoapStation/SoapStation2.yml
+  mapPath: /Maps/_Utopia/Z-Level/SoapStation/SoapStation0.yml
   stations:
     SoapStation:
       stationProto: StandardNanotrasenStation
@@ -29,7 +29,7 @@
             Botanist: [ 2, 2 ]
             Chef: [ 1, 1 ]
             Janitor: [ 2, 2 ]
-            Chaplain: [ 1, 1 ]
+            # Chaplain: [ 1, 1 ]
             Librarian: [ 1, 1 ]
             ServiceWorker: [ 1, 1 ]
             Reporter: [ 1, 1 ]
@@ -64,8 +64,8 @@
             Borg: [ 2, 2 ]
         - type: CEStationZLevels
           mapsBelow:
-          - /Maps/_Utopia/Z-Level/SoapStation/SoapStation0.yml
-          - /Maps/_Utopia/Z-Level/SoapStation/SoapStation1.yml
+          - /Maps/_Utopia/Z-Level/SoapStation/SoapStation-2.yml
+          - /Maps/_Utopia/Z-Level/SoapStation/SoapStation-1.yml
           zLevelsComponentOverrides:
             - type: CEGridStability
               supportLowestLevel: True
