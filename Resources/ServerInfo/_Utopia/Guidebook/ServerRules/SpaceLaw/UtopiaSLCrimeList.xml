@@ -46,7 +46,7 @@
     <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">05</Box></ColorBox>
     <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Злоупотребление экипировкой</Box></ColorBox>
     <ColorBox Color="#a3a07b"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение боевым приспособлением или бронёй</Box></ColorBox>
-    <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение специальным оборудованием</Box></ColorBox>
+    <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2"></Box></ColorBox>
     <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение летальным оружием</Box></ColorBox>
     <ColorBox Color="#9c6fa7"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Распространение оружия</Box></ColorBox>
 
@@ -95,7 +95,7 @@
 
     <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">101</Box></ColorBox>
     <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Лёгкий ущерб здоровью</Box></ColorBox>
-    <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Умышленный вред здоровью до 30 единиц урона, без критического состояния или смерти.</Box></ColorBox>
+    <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Причинение вреда здоровью лица с ОПРС до 30 единиц урона, без критического состояния или смерти.</Box></ColorBox>
     <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">5 минут или 50 кредитов</Box></ColorBox>
 
     <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">102</Box></ColorBox>
@@ -150,7 +150,7 @@
 
     <ColorBox Color="#a3a07b"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">201</Box></ColorBox>
     <ColorBox Color="#a3a07b"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Средний ущерб здоровью</Box></ColorBox>
-    <ColorBox Color="#a3a07b"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Причинение вреда свыше 30 единиц без крита и смерти либо незаконное физическое удержание.</Box></ColorBox>
+    <ColorBox Color="#a3a07b"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Причинение вреда здоровью лица с ОПРС свыше 30 единиц без крита и смерти либо незаконное физическое удержание.</Box></ColorBox>
     <ColorBox Color="#a3a07b"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">10 минут или 100 кредитов</Box></ColorBox>
 
     <ColorBox Color="#a3a07b"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">202</Box></ColorBox>
@@ -219,7 +219,7 @@
 
     <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">301</Box></ColorBox>
     <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Значительный ущерб здоровью</Box></ColorBox>
-    <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Умышленное введение в критическое состояние без смерти.</Box></ColorBox>
+    <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Умышленное введение лица с ОПРС в критическое состояние без смерти.</Box></ColorBox>
     <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">25 минут</Box></ColorBox>
 
     <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">302</Box></ColorBox>
@@ -240,12 +240,8 @@
 
     <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">304</Box></ColorBox>
     <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение модифицированных вещей</Box></ColorBox>
-    <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Осознанное незаконное владение внесённым в реестр модифицированных предметов с соответствующими новыми свойствами.</Box></ColorBox>
-    <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">25 минут</Box></ColorBox>
-
-    <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">305</Box></ColorBox>
-    <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Владение специальным оборудованием</Box></ColorBox>
-    <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">ХХХХ</Box></ColorBox>
+    <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Осознанное незаконное владение внесённым в реестр модифицированных предметов с соответствующими новыми свойствами.
+Внешнее сходство предмета без доказанных свойств состава не образуют.</Box></ColorBox>
     <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">25 минут</Box></ColorBox>
 
     <ColorBox Color="#a7846f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">306</Box></ColorBox>
@@ -293,7 +289,7 @@
 
     <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">401</Box></ColorBox>
     <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Убийство</Box></ColorBox>
-    <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Причинение смерти с намерением убить либо осознанным допущением смертельного результата или похищение существа с ОПРС.
+    <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Причинение смерти лицу с ОПРС с намерением убить, либо осознанным допущением смертельного результата.
 Смерть подтверждается медицинским осмотром либо записью состояния. Реанимация не отменяет уже наступившую смерть.</Box></ColorBox>
     <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">40 минут</Box></ColorBox>
 
@@ -317,7 +313,8 @@
 
     <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">404</Box></ColorBox>
     <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Хранение контрабанды</Box></ColorBox>
-    <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Осознанное незаконное владение специальным устройством или технологией, включённым в реестр контрабанды.</Box></ColorBox>
+    <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Осознанное незаконное владение специальным устройством или технологией, включённым в реестр контрабанды.
+Внешнее сходство предмета без доказанных свойств состава не образуют.</Box></ColorBox>
     <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">40 минут</Box></ColorBox>
 
     <ColorBox Color="#a76f6f"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">405</Box></ColorBox>
