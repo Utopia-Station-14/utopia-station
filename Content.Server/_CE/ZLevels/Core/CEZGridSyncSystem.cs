@@ -106,8 +106,9 @@ public sealed partial class CEZGridSyncSystem : VirtualController
         if (_syncing || _inPhysicsTick)
             return;
 
+        var dTheta = Math.IEEERemainder((ev.NewRotation - ev.OldRotation).Theta, 2 * Math.PI);
         if ((ev.NewPosition.Position - ev.OldPosition.Position).LengthSquared() < 1e-9f
-            && Math.Abs((ev.NewRotation - ev.OldRotation).Theta) < 1e-6)
+            && Math.Abs(dTheta) < 1e-6)
             return;
 
         if (!_zlevels.TryGetGridNetwork(ent.Owner, out var network) || network.Comp.Grids.Count < 2)
@@ -172,7 +173,9 @@ public sealed partial class CEZGridSyncSystem : VirtualController
 
     private static Angle SnapAngle(Angle a)
     {
-        return Angle.FromDegrees(Math.Round(a.Degrees / 90.0) * 90.0);
+        var deg = Math.Round(a.Degrees / 90.0) * 90.0;
+        deg = Math.IEEERemainder(deg, 360.0);
+        return Angle.FromDegrees(deg);
     }
 
     private (Vector2 Pos, Angle Rot) GetGridPose(EntityUid grid)
@@ -194,6 +197,9 @@ public sealed partial class CEZGridSyncSystem : VirtualController
 
     private void ApplyAnchorToGrid(EntityUid gridUid, CEZGridComponent comp, Vector2 anchorPos, Angle anchorRot)
     {
+        if (TerminatingOrDeleted(gridUid))
+            return;
+
         _transform.SetWorldPositionRotation(gridUid,
             anchorPos + anchorRot.RotateVec(comp.NetworkOffset),
             anchorRot + comp.NetworkRotation);
@@ -261,7 +267,7 @@ public sealed partial class CEZGridSyncSystem : VirtualController
 
             var (gPos, gRot) = GetGridPose(g);
             comp.NetworkOffset = new Angle(-anchorRot.Theta).RotateVec(gPos - anchorPos);
-            comp.NetworkRotation = gRot - anchorRot;
+            comp.NetworkRotation = NormalizeAngle(gRot.Theta - anchorRot.Theta);
         }
     }
 
@@ -289,7 +295,7 @@ public sealed partial class CEZGridSyncSystem : VirtualController
         var (world, worldRot) = GetGridPose(grid.Owner);
 
         var localOffset = new Angle(-anchorRot.Theta).RotateVec(world - anchorPos);
-        var relRot = worldRot - anchorRot;
+        var relRot = NormalizeAngle(worldRot.Theta - anchorRot.Theta);
 
         // Static grids are never moved — record their exact pose.
         if (IsStaticAnchor(grid.Owner) || !_mapGridQuery.TryComp(grid.Owner, out var mapGrid))
@@ -302,11 +308,12 @@ public sealed partial class CEZGridSyncSystem : VirtualController
         var tileSize = mapGrid.TileSize;
         var snappedOffset = SnapPosition(localOffset, tileSize);
         var snappedRot = SnapAngle(relRot);
+        var dSnapRot = NormalizeAngle(snappedRot.Theta - relRot.Theta);
 
         // Always snap onto a static-anchored network; for flying merges only snap a small correction.
         var shouldSnap = net.HasStaticAnchor
-                         || (snappedOffset - localOffset).Length() < tileSize
-                         && Math.Abs((snappedRot - relRot).Theta) < Math.PI * 0.25;
+                         || ((snappedOffset - localOffset).Length() < tileSize
+                             && Math.Abs(dSnapRot.Theta) < Math.PI * 0.25);
 
         if (shouldSnap)
         {
@@ -445,7 +452,8 @@ public sealed partial class CEZGridSyncSystem : VirtualController
         RunRigidBodyConsensus(net);
 
         var sumPos = Vector2.Zero;
-        var sumRot = 0.0;
+        var sumSin = 0.0;
+        var sumCos = 0.0;
         var count = 0;
 
         foreach (var gUid in net.Grids)
@@ -454,7 +462,8 @@ public sealed partial class CEZGridSyncSystem : VirtualController
                 continue;
             var (aPos, aRot) = GetAnchorPoseFromGrid(gUid);
             sumPos += aPos;
-            sumRot += aRot.Theta;
+            sumSin += Math.Sin(aRot.Theta);
+            sumCos += Math.Cos(aRot.Theta);
             count++;
         }
 
@@ -462,7 +471,7 @@ public sealed partial class CEZGridSyncSystem : VirtualController
             return;
 
         var avgPos = sumPos / count;
-        var avgRot = new Angle(sumRot / count);
+        var avgRot = new Angle(Math.Atan2(sumSin, sumCos));
 
         _syncing = true;
         foreach (var gUid in net.Grids)
@@ -472,5 +481,10 @@ public sealed partial class CEZGridSyncSystem : VirtualController
         }
 
         _syncing = false;
+    }
+
+    private static Angle NormalizeAngle(double theta)
+    {
+        return new Angle(Math.IEEERemainder(theta, 2 * Math.PI));
     }
 }
