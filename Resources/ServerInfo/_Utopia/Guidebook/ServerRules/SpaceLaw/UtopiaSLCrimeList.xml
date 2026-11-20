@@ -95,7 +95,7 @@
 
     <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">101</Box></ColorBox>
     <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Лёгкий ущерб здоровью</Box></ColorBox>
-    <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Умышленный вред здоровью до 30 единиц урона.</Box></ColorBox>
+    <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Умышленный вред здоровью до 30 единиц урона, без критического состояния или смерти.</Box></ColorBox>
     <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">5 минут или 50 кредитов</Box></ColorBox>
 
     <ColorBox Color="#7ba391"><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">102</Box></ColorBox>
