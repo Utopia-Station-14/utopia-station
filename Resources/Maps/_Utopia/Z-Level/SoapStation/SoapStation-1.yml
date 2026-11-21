@@ -4,14 +4,15 @@ meta:
   engineVersion: 294.0.3
   forkId: ""
   forkVersion: ""
-  time: 11/21/2026 21:41:33
-  entityCount: 8272
+  time: 11/21/2026 23:12:22
+  entityCount: 8271
 maps:
 - 1
 grids:
 - 2
 orphans: []
 nullspace:
+- 5963
 - 8245
 - 8246
 - 8247
@@ -39,7 +40,6 @@ nullspace:
 - 8269
 - 8270
 - 8271
-- 8272
 tilemap:
   18: Space
   22: FloorAsteroidTile
@@ -123,7 +123,7 @@ entities:
           version: 7
         -2,-1:
           ind: -2,-1
-          tiles: EgAAAAAAABIAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAAKAAAAAAAACgAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAAKAAAAAAAACgAAAAAAABQAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAACgAAAAAAAAEAAAAAAAASAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAEgAAAAAAAAEAAAAAAAAKAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAAKAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAABQAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAACgAAAAAAAAEAAAAAAAAKAAAAAAAACgAAAAAAAAEAAAAAAAAKAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAAKAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAkAAAAAAAABAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAACgAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAACQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAACQAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAMAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAADAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAwAAAAAAAAEAAAAAAAAKAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAkAAAAAAAABAAAAAAAACQAAAAAAAAEAAAAAAAABAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAFAAAAAAAABQAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAAKAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAABIAAAAAAAADAAAAAAAACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAASAAAAAAAAAwAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+          tiles: EgAAAAAAABIAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAAKAAAAAAAACgAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAAKAAAAAAAACgAAAAAAABQAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAACgAAAAAAAAEAAAAAAAASAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAEgAAAAAAAAEAAAAAAAAKAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAAKAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAABQAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAACgAAAAAAAAEAAAAAAAAKAAAAAAAACgAAAAAAAAEAAAAAAAAKAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAAKAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAkAAAAAAAABAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAACgAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAACQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAACQAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAMAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAADAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAwAAAAAAAAEAAAAAAAAKAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAkAAAAAAAABAAAAAAAACQAAAAAAAAEAAAAAAAABAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAFAAAAAAAABQAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAAAEAAAAAAAAKAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAoAAAAAAAAKAAAAAAAAAQAAAAAAAAMAAAAAAAADAAAAAAAACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAoAAAAAAAABAAAAAAAACgAAAAAAAAEAAAAAAAABAAAAAAAAAQAAAAAAAAEAAAAAAAASAAAAAAAAAwAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAA==
           version: 7
         -2,-2:
           ind: -2,-2
@@ -251,6 +251,7 @@ entities:
     - type: GridSplitNode
     - type: ChunkContainer
       chunkEntities:
+      - 5963
       - 8245
       - 8246
       - 8247
@@ -278,7 +279,6 @@ entities:
       - 8269
       - 8270
       - 8271
-      - 8272
     - type: OccluderTree
     - type: TileHistory
       chunkHistory: {}
@@ -1888,7 +1888,7 @@ entities:
       pos: -6.5,-1.5
     - type: Door
       state: Opening
-      secondsUntilStateChange: -3443.1433
+      secondsUntilStateChange: -3957.411
     - type: DeviceLinkSource
       lastSignals:
         DoorStatus: True
@@ -2147,7 +2147,7 @@ entities:
       pos: 15.5,-9.5
     - type: Door
       state: Opening
-      secondsUntilStateChange: -269866.56
+      secondsUntilStateChange: -270380.84
     - type: DeviceLinkSource
       lastSignals:
         DoorStatus: True
@@ -2261,7 +2261,7 @@ entities:
       pos: -12.5,3.5
     - type: Door
       state: Opening
-      secondsUntilStateChange: -182982.97
+      secondsUntilStateChange: -183497.23
     - type: DeviceLinkSource
       lastSignals:
         DoorStatus: True
@@ -2382,7 +2382,7 @@ entities:
       pos: 27.5,13.5
     - type: Door
       state: Opening
-      secondsUntilStateChange: -120014.57
+      secondsUntilStateChange: -120528.836
     - type: DeviceLinkSource
       lastSignals:
         DoorStatus: True
@@ -2412,7 +2412,7 @@ entities:
       pos: 37.5,23.5
     - type: Door
       state: Opening
-      secondsUntilStateChange: -185699.58
+      secondsUntilStateChange: -186213.84
     - type: DeviceLinkSource
       lastSignals:
         DoorStatus: True
@@ -2530,7 +2530,7 @@ entities:
       pos: 6.5,23.5
     - type: Door
       state: Opening
-      secondsUntilStateChange: -68880.875
+      secondsUntilStateChange: -69395.14
     - type: DeviceLinkSource
       lastSignals:
         DoorStatus: True
@@ -17183,7 +17183,7 @@ entities:
       pos: -33.93424,3.4268312
 - proto: ChunkEntity
   entities:
-  - uid: 8245
+  - uid: 5963
     components:
     - type: ChunkEntity
       root: 2
@@ -17354,7 +17354,7 @@ entities:
             12: -11,-11
             13: -10,-11
             14: -9,-11
-  - uid: 8246
+  - uid: 8245
     components:
     - type: ChunkEntity
       root: 2
@@ -17586,7 +17586,7 @@ entities:
           decals:
             81: 8,7
             84: 10,7
-  - uid: 8247
+  - uid: 8246
     components:
     - type: ChunkEntity
       root: 2
@@ -17778,16 +17778,21 @@ entities:
             64: 23,-6
             65: 24,-6
             66: 25,-6
-  - uid: 8248
+  - uid: 8247
     components:
     - type: ChunkEntity
       root: 2
       chunk: -2,-1
     - type: DecalChunk
-      maxDecalId: 68
+      maxDecalId: 69
       decals:
         version: 1
         nodes:
+        - node:
+            id: BrickTileWhiteCornerSe
+            color: '#3EB38896'
+          decals:
+            17: -20,-2
         - node:
             id: BrickTileWhiteInnerNe
             color: '#EFB34196'
@@ -17814,12 +17819,16 @@ entities:
             color: '#3EB38896'
           decals:
             16: -20,-1
-            17: -20,-2
         - node:
             id: BrickTileWhiteLineN
             color: '#EFB34196'
           decals:
             9: -17,-6
+        - node:
+            id: BrickTileWhiteLineS
+            color: '#3EB38896'
+          decals:
+            69: -21,-2
         - node:
             id: BrickTileWhiteLineS
             color: '#EFB34196'
@@ -17913,7 +17922,7 @@ entities:
             cleanable: True
           decals:
             18: -32,-2
-  - uid: 8249
+  - uid: 8248
     components:
     - type: ChunkEntity
       root: 2
@@ -18163,7 +18172,7 @@ entities:
             82: -15,6
             83: -15,5
             84: -15,4
-  - uid: 8250
+  - uid: 8249
     components:
     - type: ChunkEntity
       root: 2
@@ -18286,7 +18295,7 @@ entities:
             15: -29,6
             16: -30,4
             17: -29,6
-  - uid: 8251
+  - uid: 8250
     components:
     - type: ChunkEntity
       root: 2
@@ -18490,7 +18499,7 @@ entities:
           decals:
             50: 14,-19
             51: 13,-19
-  - uid: 8252
+  - uid: 8251
     components:
     - type: ChunkEntity
       root: 2
@@ -18738,7 +18747,7 @@ entities:
             cleanable: True
           decals:
             98: 0,-16
-  - uid: 8253
+  - uid: 8252
     components:
     - type: ChunkEntity
       root: 2
@@ -18766,7 +18775,7 @@ entities:
             7: -19,17
             8: -18,17
             9: -17,17
-  - uid: 8254
+  - uid: 8253
     components:
     - type: ChunkEntity
       root: 2
@@ -18987,7 +18996,7 @@ entities:
             1: -14,16
             2: -13,16
             3: -12,16
-  - uid: 8255
+  - uid: 8254
     components:
     - type: ChunkEntity
       root: 2
@@ -19573,7 +19582,7 @@ entities:
             334: 12,16
             359: 11,16
             362: 13,16
-  - uid: 8256
+  - uid: 8255
     components:
     - type: ChunkEntity
       root: 2
@@ -19832,7 +19841,7 @@ entities:
             109: 20,9
             110: 21,9
             111: 22,9
-  - uid: 8257
+  - uid: 8256
     components:
     - type: ChunkEntity
       root: 2
@@ -20093,7 +20102,7 @@ entities:
             31: 17,26
             32: 17,27
             33: 17,28
-  - uid: 8258
+  - uid: 8257
     components:
     - type: ChunkEntity
       root: 2
@@ -20548,7 +20557,7 @@ entities:
             59: 2,39
             60: 4,39
             61: 3,39
-  - uid: 8259
+  - uid: 8258
     components:
     - type: ChunkEntity
       root: 2
@@ -20594,7 +20603,7 @@ entities:
           decals:
             0: -2,39
             1: -1,39
-  - uid: 8260
+  - uid: 8259
     components:
     - type: ChunkEntity
       root: 2
@@ -20888,7 +20897,7 @@ entities:
             137: 46,-10
             138: 47,-13
             139: 46,-11
-  - uid: 8261
+  - uid: 8260
     components:
     - type: ChunkEntity
       root: 2
@@ -20947,7 +20956,7 @@ entities:
             cleanable: True
           decals:
             14: 16,-18
-  - uid: 8262
+  - uid: 8261
     components:
     - type: ChunkEntity
       root: 2
@@ -20974,7 +20983,7 @@ entities:
             color: '#C8961ECC'
           decals:
             0: 32,-17
-  - uid: 8263
+  - uid: 8262
     components:
     - type: ChunkEntity
       root: 2
@@ -21113,7 +21122,7 @@ entities:
             55: 32,16
             56: 32,17
             57: 32,18
-  - uid: 8264
+  - uid: 8263
     components:
     - type: ChunkEntity
       root: 2
@@ -21326,7 +21335,7 @@ entities:
             64: 32,5
             65: 33,5
             66: 34,5
-  - uid: 8265
+  - uid: 8264
     components:
     - type: ChunkEntity
       root: 2
@@ -21456,7 +21465,7 @@ entities:
             5: -35,-2
             6: -33,-2
             7: -33,-1
-  - uid: 8266
+  - uid: 8265
     components:
     - type: ChunkEntity
       root: 2
@@ -21537,7 +21546,7 @@ entities:
             7: 49,8
             10: 49,6
             18: 49,7
-  - uid: 8267
+  - uid: 8266
     components:
     - type: ChunkEntity
       root: 2
@@ -21608,7 +21617,7 @@ entities:
             16: -37,2
             17: -36,1
             18: -34,0
-  - uid: 8268
+  - uid: 8267
     components:
     - type: ChunkEntity
       root: 2
@@ -21646,7 +21655,7 @@ entities:
             15: -37,-20
             16: -38,-20
             17: -39,-18
-  - uid: 8269
+  - uid: 8268
     components:
     - type: ChunkEntity
       root: 2
@@ -21723,7 +21732,7 @@ entities:
             1: 51,-3
             2: 51,-4
             4: 51,-5
-  - uid: 8270
+  - uid: 8269
     components:
     - type: ChunkEntity
       root: 2
@@ -21800,7 +21809,7 @@ entities:
             30: 16,42
             31: 16,44
             32: 16,46
-  - uid: 8271
+  - uid: 8270
     components:
     - type: ChunkEntity
       root: 2
@@ -21847,7 +21856,7 @@ entities:
             14: -29.210388,-19.202398
             15: -28.850819,-19.421148
             16: -28.89772,-18.999273
-  - uid: 8272
+  - uid: 8271
     components:
     - type: ChunkEntity
       root: 2
@@ -26418,7 +26427,6 @@ entities:
     - type: Transform
       parent: 2
       pos: 22.5,-9.5
-
   - uid: 2234
     components:
     - type: Transform
@@ -26718,7 +26726,7 @@ entities:
       pos: -14.5,4.5
     - type: Door
       state: Closing
-      secondsUntilStateChange: -69799.14
+      secondsUntilStateChange: -70313.41
     - type: Firelock
       emergencyCloseCooldown: 97143.3695252
   - uid: 6313
@@ -26778,7 +26786,7 @@ entities:
       pos: 0.5,-6.5
     - type: Door
       state: Closing
-      secondsUntilStateChange: -68049.61
+      secondsUntilStateChange: -68563.875
     - type: Firelock
       emergencyCloseCooldown: 98892.901109
   - uid: 6435
@@ -45398,18 +45406,6 @@ entities:
       parent: 2
       rot: 1.5707963267948966 rad
       pos: 19.5,23.5
-  - uid: 5952
-    components:
-    - type: Transform
-      parent: 2
-      rot: 1.5707963267948966 rad
-      pos: -19.5,-1.5
-  - uid: 5963
-    components:
-    - type: Transform
-      parent: 2
-      rot: 1.5707963267948966 rad
-      pos: -19.5,-0.5
   - uid: 6010
     components:
     - type: Transform
@@ -47581,6 +47577,15 @@ entities:
     - type: Transform
       parent: 1
       pos: 48.7498,4.2898307
+      anchored: False
+    - type: Physics
+      bodyType: Dynamic
+  - uid: 5952
+    components:
+    - type: Transform
+      parent: 1
+      rot: 3.141592653589793 rad
+      pos: -14.250198,-0.71016943
       anchored: False
     - type: Physics
       bodyType: Dynamic

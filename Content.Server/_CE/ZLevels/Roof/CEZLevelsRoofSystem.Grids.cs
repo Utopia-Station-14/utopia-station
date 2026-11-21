@@ -56,13 +56,13 @@ public sealed partial class CEZLevelsRoofSystem
             {
                 var worldTile = ZLevel.GridTileToWorldTile(gridUid, grid, tileRef.Value.GridIndices);
 
-                Roof.SetRoof((gridUid, grid, roofComp),
-                    tileRef.Value.GridIndices,
-                    _roofMap.Contains(worldTile));
-
                 var tileDef = (ContentTileDefinition)TilDefMan[tileRef.Value.Tile.TypeId];
                 if (!tileDef.Transparent)
                     _roofMap.Add(worldTile);
+
+                Roof.SetRoof((gridUid, grid, roofComp),
+                    tileRef.Value.GridIndices,
+                    _roofMap.Contains(worldTile));
             }
         }
     }
