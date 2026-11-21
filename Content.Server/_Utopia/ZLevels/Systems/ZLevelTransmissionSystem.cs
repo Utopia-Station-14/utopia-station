@@ -29,20 +29,25 @@ public sealed partial class ZLevelTransmissionSystem : EntitySystem
     [Dependency] private ZCableSystem _zCables = default!;
     [Dependency] private SharedMapSystem _map = default!;
 
-    public override void Initialize()
+    [SubscribeLocalEvent]
+    private void OnRefresh(EntityUid uid, ZLevelTransmitterComponent comp, ref ComponentInit args)
     {
-        SubscribeLocalEvent<ZLevelTransmitterComponent, ComponentStartup>(OnRefresh);
-        SubscribeLocalEvent<ZLevelTransmitterComponent, MoveEvent>(OnMove);
-        SubscribeLocalEvent<ZLevelTransmitterComponent, ComponentShutdown>(OnShutdown);
-        SubscribeLocalEvent<ZDisposalPipeComponent, DisposalZTransitionEvent>(OnZDisposalTransition);
+        Refresh(uid, comp);
     }
 
-    private void OnRefresh(EntityUid uid, ZLevelTransmitterComponent comp, ComponentStartup args)
-        => Refresh(uid, comp);
+    [SubscribeLocalEvent]
+    private void OnMapInit(EntityUid uid, ZLevelTransmitterComponent comp, ref MapInitEvent args)
+    {
+        Refresh(uid, comp);
+    }
 
+    [SubscribeLocalEvent]
     private void OnMove(EntityUid uid, ZLevelTransmitterComponent comp, ref MoveEvent args)
-        => Refresh(uid, comp);
+    {
+        Refresh(uid, comp);
+    }
 
+    [SubscribeLocalEvent]
     private void OnShutdown(EntityUid uid, ZLevelTransmitterComponent comp, ComponentShutdown args)
     {
         if (TryComp(uid, out NodeContainerComponent? container))
@@ -69,15 +74,19 @@ public sealed partial class ZLevelTransmissionSystem : EntitySystem
         link.BelowMap = transmitter.AllowDown ? GetNeighborMap(ctx, -1) : null;
 
         if (HasComp<ZPipeComponent>(uid))
-            RebuildPipeLinks(uid, link, transmitter);
-
-        if (HasComp<ZCableComponent>(uid))
+        {
+            RebuildPipeLinks(uid, link);
+        }
+        else if (HasComp<ZCableComponent>(uid))
+        {
             RebuildCableLinks(uid, link, transmitter);
+        }
     }
+
     #endregion
 
     #region Pipes
-    private void RebuildPipeLinks(EntityUid uid, ZLevelEntityLinkComponent link, ZLevelTransmitterComponent transmitter)
+    private void RebuildPipeLinks(EntityUid uid, ZLevelEntityLinkComponent link)
     {
         if (!TryGetAnchoredGrid(uid, out var xform, out var gridUid, out var grid))
             return;
@@ -201,6 +210,8 @@ public sealed partial class ZLevelTransmissionSystem : EntitySystem
     #endregion
 
     #region Disposal
+
+    [SubscribeLocalEvent]
     private void OnZDisposalTransition(Entity<ZDisposalPipeComponent> ent, ref DisposalZTransitionEvent args)
     {
         if (!TryFindZDisposalTarget(ent, ent.Comp.ZDirection, out var target))
@@ -341,24 +352,16 @@ public sealed partial class ZLevelTransmissionSystem : EntitySystem
         return target.Owner;
     }
 
-    private readonly struct ZLevelContext
+    private readonly struct ZLevelContext(
+        TransformComponent transform,
+        EntityUid mapUid,
+        CEZMapComponent zMap,
+        EntityUid zNetwork)
     {
-        public readonly TransformComponent Transform;
-        public readonly EntityUid MapUid;
-        public readonly CEZMapComponent ZMap;
-        public readonly EntityUid ZNetwork;
-
-        public ZLevelContext(
-            TransformComponent transform,
-            EntityUid mapUid,
-            CEZMapComponent zMap,
-            EntityUid zNetwork)
-        {
-            Transform = transform;
-            MapUid = mapUid;
-            ZMap = zMap;
-            ZNetwork = zNetwork;
-        }
+        public readonly TransformComponent Transform = transform;
+        public readonly EntityUid MapUid = mapUid;
+        public readonly CEZMapComponent ZMap = zMap;
+        public readonly EntityUid ZNetwork = zNetwork;
     }
     #endregion
 }

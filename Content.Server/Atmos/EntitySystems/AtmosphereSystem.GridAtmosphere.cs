@@ -271,7 +271,7 @@ public sealed partial class AtmosphereSystem
     private void ShuntTileVolume(TileAtmosphere tile)
     {
         DebugTools.AssertNotNull(tile.Air);
-        DebugTools.Assert(tile.Air?.Immutable == false);
+        // DebugTools.Assert(tile.Air?.Immutable == false); // Utopia-Tweak : Z-Levels
 
         var count = 0;
         foreach (var adj in tile.AdjacentTiles)

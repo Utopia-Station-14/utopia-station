@@ -16,7 +16,7 @@ public sealed partial class CEZLevelsSystem
     [PublicAPI]
     public Entity<CEZGridNetworkComponent> CreateGridNetwork()
     {
-        var ent  = Spawn();
+        var ent = Spawn();
 
         var comp = EnsureComp<CEZGridNetworkComponent>(ent);
         comp.NetworkId = Guid.NewGuid().ToString("N");
@@ -45,7 +45,7 @@ public sealed partial class CEZLevelsSystem
 
         var zGridComp = EnsureComp<CEZGridComponent>(grid);
         zGridComp.NetworkId = gridNetwork.Comp.NetworkId;
-        zGridComp.Network   = gridNetwork.Owner;
+        zGridComp.Network = gridNetwork.Owner;
         Dirty(grid, zGridComp);
 
         var ev = new CEGridAddedIntoZNetworkEvent(gridNetwork);
