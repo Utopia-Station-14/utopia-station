@@ -277,8 +277,8 @@ Entries:
     id: 44
   - author: M&B
     changes:
-      - {message: 'Самый важный трек для лобби, который мог существовать для Утопия Стейшн',
-        type: Add}
+      - {message: 'Самый важный трек для лобби, который мог существовать для Утопия
+          Стейшн', type: Add}
     time: '2026-08-24T12:23:44Z'
     id: 45
   - author: KashRas2
@@ -316,3 +316,93 @@ Entries:
           Содержит себе готовое расписание на смену длинной 2 часа и 15 минут., type: Add}
     time: '2026-10-13T14:25:23Z'
     id: 50
+  - author: (ваш сикей/никнейм в гитхабе)
+    changes:
+      - {message: Добавлено веселье!, type: Add}
+      - {message: Убрано веселье!, type: Remove}
+      - {message: Изменено веселье!, type: Tweak}
+      - {message: Исправлено веселье!, type: Fix}
+    time: '2026-08-15T13:07:13Z'
+    id: 51
+  - author: M&B
+    changes:
+      - {message: 'Самый важный трек для лобби, который мог существовать для УтопияСтейшн',
+        type: Add}
+    time: '2026-08-24T12:23:44Z'
+    id: 52
+  - author: Radiation1and1B
+    changes:
+      - {message: Была изменена система гридкаста радиации!, type: Tweak}
+      - {message: 'Теперь у излучения есть два типа: Бета и Гамма', type: Add}
+    time: '2026-10-17T19:54:37Z'
+    id: 53
+  - author: M1and1B
+    changes:
+      - {message: Газ теперь корректно перемещается между гридами., type: Fix}
+      - {message: У газов появился новый параметр - плотность., type: Tweak}
+    time: '2026-10-18T13:29:53Z'
+    id: 54
+  - author: Colorful M&B
+    changes:
+      - {message: В игру добавлены цветные УИ!, type: Add}
+    time: '2026-10-19T10:29:17Z'
+    id: 55
+  - author: KashRas2
+    changes:
+      - {message: Правила сервера перенесены на... сервер. Как просто всё просто.,
+        type: Add}
+      - {message: Команда fuckrules теперь доступна только пользователям с уровнем
+          доступа ADMIN, type: Tweak}
+    time: '2026-11-04T10:35:33Z'
+    id: 56
+  - author: KashRas2, M1and1B
+    changes:
+      - {message: 'Z-Уровни теперь работают с сило, радиацией, жидкостями и не только.',
+        type: Tweak}
+    time: '2026-11-07T19:36:17Z'
+    id: 57
+  - author: Vepayn
+    changes:
+      - {message: Агосту добавлены слоты пояса и кармашков. Агост появляется с поясом
+          си в соответствующем слоте., type: Add}
+    time: '2026-11-13T21:56:23Z'
+    id: 58
+  - author: Vepayn
+    changes:
+      - {message: добавлены варежки и шерстяные волокна для криминалистического сканера,
+        type: Add}
+    time: '2026-11-15T01:02:26Z'
+    id: 59
+  - author: M1and1B
+    changes:
+      - {message: Добавлена теплопередача!, type: Add}
+      - {message: Теперь горение трития будет излучать радиоактивное излучение!, type: Add}
+      - {message: Добавлены Т-Образные и Х-Образные клапана., type: Add}
+      - {message: 'Переписан космо-ветер, добавлено визуальное отображение.', type: Tweak}
+      - {message: Исправлены некоторые вещи связанные с Z-Уровнями., type: Fix}
+    time: '2026-11-15T01:30:56Z'
+    id: 60
+  - author: M1and1B
+    changes:
+      - {message: Заменена часть спрайтов в игре., type: Tweak}
+      - {message: Выдал компонент перемещения по З-Уровням для сущностей., type: Fix}
+    time: '2026-11-15T13:38:32Z'
+    id: 61
+  - author: Иван, Индия и остальной мапперский отдел
+    changes:
+      - {message: Soap Station, type: Add}
+    time: '2026-11-15T13:45:47Z'
+    id: 62
+  - author: KashRas2
+    changes:
+      - {message: 'Апстрим от ветки stable, датируемый 16 ноября 2026 года', type: Add}
+    time: '2026-11-18T18:02:17Z'
+    id: 63
+  - author: KashRas2 и мапперский отдел
+    changes:
+      - {message: Обновлен Soap Station с исправлением многих недочетов. Добавлен
+          суд и каморка юристов. Обновлено ядро ИИ., type: Tweak}
+      - {message: Удалена наша система ступенек. Теперь лестницы работают так как
+          надо., type: Remove}
+    time: '2026-11-21T23:53:08Z'
+    id: 64
