@@ -1,25 +1,25 @@
 ﻿﻿<Document>
   # Уровни применения силы
   <Table Columns="3">
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Уровень</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Основание</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Средства и предел</Box></ColorBox>
+    <ColorBox><Box Margin="2">Уровень</Box></ColorBox>
+    <ColorBox><Box Margin="2">Основание</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" Margin="2">Средства и предел</Box></ColorBox>
 
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Вербальный</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Контакт и возможность добровольного исполнения</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Обращение, понятное требование, предупреждение, свисток</Box></ColorBox>
+    <ColorBox><Box Margin="2">Вербальный</Box></ColorBox>
+    <ColorBox><Box Margin="2">Контакт и возможность добровольного исполнения</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" Margin="2">Обращение, понятное требование, предупреждение, свисток</Box></ColorBox>
 
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Ограничение передвижения</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Законное задержание не исполняется; требуется пресечь побег, захват или опасное действие</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Захват, наручники, вспышка, станнер, шоковая дубинка в режиме обездвиживания. Светошумовая граната — при необходимости с учётом окружающих</Box></ColorBox>
+    <ColorBox><Box Margin="2">Ограничение передвижения</Box></ColorBox>
+    <ColorBox><Box Margin="2">Законное задержание не исполняется; требуется пресечь побег, захват или опасное действие</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" Margin="2">Захват, наручники, вспышка, станнер, шоковая дубинка в режиме обездвиживания. Светошумовая граната — при необходимости с учётом окружающих</Box></ColorBox>
 
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Нелетальный</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Активное физическое сопротивление или нападение, которое нельзя безопасно пресечь ограничением передвижения</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Соразмерная физическая сила, предназначенные для обездвиживания боеприпасы, слезоточивые и травматические средства с учётом риска. Цель — прекратить сопротивление</Box></ColorBox>
+    <ColorBox><Box Margin="2">Нелетальный</Box></ColorBox>
+    <ColorBox><Box Margin="2">Активное физическое сопротивление или нападение, которое нельзя безопасно пресечь ограничением передвижения</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" Margin="2">Соразмерная физическая сила, предназначенные для обездвиживания боеприпасы, слезоточивые и травматические средства с учётом риска. Цель — прекратить сопротивление</Box></ColorBox>
 
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Летальный</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Непосредственная угроза смерти или серьёзного увечья либо основания гамма-кода, указанные ниже</Box></ColorBox>
-    <ColorBox><Box HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="2">Летальное оружие и иные средства в необходимом объёме. Боевые гранаты — только когда оправдана опасность их действия по площади</Box></ColorBox>
+    <ColorBox><Box Margin="2">Летальный</Box></ColorBox>
+    <ColorBox><Box Margin="2">Непосредственная угроза смерти или серьёзного увечья либо основания гамма-кода, указанные ниже</Box></ColorBox>
+    <ColorBox><Box HorizontalAlignment="Left" Margin="2">Летальное оружие и иные средства в необходимом объёме. Боевые гранаты — только когда оправдана опасность их действия по площади</Box></ColorBox>
   </Table>
 
   ## Правила применения
