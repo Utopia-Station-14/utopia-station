@@ -32,7 +32,7 @@
   name: guide-entry-rules-space-law
   text: "/ServerInfo/Guidebook/ServerRules/SpaceLaw/SpaceLaw.xml"
 # UTOPIA-TWEAK
-  rootEntry: false
+  ruleEntry: false
 # UTOPIA-TWEAK
   children:
   - SpaceLawCrimeList
