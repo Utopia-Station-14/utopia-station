@@ -5,6 +5,8 @@
   components:
   - type: Sprite
     sprite: Structures/Windows/window-plasma.rsi
+    layers:
+    - state: wall-0
   - type: Icon
     sprite: Structures/Windows/window-plasma.rsi
     state: full
@@ -124,15 +126,16 @@
   components:
   - type: Sprite
     drawdepth: WallTops
-    sprite: Structures/Windows/window-diagonal-plasma.rsi
-    state: state0
+    layers:
+      - sprite: Structures/Windows/window-diagonal-plasma.rsi
+        state: wall-0
   - type: Tag
     tags:
     - Diagonal
     - Window
   - type: Icon
     sprite: Structures/Windows/window-diagonal-plasma.rsi
-    state: state0
+    state: wall-0
   - type: Fixtures
     fixtures:
       fix1:

@@ -9,11 +9,24 @@ public sealed partial class WallConnectSystem : EntitySystem
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
 
+    private static readonly Direction[] Directions =
+    {
+        Direction.North,
+        Direction.East,
+        Direction.South,
+        Direction.West,
+        Direction.NorthEast,
+        Direction.SouthEast,
+        Direction.SouthWest,
+        Direction.NorthWest,
+    };
+
     public override void Initialize()
     {
         SubscribeLocalEvent<WallConnectComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<WallConnectComponent, EntityTerminatingEvent>(OnTerminating);
         SubscribeLocalEvent<WallConnectComponent, MoveEvent>(OnMove);
+        SubscribeLocalEvent<WallConnectComponent, AnchorStateChangedEvent>(OnAnchorChanged);
     }
 
     private void OnStartup(EntityUid uid, WallConnectComponent component, ComponentStartup args)
@@ -32,17 +45,15 @@ public sealed partial class WallConnectSystem : EntitySystem
         UpdateTile(uid);
         UpdateNeighbours(uid);
     }
-    private static readonly Direction[] Directions =
+
+    private void OnAnchorChanged(EntityUid uid, WallConnectComponent component, ref AnchorStateChangedEvent args)
     {
-        Direction.North,
-        Direction.East,
-        Direction.South,
-        Direction.West,
-        Direction.NorthEast,
-        Direction.SouthEast,
-        Direction.SouthWest,
-        Direction.NorthWest,
-    };
+        if (args.Detaching)
+            return;
+
+        UpdateTile(uid);
+        UpdateNeighbours(uid, ignore: args.Anchored ? null : uid);
+    }
 
     private void UpdateNeighbours(EntityUid uid, EntityUid? ignore = null)
     {
@@ -58,7 +69,7 @@ public sealed partial class WallConnectSystem : EntitySystem
         foreach (var dir in Directions)
         {
             var pos = tile.Offset(dir);
-            var enumerator =_map.GetAnchoredEntitiesEnumerator(gridUid, grid, pos);
+            var enumerator = _map.GetAnchoredEntitiesEnumerator(gridUid, grid, pos);
 
             while (enumerator.MoveNext(out var other))
             {
@@ -76,15 +87,19 @@ public sealed partial class WallConnectSystem : EntitySystem
         if (!TryComp(uid, out WallConnectComponent? connect))
             return;
 
-        var xform = Transform(uid);
+        if (!connect.UpdateSelf)
+            return;
 
+        var xform = Transform(uid);
         if (!xform.Anchored)
             return;
 
-        if (!TryComp<MapGridComponent>(xform.GridUid, out var grid))
+        if (xform.GridUid is not { } gridUid)
             return;
 
-        var gridUid = xform.GridUid!.Value;
+        if (!TryComp<MapGridComponent>(gridUid, out var grid))
+            return;
+
         var tile = _map.TileIndicesFor(gridUid, grid, xform.Coordinates);
 
         var n = HasConnection(connect, gridUid, grid, tile.Offset(Direction.North), ignore);
@@ -97,18 +112,10 @@ public sealed partial class WallConnectSystem : EntitySystem
         var sw = HasConnection(connect, gridUid, grid, tile.Offset(Direction.SouthWest), ignore);
         var nw = HasConnection(connect, gridUid, grid, tile.Offset(Direction.NorthWest), ignore);
 
-        // Don't allow a diagonal connection without both adjacent orthogonal sides
-        if (!(n && e))
-            ne = false;
-
-        if (!(s && e))
-            se = false;
-
-        if (!(s && w))
-            sw = false;
-
-        if (!(n && w))
-            nw = false;
+        if (!(n && e)) ne = false;
+        if (!(s && e)) se = false;
+        if (!(s && w)) sw = false;
+        if (!(n && w)) nw = false;
 
         var mask = CalculateMask(n, e, s, w, ne, se, sw, nw);
 
@@ -134,21 +141,26 @@ public sealed partial class WallConnectSystem : EntitySystem
         var result = 0;
 
         result |= n;
-        result |= w != 0 ? 2 : 0;   // E <- W
+        result |= w != 0 ? 2 : 0;    // E <- W
         result |= s;
-        result |= e != 0 ? 8 : 0;   // W <- E
+        result |= e != 0 ? 8 : 0;    // W <- E
 
-        result |= nw != 0 ? 16 : 0; // NE <- NW
-        result |= sw != 0 ? 32 : 0; // SE <- SW
-        result |= se != 0 ? 64 : 0; // SW <- SE
+        result |= nw != 0 ? 16 : 0;  // NE <- NW
+        result |= sw != 0 ? 32 : 0;  // SE <- SW
+        result |= se != 0 ? 64 : 0;  // SW <- SE
         result |= ne != 0 ? 128 : 0; // NW <- NE
 
         return result;
     }
 
-    private bool HasConnection(WallConnectComponent self, EntityUid gridUid, MapGridComponent grid, Vector2i tile, EntityUid? ignore = null)
+    private bool HasConnection(
+        WallConnectComponent self,
+        EntityUid gridUid,
+        MapGridComponent grid,
+        Vector2i tile,
+        EntityUid? ignore = null)
     {
-        var enumerator =_map.GetAnchoredEntitiesEnumerator(gridUid, grid, tile);
+        var enumerator = _map.GetAnchoredEntitiesEnumerator(gridUid, grid, tile);
         while (enumerator.MoveNext(out var uid))
         {
             if (uid == ignore)
@@ -157,10 +169,11 @@ public sealed partial class WallConnectSystem : EntitySystem
             if (!TryComp(uid, out WallConnectComponent? other))
                 continue;
 
-            if (other.ConnectKey != self.ConnectKey)
-                continue;
-
-            return true;
+            foreach (var key in other.ConnectKey)
+            {
+                if (self.ConnectKey.Contains(key))
+                    return true;
+            }
         }
 
         return false;

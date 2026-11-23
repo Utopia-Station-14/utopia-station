@@ -5,6 +5,8 @@
   components:
   - type: Sprite
     sprite: Structures/Windows/window-base-reinf.rsi
+    layers:
+    - state: wall-0
   - type: Icon
     sprite: Structures/Windows/window-base-reinf.rsi
     state: full
@@ -127,15 +129,16 @@
     - Window
   components:
   - type: Sprite
-    sprite: Structures/Windows/window-base-diagonal-reinf.rsi
-    state: state0
+    layers:
+      - sprite: Structures/Windows/window-base-diagonal-reinf.rsi
+        state: wall-0
   - type: Tag
     tags:
     - Diagonal
     - Window
   - type: Icon
     sprite: Structures/Windows/window-base-diagonal-reinf.rsi
-    state: state0
+    state: wall-0
   - type: Fixtures
     fixtures:
       fix1:

@@ -201,6 +201,8 @@
     - Networking
   - type: StructureAligner
   - type: StructureAlignerPylon
+  - type: WallConnect
+    selfUpdate: false
   placement:
     mode: SnapgridCenter
 

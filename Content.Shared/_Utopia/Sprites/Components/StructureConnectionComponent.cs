@@ -7,10 +7,16 @@ namespace Content.Shared._Utopia.Walls;
 public sealed partial class WallConnectComponent : Component
 {
     [DataField]
+    public bool UpdateSelf = true;
+
+    [DataField]
     public string StatePrefix = "wall-";
 
     [DataField]
-    public string ConnectKey = "wall";
+    public string Start = "wall-";
+
+    [DataField]
+    public List<string> ConnectKey = new() { "wall" };
 }
 
 [Serializable, NetSerializable]

@@ -5,6 +5,8 @@
   components:
   - type: Sprite
     sprite: Structures/Windows/window-uranium.rsi
+    layers:
+    - state: wall-0
   - type: Icon
     sprite: Structures/Windows/window-uranium.rsi
     state: full
@@ -123,15 +125,16 @@
   components:
   - type: Sprite
     drawdepth: WallTops
-    sprite: Structures/Windows/window-diagonal-uranium.rsi
-    state: state0
+    layers:
+      - sprite: Structures/Windows/window-diagonal-uranium.rsi
+        state: wall-0
   - type: Tag
     tags:
     - Diagonal
     - Window
   - type: Icon
     sprite: Structures/Windows/window-diagonal-uranium.rsi
-    state: state0
+    state: wall-0
   - type: Fixtures
     fixtures:
       fix1:
