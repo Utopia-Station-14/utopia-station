@@ -6,10 +6,7 @@
   - Forensics
   - Defusal
   - CriminalRecords
-# UTOPIA-TWEAK
-#  - SpaceLaw
   - UtopiaSpaceLaw
-# UTOPIA-TWEAK
 
 - type: guideEntry
   id: Forensics
@@ -25,19 +22,3 @@
   id: CriminalRecords
   name: guide-entry-criminal-records
   text: "/ServerInfo/Guidebook/Security/CriminalRecords.xml"
-
-
-- type: guideEntry
-  id: SpaceLaw
-  name: guide-entry-rules-space-law
-  text: "/ServerInfo/Guidebook/ServerRules/SpaceLaw/SpaceLaw.xml"
-# UTOPIA-TWEAK
-  ruleEntry: false
-# UTOPIA-TWEAK
-  children:
-  - SpaceLawCrimeList
-
-- type: guideEntry
-  id: SpaceLawCrimeList
-  name: guide-entry-rules-sl-crime-list
-  text: "/ServerInfo/Guidebook/ServerRules/SpaceLaw/SLCrimeList.xml"

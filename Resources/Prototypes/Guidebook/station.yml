@@ -6,6 +6,7 @@
   children:
   - Jobs
   - Antagonists
+  - SpaceLaw
   - Survival
   - Glossary
 
@@ -18,3 +19,18 @@
   id: Survival
   name: guide-entry-survival
   text: "/ServerInfo/Guidebook/Survival.xml"
+
+- type: guideEntry
+  id: SpaceLaw
+  name: guide-entry-rules-space-law
+  text: "/ServerInfo/Guidebook/ServerRules/SpaceLaw/SpaceLaw.xml"
+# Utopia-Tweak: Guidebook
+  ruleEntry: false
+# Utopia-Tweak: Guidebook
+  children:
+  - SpaceLawCrimeList
+
+- type: guideEntry
+  id: SpaceLawCrimeList
+  name: guide-entry-rules-sl-crime-list
+  text: "/ServerInfo/Guidebook/ServerRules/SpaceLaw/SLCrimeList.xml"

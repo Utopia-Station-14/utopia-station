@@ -363,10 +363,9 @@
       color: "#f7d61a"
   - type: GuideHelp
     guides:
-# UTOPIA-TWEAK
-#    - SpaceLaw
+# Utopia-Tweak: Guidebook
     - UtopiaSpaceLaw
-# UTOPIA-TWEAK
+# Utopia-Tweak: Guidebook
 
 - type: entity
   parent: BookBase
