@@ -12,7 +12,8 @@ utopia-guide-entry-spacelaw-glossary = Глоссарий
 utopia-guide-entry-spacelaw-contraband = Контрабанда
 
 utopia-guide-entry-procedures = Процедуры
-utopia-guide-entry-procedures-search = Обыск и изъятия
+utopia-guide-entry-procedures-search = Обыск
 utopia-guide-entry-procedures-process = Следственные процедуры
+utopia-guide-entry-procedures-conf-circ = Изъятие и оборот
 utopia-guide-entry-procedures-force = Уровни применения силы
 utopia-guide-entry-procedures-execution = Лишение жизни

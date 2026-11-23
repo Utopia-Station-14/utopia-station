@@ -6,6 +6,7 @@
   children:
   - UtopiaPSearch
   - UtopiaPProcess
+  - UtopiaPConfCirc
   - UtopiaPForce
   - UtopiaPExecution
 
@@ -22,13 +23,19 @@
   text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPProcess.xml"
 
 - type: guideEntry
+  id: UtopiaPConfCirc
+  name: utopia-guide-entry-procedures-conf-circ
+  priority: 3
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPConfCirc.xml"
+
+- type: guideEntry
   id: UtopiaPForce
   name: utopia-guide-entry-procedures-force
-  priority: 3
+  priority: 4
   text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPForce.xml"
 
 - type: guideEntry
   id: UtopiaPExecution
   name: utopia-guide-entry-procedures-execution
-  priority: 4
+  priority: 5
   text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPExecution.xml"
