@@ -1,4 +1,46 @@
 ﻿﻿<Document>
+
+  # Основные понятия
+  В таблицах указано, к какой статье относится владение тем или иным предметом и/или структурой.
+
+  Если в таблицах статей Х04 не указан тот или иной предмет, значит владение им не относится к этим статьям. Это не отменяет, что владение этим предметом может относиться к иным статьям.
+
+  # Опознание
+  <Table Columns="3">
+    <ColorBox><Box Margin="2">Объект проверки</Box></ColorBox>
+    <ColorBox><Box Margin="2">Что проверяется</Box></ColorBox>
+    <ColorBox><Box Margin="2">Кем проверяется</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Символика</Box></ColorBox>
+    <ColorBox><Box Margin="2">Знак и его принадлежность. Расцветка сама по себе не аргумент.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Сотрудник СБ.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Переделанный предмет</Box></ColorBox>
+    <ColorBox><Box Margin="2">Отличие от штатной версии.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Сотрудник СБ — для предполагаемого оружия; инженер — для инструмента; учёный — в остальных случаях.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Маскировка, идентификация, связь</Box></ColorBox>
+    <ColorBox><Box Margin="2">Наличие конкретной функции и несанкционированного доступа.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Сотрудники РНД.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Вещество</Box></ColorBox>
+    <ColorBox><Box Margin="2">Состав проверяется через таблицу контрабанды веществ, а потом через список наркотических веществ и ядов.
+Если вещества нет в таблицах, оно не регулируется законом.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Химик, бригмедик, главный врач, ОСЩ.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Имплант</Box></ColorBox>
+    <ColorBox><Box Margin="2">Тип, разрешение, функции, добровольность установки и использования</Box></ColorBox>
+    <ColorBox><Box Margin="2">Боевые импланты — бригмедик, ГВ, ОСЩ; остальные — учёный РНД.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Магический предмет</Box></ColorBox>
+    <ColorBox><Box Margin="2">Подтверждённый необычный эффект и его возможности.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Священник, учёный.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Взрывное устройство</Box></ColorBox>
+    <ColorBox><Box Margin="2">Признаки устройства и безопасное обезвреживание, без демонстрационного подрыва.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Сотрудник СБ.</Box></ColorBox>
+  </Table>
+
   # Пропаганда
   Всё, что есть в этой таблице, карается по статье 104.
   <Table Columns="4">
