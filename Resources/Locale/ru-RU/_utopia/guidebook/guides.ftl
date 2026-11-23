@@ -8,6 +8,7 @@ utopia-guide-entry-rule4 = Правило 4
 utopia-guide-entry-spacelaw = Корпоративный Закон
 utopia-guide-entry-spacelaw-crimelist = Перечень статей
 utopia-guide-entry-spacelaw-rights = Перечень прав
+utopia-guide-entry-spacelaw-glossary = Глоссарий
 utopia-guide-entry-spacelaw-contraband = Контрабанда
 
 utopia-guide-entry-procedures = Процедуры

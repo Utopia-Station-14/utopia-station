@@ -7,6 +7,7 @@
   - UtopiaSLCrimeList
   - UtopiaSLRights
   - UtopiaSLContraband
+  - UtopiaSLGlossary
   - UtopiaProcedures
 
 - type: guideEntry
@@ -22,7 +23,13 @@
   text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaSLRights.xml"
 
 - type: guideEntry
+  id: UtopiaSLGlossary
+  name: utopia-guide-entry-spacelaw-glossary
+  priority: 3
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaSLGlossary.xml"
+
+- type: guideEntry
   id: UtopiaSLContraband
   name: utopia-guide-entry-spacelaw-contraband
-  priority: 3
+  priority: 4
   text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaSLContraband.xml"
