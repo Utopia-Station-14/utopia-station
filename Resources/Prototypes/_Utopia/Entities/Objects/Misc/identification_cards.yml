@@ -1,0 +1,17 @@
+- type: entity
+  parent: IDCardStandard
+  id: UtopiaGeneticistIDCard
+  name: geneticist ID card
+  components:
+  - type: Sprite
+    layers:
+    - state: default
+    - state: stripe_top
+      color: &color-medical-top "#68aed6"
+    - state: stripe_bottom
+      color: &color-medical-bottom "#325f7a"
+    - sprite: &icon-rsi /Textures/Interface/Misc/job_icons.rsi
+      offset: &icon-offset -0.09375, 0.0625
+      state: Geneticist
+  - type: PresetIdCard
+    job: Geneticist

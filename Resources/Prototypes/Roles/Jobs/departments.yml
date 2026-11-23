@@ -68,6 +68,7 @@
   - MedicalIntern
   - Psychologist
   - Paramedic
+  - Geneticist # Utopia-Tweak : Roles
 
 - type: department
   id: Science
@@ -78,6 +79,7 @@
   - ResearchDirector
   - Scientist
   - ResearchAssistant
+  - Geneticist # Utopia-Tweak : Roles
 
 - type: department
   id: Security

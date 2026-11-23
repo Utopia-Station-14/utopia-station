@@ -1,0 +1,7 @@
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconGeneticist
+  icon:
+    sprite: &icon-rsi
+    state: Geneticist
+  jobName: job-name-geneticist

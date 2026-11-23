@@ -1,0 +1,35 @@
+- type: job
+  id: Geneticist
+  name: job-name-geneticist
+  description: job-description-geneticist
+  playTimeTracker: JobGeneticist
+  requirements:
+    - !type:DepartmentTimeRequirement
+      department: Medical
+      time: 5h
+    - !type:DepartmentTimeRequirement
+      department: Research
+      time: 10h
+  startingGear: GeneticistGear
+  icon: "JobIconGeneticist"
+  supervisors: job-supervisors-rd
+  guides: [ Chemist ]
+  access:
+  - Medical
+  - Research
+  - Maintenance
+
+- type: startingGear
+  id: GeneticistGear
+  equipment:
+    id: UtopiaGeneticistPDA
+    ears: ClothingHeadsetMedicalScience
+
+- type: chameleonOutfit
+  id: GeneticistChameleonOutfit
+  job: Geneticist
+  equipment:
+    mask: ClothingMaskSterile
+    neck: ClothingNeckStethoscope
+    outerClothing: GeneticistLabCoat
+    gloves: ClothingHandsGlovesLatex
