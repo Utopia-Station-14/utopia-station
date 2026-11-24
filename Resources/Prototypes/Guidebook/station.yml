@@ -19,6 +19,7 @@
   id: SpaceLaw
   name: guide-entry-rules-space-law
   text: "/ServerInfo/Guidebook/ServerRules/SpaceLaw/SpaceLaw.xml"
+  ruleEntry: false # Utopia-Tweak: Guidebook
   children:
   - SpaceLawCrimeList
 

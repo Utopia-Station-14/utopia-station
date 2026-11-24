@@ -1,4 +1,4 @@
-- type: guideEntry
+﻿- type: guideEntry
   id: Security
   name: guide-entry-security
   text: "/ServerInfo/Guidebook/Security/Security.xml"
@@ -6,6 +6,7 @@
   - Forensics
   - Defusal
   - CriminalRecords
+  - UtopiaSpaceLaw # Utopia-Tweak: Guidebook
 
 - type: guideEntry
   id: Forensics

@@ -1,0 +1,752 @@
+﻿﻿<Document>
+
+  # Основные понятия
+  В таблицах указано, к какой статье относится владение тем или иным предметом и/или веществом и/или структурой.
+
+  Если в таблицах статей Х04 не указан тот или иной предмет, значит владение им не относится к этим статьям. Это не отменяет, что владение этим предметом может относиться к иным статьям.
+
+  # Опознание
+  <Table Columns="3">
+    <ColorBox><Box Margin="2">Объект проверки</Box></ColorBox>
+    <ColorBox><Box Margin="2">Что проверяется</Box></ColorBox>
+    <ColorBox><Box Margin="2">Кем проверяется</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Символика</Box></ColorBox>
+    <ColorBox><Box Margin="2">Знак и его принадлежность. Расцветка сама по себе не аргумент.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Сотрудник СБ.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Переделанный предмет</Box></ColorBox>
+    <ColorBox><Box Margin="2">Отличие от штатной версии.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Сотрудник СБ — для предполагаемого оружия; инженер — для инструмента; учёный — в остальных случаях.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Маскировка, идентификация, связь</Box></ColorBox>
+    <ColorBox><Box Margin="2">Наличие конкретной функции и несанкционированного доступа.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Сотрудники РНД.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Вещество</Box></ColorBox>
+    <ColorBox><Box Margin="2">Состав проверяется через таблицу контрабанды веществ, а потом через список наркотических веществ и ядов.
+Если вещества нет в таблицах, оно не регулируется законом.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Химик, бригмедик, главный врач, ОСЩ.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Имплант</Box></ColorBox>
+    <ColorBox><Box Margin="2">Тип, разрешение, функции, добровольность установки и использования</Box></ColorBox>
+    <ColorBox><Box Margin="2">Боевые импланты — бригмедик, ГВ, ОСЩ; остальные — учёный РНД.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Магический предмет</Box></ColorBox>
+    <ColorBox><Box Margin="2">Подтверждённый необычный эффект и его возможности.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Священник, учёный.</Box></ColorBox>
+
+    <ColorBox><Box Margin="2">Взрывное устройство</Box></ColorBox>
+    <ColorBox><Box Margin="2">Признаки устройства и безопасное обезвреживание, без демонстрационного подрыва.</Box></ColorBox>
+    <ColorBox><Box Margin="2">Сотрудник СБ.</Box></ColorBox>
+  </Table>
+
+  # Пропаганда
+  Всё, что есть в этой таблице, карается по статье 104.
+  <Table Columns="4">
+    <ColorBox><Box Margin="2">Изображение</Box></ColorBox>
+    <ColorBox><Box Margin="2">Наименование</Box></ColorBox>
+    <ColorBox><Box Margin="2">Функция или условие</Box></ColorBox>
+    <ColorBox><Box Margin="2">Проверка или условие</Box></ColorBox>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Плащ Синдиката/ядерных оперативников</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Плащ с символикой Синдиката или оперативников, без самостоятельного запрещённого боевого механизма.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Пинопинтер Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Маркированный пинпоинтер без установленной функции обхода ограничений; универсальный вариант оценивается отдельно.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Знамя Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Знамя Синдиката.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Флаги Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Флаг Синдиката.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Одеяло Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Одеяло с символикой Синдиката.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Печать Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Печать с символикой Синдиката; подделка документов — отдельное действие.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Ящик Синдиката (пустой)</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Пустой ящик с явной символикой Синдиката.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">КПК Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">КПК с логотипом Синдиката без установленного аплинка..</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Подозрительное мыло</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Обычное мыло с подтверждённой символикой; без символики или скрытой функции основания по статьям оборота запрещённых предметов нет.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Значок Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Значок Синдиката</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Бронированный тренч Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Бронированный тренч с символикой.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Бронированная зимняя куртка Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Бронированная зимняя куртка с символикой.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Переносной дефибриллятор Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Маркированный медицинский прибор без установленной скрытой боевой функции.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Воздушный шарик Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Воздушный шарик с символикой Синдиката.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Баночка нюка-кола</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Ёмкость с символикой; напиток с гиперзином оценивается отдельно по 204.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Гарнитура/Полноразмерная гарнитура Синдиката (без ключа шифрования Синдиката)</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Маркированная гарнитура без ключа закрытой связи Синдиката.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Коробка метательных ножей Синдиката (без ножей)</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Упаковка с символикой; метательные ножи внутри — отдельные предметы.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Набор обманок</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Макеты с образами врагов корпорации.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Кроваво-красный телефон</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Телефон с явными знаками и изображением шлема оперативника; скрытые функции не установлены.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Ручка CyberSun</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Ручка со скрытым острым наконечником, изменённым ластиком и инструментальной функцией.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Сегвей Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Сегвей с нештатными изменениями.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Визитка</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Боевая метательная карточка, маскирующаяся под обычную визитку.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Персональный ИИ синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Персональный ИИ со встроенным каналом Синдиката; наличие канала проверяется отдельно.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Фальшивый диск ядерной авторизации</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Поддельный диск ядерной авторизации.</Box>
+    <Box Margin="2">Не нуждается</Box>
+  </Table>
+
+
+  # Регулируемые вещества
+  Владение любым веществом, входящим в реестр регулируемых вещества, карается по статье 204.
+  <Table Columns="4">
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Наименование</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Функция или условие</Box>
+    <Box Margin="2">Проверка или условие</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Ноктюрин (вещество)</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Ноктюрин: снотворное, подавляющее бодрствование и подвижность.</Box>
+    <Box Margin="2">Экспертом / статья о Веществах</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Стимулятор (вещество)</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Гиперзин: повышает скорость и устойчивость к оглушению</Box>
+    <Box Margin="2">Экспертом / статья о Веществах</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Содержимое набора барных токсинов</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Набор ядов: токсин немоты, аматоксин, ликоксид, лексорин; состав подтверждается анализом.</Box>
+    <Box Margin="2">Экспертом / статья о Веществах</Box>
+  </Table>
+
+  # Модифицированные предметы
+  Всё, что есть в этой таблице, карается по статье 304.
+  <Table Columns="4">
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Наименование</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Функция или условие</Box>
+    <Box Margin="2">Проверка или условие</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Перчатки вора</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Перчатки с модификацией для незаметного снятия вещей с людей.</Box>
+    <Box Margin="2">Особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Гатфрукт (плод)</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Плод, функционально являющийся замаскированным оружием; семена и растение требуют отдельной оценки.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Игрушечный револьвер (боевой)</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Боевой револьвер в корпусе игрушки; боевое устройство должно быть установлено осмотром.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Визор Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Нештатный визор с дополнительными функциями; одна окраска не подтверждает модификацию.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Продвинутые прыжковые ботинки</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Усовершенствованные прыжковые ботинки; запрет относится к нештатной версии, а не любому средству передвижения.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Гиподротик</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Дротик со скрытым резервуаром для введения реагента при попадании.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Визор ниндзя</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Нештатный визор ниндзя; конкретные режимы должны быть подтверждены.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Ботинки ниндзя</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Нештатные ботинки с магнитной подошвой.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Свинцовые боксерские перчатки</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Боксёрские перчатки со свинцовым усилением, скрывающие повышенную травматичность.</Box>
+    <Box Margin="2">Особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Кроваво-красные улучшенные магнитные ботинки/сапоги Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Улучшенные магнитные ботинки с дополнительными средствами движения; штатные аналоги не запрещены.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Багето-меч</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Клинковое оружие, замаскированное под багет.</Box>
+    <Box Margin="2">Особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Метательный круассан</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Метательное оружие, замаскированное под круассан.</Box>
+    <Box Margin="2">Особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Трость-дробовик</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Дробовик, скрытый в трости.</Box>
+    <Box Margin="2">Особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Трость-клинок</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Клинок, скрытый внутри трости.</Box>
+    <Box Margin="2">Особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Мыло Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Скользкие фрагменты; отличается от обычного подозрительного мыла.</Box>
+    <Box Margin="2">Особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Модифицированная ID-карта</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Самодельная модифицированная карта из инструментов; возможности необходимо установить.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Самодельная голосовая маска</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Самодельная маска с электроникой для изменения голоса.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Рок-гитара</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Топор, замаскированный под рок-гитару; обычные музыкальные инструменты исключены.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Перчатки партизана</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Перчатки с усилением удержания цели; вики и описание репозитория расходятся в механике.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Дефибриллятор Interdyne</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Модифицированный дефибриллятор Interdyne для работы одной рукой с функцией самообороны; обычный маркированный прибор — 103.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Маяк Вора</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Маяк для перемещения окружающего имущества в воровское хранилище по окончании смены.</Box>
+    <Box Margin="2">Экспертом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Челюсти жизни Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Нештатные челюсти жизни, способные открывать защищённые и заболтированные двери.</Box>
+    <Box Margin="2">Особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Ручка-энергокинжал</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Энергетический кинжал, замаскированный под ручку.</Box>
+    <Box Margin="2">Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Взрывающаяся ручка</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Взрывное устройство, замаскированное под ручку.</Box>
+    <Box Margin="2">Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Обезвоженный карп</Box>
+    <Box HorizontalAlignment="Left" Margin="2">После контакта с водой превращается в настоящего космического карпа; замаскированный носитель живого существа.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Энергетический арбалет</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Нештатный энергетический арбалет с воздействием на подвижность цели; точный эффект зависит от варианта.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Нескользящая обувь</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Нештатная нескользящая обувь с функцией хамелеона. Обычная рабочая нескользящая обувь не входит в эту строку.</Box>
+    <Box Margin="2">особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Глушитель связи</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Устройство подавления радиосвязи, предназначенное для нарушения координации станции.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">СиндиКот</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Кот, снабжённый взрывным устройством; наличие обычного кота не образует нарушение.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Кроваво-красный сдерживающий голопроектор</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Специализированный боевой сдерживающий голопроектор Синдиката; конкретный режим требует проверки.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Подозрительный пожарный топор</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Пожарный топор с установленным энергетическим зажигательным механизмом.</Box>
+    <Box Margin="2">Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Штурмовой щит</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Штурмовой щит с лезвиями; защитная и ударная функции совмещены.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Взломщик доступа</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Нештатное устройство обхода контроля доступа; отдельно от обычного конфигуратора.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Одежда хамелеон</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Одежда, способная менять внешний вид по технологии хамелеона.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Ящик-невидимка</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Ящик с технологией оптической маскировки.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Чип улучшения револьвера М.А.Р.Т.Ы.Х</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Нештатный чип изменения функций М.А.Р.Т.Ы.Х; конкретное изменение подтверждается экспертизой.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Костюм акробата</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Благодаря БС-технологии позволяет надевшему костюм ползать по вентиляции без риска, одежды поверх костюма, головного убора и вещей в руках.</Box>
+    <Box Margin="2">Экспертиза</Box>
+  </Table>
+
+
+  # Контрабанда
+  Всё, что есть в этой таблице, карается по статье 404.
+  <Table Columns="4">
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Наименование</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Функция или условие</Box>
+    <Box Margin="2">Проверка или условие</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Ключ шифрования Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Ключ доступа к закрытому каналу связи Синдиката.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Неопределённая воровская сумка</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Устройство выбора и получения воровского комплекта. Не тождественно полноценному аплинку.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Перчатки ниндзя</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Специальные перчатки, способные взаимодействовать с защитой дверей и источниками энергии.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Гарнитура/Полноразмерная гарнитура Синдиката (с ключом шифрования Синдиката)</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Гарнитура с установленным ключом закрытой связи Синдиката.</Box>
+    <Box Margin="2">Отвёртка</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Миниатюрный энергетический арбалет</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Компактный энергетический арбалет; не смешивать с обычным спортивным арбалетом.</Box>
+    <Box Margin="2">Экспертом / Особые Свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Камера-жучок</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Карманное устройство доступа к камерам станции.</Box>
+    <Box Margin="2">Особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Плащ-невидимка</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Плащ с активной маскировкой носителя.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Гипоручка</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Миниатюрный инъектор, замаскированный под ручку; вещество внутри квалифицируется отдельно.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Коробка-невидимка</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Коробка с технологией оптической маскировки.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Криптографический секвенсор</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Электронный секвенсор для несанкционированного изменения работы устройств.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Маскировочный проектор</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Проектор, маскирующий носителя голограммой предмета.</Box>
+    <Box Margin="2">Экспертом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Айди карта агента</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Карта агента для подмены идентификационных данных; обычная переоформленная ID-карта не включается.</Box>
+    <Box Margin="2">Особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Горлепс гипоспрей</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Нештатный гипоспрей Gorlex; специальные возможности требуют подтверждения, содержимое оценивается отдельно.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Айди карта Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Специализированная карта идентификации Синдиката; обычная карта с декоративной наклейкой — 103.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Имплант миксер ДНК</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Имплант изменения ДНК и внешнего облика.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Имплант хранилище</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Несертифицированный имплант скрытого хранения предметов.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Имплант свобода</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Имплант освобождения от средств ограничения подвижности.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Имплант телепорта</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Имплант экстренной телепортации носителя.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Имплант посмертный растворитель</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Имплант посмертного уничтожения тела и следов; конкретный состав не предполагается по названию.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Книга с магическим барьером</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Книга, предоставляющая магический барьер.</Box>
+    <Box Margin="2">Экспертом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Кость судьбы</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Игральная кость с подтверждёнными сверхъестественными эффектами; обычный кубик исключён.</Box>
+    <Box Margin="2">Экспертом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Энергощит</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Нештатный энергетический щит с отражением лазерных лучей.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Языковой имплант Кодового языка</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Несертифицированный имплант, предоставляющий доступ к кодовому языку.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Перчатки Полярной звезды</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Перчатки, сверхъестественно увеличивающие темп ударов.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Имплант ЭМИ</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Имплант генерации электромагнитного импульса.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Телепорт подкрепления/обезьяньего подкрепления</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Устройство вызова подкрепления Синдиката; не обычная радиостанция.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Одноразовая баллистическая турель</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Развёртываемая автоматическая баллистическая турель, замаскированная под ящик.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Кубики Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Замаскированные носители агрессивных существ, активирующиеся при контакте с водой.</Box>
+    <Box Margin="2">Экспертиза / особые свойства</Box>
+  </Table>
+
+
+  # Вражеское снаряжение
+  Всё, что есть в этой таблице, карается по статье 504.
+  <Table Columns="4">
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Наименование</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Функция или условие</Box>
+    <Box Margin="2">Проверка или условие</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Костюм ниндзя</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Специализированный боевой костюм клана Паука с активной маскировкой.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Поглотитель энергии Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Устройство хищения энергии и нарушения энергоснабжения.</Box>
+    <Box Margin="2">Экспертом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Аплинк Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Действующий терминал приобретения запрещённого снаряжения на чёрном рынке.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Аплинк Синдиката в КПК</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Действующий аплинк, скрытый в КПК.</Box>
+    <Box Margin="2">Не нуждается / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Оружейный модуль киборга/модуль киборга мученик</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Запрещённый боевой либо взрывной модуль киборга; конкретный тип должен быть установлен.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Борг с законами синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Саботажная платформа киборга Синдиката.</Box>
+    <Box Margin="2">Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Штурмовой борг синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Боевая штурмовая платформа киборга Синдиката.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Пульт объявления войны</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Устройство передачи объявления войны от Синдиката, а не обычный бумажный текст.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Телекиристалл</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Подтверждённый телекиристалл — средство расчётов в аплинке; обычный минерал исключён.</Box>
+    <Box Margin="2">Экспертом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Энергокатана ниндзя</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Боевой энергетический клинок ниндзя.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Маяк сингулярности</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Устройство притягивания сингулярности с потенциалом разрушения станции.</Box>
+    <Box Margin="2">Экспертом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Медицинский борг синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Медицинская платформа киборга Синдиката; оценка относится к платформе, а не личности разумного существа.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Имплант аплинк</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Встроенный в тело аплинк чёрного рынка.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Имплант микро/макробомбы</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Встроенное взрывное устройство; микро- и макробомба различаются мощностью.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Набор голопаразита/голоклоуна</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Устройство связи с голопаразитом или голоклоуном, способным воздействовать на окружающий мир.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Имплант клинков богомола</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Встроенные боевые клинки богомола.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Лазерная абордажная сабля</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Абордажная сабля с энергетическим клинком; отдельно от обычной металлической сабли.</Box>
+    <Box Margin="2">Экспертиза в выключенном состоянии, не нуждается во включённом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Двухклинковый энергетический меч</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Двухклинковое энергетическое оружие.</Box>
+    <Box Margin="2">Экспертиза в выключенном состоянии, не нуждается во включённом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Игрушечный меч (лазерный)</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Настоящее энергетическое оружие под видом игрушечного меча.</Box>
+    <Box Margin="2">Экспертиза в выключенном состоянии, не нуждается во включённом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Костюм джаггернаута Cybersun</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Тяжёлый боевой костюм джаггернаута Cybersun.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Скафандр командира синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Боевой скафандр командира оперативников.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Элитный скафандр синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Элитный боевой скафандр Синдиката.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Кроваво-красный скафандр синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Боевой скафандр оперативника, отдельно от красного EVA.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Скафандр медика синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Боевой скафандр медика оперативников.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Штурмовой костюм Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Специализированный штурмовой костюм Синдиката.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Магическое вооружение</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Подтверждённое магическое вооружение; конкретные способности устанавливаются для каждого экземпляра.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Путь спящего карпа</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Материальный свиток обучения «Пути спящего карпа». Сам навык не является хранимым предметом.</Box>
+    <Box Margin="2">Экспертом / особые свойства</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Зловещие доспехи</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Подтверждённые магические боевые доспехи еретика.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Маска бездны</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Магическая маска с установленным ослабляющим воздействием на окружающих.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Ромерол (вещество)</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Ромерол — игровой возбудитель зомби-инфекции, особо опасный для станции.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Святая граната</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Взрывная граната в виде державы; название не делает её безопасным религиозным предметом.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Тритиевая взрывчатка</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Радиоактивное взрывное устройство с выбросом опасного газа.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Минибомба с таймером</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Компактная бомба с таймером.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Бомба Синдиката</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Бомба Синдиката для диверсии.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Бомба клана Паука</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Специализированное взрывное устройство клана Паука.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Аварийный ящик для инструментов</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Ящик с действующей функцией получения запрещённого снаряжения на чёрном рынке.</Box>
+    <Box Margin="2">Экспертом / Экспертиза</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Ядерная бомба (не от НТ)</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Несанкционированно полученная или размещённая ядерная боеголовка; штатное хранение по должности исключено.</Box>
+    <Box Margin="2">Не нуждается</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Кодекс Цикатрикс</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Ритуальная книга с установленными магическими свойствами; конкретные опасные функции требуют доказательства.</Box>
+    <Box Margin="2">Экспертом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Имплант сандевистан</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Несертифицированный имплант ускорения движения и реакции.</Box>
+    <Box Margin="2">Экспертом</Box>
+
+    <Box Margin="2">Изображение</Box>
+    <Box Margin="2">Костюм водолаза</Box>
+    <Box HorizontalAlignment="Left" Margin="2">Благодаря БС-технологии позволяет надевшему костюм ползать по вентиляции со всеми вещами, включая рюкзак, одежду поверх костюма, головной убор и вещи в руках.</Box>
+    <Box Margin="2">Экспертизой</Box>
+  </Table>
+
+</Document>

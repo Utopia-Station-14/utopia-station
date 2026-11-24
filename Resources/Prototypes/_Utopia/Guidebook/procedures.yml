@@ -1,0 +1,41 @@
+﻿- type: guideEntry
+  id: UtopiaProcedures
+  name: utopia-guide-entry-procedures
+  priority: 0
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaProcedures.xml"
+  children:
+  - UtopiaPSearch
+  - UtopiaPProcess
+  - UtopiaPConfCirc
+  - UtopiaPForce
+  - UtopiaPExecution
+
+- type: guideEntry
+  id: UtopiaPSearch
+  name: utopia-guide-entry-procedures-search
+  priority: 1
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPSearch.xml"
+
+- type: guideEntry
+  id: UtopiaPProcess
+  name: utopia-guide-entry-procedures-process
+  priority: 2
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPProcess.xml"
+
+- type: guideEntry
+  id: UtopiaPConfCirc
+  name: utopia-guide-entry-procedures-conf-circ
+  priority: 3
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPConfCirc.xml"
+
+- type: guideEntry
+  id: UtopiaPForce
+  name: utopia-guide-entry-procedures-force
+  priority: 4
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPForce.xml"
+
+- type: guideEntry
+  id: UtopiaPExecution
+  name: utopia-guide-entry-procedures-execution
+  priority: 5
+  text: "/ServerInfo/_Utopia/Guidebook/ServerRules/SpaceLaw/UtopiaPExecution.xml"
