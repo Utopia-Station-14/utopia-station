@@ -15,3 +15,6 @@
       state: Geneticist
   - type: PresetIdCard
     job: Geneticist
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist

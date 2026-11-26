@@ -113,7 +113,7 @@
   - Musician
   - Reporter
   - ServiceWorker
-  - TramDriver
+  # - TramDriver # Utopia-Tweak : Roles
 
 - type: department
   id: Silicon
@@ -152,5 +152,5 @@
   roles:
   - Reporter
   - Psychologist
-  - TramDriver
+  # - TramDriver # Utopia-Tweak : Roles
   primary: false

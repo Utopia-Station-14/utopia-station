@@ -42,6 +42,11 @@
       state: Passenger
   - type: PresetIdCard
     job: Passenger
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 #Command
 
@@ -93,6 +98,11 @@
     heldPrefix: silver
   - type: PresetIdCard
     job: HeadOfPersonnel
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -113,6 +123,11 @@
     heldPrefix: silver
   - type: PresetIdCard
     job: ChiefEngineer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -133,6 +148,11 @@
     heldPrefix: silver
   - type: PresetIdCard
     job: ChiefMedicalOfficer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -153,6 +173,11 @@
     heldPrefix: silver
   - type: PresetIdCard
     job: ResearchDirector
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -173,6 +198,11 @@
     heldPrefix: silver
   - type: PresetIdCard
     job: HeadOfSecurity
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -193,6 +223,11 @@
     heldPrefix: silver
   - type: PresetIdCard
     job: Quartermaster
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 #Engineering
 
@@ -213,6 +248,11 @@
       state: TechnicalAssistant
   - type: PresetIdCard
     job: TechnicalAssistant
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -231,6 +271,11 @@
       state: StationEngineer
   - type: PresetIdCard
     job: StationEngineer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -249,6 +294,11 @@
       state: AtmosphericTechnician
   - type: PresetIdCard
     job: AtmosphericTechnician
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: EngineeringIDCard
@@ -265,6 +315,11 @@
     - sprite: *icon-rsi
       offset: *icon-offset
       state: SeniorEngineer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 #Medical
 
@@ -285,6 +340,11 @@
       state: MedicalIntern
   - type: PresetIdCard
     job: MedicalIntern
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -303,6 +363,11 @@
       state: MedicalDoctor
   - type: PresetIdCard
     job: MedicalDoctor
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -321,6 +386,11 @@
       state: Paramedic
   - type: PresetIdCard
     job: Paramedic
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -339,6 +409,11 @@
       state: Chemist
   - type: PresetIdCard
     job: Chemist
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -357,6 +432,11 @@
       state: Psychologist
   - type: PresetIdCard
     job: Psychologist
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: MedicalIDCard
@@ -373,6 +453,11 @@
     - sprite: *icon-rsi
       offset: *icon-offset
       state: SeniorPhysician
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 #Science
 
@@ -393,6 +478,11 @@
       state: ResearchAssistant
   - type: PresetIdCard
     job: ResearchAssistant
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -411,6 +501,11 @@
       state: Scientist
   - type: PresetIdCard
     job: Scientist
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: ResearchIDCard
@@ -427,6 +522,11 @@
     - sprite: *icon-rsi
       offset: *icon-offset
       state: SeniorResearcher
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 #Security
 
@@ -447,6 +547,11 @@
       state: SecurityCadet
   - type: PresetIdCard
     job: SecurityCadet
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -465,6 +570,11 @@
       state: SecurityOfficer
   - type: PresetIdCard
     job: SecurityOfficer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -483,6 +593,11 @@
       state: Warden
   - type: PresetIdCard
     job: Warden
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -501,6 +616,11 @@
       state: Detective
   - type: PresetIdCard
     job: Detective
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -517,6 +637,11 @@
     - sprite: *icon-rsi
       offset: *icon-offset
       state: Brigmedic
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: SecurityIDCard
@@ -533,6 +658,11 @@
     - sprite: *icon-rsi
       offset: *icon-offset
       state: SeniorOfficer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 #Service
 
@@ -553,6 +683,11 @@
       state: ServiceWorker
   - type: PresetIdCard
     job: ServiceWorker
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -568,6 +703,11 @@
       state: Clown
   - type: PresetIdCard
     job: Clown
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -586,6 +726,11 @@
       state: Mime
   - type: PresetIdCard
     job: Mime
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -604,6 +749,11 @@
       state: Musician
   - type: PresetIdCard
     job: Musician
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -622,6 +772,11 @@
       state: Chaplain
   - type: PresetIdCard
     job: Chaplain
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -640,6 +795,11 @@
       state: Janitor
   - type: PresetIdCard
     job: Janitor
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -698,6 +858,11 @@
       state: Chef
   - type: PresetIdCard
     job: Chef
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -716,6 +881,11 @@
       state: Botanist
   - type: PresetIdCard
     job: Botanist
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -734,6 +904,11 @@
       state: Librarian
   - type: PresetIdCard
     job: Librarian
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -752,6 +927,11 @@
       state: Lawyer
   - type: PresetIdCard
     job: Lawyer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -770,6 +950,11 @@
       state: Reporter
   - type: PresetIdCard
     job: Reporter
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -786,6 +971,11 @@
     - sprite: *icon-rsi
       offset: *icon-offset
       state: Boxer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -802,6 +992,11 @@
     - sprite: *icon-rsi
       offset: *icon-offset
       state: Zookeeper
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -840,6 +1035,11 @@
       state: CargoTechnician
   - type: PresetIdCard
     job: CargoTechnician
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: CargoIDCard
@@ -856,6 +1056,11 @@
     - sprite: *icon-rsi
       offset: *icon-offset
       state: SeniorCourier
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: IDCardStandard
@@ -874,6 +1079,11 @@
       state: ShaftMiner
   - type: PresetIdCard
     job: SalvageSpecialist
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 #Misc.
 
@@ -911,6 +1121,7 @@
     - WhitelistChameleon
     - WhitelistChameleonIdCard
     - Recyclable
+    - UtopiaPdaPainterWhitelist
   - type: StaticPrice # these are infinitely producible.
     price: 0
 
@@ -951,6 +1162,11 @@
     jobIcon: JobIconVisitor
   - type: PresetIdCard
     job: Visitor
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 #Antags
 

@@ -24,3 +24,17 @@
     stackRequirements:
       Steel: 1
       Cable: 1
+
+- type: entity
+  parent: BaseMachineCircuitboard
+  id: UtopiaPDAPainterCircuitboard
+  name: pda painter machine board
+  description: A machine printed circuit board for a pda painter.
+  components:
+    - type: MachineBoard
+      prototype: UtopiaPDAPainter
+      requirements:
+        Manipulator: 2
+      stackRequirements:
+        Steel: 1
+        Glass: 1

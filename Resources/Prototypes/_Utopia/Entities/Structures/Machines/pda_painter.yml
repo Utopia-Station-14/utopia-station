@@ -1,0 +1,72 @@
+- type: entity
+  parent: [ BaseMachinePowered, ConstructibleMachine ]
+  id: UtopiaPDAPainter
+  name: pda painter
+  description: A painting machine for PDAs and ID cards. Insert the item and choose a preset.
+  components:
+  - type: Sprite
+    sprite: _Utopia/Structures/Machines/pda_painter.rsi
+    layers:
+    - state: pdapainter-base
+    - state: pdapainter-on
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+      shader: unshaded
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
+  - type: PdaPainter
+    pdaSlot:
+      name: pda-painter-slot-pda
+      whitelist:
+        components:
+        - Pda
+    cardSlot:
+      name: pda-painter-slot-card
+      whitelist:
+        components:
+        - IdCard
+  - type: ItemSlots
+  - type: ContainerContainer
+    containers:
+      pdaSlot: !type:ContainerSlot
+      cardSlot: !type:ContainerSlot
+      machine_board: !type:Container
+      machine_parts: !type:Container
+  - type: Damageable
+    damageModifierSet: Metallic
+  - type: Injurable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:EmptyContainersBehaviour
+        containers:
+        - pdaSlot
+        - cardSlot
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:ChangeConstructionNodeBehavior
+        node: machineFrame
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: ActivatableUI
+    key: enum.PdaPainterUiKey.Key
+    singleUser: true
+  - type: UserInterface
+    interfaces:
+      enum.PdaPainterUiKey.Key:
+        type: PdaPainterBoundUserInterface
+  - type: ActivatableUIRequiresPower
+  - type: ActivatableUIRequiresAccess
+  - type: Appearance
+  - type: Machine
+    board: UtopiaPDAPainterCircuitboard
+  - type: AccessReader
+    access: [["HeadOfPersonnel"]]
