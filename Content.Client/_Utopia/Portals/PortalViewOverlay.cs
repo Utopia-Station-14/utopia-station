@@ -2,21 +2,20 @@ using Robust.Client.Graphics;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
 
-namespace Content.Client.PortalView;
+namespace Content.Client._Utopia.Portals;
 
 public sealed partial class PortalViewOverlay : Overlay
 {
     [Dependency] private IEntitySystemManager _sysMan = default!;
     [Dependency] private IPrototypeManager _proto = default!;
 
-    public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowFOV;
-    private readonly ShaderInstance _shader;
+    public override OverlaySpace Space => OverlaySpace.WorldSpace;
+    private readonly List<ShaderInstance> _shaders = new();
     private PortalViewSystem? _system;
 
     public PortalViewOverlay()
     {
         IoCManager.InjectDependencies(this);
-        _shader = _proto.Index<ShaderPrototype>("PortalView").InstanceUnique();
     }
 
     protected override void Draw(in OverlayDrawArgs args)
@@ -27,26 +26,37 @@ public sealed partial class PortalViewOverlay : Overlay
 
         _system.MainViewportSize = args.Viewport.Size;
 
-        if (_system.Views.Count == 0)
+        var views = _system.Views;
+        if (views.Count == 0)
             return;
 
         var handle = args.WorldHandle;
 
-        foreach (var view in _system.Views)
+        for (var i = 0; i < views.Count; i++)
         {
-            if (view.Viewport is not { } vp)
+            var view = views[i];
+
+            if (view.Viewport is not { } viewport)
             {
                 handle.UseShader(null);
                 handle.DrawPrimitives(DrawPrimitiveTopology.TriangleFan, view.Cone, Color.Black);
                 continue;
             }
 
-            handle.UseShader(_shader);
-            _shader.SetParameter("portalTex", vp.RenderTarget.Texture);
-            _shader.SetParameter("debug", _system.Debug ? 1f : 0f);
+            var shader = GetShader(i);
+            shader.SetParameter("portalTex", viewport.RenderTarget.Texture);
+            handle.UseShader(shader);
             handle.DrawPrimitives(DrawPrimitiveTopology.TriangleFan, view.Cone, Color.White);
         }
 
         handle.UseShader(null);
+    }
+
+    private ShaderInstance GetShader(int index)
+    {
+        while (_shaders.Count <= index)
+            _shaders.Add(_proto.Index<ShaderPrototype>("PortalView").InstanceUnique());
+
+        return _shaders[index];
     }
 }

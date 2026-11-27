@@ -4,7 +4,7 @@ using Robust.Server.Player;
 using Robust.Shared.Enums;
 using Robust.Shared.Player;
 
-namespace Content.Server.PortalView;
+namespace Content.Server._Utopia.Portals;
 
 public sealed partial class PortalViewPvsSystem : EntitySystem
 {
@@ -13,12 +13,14 @@ public sealed partial class PortalViewPvsSystem : EntitySystem
     [Dependency] private ViewSubscriberSystem _viewSubscriber = default!;
     [Dependency] private TransformSystem _xform = default!;
 
-    private const float Range = 20f;
-    private const float Interval = 0.5f;
+    private const float Range = 25f; // Перенести в компонент
+    private const float Interval = 0.25f; // Перенести в компонент
 
     private float _accum;
     private readonly Dictionary<ICommonSession, HashSet<EntityUid>> _subscribed = new();
     private readonly HashSet<Entity<PortalComponent>> _nearby = new();
+    private readonly HashSet<EntityUid> _needed = new();
+    private readonly List<EntityUid> _stale = new();
 
     public override void Initialize()
     {
@@ -47,46 +49,61 @@ public sealed partial class PortalViewPvsSystem : EntitySystem
 
         foreach (var session in _players.Sessions)
         {
-            if (session.AttachedEntity is not { } player || session.Status != SessionStatus.InGame)
+            if (session.Status != SessionStatus.InGame || session.AttachedEntity is not { } player)
             {
                 Clear(session);
                 continue;
             }
 
-            var needed = new HashSet<EntityUid>();
-            _nearby.Clear();
-            _lookup.GetEntitiesInRange(_xform.GetMapCoordinates(player), Range, _nearby);
+            CollectExits(player);
+            Sync(session);
+        }
+    }
+    private void CollectExits(EntityUid player)
+    {
+        _needed.Clear();
+        _nearby.Clear();
+        _lookup.GetEntitiesInRange(_xform.GetMapCoordinates(player), Range, _nearby);
 
-            foreach (var portal in _nearby)
+        foreach (var portal in _nearby)
+        {
+            if (!TryComp(portal, out LinkedEntityComponent? link))
+                continue;
+
+            foreach (var exit in link.LinkedEntities)
             {
-                if (!TryComp(portal, out LinkedEntityComponent? link))
-                    continue;
-
-                foreach (var exit in link.LinkedEntities)
-                    needed.Add(exit);
+                if (exit != portal.Owner && !TerminatingOrDeleted(exit))
+                    _needed.Add(exit);
             }
+        }
+    }
 
-            if (!_subscribed.TryGetValue(session, out var current))
-            {
-                current = new HashSet<EntityUid>();
-                _subscribed[session] = current;
-            }
+    private void Sync(ICommonSession session)
+    {
+        if (!_subscribed.TryGetValue(session, out var current))
+        {
+            current = new HashSet<EntityUid>();
+            _subscribed[session] = current;
+        }
 
-            foreach (var exit in needed)
-            {
-                if (current.Add(exit))
-                    _viewSubscriber.AddViewSubscriber(exit, session);
-            }
+        foreach (var exit in _needed)
+        {
+            if (current.Add(exit))
+                _viewSubscriber.AddViewSubscriber(exit, session);
+        }
 
-            current.RemoveWhere(exit =>
-            {
-                if (needed.Contains(exit))
-                    return false;
+        _stale.Clear();
+        foreach (var exit in current)
+        {
+            if (!_needed.Contains(exit))
+                _stale.Add(exit);
+        }
 
-                if (!Deleted(exit))
-                    _viewSubscriber.RemoveViewSubscriber(exit, session);
-                return true;
-            });
+        foreach (var exit in _stale)
+        {
+            current.Remove(exit);
+            if (!Deleted(exit))
+                _viewSubscriber.RemoveViewSubscriber(exit, session);
         }
     }
 

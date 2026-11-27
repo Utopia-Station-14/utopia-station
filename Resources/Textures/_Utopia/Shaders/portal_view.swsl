@@ -2,5 +2,6 @@ uniform sampler2D portalTex;
 
 void fragment() {
     highp vec2 uv = FRAGCOORD.xy * SCREEN_PIXEL_SIZE;
-    COLOR = texture2D(portalTex, uv);
+    highp vec4 c = texture2D(portalTex, uv);
+    COLOR = vec4(c.rgb, 1.0);
 }
