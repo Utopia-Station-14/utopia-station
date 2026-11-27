@@ -1,22 +1,26 @@
 <DefaultWindow xmlns="https://spacestation14.io"
     Title="{Loc 'pda-painter-window-title'}"
-    MinSize="540 600">
-    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
-        <Label Text="{Loc 'pda-painter-pda-header'}" StyleClasses="LabelHeading"/>
-        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
-            <Label Name="PdaNameLabel" HorizontalExpand="True" ClipText="True"/>
-            <Button Name="PdaEjectButton" Text="{Loc 'pda-painter-eject'}"/>
+    MinSize="850 500">
+    <BoxContainer Orientation="Horizontal" Margin="8" SeparationOverride="8" HorizontalExpand="True" VerticalExpand="True">
+        <BoxContainer Orientation="Vertical" SeparationOverride="6" HorizontalExpand="True" VerticalExpand="True">
+            <Label Text="{Loc 'pda-painter-pda-header'}" StyleClasses="LabelHeading"/>
+            <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                <Label Name="PdaNameLabel" HorizontalExpand="True" ClipText="True"/>
+                <Button Name="PdaEjectButton" Text="{Loc 'pda-painter-eject'}"/>
+            </BoxContainer>
+            <ScrollContainer MinHeight="140" VerticalExpand="True" HScrollEnabled="False">
+                <GridContainer Name="PdaPresetList" Columns="4" HSeparationOverride="4" VSeparationOverride="4"/>
+            </ScrollContainer>
         </BoxContainer>
-        <ScrollContainer MinHeight="140" VerticalExpand="True" HScrollEnabled="False">
-            <GridContainer Name="PdaPresetList" Columns="5" HSeparationOverride="4" VSeparationOverride="4"/>
-        </ScrollContainer>
-        <Label Text="{Loc 'pda-painter-card-header'}" StyleClasses="LabelHeading"/>
-        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
-            <Label Name="CardNameLabel" HorizontalExpand="True" ClipText="True"/>
-            <Button Name="CardEjectButton" Text="{Loc 'pda-painter-eject'}"/>
+        <BoxContainer Orientation="Vertical" SeparationOverride="6" HorizontalExpand="True" VerticalExpand="True">
+            <Label Text="{Loc 'pda-painter-card-header'}" StyleClasses="LabelHeading"/>
+            <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                <Label Name="CardNameLabel" HorizontalExpand="True" ClipText="True"/>
+                <Button Name="CardEjectButton" Text="{Loc 'pda-painter-eject'}"/>
+            </BoxContainer>
+            <ScrollContainer MinHeight="140" VerticalExpand="True" HScrollEnabled="False">
+                <GridContainer Name="CardPresetList" Columns="4" HSeparationOverride="4" VSeparationOverride="4"/>
+            </ScrollContainer>
         </BoxContainer>
-        <ScrollContainer MinHeight="140" VerticalExpand="True" HScrollEnabled="False">
-            <GridContainer Name="CardPresetList" Columns="5" HSeparationOverride="4" VSeparationOverride="4"/>
-        </ScrollContainer>
     </BoxContainer>
 </DefaultWindow>

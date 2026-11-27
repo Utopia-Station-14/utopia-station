@@ -30,6 +30,5 @@
   job: Geneticist
   equipment:
     mask: ClothingMaskSterile
-    neck: ClothingNeckStethoscope
-    outerClothing: GeneticistLabCoat
+    outerClothing: ClothingOuterCoatLabGene
     gloves: ClothingHandsGlovesLatex
