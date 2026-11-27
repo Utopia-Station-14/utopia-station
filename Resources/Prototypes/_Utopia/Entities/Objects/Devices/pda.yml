@@ -1,0 +1,18 @@
+- type: entity
+  parent: BaseMedicalPDA
+  id: UtopiaGeneticistPDA
+  name: geneticist PDA
+  description: It reeks of mutations.
+  components:
+  - type: Pda
+    id: UtopiaGeneticistIDCard
+  - type: Appearance
+    appearanceDataInit:
+     enum.PdaVisuals.PdaType:
+       !type:String
+       pda-genetics
+  - type: PdaBorderColor
+    borderColor: "#d7d7d0"
+    accentVColor: "#447987"
+  - type: Icon
+    state: pda-genetics

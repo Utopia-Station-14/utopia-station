@@ -2,3 +2,5 @@ ent-UtopiaUniversalPipeDispenserCircuitboard = универсальный раз
     .desc = Машинная плата, используемая для создания универсального раздатчика труб.
 ent-UtopiaWashingMachineCircuitboard = стиральная машина (машинная плата)
     .desc = Машинная плата, используемая для создания стиральной машины.
+ent-UtopiaPDAPainterCircuitboard = покрасчик КПК (машинная плата)
+    .desc = Машинная плата, используемая для создания покрасчика КПК.

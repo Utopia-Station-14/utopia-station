@@ -17,6 +17,7 @@
     EncryptionKeyScience: 2
     EncryptionKeySecurity: 1
     EncryptionKeyService: 3
+    UtopiaPDAPainterFlatpack: 1 # Utopia-Tweak : PDA
   contrabandInventory:
     BalloonNT: 2
     LuxuryPen: 1

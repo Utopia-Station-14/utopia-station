@@ -66,6 +66,8 @@
       roundstart: 440
     Chemist:
       roundstart: 440
+    Geneticist:
+      roundstart: 445
     # СБ
     SecurityCadet:
       roundstart: 220
@@ -83,5 +85,6 @@
     # Прочее
     Passenger:
       roundstart: 150
-    # # Юридический
-    # Lawyer: 165
+    # Юридический
+    Lawyer:
+      roundstart: 165

@@ -1,0 +1,15 @@
+# Research
+- type: loadoutGroup
+  id: GeneticistJumpsuit
+  name: loadout-group-geneticist-jumpsuit
+  loadouts:
+  - GeneticistJumpsuit
+  - GeneticistJumpskirt
+
+- type: loadoutGroup
+  id: GeneticistOuterClothing
+  name: loadout-group-geneticist-outerclothing
+  minLimit: 0
+  loadouts:
+  - GeneticistLabCoat
+  - GeneticistWintercoat

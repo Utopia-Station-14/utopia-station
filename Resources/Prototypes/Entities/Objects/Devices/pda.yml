@@ -164,6 +164,11 @@
         - id: NewsReaderCartridge
         - id: WantedListCartridge
         - id: UtopiaWalletCartridge # Utopia-Tweak : Economy
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -179,6 +184,11 @@
         - id: NanoTaskCartridge
         - id: NewsReaderCartridge
         - id: MedTekCartridge
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -190,6 +200,11 @@
     id: PassengerIDCard
   - type: PdaBorderColor
     borderColor: "#717059"
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -209,6 +224,11 @@
     accentVColor: "#949137"
   - type: Icon
     state: pda-interntech
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BaseMedicalPDA
@@ -269,6 +289,11 @@
     accentVColor: "#8900c9"
   - type: Icon
     state: pda-internsci
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -288,6 +313,11 @@
     accentVColor: "#00cc35"
   - type: Icon
     state: pda-internservice
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -306,6 +336,11 @@
     borderColor: "#d7d7d0"
   - type: Icon
     state: pda-cook
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -325,6 +360,11 @@
     accentVColor: "#00cc35"
   - type: Icon
     state: pda-hydro
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -374,6 +414,11 @@
         density: 5
         mask:
         - ItemMask
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: ClownPDA
@@ -443,6 +488,11 @@
   - type: PermanentStatusEffects # for random sentience event
     statusEffects:
     - TraitStatusEffectMuted
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   name: chaplain PDA
@@ -461,6 +511,11 @@
     borderColor: "#333333"
   - type: Icon
     state: pda-chaplain
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: ChaplainPDA
@@ -501,6 +556,11 @@
         - id: NewsReaderCartridge
         - id: AstroNavCartridge
         - id: UtopiaWalletCartridge # Utopia-Tweak : Economy
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -519,6 +579,11 @@
     borderColor: "#e39751"
   - type: Icon
     state: pda-cargo
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -548,6 +613,11 @@
         - id: NewsReaderCartridge
         - id: AstroNavCartridge
         - id: UtopiaWalletCartridge # Utopia-Tweak : Economy
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -566,6 +636,11 @@
     borderColor: "#333333"
   - type: Icon
     state: pda-bartender
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BaseWidePDA
@@ -590,6 +665,11 @@
     borderColor: "#858585"
   - type: Icon
     state: pda-library
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: LibrarianPDA
@@ -654,6 +734,11 @@
     borderColor: "#5D2D56"
   - type: Icon
     state: pda-janitor
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -678,6 +763,11 @@
     borderColor: "#7C5D00"
   - type: Icon
     state: pda-captain
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -703,6 +793,11 @@
     accentHColor: "#447987"
   - type: Icon
     state: pda-hop
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -722,6 +817,11 @@
     accentHColor: "#447987"
   - type: Icon
     state: pda-ce
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -741,6 +841,11 @@
     accentVColor: "#A32D26"
   - type: Icon
     state: pda-engineer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BaseMedicalPDA
@@ -852,6 +957,11 @@
     accentVColor: "#8900c9"
   - type: Icon
     state: pda-rd
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -871,6 +981,11 @@
     accentVColor: "#8900c9"
   - type: Icon
     state: pda-science
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BaseSecurityPDA
@@ -940,7 +1055,7 @@
     state: pda-security
 
 - type: entity
-  parent: BaseSecurityPDA
+  parent: BasePDA # Utopia-Tweak : PDA
   id: CentcomPDA
   name: CentComm PDA
   description: Light green sign of walking bureaucracy.
@@ -1039,6 +1154,11 @@
     handheld: true
     program: 2
     bank: 100 # Defined in space-station-14.sf2
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: MusicianPDA
@@ -1069,6 +1189,11 @@
     accentVColor: "#447987"
   - type: Icon
     state: pda-atmos
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -1087,6 +1212,11 @@
     borderColor: "#288e4d"
   - type: Icon
     state: pda-clear
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: ClearPDA
@@ -1187,7 +1317,7 @@
     state: pda-syndi-commander
 
 - type: entity
-  parent: BaseSecurityPDA
+  parent: CentcomPDA # Utopia-Tweak : PDA
   id: ERTLeaderPDA
   name: ERT Leader PDA
   suffix: Leader
@@ -1300,6 +1430,11 @@
     accentVColor: "#447987"
   - type: Icon
     state: pda-medical
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -1343,6 +1478,11 @@
     borderColor: "#3f3f74"
   - type: Icon
     state: pda-reporter
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -1361,6 +1501,11 @@
     borderColor: "#ffe685"
   - type: Icon
     state: pda-zookeeper
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -1380,6 +1525,11 @@
     accentVColor: "#390504"
   - type: Icon
     state: pda-boxer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BaseSecurityPDA
@@ -1467,6 +1617,11 @@
   - type: Icon
     state: pda-cluwne
   - type: Unremoveable
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -1486,6 +1641,11 @@
     accentVColor: "#CD6900"
   - type: Icon
     state: pda-seniorengineer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -1506,6 +1666,11 @@
     accentVColor: "#8900c9"
   - type: Icon
     state: pda-seniorresearcher
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BaseMedicalPDA
@@ -1526,6 +1691,11 @@
     accentVColor: "#B34200"
   - type: Icon
     state: pda-seniorphysician
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BaseSecurityPDA
@@ -1545,6 +1715,11 @@
     accentVColor: "#DFDFDF"
   - type: Icon
     state: pda-seniorofficer
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: BasePDA
@@ -1564,6 +1739,11 @@
     accentVColor: "#DFDFDF"
   - type: Icon
     state: pda-seniorcourier
+  # Utopia-Tweak : PDA
+  - type: Tag
+    tags:
+    - UtopiaPdaPainterWhitelist
+  # Utopia-Tweak : PDA
 
 - type: entity
   parent: [ BaseHighlyIllegalContraband, BasePDA ]
